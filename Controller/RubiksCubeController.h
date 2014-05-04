@@ -3,6 +3,8 @@
 
 #include "../Model/RubiksCube.h"
 #include "../View/RubiksCubeView.h"
+#include "ChromosomeGenerator.h"
+#include "RubiksCubeEvaluator.h"
 #include <map>
 using std::map;
 #include <string>
@@ -27,10 +29,13 @@ namespace busybin
     typedef function<void()>        moveFunc_t;
     typedef map<string, moveFunc_t> moveMap_t;
 
-    RubiksCube     cube;
-    RubiksCubeView view;
-    moveMap_t      moveMap;
+    RubiksCube          cube;
+    RubiksCubeView      view;
+    RubiksCubeEvaluator evaluator;
+    moveMap_t           moveMap;
+    vector<string>      chromosomes;
 
+    void manualScramble();
   public:
     RubiksCubeController();
     void start();
