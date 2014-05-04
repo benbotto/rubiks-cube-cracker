@@ -38,7 +38,41 @@ namespace busybin
    */
   void RubiksCubeController::start()
   {
-    while (1)
+    ChromosomeGenerator chromGen;
+
+    // Let the user scramble the cube.
+    this->manualScramble();
+
+    cout << this->evaluator.eval(this->cube) << endl;
+    
+    // Generate a bunch of random moves, or "chromosomes."
+    /*vector<string> c = chromGen.generateChromosome(30);
+
+    for (const string& move : c)
+      cout << move << ' ';
+    cout << endl;
+
+    c = chromGen.generateChromosome(30);
+
+    for (const string& move : c)
+      cout << move << ' ';
+    cout << endl;
+
+    c = chromGen.generateChromosome(30);
+
+    for (const string& move : c)
+      cout << move << ' ';
+    cout << endl;*/
+  }
+
+  /**
+   * Let the user scramble the cube.
+   */
+  void RubiksCubeController::manualScramble()
+  {
+    bool done = false;
+
+    while (!done)
     {
       string         input;
       string         move;
@@ -51,7 +85,7 @@ namespace busybin
 
       // Get a move.
       cin.clear();
-      cout << "Enter a move: ";
+      cout << "Enter a move.  When done enter \"Q\": ";
       getline(cin, input);
 
       // Quit.
@@ -86,6 +120,14 @@ namespace busybin
         }
       }
     }
+  }
+
+  /**
+   * Generate chromosomes.
+   */
+  void generateChromosomes()
+  {
+
   }
 }
 
