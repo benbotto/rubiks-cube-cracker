@@ -5,32 +5,25 @@ namespace busybin
   /**
    * Initialize.
    */
-  RubiksCubeController::RubiksCubeController()
+  RubiksCubeController::RubiksCubeController() : moveStore(this->cube),
+    scrambler(this->cube, this->moveStore, this->cubeView),
+    rand(0, this->moveStore.getNumMoves() - 1)
   {
-    // Set up the move map.
-    this->moveMap["L"]  = bind(&RubiksCube::l,      &this->cube);
-    this->moveMap["L'"] = bind(&RubiksCube::lPrime, &this->cube);
-    this->moveMap["L2"] = bind(&RubiksCube::l2,     &this->cube);
+    const unsigned numPopulations = 40;
+    const unsigned chromsPerPop   = 100;
+    const unsigned chromLen       = 30;
 
-    this->moveMap["R"]  = bind(&RubiksCube::r,      &this->cube);
-    this->moveMap["R'"] = bind(&RubiksCube::rPrime, &this->cube);
-    this->moveMap["R2"] = bind(&RubiksCube::r2,     &this->cube);
+    // Initialize the populations.
+    this->populations.resize(numPopulations);
 
-    this->moveMap["U"]  = bind(&RubiksCube::u,      &this->cube);
-    this->moveMap["U'"] = bind(&RubiksCube::uPrime, &this->cube);
-    this->moveMap["U2"] = bind(&RubiksCube::u2,     &this->cube);
-
-    this->moveMap["D"]  = bind(&RubiksCube::d,      &this->cube);
-    this->moveMap["D'"] = bind(&RubiksCube::dPrime, &this->cube);
-    this->moveMap["D2"] = bind(&RubiksCube::d2,     &this->cube);
-
-    this->moveMap["F"]  = bind(&RubiksCube::f,      &this->cube);
-    this->moveMap["F'"] = bind(&RubiksCube::fPrime, &this->cube);
-    this->moveMap["F2"] = bind(&RubiksCube::f2,     &this->cube);
-
-    this->moveMap["B"]  = bind(&RubiksCube::b,      &this->cube);
-    this->moveMap["B'"] = bind(&RubiksCube::bPrime, &this->cube);
-    this->moveMap["B2"] = bind(&RubiksCube::b2,     &this->cube);
+    // Initialize each chromosome.
+    for (vector<Chromosome>& chroms : this->populations)
+    {
+      chroms.reserve(chromsPerPop);
+     
+      for (unsigned i = 0; i < chromsPerPop; ++i)
+        chroms.push_back(Chromosome(chromLen, this->rand, this->moveStore));
+    }
   }
 
   /**
@@ -38,96 +31,26 @@ namespace busybin
    */
   void RubiksCubeController::start()
   {
-    ChromosomeGenerator chromGen;
-
     // Let the user scramble the cube.
-    this->manualScramble();
+    this->scrambler.manualScramble();
 
-    cout << this->evaluator.eval(this->cube) << endl;
-    
-    // Generate a bunch of random moves, or "chromosomes."
-    /*vector<string> c = chromGen.generateChromosome(30);
-
-    for (const string& move : c)
-      cout << move << ' ';
-    cout << endl;
-
-    c = chromGen.generateChromosome(30);
-
-    for (const string& move : c)
-      cout << move << ' ';
-    cout << endl;
-
-    c = chromGen.generateChromosome(30);
-
-    for (const string& move : c)
-      cout << move << ' ';
-    cout << endl;*/
-  }
-
-  /**
-   * Let the user scramble the cube.
-   */
-  void RubiksCubeController::manualScramble()
-  {
-    bool done = false;
-
-    while (!done)
+    for (vector<Chromosome>& chroms : this->populations)
     {
-      string         input;
-      string         move;
-      istringstream  splitter;
-      vector<string> moves;
-      bool           validMoves;
-
-      // Display the cube.
-      this->view.render(this->cube);
-
-      // Get a move.
-      cin.clear();
-      cout << "Enter a move.  When done enter \"Q\": ";
-      getline(cin, input);
-
-      // Quit.
-      if (input == "Q")
-        return;
-
-      // Split the string.
-      if (input != "")
+      for (Chromosome& chrom : chroms)
       {
-        validMoves = true;
-        moves.clear();
-        splitter.clear();
-        splitter.str(input);
+        RubiksCube hold = this->cube;
 
-        while (splitter >> move && validMoves)
+        for (unsigned i = 0; i < chrom.getLength(); ++i)
         {
-          if (this->moveMap.count(move))
-            moves.push_back(move);
-          else
-            validMoves = false;
+          this->moveStore.getMoveFunc(chrom[i])();
+          cout << this->evaluator.eval(this->cube) << endl;
         }
 
-        if (validMoves)
-        {
-          // Apply the move.
-          for (const string& move : moves)
-          {
-            cout << move << ' ';
-            this->moveMap[move]();
-          }
-          cout << endl;
-        }
+        this->cube = hold;
       }
+
+      this->cubeView.render(this->cube);
     }
-  }
-
-  /**
-   * Generate chromosomes.
-   */
-  void generateChromosomes()
-  {
-
   }
 }
 

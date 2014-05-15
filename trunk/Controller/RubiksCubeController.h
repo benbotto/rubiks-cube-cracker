@@ -1,41 +1,34 @@
 #ifndef _BUSYBIN_RUBIKS_CUBE_CONTROLLER_H_
 #define _BUSYBIN_RUBIKS_CUBE_CONTROLLER_H_
 
-#include "../Model/RubiksCube.h"
-#include "../View/RubiksCubeView.h"
-#include "ChromosomeGenerator.h"
+#include "Scrambler.h"
 #include "RubiksCubeEvaluator.h"
+#include "../Model/RubiksCube.h"
+#include "../Model/MoveStore.h"
+#include "../Model/Chromosome.h"
+#include "../View/RubiksCubeView.h"
+#include "../Util/Random.h"
 #include <map>
 using std::map;
 #include <string>
 using std::string;
-#include <sstream>
-using std::istringstream;
-#include <functional>
-using std::function;
-using std::bind;
-#include <algorithm>
-using std::copy;
 #include <vector>
 using std::vector;
-#include <iostream>
-using std::cin;
-using std::getline;
 
 namespace busybin
 {
   class RubiksCubeController
   {
-    typedef function<void()>        moveFunc_t;
-    typedef map<string, moveFunc_t> moveMap_t;
+    typedef vector<vector<Chromosome> > population_t;
 
-    RubiksCube          cube;
-    RubiksCubeView      view;
-    RubiksCubeEvaluator evaluator;
-    moveMap_t           moveMap;
-    vector<string>      chromosomes;
+    RubiksCube            cube;
+    RubiksCubeView        cubeView;
+    RubiksCubeEvaluator   evaluator;
+    MoveStore             moveStore;
+    Scrambler             scrambler;
+    Random                rand;
+    population_t          populations;
 
-    void manualScramble();
   public:
     RubiksCubeController();
     void start();

@@ -5,13 +5,15 @@
 #include <iostream>
 using std::cout;
 using std::endl;
-using std::flush;
 #include <iomanip>
 using std::setw;
 using std::right;
 
 namespace busybin
 {
+  /**
+   * Console view for the cube.
+   */
   class RubiksCubeView
   {
   public:
