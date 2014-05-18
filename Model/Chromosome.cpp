@@ -61,6 +61,38 @@ namespace busybin
   }
 
   /**
+   * Get the beginning gene (move) for iteration.
+   */
+  Iterator<string> Chromosome::begin()
+  {
+    return Iterator<string>(*this, 0);
+  }
+
+  /**
+   * Get the beginning gene (move) for iteration.
+   */
+  ConstIterator<string> Chromosome::begin() const
+  {
+    return ConstIterator<string>(*this, 0);
+  }
+
+  /**
+   * Get one past the last gene (move) for iteration.
+   */
+  Iterator<string> Chromosome::end()
+  {
+    return Iterator<string>(*this, this->bases.size());
+  }
+
+  /**
+   * Get one past the last gene (move) for iteration.
+   */
+  ConstIterator<string> Chromosome::end() const
+  {
+    return ConstIterator<string>(*this, this->bases.size());
+  }
+
+  /**
    * Get the length of the chromosome.
    */
   unsigned Chromosome::getLength() const
