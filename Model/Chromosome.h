@@ -4,6 +4,8 @@
 #include "MoveStore.h"
 #include "../Util/Random.h"
 #include "../Util/RubiksCubeException.h"
+#include "../Util/Iterable.h"
+#include "../Util/Iterator.h"
 #include <string>
 using std::string;
 #include <vector>
@@ -14,7 +16,7 @@ namespace busybin
   /**
    * A "chromosome" is a series of Rubik's Cube moves.
    */
-  class Chromosome
+  class Chromosome : Iterable<string>
   {
     unsigned       length;
     unsigned       bestFitness;
@@ -29,6 +31,11 @@ namespace busybin
     const string& at(unsigned pos) const;
     string& operator[](unsigned pos);
     const string& operator[](unsigned pos) const;
+
+    Iterator<string> begin();
+    ConstIterator<string> begin() const;
+    Iterator<string> end();
+    ConstIterator<string> end() const;
 
     unsigned getLength() const;
     unsigned getBestFitness() const;

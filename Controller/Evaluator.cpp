@@ -1,4 +1,4 @@
-#include "RubiksCubeEvaluator.h"
+#include "Evaluator.h"
 
 #include <iostream> // TODO: remove
 using std::cout;
@@ -9,7 +9,7 @@ namespace busybin
   /**
    * Init.
    */
-  RubiksCubeEvaluator::RubiksCubeEvaluator()
+  Evaluator::Evaluator()
   {
   }
 
@@ -17,7 +17,7 @@ namespace busybin
    * Evaluate the cube.  10 points are awarded for each solved cubie.
    * @param cube The RubiksCube.
    */
-  unsigned RubiksCubeEvaluator::eval(const RubiksCube& cube) const
+  unsigned Evaluator::eval(const RubiksCube& cube) const
   {
     unsigned score = 0;
     RubiksCube::COLOR upColor    = cube.get(RubiksCube::FACE::UP,    1, 1);
@@ -37,7 +37,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::LEFT, 0, 0) == leftColor)
     {
       score += 5;
-      cout << "up, back, left solved." << endl;
+      //cout << "up, back, left solved." << endl;
     }
 
     // Edge: up, back.
@@ -45,7 +45,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::BACK, 0, 1) == backColor)
     {
       score += 5;
-      cout << "up, back solved." << endl;
+      //cout << "up, back solved." << endl;
     }
 
     // Corner: up, back, right.
@@ -54,7 +54,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::RIGHT, 0, 2) == rightColor)
     {
       score += 5;
-      cout << "up, back, right solved." << endl;
+      //cout << "up, back, right solved." << endl;
     }
 
     // Edge: up, left.
@@ -62,7 +62,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::LEFT, 0, 1) == leftColor)
     {
       score += 5;
-      cout << "up, left solved." << endl;
+      //cout << "up, left solved." << endl;
     }
 
     // Edge: up, right.
@@ -70,7 +70,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::RIGHT, 0, 1) == rightColor)
     {
       score += 5;
-      cout << "up, right solved." << endl;
+      //cout << "up, right solved." << endl;
     }
 
     // Corner: up, front, left.
@@ -79,7 +79,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::LEFT,  0, 2) == leftColor)
     {
       score += 5;
-      cout << "up, front, left solved." << endl;
+      //cout << "up, front, left solved." << endl;
     }
 
     // Edge: up, front.
@@ -87,7 +87,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::FRONT, 0, 1) == frontColor)
     {
       score += 5;
-      cout << "up, front solved." << endl;
+      //cout << "up, front solved." << endl;
     }
 
     // Corner: up, front, right.
@@ -96,7 +96,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::RIGHT, 0, 0) == rightColor)
     {
       score += 5;
-      cout << "up, front, right solved." << endl;
+      //cout << "up, front, right solved." << endl;
     }
 
     /*********
@@ -108,7 +108,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::LEFT,  1, 2) == leftColor)
     {
       score += 5;
-      cout << "front, left solved." << endl;
+      //cout << "front, left solved." << endl;
     }
 
     // Edge: front, right.
@@ -116,7 +116,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::RIGHT, 1, 0) == rightColor)
     {
       score += 5;
-      cout << "front, right solved." << endl;
+      //cout << "front, right solved." << endl;
     }
 
     // Edge: left, back.
@@ -124,7 +124,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::BACK, 1, 2) == backColor)
     {
       score += 5;
-      cout << "left, back solved." << endl;
+      //cout << "left, back solved." << endl;
     }
 
     // Edge: right, back.
@@ -132,7 +132,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::BACK,  1, 0) == backColor)
     {
       score += 5;
-      cout << "right, back solved." << endl;
+      //cout << "right, back solved." << endl;
     }
 
     /********
@@ -145,7 +145,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::LEFT,  2, 2) == leftColor)
     {
       score += 5;
-      cout << "down, front, left solved." << endl;
+      //cout << "down, front, left solved." << endl;
     }
 
     // Edge: down, front.
@@ -153,7 +153,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::FRONT, 2, 1) == frontColor)
     {
       score += 5;
-      cout << "down, front solved." << endl;
+      //cout << "down, front solved." << endl;
     }
 
     // Corner: down, front, right.
@@ -162,7 +162,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::RIGHT, 2, 0) == rightColor)
     {
       score += 5;
-      cout << "down, front, right solved." << endl;
+      //cout << "down, front, right solved." << endl;
     }
 
     // Edge: down, left.
@@ -170,7 +170,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::LEFT, 2, 1) == leftColor)
     {
       score += 5;
-      cout << "down, left solved." << endl;
+      //cout << "down, left solved." << endl;
     }
 
     // Edge: down, right.
@@ -178,7 +178,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::RIGHT, 2, 1) == rightColor)
     {
       score += 5;
-      cout << "down, right solved." << endl;
+      //cout << "down, right solved." << endl;
     }
 
     // Corner: down, back, left.
@@ -187,7 +187,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::LEFT, 2, 0) == leftColor)
     {
       score += 5;
-      cout << "down, back, left solved." << endl;
+      //cout << "down, back, left solved." << endl;
     }
     
     // Edge: down, back.
@@ -195,7 +195,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::BACK, 2, 1) == backColor)
     {
       score += 5;
-      cout << "down, back solved." << endl;
+      //cout << "down, back solved." << endl;
     }
 
     // Corner: down, back, right.
@@ -204,7 +204,7 @@ namespace busybin
         cube.get(RubiksCube::FACE::RIGHT, 2, 2) == rightColor)
     {
       score += 5;
-      cout << "down, back, right solved." << endl;
+      //cout << "down, back, right solved." << endl;
     }
 
     return score;

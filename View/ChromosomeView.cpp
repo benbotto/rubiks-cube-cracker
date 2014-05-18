@@ -15,8 +15,8 @@ namespace busybin
    */
   void ChromosomeView::render(const Chromosome& chromosome) const
   {
-    for (unsigned i = 0; i < chromosome.getLength(); ++i)
-      cout << chromosome[i] << ' ';
+    for (const string& move : chromosome)
+      cout << setw(2) << move << ' ';
     cout << endl;
   }
 }
