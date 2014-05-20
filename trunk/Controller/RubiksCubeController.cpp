@@ -18,7 +18,7 @@ namespace busybin
     RubiksCubeView cubeView;
     MoveStore      moveStore(cube);
     Scrambler      scrambler(cube, moveStore, cubeView);
-    GASolver       solver(10, 300, 40, cube);
+    BBSolver       solver(cube);
 
     // Let the user scramble the cube.
     scrambler.manualScramble();
