@@ -9,6 +9,14 @@ namespace busybin
   {
     array<COLOR, 54>::iterator it  = this->cube.begin();
     array<COLOR, 54>::iterator end = next(it, 9);
+    /*set<unsigned>      upLay    = {0,1,2,3,4,5,6,7,8,9,10,11,18,19,20,27,28,29,36,37,38};
+    set<unsigned>      leftLay  = {9,10,11,12,13,14,15,16,17,0,3,6,18,21,24,45,48,51,38,41,44};
+    set<unsigned>      frontLay = {18,19,20,21,22,23,24,25,26,6,7,8,11,14,17,27,30,33,45,46,47};
+    set<unsigned>      rightLay = {27,28,29,30,31,32,33,34,35,36,39,42,47,50,53,20,23,26,2,5,8};
+    set<unsigned>      backLay  = {36,37,38,39,40,41,42,43,44,29,32,35,0,1,2,9,12,15,51,52,53};
+    set<unsigned>      downLay  = {45,46,47,48,49,50,51,52,53,15,16,17,24,25,26,33,34,35,42,43,44};
+    set<unsigned>      hMidLay  = {12,13,14,21,22,23,30,31,32,39,40,41};
+    set<unsigned>      vMidLay  = {1,4,7,19,22,25,46,49,52,37,40,43};*/ // TODO: remove me.
 
     // Top.
     fill(it, end, COLOR::WHITE);
@@ -37,6 +45,71 @@ namespace busybin
     it = end;
     advance(end, 9);
     fill(it, end, COLOR::YELLOW);
+
+    // Center cubies.
+    this->centerCubies[FACE::UP]    = 4;
+    this->centerCubies[FACE::LEFT]  = 13;
+    this->centerCubies[FACE::FRONT] = 22;
+    this->centerCubies[FACE::RIGHT] = 31;
+    this->centerCubies[FACE::BACK]  = 40;
+    this->centerCubies[FACE::DOWN]  = 49;
+
+    // Edge cubies (order matters for the next_permuation calls).
+    this->permuteEdge({{FACE::UP,    FACE::LEFT}},  {{3,  10}});
+    this->permuteEdge({{FACE::UP,    FACE::FRONT}}, {{7,  19}});
+    this->permuteEdge({{FACE::UP,    FACE::RIGHT}}, {{5,  28}});
+    this->permuteEdge({{FACE::UP,    FACE::BACK}},  {{1,  37}});
+
+    this->permuteEdge({{FACE::LEFT,  FACE::FRONT}}, {{14, 21}});
+    this->permuteEdge({{FACE::FRONT, FACE::RIGHT}}, {{23, 30}});
+    this->permuteEdge({{FACE::RIGHT, FACE::BACK}},  {{32, 39}});
+    this->permuteEdge({{FACE::LEFT,  FACE::BACK}},  {{12, 41}});
+
+    this->permuteEdge({{FACE::LEFT,  FACE::DOWN}},  {{16, 48}});
+    this->permuteEdge({{FACE::FRONT, FACE::DOWN}},  {{25, 46}});
+    this->permuteEdge({{FACE::RIGHT, FACE::DOWN}},  {{34, 50}});
+    this->permuteEdge({{FACE::BACK,  FACE::DOWN}},  {{43, 52}});
+
+    // Corner cubies.
+    this->permuteCorner({{FACE::UP,    FACE::LEFT,  FACE::BACK}},  {{0,   9, 38}});
+    this->permuteCorner({{FACE::UP,    FACE::LEFT,  FACE::FRONT}}, {{6,  11, 18}});
+    this->permuteCorner({{FACE::UP,    FACE::FRONT, FACE::RIGHT}}, {{8,  20, 27}});
+    this->permuteCorner({{FACE::UP,    FACE::RIGHT, FACE::BACK}},  {{2,  29, 36}});
+
+    this->permuteCorner({{FACE::LEFT,  FACE::BACK,  FACE::DOWN}}, {{15, 44, 51}});
+    this->permuteCorner({{FACE::LEFT,  FACE::FRONT, FACE::DOWN}}, {{17, 24, 45}});
+    this->permuteCorner({{FACE::FRONT, FACE::RIGHT, FACE::DOWN}}, {{26, 33, 47}});
+    this->permuteCorner({{FACE::RIGHT, FACE::BACK,  FACE::DOWN}}, {{35, 42, 53}});
+  }
+
+  /**
+   * Insert all permutations of two faces/edges into the edgeCubies map.
+   * @param faces The two faces.
+   * @param indices The corresponding indices into the cube.
+   */
+  void RubiksCube::permuteEdge(array<FACE, 2> faces, array<unsigned, 2> indices)
+  {
+    do
+    {
+      this->edgeCubies[faces] = indices;
+    }
+    while (next_permutation(faces.begin(), faces.end()) &&
+      next_permutation(indices.begin(), indices.end()));
+  }
+
+  /**
+   * Insert all permutations of two faces/edges into the cornerCubies map.
+   * @param faces The three faces.
+   * @param indices The corresponding indices into the cube.
+   */
+  void RubiksCube::permuteCorner(array<FACE, 3> faces, array<unsigned, 3> indices)
+  {
+    do
+    {
+      this->cornerCubies[faces] = indices;
+    }
+    while (next_permutation(faces.begin(), faces.end()) &&
+      next_permutation(indices.begin(), indices.end()));
   }
 
   /**
@@ -87,6 +160,40 @@ namespace busybin
     unsigned row, unsigned col) const
   {
     return this->get(9 * (unsigned)face + row * 3 + col);
+  }
+
+  /**
+   * Get a center cubie by face.
+   * @param f The face.
+   */
+  RubiksCube::CenterCubie RubiksCube::getCubie(FACE f) const
+  {
+    return this->cube.at(this->centerCubies.at(f));
+  }
+
+  /**
+   * Get an edge cubie by face.  e.g. TOP, LEFT edge.
+   * @param f1 The first face.
+   * @param f2 The second face.
+   */
+  RubiksCube::EdgeCubie RubiksCube::getCubie(FACE f1, FACE f2) const
+  {
+    array<unsigned, 2> ind = this->edgeCubies.at({{f1, f2}});
+
+    return {{this->cube.at(ind[0]), this->cube.at(ind[1])}};
+  }
+
+  /**
+   * Get an edge cubie by face.  e.g. TOP, LEFT, BACK corner.
+   * @param f1 The first face.
+   * @param f2 The second face.
+   * @param f3 The third face.
+   */
+  RubiksCube::CornerCubie RubiksCube::getCubie(FACE f1, FACE f2, FACE f3) const
+  {
+    array<unsigned, 3> ind = this->cornerCubies.at({{f1, f2, f3}});
+
+    return {{this->cube.at(ind[0]), this->cube.at(ind[1]), this->cube.at(ind[2])}};
   }
 
   /**
