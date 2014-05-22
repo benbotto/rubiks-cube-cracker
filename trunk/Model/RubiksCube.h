@@ -51,6 +51,10 @@ namespace busybin
     EdgeCubie   getCubie(FACE f1, FACE f2) const;
     CornerCubie getCubie(FACE f1, FACE f2, FACE f3) const;
 
+    bool isSolved() const;
+    bool isSolved(FACE f1, FACE f2) const;
+    bool isSolved(FACE f1, FACE f2, FACE f3) const;
+
     RubiksCube& u();
     RubiksCube& uPrime();
     RubiksCube& u2();
