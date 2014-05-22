@@ -9,14 +9,6 @@ namespace busybin
   {
     array<COLOR, 54>::iterator it  = this->cube.begin();
     array<COLOR, 54>::iterator end = next(it, 9);
-    /*set<unsigned>      upLay    = {0,1,2,3,4,5,6,7,8,9,10,11,18,19,20,27,28,29,36,37,38};
-    set<unsigned>      leftLay  = {9,10,11,12,13,14,15,16,17,0,3,6,18,21,24,45,48,51,38,41,44};
-    set<unsigned>      frontLay = {18,19,20,21,22,23,24,25,26,6,7,8,11,14,17,27,30,33,45,46,47};
-    set<unsigned>      rightLay = {27,28,29,30,31,32,33,34,35,36,39,42,47,50,53,20,23,26,2,5,8};
-    set<unsigned>      backLay  = {36,37,38,39,40,41,42,43,44,29,32,35,0,1,2,9,12,15,51,52,53};
-    set<unsigned>      downLay  = {45,46,47,48,49,50,51,52,53,15,16,17,24,25,26,33,34,35,42,43,44};
-    set<unsigned>      hMidLay  = {12,13,14,21,22,23,30,31,32,39,40,41};
-    set<unsigned>      vMidLay  = {1,4,7,19,22,25,46,49,52,37,40,43};*/ // TODO: remove me.
 
     // Top.
     fill(it, end, COLOR::WHITE);
@@ -194,6 +186,59 @@ namespace busybin
     array<unsigned, 3> ind = this->cornerCubies.at({{f1, f2, f3}});
 
     return {{this->cube.at(ind[0]), this->cube.at(ind[1]), this->cube.at(ind[2])}};
+  }
+
+  /**
+   * Check if the cube is solved.
+   */
+  bool RubiksCube::isSolved() const
+  {
+    return
+      this->isSolved(FACE::UP,    FACE::LEFT)  &&
+      this->isSolved(FACE::UP,    FACE::FRONT) &&
+      this->isSolved(FACE::UP,    FACE::RIGHT) &&
+      this->isSolved(FACE::UP,    FACE::BACK)  &&
+      this->isSolved(FACE::LEFT,  FACE::FRONT) &&
+      this->isSolved(FACE::FRONT, FACE::RIGHT) &&
+      this->isSolved(FACE::RIGHT, FACE::BACK)  &&
+      this->isSolved(FACE::LEFT,  FACE::BACK)  &&
+      this->isSolved(FACE::LEFT,  FACE::DOWN)  &&
+      this->isSolved(FACE::FRONT, FACE::DOWN)  &&
+      this->isSolved(FACE::RIGHT, FACE::DOWN)  &&
+      this->isSolved(FACE::BACK,  FACE::DOWN)  &&
+      this->isSolved(FACE::UP,    FACE::LEFT,  FACE::BACK)  &&
+      this->isSolved(FACE::UP,    FACE::LEFT,  FACE::FRONT) &&
+      this->isSolved(FACE::UP,    FACE::FRONT, FACE::RIGHT) &&
+      this->isSolved(FACE::UP,    FACE::RIGHT, FACE::BACK)  &&
+      this->isSolved(FACE::LEFT,  FACE::BACK,  FACE::DOWN)  &&
+      this->isSolved(FACE::LEFT,  FACE::FRONT, FACE::DOWN)  &&
+      this->isSolved(FACE::FRONT, FACE::RIGHT, FACE::DOWN)  &&
+      this->isSolved(FACE::RIGHT, FACE::BACK,  FACE::DOWN);
+  }
+
+  /**
+   * Check if a cubie is solved.
+   * @param f1 The first face.
+   * @param f2 The second face.
+   */
+  bool RubiksCube::isSolved(FACE f1, FACE f2) const
+  {
+    EdgeCubie c = getCubie(f1, f2);
+
+    return c[0] == getCubie(f1) && c[1] == getCubie(f2);
+  }
+
+  /**
+   * Check if a cubie is solved.
+   * @param f1 The first face.
+   * @param f2 The second face.
+   * @param f3 The third face.
+   */
+  bool RubiksCube::isSolved(FACE f1, FACE f2, FACE f3) const
+  {
+    CornerCubie c = getCubie(f1, f2, f3);
+
+    return c[0] == getCubie(f1) && c[1] == getCubie(f2) && c[2] == getCubie(f3);
   }
 
   /**
