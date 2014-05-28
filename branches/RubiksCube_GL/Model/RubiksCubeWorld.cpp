@@ -9,8 +9,8 @@ namespace busybin
   RubiksCubeWorld::RubiksCubeWorld(unique_ptr<Program> prog) : World(std::move(prog)),
     distLight(
       vec4( 1.0f,   1.0f,  1.0f, 1.0f), // Ambient.
-      vec4( 0.2f,   0.2f,  0.2f, 1.0f), // Diffuse.
-      vec4( 0.2f,   0.2f,  0.2f, 1.0f), // Specular.
+      vec4( 1.0f,   1.0f,  1.0f, 1.0f), // Diffuse.
+      vec4( 1.0f,   1.0f,  1.0f, 1.0f), // Specular.
       vec3(-0.1f,  -0.1f, -1.0f))       // Direction.
   {
     this->getProgram().setUniform("ambient",   vec4(.8f, .4f, .4f, 1.0f));

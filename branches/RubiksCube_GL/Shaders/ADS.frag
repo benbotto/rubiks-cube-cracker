@@ -4,11 +4,12 @@ in vec3 oNormalEC;
 // The vector from the vertex to the light.
 in vec3 oVertToDistLight;
 
-// The vertex position, which will be moved to eye coords.
+// The vertex position in eye space.
 in vec3 oVertPosEC;
 
-// The vertex color.
+// The vertex color and position.
 in vec4 oColor;
+in vec3 oVertPos;
 
 uniform vec4           ambient;
 uniform DistanceLight  distLight;
@@ -31,8 +32,11 @@ void main()
   // The global ambient effect on the frag color.
   fragColor = ambient * material.ambient;
 
-  // The object's color.
-  fragColor *= oColor * 50;
+  // Each cubie has a colored sticker on it that's square.
+  if (oVertPos.x > -.46 && oVertPos.x < .46 && oVertPos.y > -.46 && oVertPos.y < .46 ||
+      oVertPos.x > -.46 && oVertPos.x < .46 && oVertPos.z > -.46 && oVertPos.z < .46 ||
+      oVertPos.y > -.46 && oVertPos.y < .46 && oVertPos.z > -.46 && oVertPos.z < .46)
+    fragColor *= oColor * 50;
 
   // The vertex normal.
   N = normalize(oNormalEC);

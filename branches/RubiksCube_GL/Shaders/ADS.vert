@@ -13,21 +13,26 @@ out vec3 oNormalEC;
 // The vector from light to the vertex, converted to eye space.
 out vec3 oVertToDistLight;
 
-// The vertex position, which will be moved to eye coords.
+// The vertex position in eye coords.
 out vec3 oVertPosEC;
 
-// The vertex color.
+// The vertex color and position.
 out vec4 oColor;
+out vec3 oVertPos;
 
 void main()
 {
   mat4 modelView   = view * model;
   mat4 normalTrans = transpose(inverse(view * model));
 
+  // Pass down the vertex position and color.
+  oVertPos = vertPos;
+  oColor   = vertColor;
+
   // Convert the vertex position to eye space.
   vec4 vertPosEC = modelView * vec4(vertPos, 1);
 
-  // Pass the vertex position down the pipeline.
+  // Pass the transformed vertex position down the pipeline.
   oVertPosEC = vertPosEC.xyz;
 
   // With a distance light the vector from the vertex to the light
@@ -38,8 +43,6 @@ void main()
 
   // Move the normal to eye space and pass it down.
   oNormalEC = (normalTrans * vec4(vertNormal, 0)).xyz;
-
-  oColor = vertColor;
   gl_Position = projection * vertPosEC;
 }
 
