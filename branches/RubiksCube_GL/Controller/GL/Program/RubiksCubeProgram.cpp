@@ -13,7 +13,7 @@ namespace busybin
       "./Shaders/version.h",
       "./Shaders/Material.h",
       "./Shaders/DistanceLight.h",
-      "./Shaders/ADS.frag"
+      "./Shaders/rubiksCube.frag"
     }, GL_FRAGMENT_SHADER);
 
     Shader vShader(
@@ -21,7 +21,7 @@ namespace busybin
       "./Shaders/version.h",
       "./Shaders/Material.h",
       "./Shaders/DistanceLight.h",
-      "./Shaders/ADS.vert"
+      "./Shaders/rubiksCube.vert"
     }, GL_VERTEX_SHADER);
 
     this->addShader(fShader);
