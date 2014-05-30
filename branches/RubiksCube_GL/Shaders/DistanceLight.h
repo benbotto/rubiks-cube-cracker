@@ -47,7 +47,7 @@ vec4 getIntensity(Material m, vec3 L, vec3 N, vec3 V,
     diffuse  * m.diffuse  * max(cosLN,     0.0)  +
     specular * m.specular * pow(max(cosVR, 0.0), m.shininess);
 
-  return intensity;
+  return intensity * 1.5;
 }
 
 /**

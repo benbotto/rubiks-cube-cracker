@@ -13,10 +13,10 @@ namespace busybin
    * and world coordinates.
    */
   Camera::Camera() : 
-    location(0.0f, 0.0f, 10.0f), // Location
-    U(1.0f, 0.0f,  0.0f),        // X
-    V(0.0f, 1.0f,  0.0f),        // Y
-    N(0.0f, 0.0f, -1.0f)         // Z
+    location(0.0f, 0.0f, 9.0f), // Location
+    U(1.0f, 0.0f,  0.0f),       // X
+    V(0.0f, 1.0f,  0.0f),       // Y
+    N(0.0f, 0.0f, -1.0f)        // Z
   {
     // Calcluate the initial view.
     this->look();

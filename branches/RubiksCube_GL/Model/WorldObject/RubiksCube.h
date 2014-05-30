@@ -51,6 +51,7 @@ namespace busybin
     double               angle;
     double               angleDelta;
     mat4                 cubeRotation;
+    mat4                 cubeTilt;
     queue<CubeAnimation> animationQueue;
 
     void animate(double elapsed);

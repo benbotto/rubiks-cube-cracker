@@ -13,6 +13,8 @@ namespace busybin
     this->amplitude    = 0.08f;
     this->angle        = 0.0f;
     this->angleDelta   = pi<double>() * 2;
+    this->cubeTilt     = rotate(mat4(1.0f),     pi<float>() / 9, vec3(1.0f, 0.0f, 0.0f));
+    this->cubeTilt     = rotate(this->cubeTilt, pi<float>() / 6, vec3(0.0f, 1.0f, 0.0f));
 
     this->cubies["LDB"] = CubiePtr(new Cubie(this->getProgram(), this->getMatrixStack(), "LDB", vec3(-1.0f, -1.0f, -1.0f)));
     this->cubies["LD"]  = CubiePtr(new Cubie(this->getProgram(), this->getMatrixStack(), "LD",  vec3(-1.0f, -1.0f,  0.0f)));
@@ -61,7 +63,7 @@ namespace busybin
     // Animate any queued up rotations.
     this->animate(elapsed);
 
-    this->getMatrixStack()->topModel() = translation * this->cubeRotation;
+    this->getMatrixStack()->topModel() = translation * this->cubeTilt * this->cubeRotation;
 
     // Draw each cube.
     for (CubieMap::iterator it = this->cubies.begin(); it != this->cubies.end(); ++it)

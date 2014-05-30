@@ -24,7 +24,7 @@ out vec4 fragColor;
  */
 float getBlendAmount(float coord)
 {
-  return -1 * pow((abs(coord) + .54), 64) + 1;
+  return -1 * pow((abs(coord) + .54), 32) + 1;
 }
 
 void main()
@@ -75,7 +75,7 @@ void main()
   if (sticker)
   {
     vec4 holdFrag  = fragColor;
-    vec4 newFrag   = fragColor * oColor * 70;
+    vec4 newFrag   = fragColor * oColor * 40;
     
     blendAmt  = min(min(blendX, blendY), blendZ);
     fragColor = mix(holdFrag, newFrag, blendAmt);
