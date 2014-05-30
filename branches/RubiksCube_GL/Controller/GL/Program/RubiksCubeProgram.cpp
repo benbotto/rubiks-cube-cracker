@@ -13,6 +13,7 @@ namespace busybin
       "./Shaders/version.h",
       "./Shaders/Material.h",
       "./Shaders/DistanceLight.h",
+      "./Shaders/noise3D.h",
       "./Shaders/rubiksCube.frag"
     }, GL_FRAGMENT_SHADER);
 

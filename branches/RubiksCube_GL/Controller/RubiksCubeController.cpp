@@ -10,12 +10,13 @@ namespace busybin
     try
     {
       // Pass width and height for windowed-mode.
-      WorldWindow     worldWnd("OpenGL Seed");
+      WorldWindow     worldWnd("OpenGL Seed", 1024, 768);
       RubiksCubeWorld world(unique_ptr<Program>(new RubiksCubeProgram()));
       ViewManager     viewMan(&world, &worldWnd);
       Mover           Mover(&world, &worldWnd);
       Looker          Looker(&world, &worldWnd);
       Renderer        renderer(&world, &worldWnd);
+      CubeMover       cubeMover(&world, &worldWnd);
 
       // All wired up, run the main loop.
       worldWnd.run();

@@ -34,8 +34,10 @@ namespace busybin
     this->setModel(this->translation);
 
     // Set up the MVP.
-    this->getMatrixStack()->topModel() = this->getModel();
+    this->getMatrixStack()->pushModel();
+    this->getMatrixStack()->topModel() *= this->getModel();
     this->getProgram()->setMVP(*this->getMatrixStack());
+    this->getMatrixStack()->popModel();
 
     // Install the material.
     this->getProgram()->setUniform("material", this->getMaterial());

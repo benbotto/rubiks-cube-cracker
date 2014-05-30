@@ -5,9 +5,11 @@ project (RubiksCube)
 set (SRC
   "Model/WorldObject/Cubie.cpp"
   "Model/WorldObject/RubiksCube.cpp"
+  "Model/WorldObject/CubeAnimation.cpp"
   "Model/RubiksCubeWorld.cpp"
   "Controller/RubiksCubeController.cpp"
   "Controller/GL/Program/RubiksCubeProgram.cpp"
+  "Controller/Command/CubeMover.cpp"
   "rubiksCube.cpp")
 
 # Build the RubiksCubee executable.

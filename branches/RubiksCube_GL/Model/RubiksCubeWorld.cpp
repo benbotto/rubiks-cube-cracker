@@ -13,7 +13,7 @@ namespace busybin
       vec4( 1.0f,   1.0f,  1.0f, 1.0f), // Specular.
       vec3(-0.1f,  -0.1f, -1.0f))       // Direction.
   {
-    this->getProgram().setUniform("ambient",   vec4(.8f, .4f, .4f, 1.0f));
+    this->getProgram().setUniform("ambient",   vec4(.8f, .8f, .8f, 1.0f));
     this->getProgram().setUniform("distLight", this->distLight);
     this->addWorldObject(woPtr(new RubiksCube(&this->getProgram(), &this->getMatrixStack())));
   }
