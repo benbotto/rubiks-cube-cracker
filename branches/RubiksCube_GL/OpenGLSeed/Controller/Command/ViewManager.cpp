@@ -27,6 +27,9 @@ namespace busybin
     this->getWorld()->getMatrixStack().topProjection() = perspective(pi<float>() / 3,
       static_cast<float>(width) / static_cast<float>(height),
       .01f, 1000.0f);
+
+    // Update the view.
+    this->getWorld()->getMatrixStack().topView() = this->getWorld()->getCamera().getView();
   }
 }
 

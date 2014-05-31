@@ -35,18 +35,70 @@ namespace busybin
       case GLFW_KEY_LEFT:
         this->pCube->rotateLeft();
         break;
+
       // Rotate the whole cube right.
       case GLFW_KEY_RIGHT:
         this->pCube->rotateRight();
         break;
+
       // Rotate the whole cube down.
       case GLFW_KEY_DOWN:
         this->pCube->rotateDown();
         break;
+
       // Rotate the whole cube up.
       case GLFW_KEY_UP:
         this->pCube->rotateUp();
         break;
+
+      // Rotate the up face.
+      case GLFW_KEY_U:
+        if (mods & GLFW_MOD_SHIFT)
+          this->pCube->uPrime();
+        else
+          this->pCube->u();
+        break;
+
+      // Rotate the left face.
+      case GLFW_KEY_L:
+        if (mods & GLFW_MOD_SHIFT)
+          this->pCube->lPrime();
+        else
+          this->pCube->l();
+        break;
+
+      // Rotate the front face.
+      case GLFW_KEY_F:
+        if (mods & GLFW_MOD_SHIFT)
+          this->pCube->fPrime();
+        else
+          this->pCube->f();
+        break;
+
+      // Rotate the right face.
+      case GLFW_KEY_R:
+        if (mods & GLFW_MOD_SHIFT)
+          this->pCube->rPrime();
+        else
+          this->pCube->r();
+        break;
+
+      // Rotate the back face.
+      case GLFW_KEY_B:
+        if (mods & GLFW_MOD_SHIFT)
+          this->pCube->bPrime();
+        else
+          this->pCube->b();
+        break;
+
+      // Rotate the down face.
+      case GLFW_KEY_D:
+        if (mods & GLFW_MOD_SHIFT)
+          this->pCube->dPrime();
+        else
+          this->pCube->d();
+        break;
+
       default:
         break;
     }

@@ -19,6 +19,8 @@ using glm::slerp;
 using glm::mat4_cast;
 #include <map>
 using std::map;
+#include <array>
+using std::array;
 #include <memory>
 using std::unique_ptr;
 #include <cmath>
@@ -31,10 +33,12 @@ namespace busybin
    */
   class RubiksCube : public WorldObject
   {
-    typedef unique_ptr<Cubie>      CubiePtr;
-    typedef map<string, CubiePtr>  CubieMap;
+    typedef unique_ptr<Cubie>              CubiePtr;
+    typedef map<string, CubiePtr>          CubieMap;
+    typedef map<string, array<Cubie*, 9> > FaceMap;
 
     CubieMap cubies;
+    FaceMap  faces;
     mat4     cubeTilt;
 
     // For rotating the cube.
@@ -67,6 +71,19 @@ namespace busybin
     void rotateRight();
     void rotateDown();
     void rotateUp();
+
+    void u();
+    void uPrime();
+    void l();
+    void lPrime();
+    void f();
+    void fPrime();
+    void r();
+    void rPrime();
+    void b();
+    void bPrime();
+    void d();
+    void dPrime();
   };
 }
 

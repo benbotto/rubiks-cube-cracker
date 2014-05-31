@@ -5,8 +5,6 @@
 #include "../OpenGLSeed/View/WorldWindow.h"
 #include "../OpenGLSeed/Controller/Command/ViewManager.h"
 #include "../OpenGLSeed/Controller/Command/Renderer.h"
-#include "../OpenGLSeed/Controller/Command/Mover.h"
-#include "../OpenGLSeed/Controller/Command/Looker.h"
 #include "../Model/RubiksCubeWorld.h"
 #include <iostream>
 using std::cout;

@@ -13,8 +13,6 @@ namespace busybin
       WorldWindow     worldWnd("OpenGL Seed", 1024, 768);
       RubiksCubeWorld world(unique_ptr<Program>(new RubiksCubeProgram()));
       ViewManager     viewMan(&world, &worldWnd);
-      Mover           Mover(&world, &worldWnd);
-      Looker          Looker(&world, &worldWnd);
       Renderer        renderer(&world, &worldWnd);
       CubeMover       cubeMover(&world, &worldWnd);
 
@@ -23,8 +21,7 @@ namespace busybin
     }
     catch (const exception& ex)
     {
-      cout << "Exception encountered." << endl;
-      cout << ex.what() << endl;
+      cout << "Exception encountered.\n" << ex.what() << endl;
     }
   }
 }

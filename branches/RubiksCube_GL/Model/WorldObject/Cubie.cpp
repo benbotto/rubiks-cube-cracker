@@ -21,7 +21,8 @@ namespace busybin
       vec4(0.8f, 0.8f, 0.0f, 1.0f)  // DOWN (Y).
     })
   {
-    this->translation = translate(mat4(1.0f), position);
+    this->cubeRot.speed = 8.0f;
+    this->translation   = translate(mat4(1.0f), position);
     this->setMaterial(unique_ptr<Material>(new GrayPlastic()));
   }
 
@@ -33,7 +34,7 @@ namespace busybin
   {
     // Set up the MVP.
     this->getMatrixStack()->pushModel();
-    this->getMatrixStack()->topModel() *= this->translation;
+    this->getMatrixStack()->topModel() *= this->animateCubeRotation(elapsed) * this->translation;
     this->getProgram()->setMVP(*this->getMatrixStack());
     this->getMatrixStack()->popModel();
 
@@ -53,6 +54,30 @@ namespace busybin
   RubiksCubeProgram* Cubie::getProgram() const
   {
     return dynamic_cast<RubiksCubeProgram*>(WorldObject::getProgram());
+  }
+
+  /**
+   * Rotate the cubie.
+   * @param rads The amount to rotate, in radians.
+   * @param axis The axis of rotation.
+   */
+  void Cubie::rotate(float rads, const vec3& axis)
+  {
+    this->cubeRot.desired = glm::rotate(quat(), rads, axis) * this->cubeRot.desired;
+  }
+
+  /**
+   * Animate the cube rotations.
+   * @param elapsed The elapsed time since the last draw call.
+   */
+  mat4 Cubie::animateCubeRotation(double elapsed)
+  {
+    // Spherical linear interpolation (SLERP) between the current and desired
+    // orientations.
+    this->cubeRot.orientation = slerp(this->cubeRot.orientation,
+      this->cubeRot.desired, this->cubeRot.speed * (float)elapsed);
+
+    return mat4_cast(this->cubeRot.orientation);
   }
 }
 

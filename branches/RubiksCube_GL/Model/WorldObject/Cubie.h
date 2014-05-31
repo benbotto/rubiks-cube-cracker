@@ -11,6 +11,10 @@ using glm::vec4;
 using glm::mat4;
 #include <glm/gtc/matrix_transform.hpp>
 using glm::translate;
+#include <glm/gtc/quaternion.hpp>
+using glm::quat;
+using glm::slerp;
+using glm::mat4_cast;
 
 namespace busybin
 {
@@ -21,11 +25,23 @@ namespace busybin
   {
     mat4 translation;
 
+    // For rotating the cubie.
+    struct
+    {
+      quat  orientation;
+      quat  desired;
+      float speed;
+    } cubeRot;
+
+    mat4 animateCubeRotation(double elapsed);
+
   public:
     Cubie(Program* pProgram, MatrixStack* pMatrixStack,
       const string& name, const vec3& position);
     void draw(double elapsed);
     RubiksCubeProgram* getProgram() const;
+
+    void rotate(float rads, const vec3& axis);
   };
 }
 
