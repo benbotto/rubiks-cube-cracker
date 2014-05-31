@@ -4,6 +4,7 @@ in vec3 vertNormal;
 
 uniform DistanceLight distLight;
 uniform mat4          model;
+uniform mat4          cubieTranslation;
 uniform mat4          view;
 uniform mat4          projection;
 
@@ -19,15 +20,17 @@ out vec3 oVertPosEC;
 // The vertex color and position.
 out vec4 oColor;
 out vec3 oVertPos;
+out vec3 oTranslatedVertPos;
 
 void main()
 {
-  mat4 modelView   = view * model;
-  mat4 normalTrans = transpose(inverse(view * model));
+  mat4 modelView     = view * model;
+  mat4 normalTrans   = transpose(inverse(view * model));
 
-  // Pass down the vertex position and color.
-  oVertPos = vertPos;
-  oColor   = vertColor;
+  // Pass down the vertex position.  The translated position
+  // is the position on the rubik's cube.
+  oVertPos           = vertPos;
+  oTranslatedVertPos = (cubieTranslation * vec4(vertPos, 1)).xyz;
 
   // Convert the vertex position to eye space.
   vec4 vertPosEC = modelView * vec4(vertPos, 1);
@@ -40,6 +43,9 @@ void main()
   // and the distance light is very far away.
   vec4 distLightPosEC = view * vec4(-distLight.direction * 1000.0, 1);
   oVertToDistLight    = (distLightPosEC - vertPosEC).xyz;
+
+  // Pass down the color.
+  oColor = vertColor;
 
   // Move the normal to eye space and pass it down.
   oNormalEC = (normalTrans * vec4(vertNormal, 0)).xyz;

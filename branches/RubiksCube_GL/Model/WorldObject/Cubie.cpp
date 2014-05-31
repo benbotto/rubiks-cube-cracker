@@ -31,17 +31,17 @@ namespace busybin
    */
   void Cubie::draw(double elapsed)
   {
-    this->setModel(this->translation);
-
     // Set up the MVP.
     this->getMatrixStack()->pushModel();
-    this->getMatrixStack()->topModel() *= this->getModel();
+    this->getMatrixStack()->topModel() *= this->translation;
     this->getProgram()->setMVP(*this->getMatrixStack());
     this->getMatrixStack()->popModel();
 
+    // The translation is needed for the hidden sides.
+    this->getProgram()->setUniform("cubieTranslation", this->translation);
+
     // Install the material.
     this->getProgram()->setUniform("material", this->getMaterial());
-    this->getProgram()->enableUniform("materialEnabled");
 
     // Draw the object.
     this->getProgram()->drawArrays(this->getVAO(), this->vertices.size());

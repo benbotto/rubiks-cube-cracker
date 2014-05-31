@@ -8,6 +8,14 @@ namespace busybin
   RubiksCubeProgram::RubiksCubeProgram() : LitProgram("OpenGL Seed Program")
   {
     // Set up the shaders.
+    Shader vShader(
+    {
+      "./Shaders/version.h",
+      "./Shaders/Material.h",
+      "./Shaders/DistanceLight.h",
+      "./Shaders/rubiksCube.vert"
+    }, GL_VERTEX_SHADER);
+
     Shader fShader(
     {
       "./Shaders/version.h",
@@ -16,14 +24,6 @@ namespace busybin
       "./Shaders/noise3D.h",
       "./Shaders/rubiksCube.frag"
     }, GL_FRAGMENT_SHADER);
-
-    Shader vShader(
-    {
-      "./Shaders/version.h",
-      "./Shaders/Material.h",
-      "./Shaders/DistanceLight.h",
-      "./Shaders/rubiksCube.vert"
-    }, GL_VERTEX_SHADER);
 
     this->addShader(fShader);
     this->addShader(vShader);
