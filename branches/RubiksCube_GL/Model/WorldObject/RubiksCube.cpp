@@ -18,9 +18,6 @@ namespace busybin
     this->levitation.angle     = 0.0f;
     this->levitation.delta     = pi<double>() * 2;
 
-    // Cube rotation speed.
-    this->cubeRot.speed = 8.0f;
-
     // Tilt the cube by a constant amount so that the top, left, and front
     // are always visible.
     this->cubeTilt = rotate(mat4(1.0f),     pi<float>() / 9, vec3(1.0f, 0.0f, 0.0f));
@@ -77,16 +74,13 @@ namespace busybin
    */
   void RubiksCube::draw(double elapsed)
   {
-    mat4 cubeRotation;
-
     // Make the cube bob up and down like it's levitating.
     this->levitation.angle   += this->levitation.delta * elapsed;
     this->levitation.transBy  = this->levitation.amplitude * cos(this->levitation.angle);
     this->levitation.trans    = translate(mat4(1.0f), vec3(0.0f, this->levitation.transBy, 0.0f));
 
-    // Animate any queued up cube rotations.
-    cubeRotation = this->animateCubeRotation(elapsed);
-    this->getMatrixStack()->topModel() = this->levitation.trans * this->cubeTilt * cubeRotation;
+    // Move the levitation and the tilt to the top of the stack.
+    this->getMatrixStack()->topModel() = this->levitation.trans * this->cubeTilt;
 
     // Draw each cube.
     for (CubieMap::iterator it = this->cubies.begin(); it != this->cubies.end(); ++it)
@@ -99,20 +93,6 @@ namespace busybin
   RubiksCubeProgram* RubiksCube::getProgram() const
   {
     return dynamic_cast<RubiksCubeProgram*>(WorldObject::getProgram());
-  }
-
-  /**
-   * Animate the cube rotations.
-   * @param elapsed The elapsed time since the last draw call.
-   */
-  mat4 RubiksCube::animateCubeRotation(double elapsed)
-  {
-    // Spherical linear interpolation (SLERP) between the current and desired
-    // orientations.
-    this->cubeRot.orientation = slerp(this->cubeRot.orientation,
-      this->cubeRot.desired, this->cubeRot.speed * (float)elapsed);
-
-    return mat4_cast(this->cubeRot.orientation);
   }
 
   /**
@@ -227,8 +207,9 @@ namespace busybin
    */
   void RubiksCube::rotateLeft()
   {
-    this->cubeRot.desired = rotate(quat(), half_pi<float>(),
-      vec3(0.0f, -1.0f, 0.0f)) * this->cubeRot.desired;
+    this->u();
+    this->dPrime();
+    this->ePrime();
   }
 
   /**
@@ -236,8 +217,9 @@ namespace busybin
    */
   void RubiksCube::rotateRight()
   {
-    this->cubeRot.desired = rotate(quat(), half_pi<float>() * -1,
-      vec3(0.0f, -1.0f, 0.0f)) * this->cubeRot.desired;
+    this->uPrime();
+    this->d();
+    this->e();
   }
 
   /**
@@ -245,8 +227,9 @@ namespace busybin
    */
   void RubiksCube::rotateDown()
   {
-    this->cubeRot.desired = rotate(quat(), half_pi<float>() * -1,
-      vec3(-1.0f, 0.0f, 0.0f)) * this->cubeRot.desired;
+    this->l();
+    this->m();
+    this->rPrime();
   }
 
   /**
@@ -254,8 +237,9 @@ namespace busybin
    */
   void RubiksCube::rotateUp()
   {
-    this->cubeRot.desired = rotate(quat(), half_pi<float>(),
-      vec3(-1.0f, 0.0f, 0.0f)) * this->cubeRot.desired;
+    this->lPrime();
+    this->mPrime();
+    this->r();
   }
 
   /**

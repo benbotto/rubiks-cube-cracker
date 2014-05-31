@@ -46,14 +46,6 @@ namespace busybin
     SliceMap slices;
     mat4     cubeTilt;
 
-    // For rotating the cube.
-    struct
-    {
-      quat  orientation;
-      quat  desired;
-      float speed;
-    } cubeRot;
-
     // For bobbing the cube up and down (levitation).
     struct
     {
@@ -64,7 +56,6 @@ namespace busybin
       mat4   trans;
     } levitation;
 
-    mat4 animateCubeRotation(double elapsed);
     void moveFace(const array<string, 9>& face);
     void moveFacePrime(const array<string, 9>& face);
     void moveSlice(const array<string, 8>& slice);
