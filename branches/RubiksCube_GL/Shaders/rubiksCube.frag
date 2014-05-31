@@ -44,7 +44,7 @@ void main()
   fragColor = ambient * material.ambient;
 
   // Make the cube look a bit dirty.
-  fragColor = mix(fragColor, brown, fRand * .015);
+  fragColor = mix(fragColor, brown, fRand * .010);
 
   // If this is not a hiden side of the cubie then it may need to be colored.
   if (1.52 - abs(oTranslatedVertPos.x) < .01 ||
@@ -97,6 +97,6 @@ void main()
   L = normalize(oVertToDistLight);
 
   // Distance light intensity.
-  fragColor += getIntensity(distLight, material, L, N, V);
+  fragColor += getIntensity(distLight, material, L, N, V) * 1.2;
 }
 

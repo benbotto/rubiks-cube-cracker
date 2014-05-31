@@ -13,12 +13,12 @@ namespace busybin
     const string& name, const vec3& position) : 
     Cube(1.0f, pProgram, pMatrixStack, name, 
     {
-      vec4(1.0f, 1.0f, 1.0f, 1.0f), // UP (W).
-      vec4(0.0f, 1.0f, 0.0f, 1.0f), // LEFT (G).
-      vec4(1.0f, 0.0f, 0.0f, 1.0f), // FRONT (R).
-      vec4(0.0f, 0.0f, 1.0f, 1.0f), // RIGHT (B).
-      vec4(1.0f, 0.6f, 0.0f, 1.0f), // BACK (O).
-      vec4(1.0f, 1.0f, 0.0f, 1.0f)  // DOWN (Y).
+      vec4(0.9f, 0.9f, 0.9f, 1.0f), // UP (W).
+      vec4(0.0f, 0.5f, 0.0f, 1.0f), // LEFT (G).
+      vec4(0.8f, 0.0f, 0.0f, 1.0f), // FRONT (R).
+      vec4(0.0f, 0.0f, 0.5f, 1.0f), // RIGHT (B).
+      vec4(1.0f, 0.4f, 0.0f, 1.0f), // BACK (O).
+      vec4(0.8f, 0.8f, 0.0f, 1.0f)  // DOWN (Y).
     })
   {
     this->translation = translate(mat4(1.0f), position);
