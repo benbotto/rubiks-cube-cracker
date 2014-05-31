@@ -99,6 +99,30 @@ namespace busybin
           this->pCube->d();
         break;
 
+      // Rotate the middle slice.
+      case GLFW_KEY_M:
+        if (mods & GLFW_MOD_SHIFT)
+          this->pCube->mPrime();
+        else
+          this->pCube->m();
+        break;
+
+      // Rotate the e slice.
+      case GLFW_KEY_E:
+        if (mods & GLFW_MOD_SHIFT)
+          this->pCube->ePrime();
+        else
+          this->pCube->e();
+        break;
+
+      // Rotate the s slice.
+      case GLFW_KEY_S:
+        if (mods & GLFW_MOD_SHIFT)
+          this->pCube->sPrime();
+        else
+          this->pCube->s();
+        break;
+
       default:
         break;
     }

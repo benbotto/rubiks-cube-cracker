@@ -39,9 +39,11 @@ namespace busybin
     typedef unique_ptr<Cubie>              CubiePtr;
     typedef map<string, CubiePtr>          CubieMap;
     typedef map<string, array<string, 9> > FaceMap;
+    typedef map<string, array<string, 8> > SliceMap;
 
     CubieMap cubies;
     FaceMap  faces;
+    SliceMap slices;
     mat4     cubeTilt;
 
     // For rotating the cube.
@@ -65,6 +67,8 @@ namespace busybin
     mat4 animateCubeRotation(double elapsed);
     void moveFace(const array<string, 9>& face);
     void moveFacePrime(const array<string, 9>& face);
+    void moveSlice(const array<string, 8>& slice);
+    void moveSlicePrime(const array<string, 8>& slice);
 
   public:
     RubiksCube(Program* pProgram, MatrixStack* pMatrixStack);
@@ -89,6 +93,12 @@ namespace busybin
     void bPrime();
     void d();
     void dPrime();
+    void m();
+    void mPrime();
+    void e();
+    void ePrime();
+    void s();
+    void sPrime();
   };
 }
 

@@ -64,6 +64,11 @@ namespace busybin
     this->faces["R"] = {{"RUF", "RU", "RUB", "RF", "R", "RB", "RDF", "RD", "RDB"}};
     this->faces["B"] = {{"RUB", "UB", "LUB", "RB", "B", "LB", "RDB", "DB", "LDB"}};
     this->faces["D"] = {{"LDF", "DF", "RDF", "LD", "D", "RD", "LDB", "DB", "RDB"}};
+
+    // Initialize the slices.
+    this->slices["M"] = {{"UB", "U", "UF", "F", "DF", "D", "DB", "B"}};
+    this->slices["E"] = {{"LB", "L", "LF", "F", "RF", "R", "RB", "B"}};
+    this->slices["S"] = {{"LU", "U", "RU", "R", "RD", "D", "LD", "L"}};
   }
 
   /**
@@ -165,6 +170,56 @@ namespace busybin
 
     // Center.
     this->cubies.at(face[4]) = move(hold.at(4));
+  }
+
+  /**
+   * See moveFace.  Move a slice. 
+   * @param slice The slice to rotate clockwise.
+   */
+  void RubiksCube::moveSlice(const array<string, 8>& slice)
+  {
+    array<CubiePtr, 8> hold;
+
+    // Copy all the cubie pointers.
+    for (unsigned i = 0; i < 8; ++i)
+      hold[i] = move(this->cubies.at(slice[i]));
+
+    // Edges.
+    this->cubies.at(slice[0]) = move(hold.at(6));
+    this->cubies.at(slice[2]) = move(hold.at(0));
+    this->cubies.at(slice[4]) = move(hold.at(2));
+    this->cubies.at(slice[6]) = move(hold.at(4));
+
+    // Centers.
+    this->cubies.at(slice[1]) = move(hold.at(7));
+    this->cubies.at(slice[3]) = move(hold.at(1));
+    this->cubies.at(slice[5]) = move(hold.at(3));
+    this->cubies.at(slice[7]) = move(hold.at(5));
+  }
+
+  /**
+   * See moveFace.  Move a slice prime. 
+   * @param slice The slice to rotate counter-clockwise.
+   */
+  void RubiksCube::moveSlicePrime(const array<string, 8>& slice)
+  {
+    array<CubiePtr, 8> hold;
+
+    // Copy all the cubie pointers.
+    for (unsigned i = 0; i < 8; ++i)
+      hold[i] = move(this->cubies.at(slice[i]));
+
+    // Edges.
+    this->cubies.at(slice[0]) = move(hold.at(2));
+    this->cubies.at(slice[2]) = move(hold.at(4));
+    this->cubies.at(slice[4]) = move(hold.at(6));
+    this->cubies.at(slice[6]) = move(hold.at(0));
+
+    // Centers.
+    this->cubies.at(slice[1]) = move(hold.at(3));
+    this->cubies.at(slice[3]) = move(hold.at(5));
+    this->cubies.at(slice[5]) = move(hold.at(7));
+    this->cubies.at(slice[7]) = move(hold.at(1));
   }
 
   /**
@@ -369,6 +424,90 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFacePrime(this->faces["D"]);
+  }
+
+  /**
+   * Rotate the MIDDLE slice (between L and R, same way as L).
+   */
+  void RubiksCube::m()
+  {
+    float rads = half_pi<float>();
+    vec3  axis(1.0f, 0.0f, 0.0f);
+
+    for (string face : this->slices["M"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveSlice(this->slices["M"]);
+  }
+
+  /**
+   * Rotate the MIDDLE slice prime (between L and R, same way as L).
+   */
+  void RubiksCube::mPrime()
+  {
+    float rads = half_pi<float>() * -1;
+    vec3  axis(1.0f, 0.0f, 0.0f);
+
+    for (string face : this->slices["M"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveSlicePrime(this->slices["M"]);
+  }
+
+  /**
+   * Rotate the E slice (between U and D, same way as D).
+   */
+  void RubiksCube::e()
+  {
+    float rads = half_pi<float>();
+    vec3  axis(0.0f, 1.0f, 0.0f);
+
+    for (string face : this->slices["E"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveSlice(this->slices["E"]);
+  }
+
+  /**
+   * Rotate the E slice prime (between U and D, same way as D).
+   */
+  void RubiksCube::ePrime()
+  {
+    float rads = half_pi<float>() * -1;
+    vec3  axis(0.0f, 1.0f, 0.0f);
+
+    for (string face : this->slices["E"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveSlicePrime(this->slices["E"]);
+  }
+
+  /**
+   * Rotate the S slice (between F and B, same way as F).
+   */
+  void RubiksCube::s()
+  {
+    float rads = half_pi<float>();
+    vec3  axis(0.0f, 0.0f, -1.0f);
+
+    for (string face : this->slices["S"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveSlice(this->slices["S"]);
+  }
+
+  /**
+   * Rotate the S slice prime (between F and B, same way as F).
+   */
+  void RubiksCube::sPrime()
+  {
+    float rads = half_pi<float>() * -1;
+    vec3  axis(0.0f, 0.0f, -1.0f);
+
+    for (string face : this->slices["S"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveSlicePrime(this->slices["S"]);
   }
 }
 
