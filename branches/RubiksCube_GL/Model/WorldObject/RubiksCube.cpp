@@ -8,14 +8,22 @@ namespace busybin
    * @param pMatrixStack The World's MatrixStack.
    */
   RubiksCube::RubiksCube(Program* pProgram, MatrixStack* pMatrixStack) : 
-    WorldObject("RubiksCube", pProgram, pMatrixStack), cubeRotation(1.0f)
+    WorldObject("RubiksCube", pProgram, pMatrixStack)
   {
-    this->amplitude    = 0.08f;
-    this->angle        = 0.0f;
-    this->angleDelta   = pi<double>() * 2;
-    this->cubeTilt     = rotate(mat4(1.0f),     pi<float>() / 9, vec3(1.0f, 0.0f, 0.0f));
-    this->cubeTilt     = rotate(this->cubeTilt, pi<float>() / 6, vec3(0.0f, 1.0f, 0.0f));
+    // This is for the cube levitation effect (it bobs up and down).
+    this->levitation.amplitude = 0.08f;
+    this->levitation.angle     = 0.0f;
+    this->levitation.delta     = pi<double>() * 2;
 
+    // Cube rotation speed.
+    this->cubeRot.speed = 8;
+
+    // Tilt the cube by a constant amount so that the top, left, and front
+    // are always visible.
+    this->cubeTilt = rotate(mat4(1.0f),     pi<float>() / 9, vec3(1.0f, 0.0f, 0.0f));
+    this->cubeTilt = rotate(this->cubeTilt, pi<float>() / 6, vec3(0.0f, 1.0f, 0.0f));
+
+    // Initialize the cubies.
     this->cubies["LDB"] = CubiePtr(new Cubie(this->getProgram(), this->getMatrixStack(), "LDB", vec3(-1.02f, -1.02f, -1.02f)));
     this->cubies["LD"]  = CubiePtr(new Cubie(this->getProgram(), this->getMatrixStack(), "LD",  vec3(-1.02f, -1.02f,  0.0f)));
     this->cubies["LDF"] = CubiePtr(new Cubie(this->getProgram(), this->getMatrixStack(), "LDF", vec3(-1.02f, -1.02f,  1.02f)));
@@ -52,18 +60,16 @@ namespace busybin
    */
   void RubiksCube::draw(double elapsed)
   {
-    double transBy;
-    mat4   translation;
+    mat4 cubeRotation;
 
     // Make the cube bob up and down like it's levitating.
-    this->angle += this->angleDelta * elapsed;
-    transBy = this->amplitude * cos(this->angle);
-    translation = translate(mat4(1.0f), vec3(0.0f, transBy, 0.0f));
+    this->levitation.angle   += this->levitation.delta * elapsed;
+    this->levitation.transBy  = this->levitation.amplitude * cos(this->levitation.angle);
+    this->levitation.trans    = translate(mat4(1.0f), vec3(0.0f, this->levitation.transBy, 0.0f));
 
-    // Animate any queued up rotations.
-    this->animate(elapsed);
-
-    this->getMatrixStack()->topModel() = translation * this->cubeTilt * this->cubeRotation;
+    // Animate any queued up cube rotations.
+    cubeRotation = this->animateCubeRotation(elapsed);
+    this->getMatrixStack()->topModel() = this->levitation.trans * this->cubeTilt * cubeRotation;
 
     // Draw each cube.
     for (CubieMap::iterator it = this->cubies.begin(); it != this->cubies.end(); ++it)
@@ -79,40 +85,17 @@ namespace busybin
   }
 
   /**
-   * Process the top-most animation in the animation queue.
+   * Animate the cube rotations.
    * @param elapsed The elapsed time since the last draw call.
    */
-  void RubiksCube::animate(double elapsed)
+  mat4 RubiksCube::animateCubeRotation(double elapsed)
   {
-    if (!this->animationQueue.empty())
-    {
-      CubeAnimation& anim  = this->animationQueue.front();
-      vec3           axis  = anim.axis;
-      int            dir   = (anim.rads > 0) ? -1 : 1;
-      float          delta = this->angleDelta * elapsed * dir;
-      bool           done  = false;
+    // Spherical linear interpolation (SLERP) between the current and desired
+    // orientations.
+    this->cubeRot.orientation = slerp(this->cubeRot.orientation,
+      this->cubeRot.desired, this->cubeRot.speed * (float)elapsed);
 
-      // Change the animation radians based on the elapsed time until
-      // 0 is reached.
-      if ((dir == 1 && anim.rads + delta > 0) || (dir == -1 && anim.rads + delta < 0))
-      {
-        delta = anim.rads * -1;
-        this->animationQueue.pop();
-      }
-      else
-        anim.rads += delta;
-
-      // Move the whole cube.
-      if (anim.face == "")
-      {
-        //this->cubeRotation *= rotate(mat4(1.0f), delta, axis);
-        this->cubeRotation = rotate(mat4(1.0f), delta, axis) * this->cubeRotation;
-      }
-
-      // If this animation is complete remove it from the queue.
-      if (done)
-        this->animationQueue.pop();
-    }
+    return mat4_cast(this->cubeRot.orientation);
   }
 
   /**
@@ -120,7 +103,8 @@ namespace busybin
    */
   void RubiksCube::rotateLeft()
   {
-    this->animationQueue.push(CubeAnimation(half_pi<float>(), vec3(0.0f, 1.0f, 0.0f)));
+    this->cubeRot.desired = rotate(quat(), half_pi<float>() * -1,
+      vec3(0.0f, 1.0f, 0.0f)) * this->cubeRot.desired;
   }
 
   /**
@@ -128,7 +112,8 @@ namespace busybin
    */
   void RubiksCube::rotateRight()
   {
-    this->animationQueue.push(CubeAnimation(half_pi<float>() * -1, vec3(0.0f, 1.0f, 0.0f)));
+    this->cubeRot.desired = rotate(quat(), half_pi<float>(),
+      vec3(0.0f, 1.0f, 0.0f)) * this->cubeRot.desired;
   }
 
   /**
@@ -136,7 +121,8 @@ namespace busybin
    */
   void RubiksCube::rotateDown()
   {
-    this->animationQueue.push(CubeAnimation(half_pi<float>() * -1, vec3(1.0f, 0.0f, 0.0f)));
+    this->cubeRot.desired = rotate(quat(), half_pi<float>(),
+      vec3(1.0f, 0.0f, 0.0f)) * this->cubeRot.desired;
   }
 
   /**
@@ -144,7 +130,8 @@ namespace busybin
    */
   void RubiksCube::rotateUp()
   {
-    this->animationQueue.push(CubeAnimation(half_pi<float>(), vec3(1.0f, 0.0f, 0.0f)));
+    this->cubeRot.desired = rotate(quat(), half_pi<float>() * -1,
+      vec3(1.0f, 0.0f, 0.0f)) * this->cubeRot.desired;
   }
 }
 

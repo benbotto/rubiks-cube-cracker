@@ -13,10 +13,12 @@ using glm::rotate;
 #include <glm/gtc/constants.hpp> 
 using glm::pi;
 using glm::half_pi;
+#include <glm/gtc/quaternion.hpp>
+using glm::quat;
+using glm::slerp;
+using glm::mat4_cast;
 #include <map>
 using std::map;
-#include <queue>
-using std::queue;
 #include <memory>
 using std::unique_ptr;
 #include <cmath>
@@ -29,32 +31,31 @@ namespace busybin
    */
   class RubiksCube : public WorldObject
   {
-    /**
-     * Helper class for the animation queue.
-     */
-    class CubeAnimation
-    {
-    public:
-      string face;
-      double rads;
-      vec3   axis;
-
-      CubeAnimation(double rads, const vec3& axis);
-      CubeAnimation(const string& face, double rads, const vec3& axis);
-    };
-
     typedef unique_ptr<Cubie>      CubiePtr;
     typedef map<string, CubiePtr>  CubieMap;
 
-    CubieMap             cubies;
-    double               amplitude;
-    double               angle;
-    double               angleDelta;
-    mat4                 cubeRotation;
-    mat4                 cubeTilt;
-    queue<CubeAnimation> animationQueue;
+    CubieMap cubies;
+    mat4     cubeTilt;
 
-    void animate(double elapsed);
+    // For rotating the cube.
+    struct
+    {
+      quat  orientation;
+      quat  desired;
+      float speed;
+    } cubeRot;
+
+    // For bobbing the cube up and down (levitation).
+    struct
+    {
+      double amplitude;
+      double angle;
+      double delta;
+      double transBy;
+      mat4   trans;
+    } levitation;
+
+    mat4 animateCubeRotation(double elapsed);
 
   public:
     RubiksCube(Program* pProgram, MatrixStack* pMatrixStack);

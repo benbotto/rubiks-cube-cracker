@@ -5,7 +5,7 @@ namespace busybin
   /**
    * Initialize the program.
    */
-  RubiksCubeProgram::RubiksCubeProgram() : LitProgram("OpenGL Seed Program")
+  RubiksCubeProgram::RubiksCubeProgram() : LitProgram("Rubik's Cube Program")
   {
     // Set up the shaders.
     Shader vShader(
