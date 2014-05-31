@@ -23,8 +23,11 @@ using std::map;
 using std::array;
 #include <memory>
 using std::unique_ptr;
+using std::move;
 #include <cmath>
 using std::cos;
+#include <algorithm>
+using std::swap;
 
 namespace busybin
 {
@@ -35,7 +38,7 @@ namespace busybin
   {
     typedef unique_ptr<Cubie>              CubiePtr;
     typedef map<string, CubiePtr>          CubieMap;
-    typedef map<string, array<Cubie*, 9> > FaceMap;
+    typedef map<string, array<string, 9> > FaceMap;
 
     CubieMap cubies;
     FaceMap  faces;
@@ -60,6 +63,8 @@ namespace busybin
     } levitation;
 
     mat4 animateCubeRotation(double elapsed);
+    void moveFace(const array<string, 9>& face);
+    void moveFacePrime(const array<string, 9>& face);
 
   public:
     RubiksCube(Program* pProgram, MatrixStack* pMatrixStack);

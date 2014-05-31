@@ -27,8 +27,8 @@ namespace busybin
     this->cubeTilt = rotate(this->cubeTilt, pi<float>() / 6, vec3(0.0f, 1.0f, 0.0f));
 
     // Initialize the cubies.  There is no cubie in the middle (at 0,0,0).
-    // The pneumonic refers to the initial position of the cubie and isn't
-    // valid after the cube is turned.  The faces arrays are kept in tact.
+    // The pneumonic refers to the position of the cubie and is kept
+    // in tact after rotations.
     this->cubies["LDB"] = CubiePtr(new Cubie(p, m, "LDB", vec3(-1.02f, -1.02f, -1.02f)));
     this->cubies["LD"]  = CubiePtr(new Cubie(p, m, "LD",  vec3(-1.02f, -1.02f,  0.0f)));
     this->cubies["LDF"] = CubiePtr(new Cubie(p, m, "LDF", vec3(-1.02f, -1.02f,  1.02f)));
@@ -58,83 +58,12 @@ namespace busybin
     this->cubies["RUF"] = CubiePtr(new Cubie(p, m, "RUF", vec3( 1.02f,  1.02f,  1.02f)));
 
     // Initialize the faces.
-    this->faces["U"] =
-    {{
-      this->cubies.at("LUB").get(),
-      this->cubies.at("UB").get(),
-      this->cubies.at("RUB").get(),
-      this->cubies.at("LU").get(),
-      this->cubies.at("U").get(),
-      this->cubies.at("RU").get(),
-      this->cubies.at("LUF").get(),
-      this->cubies.at("UF").get(),
-      this->cubies.at("RUF").get()
-    }};
-
-    this->faces["L"] =
-    {{
-      this->cubies.at("LUB").get(),
-      this->cubies.at("LU").get(),
-      this->cubies.at("LUF").get(),
-      this->cubies.at("LB").get(),
-      this->cubies.at("L").get(),
-      this->cubies.at("LF").get(),
-      this->cubies.at("LDB").get(),
-      this->cubies.at("LD").get(),
-      this->cubies.at("LDF").get()
-    }};
-
-    this->faces["F"] =
-    {{
-      this->cubies.at("LUF").get(),
-      this->cubies.at("UF").get(),
-      this->cubies.at("RUF").get(),
-      this->cubies.at("LF").get(),
-      this->cubies.at("F").get(),
-      this->cubies.at("RF").get(),
-      this->cubies.at("LDF").get(),
-      this->cubies.at("DF").get(),
-      this->cubies.at("RDF").get()
-    }};
-
-    this->faces["R"] =
-    {{
-      this->cubies.at("RUF").get(),
-      this->cubies.at("RU").get(),
-      this->cubies.at("RUB").get(),
-      this->cubies.at("RF").get(),
-      this->cubies.at("R").get(),
-      this->cubies.at("RB").get(),
-      this->cubies.at("RDF").get(),
-      this->cubies.at("RD").get(),
-      this->cubies.at("RDB").get()
-    }};
-
-    this->faces["B"] =
-    {{
-      this->cubies.at("RUB").get(),
-      this->cubies.at("UB").get(),
-      this->cubies.at("LUB").get(),
-      this->cubies.at("RB").get(),
-      this->cubies.at("B").get(),
-      this->cubies.at("LB").get(),
-      this->cubies.at("RDB").get(),
-      this->cubies.at("DB").get(),
-      this->cubies.at("LDB").get()
-    }};
-
-    this->faces["D"] =
-    {{
-      this->cubies.at("LDF").get(),
-      this->cubies.at("DF").get(),
-      this->cubies.at("RDF").get(),
-      this->cubies.at("LD").get(),
-      this->cubies.at("D").get(),
-      this->cubies.at("RD").get(),
-      this->cubies.at("LDB").get(),
-      this->cubies.at("DB").get(),
-      this->cubies.at("RDB").get()
-    }};
+    this->faces["U"] = {{"LUB", "UB", "RUB", "LU", "U", "RU", "LUF", "UF", "RUF"}};
+    this->faces["L"] = {{"LUB", "LU", "LUF", "LB", "L", "LF", "LDB", "LD", "LDF"}};
+    this->faces["F"] = {{"LUF", "UF", "RUF", "LF", "F", "RF", "LDF", "DF", "RDF"}};
+    this->faces["R"] = {{"RUF", "RU", "RUB", "RF", "R", "RB", "RDF", "RD", "RDB"}};
+    this->faces["B"] = {{"RUB", "UB", "LUB", "RB", "B", "LB", "RDB", "DB", "LDB"}};
+    this->faces["D"] = {{"LDF", "DF", "RDF", "LD", "D", "RD", "LDB", "DB", "RDB"}};
   }
 
   /**
@@ -182,12 +111,69 @@ namespace busybin
   }
 
   /**
+   * When a face is rotated, the indices need to be shuffled around.  For
+   * example, with an U rotation, LUF is moved to LUB.
+   * @param face The face to rotate clockwise.
+   */
+  void RubiksCube::moveFace(const array<string, 9>& face)
+  {
+    array<CubiePtr, 9> hold;
+
+    // Copy all the cubie pointers.
+    for (unsigned i = 0; i < 9; ++i)
+      hold[i] = move(this->cubies.at(face[i]));
+
+    // Corners.
+    this->cubies.at(face[0]) = move(hold.at(6));
+    this->cubies.at(face[2]) = move(hold.at(0));
+    this->cubies.at(face[6]) = move(hold.at(8));
+    this->cubies.at(face[8]) = move(hold.at(2));
+
+    // Edges.
+    this->cubies.at(face[1]) = move(hold.at(3));
+    this->cubies.at(face[3]) = move(hold.at(7));
+    this->cubies.at(face[5]) = move(hold.at(1));
+    this->cubies.at(face[7]) = move(hold.at(5));
+
+    // Center.
+    this->cubies.at(face[4]) = move(hold.at(4));
+  }
+
+  /**
+   * See moveFace.  Same thing but prime.
+   * @param face The face to rotate counter-clockwise.
+   */
+  void RubiksCube::moveFacePrime(const array<string, 9>& face)
+  {
+    array<CubiePtr, 9> hold;
+
+    // Copy all the cubie pointers.
+    for (unsigned i = 0; i < 9; ++i)
+      hold[i] = move(this->cubies.at(face[i]));
+
+    // Corners.
+    this->cubies.at(face[6]) = move(hold.at(0));
+    this->cubies.at(face[0]) = move(hold.at(2));
+    this->cubies.at(face[8]) = move(hold.at(6));
+    this->cubies.at(face[2]) = move(hold.at(8));
+
+    // Edges.
+    this->cubies.at(face[3]) = move(hold.at(1));
+    this->cubies.at(face[7]) = move(hold.at(3));
+    this->cubies.at(face[1]) = move(hold.at(5));
+    this->cubies.at(face[5]) = move(hold.at(7));
+
+    // Center.
+    this->cubies.at(face[4]) = move(hold.at(4));
+  }
+
+  /**
    * Rotate the whole cube left.
    */
   void RubiksCube::rotateLeft()
   {
-    this->cubeRot.desired = rotate(quat(), half_pi<float>() * -1,
-      vec3(0.0f, 1.0f, 0.0f)) * this->cubeRot.desired;
+    this->cubeRot.desired = rotate(quat(), half_pi<float>(),
+      vec3(0.0f, -1.0f, 0.0f)) * this->cubeRot.desired;
   }
 
   /**
@@ -195,8 +181,8 @@ namespace busybin
    */
   void RubiksCube::rotateRight()
   {
-    this->cubeRot.desired = rotate(quat(), half_pi<float>(),
-      vec3(0.0f, 1.0f, 0.0f)) * this->cubeRot.desired;
+    this->cubeRot.desired = rotate(quat(), half_pi<float>() * -1,
+      vec3(0.0f, -1.0f, 0.0f)) * this->cubeRot.desired;
   }
 
   /**
@@ -204,8 +190,8 @@ namespace busybin
    */
   void RubiksCube::rotateDown()
   {
-    this->cubeRot.desired = rotate(quat(), half_pi<float>(),
-      vec3(1.0f, 0.0f, 0.0f)) * this->cubeRot.desired;
+    this->cubeRot.desired = rotate(quat(), half_pi<float>() * -1,
+      vec3(-1.0f, 0.0f, 0.0f)) * this->cubeRot.desired;
   }
 
   /**
@@ -213,8 +199,8 @@ namespace busybin
    */
   void RubiksCube::rotateUp()
   {
-    this->cubeRot.desired = rotate(quat(), half_pi<float>() * -1,
-      vec3(1.0f, 0.0f, 0.0f)) * this->cubeRot.desired;
+    this->cubeRot.desired = rotate(quat(), half_pi<float>(),
+      vec3(-1.0f, 0.0f, 0.0f)) * this->cubeRot.desired;
   }
 
   /**
@@ -222,21 +208,13 @@ namespace busybin
    */
   void RubiksCube::u()
   {
-    float rads = half_pi<float>();
-    vec3  axis(0.0f, -1.0f, 0.0f);
+    float    rads = half_pi<float>();
+    vec3     axis(0.0f, -1.0f, 0.0f);
 
-    for (Cubie* c : this->faces["U"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["U"])
+      this->cubies[face]->rotate(rads, axis);
 
-    // Up face.
-    /*this->faces["U"][0] = this->faces["U"][6];
-    this->faces["U"][1] = this->faces["U"][3];
-    this->faces["U"][2] = this->faces["U"][0];
-    this->faces["U"][3] = this->faces["U"][7];
-    this->faces["U"][5] = this->faces["U"][1];
-    this->faces["U"][6] = this->faces["U"][8];
-    this->faces["U"][7] = this->faces["U"][5];
-    this->faces["U"][8] = this->faces["U"][2];*/
+    this->moveFace(this->faces["U"]);
   }
 
   /**
@@ -247,8 +225,10 @@ namespace busybin
     float rads = half_pi<float>() * -1;
     vec3  axis(0.0f, -1.0f, 0.0f);
 
-    for (Cubie* c : this->faces["U"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["U"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveFacePrime(this->faces["U"]);
   }
 
   /**
@@ -259,8 +239,10 @@ namespace busybin
     float rads = half_pi<float>();
     vec3  axis(1.0f, 0.0f, 0.0f);
 
-    for (Cubie* c : this->faces["L"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["L"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveFace(this->faces["L"]);
   }
 
   /**
@@ -271,8 +253,10 @@ namespace busybin
     float rads = half_pi<float>() * -1;
     vec3  axis(1.0f, 0.0f, 0.0f);
 
-    for (Cubie* c : this->faces["L"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["L"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveFacePrime(this->faces["L"]);
   }
 
   /**
@@ -283,8 +267,10 @@ namespace busybin
     float rads = half_pi<float>();
     vec3  axis(0.0f, 0.0f, -1.0f);
 
-    for (Cubie* c : this->faces["F"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["F"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveFace(this->faces["F"]);
   }
 
   /**
@@ -295,8 +281,10 @@ namespace busybin
     float rads = half_pi<float>() * -1;
     vec3  axis(0.0f, 0.0f, -1.0f);
 
-    for (Cubie* c : this->faces["F"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["F"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveFacePrime(this->faces["F"]);
   }
 
   /**
@@ -307,8 +295,10 @@ namespace busybin
     float rads = half_pi<float>();
     vec3  axis(-1.0f, 0.0f, 0.0f);
 
-    for (Cubie* c : this->faces["R"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["R"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveFace(this->faces["R"]);
   }
 
   /**
@@ -319,8 +309,10 @@ namespace busybin
     float rads = half_pi<float>() * -1;
     vec3  axis(-1.0f, 0.0f, 0.0f);
 
-    for (Cubie* c : this->faces["R"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["R"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveFacePrime(this->faces["R"]);
   }
 
   /**
@@ -331,8 +323,10 @@ namespace busybin
     float rads = half_pi<float>();
     vec3  axis(0.0f, 0.0f, 1.0f);
 
-    for (Cubie* c : this->faces["B"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["B"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveFace(this->faces["B"]);
   }
 
   /**
@@ -343,8 +337,10 @@ namespace busybin
     float rads = half_pi<float>() * -1;
     vec3  axis(0.0f, 0.0f, 1.0f);
 
-    for (Cubie* c : this->faces["B"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["B"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveFacePrime(this->faces["B"]);
   }
 
   /**
@@ -355,8 +351,10 @@ namespace busybin
     float rads = half_pi<float>();
     vec3  axis(0.0f, 1.0f, 0.0f);
 
-    for (Cubie* c : this->faces["D"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["D"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveFace(this->faces["D"]);
   }
 
   /**
@@ -367,8 +365,10 @@ namespace busybin
     float rads = half_pi<float>() * -1;
     vec3  axis(0.0f, 1.0f, 0.0f);
 
-    for (Cubie* c : this->faces["D"])
-      c->rotate(rads, axis);
+    for (string face : this->faces["D"])
+      this->cubies[face]->rotate(rads, axis);
+
+    this->moveFacePrime(this->faces["D"]);
   }
 }
 
