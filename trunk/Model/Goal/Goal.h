@@ -1,7 +1,7 @@
 #ifndef _BUSYBIN_GOAL_H_
 #define _BUSYBIN_GOAL_H_
 
-#include "../RubiksCube.h"
+#include "../RubiksCubeModel.h"
 
 namespace busybin
 {
@@ -13,7 +13,7 @@ namespace busybin
   public:
     Goal();
     virtual ~Goal();
-    virtual bool isSatisfied(const RubiksCube& cube) = 0;
+    virtual bool isSatisfied(const RubiksCubeModel& cube) = 0;
   };
 }
 

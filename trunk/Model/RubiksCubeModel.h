@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_RUBIKS_CUBE_H_
-#define _BUSYBIN_RUBIKS_CUBE_H_
+#ifndef _BUSYBIN_RUBIKS_CUBE_MODEL_H_
+#define _BUSYBIN_RUBIKS_CUBE_MODEL_H_
 
 #include "../Util/RubiksCubeException.h"
 #include <array>
@@ -18,7 +18,12 @@ using std::advance;
 
 namespace busybin
 {
-  class RubiksCube
+  /**
+   * A raw Rubik's Cube model.  This is _not_ what is drawn.  It's a fairly
+   * fast Rubik's Cube model used by the solver, and kept in sync with the
+   * drawable Rubik's Cube WorldObject.
+   */
+  class RubiksCubeModel
   {
   public:
     enum class FACE  : unsigned char {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
@@ -42,7 +47,7 @@ namespace busybin
     void permuteEdge(array<FACE, 2> faces, array<unsigned, 2> indices);
     void permuteCorner(array<FACE, 3> faces, array<unsigned, 3> indices);
   public:
-    RubiksCube();
+    RubiksCubeModel();
 
     COLOR get(unsigned i) const;
     COLOR get(FACE face, unsigned row, unsigned col) const;
@@ -55,46 +60,46 @@ namespace busybin
     bool isSolved(FACE f1, FACE f2) const;
     bool isSolved(FACE f1, FACE f2, FACE f3) const;
 
-    RubiksCube& u();
-    RubiksCube& uPrime();
-    RubiksCube& u2();
+    RubiksCubeModel& u();
+    RubiksCubeModel& uPrime();
+    RubiksCubeModel& u2();
 
-    RubiksCube& d();
-    RubiksCube& dPrime();
-    RubiksCube& d2();
+    RubiksCubeModel& d();
+    RubiksCubeModel& dPrime();
+    RubiksCubeModel& d2();
 
-    RubiksCube& l();
-    RubiksCube& lPrime();
-    RubiksCube& l2();
+    RubiksCubeModel& l();
+    RubiksCubeModel& lPrime();
+    RubiksCubeModel& l2();
 
-    RubiksCube& r();
-    RubiksCube& rPrime();
-    RubiksCube& r2();
+    RubiksCubeModel& r();
+    RubiksCubeModel& rPrime();
+    RubiksCubeModel& r2();
 
-    RubiksCube& f();
-    RubiksCube& fPrime();
-    RubiksCube& f2();
+    RubiksCubeModel& f();
+    RubiksCubeModel& fPrime();
+    RubiksCubeModel& f2();
 
-    RubiksCube& b();
-    RubiksCube& bPrime();
-    RubiksCube& b2();
+    RubiksCubeModel& b();
+    RubiksCubeModel& bPrime();
+    RubiksCubeModel& b2();
 
-    RubiksCube& m();
-    RubiksCube& mPrime();
-    RubiksCube& m2();
+    RubiksCubeModel& m();
+    RubiksCubeModel& mPrime();
+    RubiksCubeModel& m2();
 
-    RubiksCube& e();
-    RubiksCube& ePrime();
-    RubiksCube& e2();
+    RubiksCubeModel& e();
+    RubiksCubeModel& ePrime();
+    RubiksCubeModel& e2();
 
-    RubiksCube& s();
-    RubiksCube& sPrime();
-    RubiksCube& s2();
+    RubiksCubeModel& s();
+    RubiksCubeModel& sPrime();
+    RubiksCubeModel& s2();
 
-    RubiksCube& rotateLeft();
-    RubiksCube& rotateRight();
-    RubiksCube& rotateUp();
-    RubiksCube& rotateDown();
+    RubiksCubeModel& rotateLeft();
+    RubiksCubeModel& rotateRight();
+    RubiksCubeModel& rotateUp();
+    RubiksCubeModel& rotateDown();
   };
 }
 
