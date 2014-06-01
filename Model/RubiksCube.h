@@ -90,6 +90,11 @@ namespace busybin
     RubiksCube& s();
     RubiksCube& sPrime();
     RubiksCube& s2();
+
+    RubiksCube& rotateLeft();
+    RubiksCube& rotateRight();
+    RubiksCube& rotateUp();
+    RubiksCube& rotateDown();
   };
 }
 

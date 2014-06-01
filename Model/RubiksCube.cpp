@@ -752,5 +752,37 @@ namespace busybin
   {
     return this->s().s();
   }
+
+  /**
+   * Rotate the whole cube left.
+   */
+  RubiksCube& RubiksCube::rotateLeft()
+  {
+    return this->u().dPrime().ePrime();
+  }
+
+  /**
+   * Rotate the whole cube right.
+   */
+  RubiksCube& RubiksCube::rotateRight()
+  {
+    return this->uPrime().d().e();
+  }
+
+  /**
+   * Rotate the whole cube up.
+   */
+  RubiksCube& RubiksCube::rotateUp()
+  {
+    return this->lPrime().mPrime().r();
+  }
+
+  /**
+   * Rotate the whole cube down.
+   */
+  RubiksCube& RubiksCube::rotateDown()
+  {
+    return this->l().m().rPrime();
+  }
 }
 
