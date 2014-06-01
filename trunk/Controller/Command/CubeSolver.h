@@ -7,7 +7,7 @@
 #include "../../Util/ThreadPool.h"
 #include "../../Model/WorldObject/RubiksCube.h"
 #include "../../Model/RubiksCubeModel.h"
-#include "../../Model/MoveStore.h"
+#include "../../Model/ModelMoveStore.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/Goal/Goal1.h"
 #include "../../Model/Goal/Goal2.h"
@@ -37,7 +37,8 @@ namespace busybin
   class CubeSolver : public Command
   {
     ThreadPool      threadPool;
-    RubiksCubeModel cube;
+    RubiksCube*     pCube;
+    RubiksCubeModel cubeModel;
     CubeMover*      pMover;
     atomic_bool     solving;
 
