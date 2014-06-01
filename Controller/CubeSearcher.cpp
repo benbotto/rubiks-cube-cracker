@@ -6,7 +6,7 @@ namespace busybin
    * Initialize.
    * @param cube The cube (must stay in scope).
    */
-  CubeSearcher::CubeSearcher(RubiksCube& cube) : pCube(&cube), moveStore(cube)
+  CubeSearcher::CubeSearcher(RubiksCubeModel& cube) : pCube(&cube), moveStore(cube)
   {
   }
 
