@@ -15,6 +15,7 @@ namespace busybin
       ViewManager     viewMan(&world,   &worldWnd);
       Renderer        renderer(&world,  &worldWnd);
       CubeMover       cubeMover(&world, &worldWnd);
+      CubeSolver      cubeSolver(&world, &worldWnd, &cubeMover);
 
       // All wired up, run the main loop.
       worldWnd.run();

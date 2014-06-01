@@ -1,10 +1,16 @@
-#ifndef _BUSYBIN_CUBE_MOVER_H_
-#define _BUSYBIN_CUBE_MOVER_H_
+#ifndef _BUSYBIN_CUBE_SOLVER_H_
+#define _BUSYBIN_CUBE_SOLVER_H_
 
+#include "CubeMover.h"
+#include "../../Util/ThreadPool.h"
 #include "../../Model/WorldObject/RubiksCube.h"
+#include "../../Model/RubiksCubeModel.h"
 #include "../../OpenGLSeed/Controller/Command/Command.h"
 #include "../../OpenGLSeed/Model/World.h"
 #include "../../OpenGLSeed/View/WorldWindow.h"
+#include <iostream>
+using std::cout;
+using std::endl;
 #include <functional>
 using std::bind;
 using std::ref;
@@ -18,18 +24,20 @@ using std::atomic_bool;
 namespace busybin
 {
   /**
-   * Handles moving the cube around.
+   * Solver controller for the cube.
    */
-  class CubeMover : public Command
+  class CubeSolver : public Command
   {
-    RubiksCube* pCube;
-    atomic_bool moveEnabled;
+    ThreadPool      threadPool;
+    RubiksCubeModel cube;
+    CubeMover*      pMover;
+    atomic_bool     solving;
+
+    void solveCube();
 
   public:
-    CubeMover(World* pWorld, WorldWindow* pWorldWnd);
+    CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover);
     void onKeypress(int key, int scancode, int action, int mods);
-    void disable();
-    void enable();
   };
 }
 

@@ -3,14 +3,18 @@ project (RubiksCube)
 
 # All source files.
 set (SRC
+  "./rubiksCube.cpp"
   "./Controller/Command/CubeMover.cpp"
+  "./Controller/Command/CubeSolver.cpp"
   "./Controller/RubiksCubeController.cpp"
   "./Controller/GL/Program/RubiksCubeProgram.cpp"
   "./Controller/CubeSearcher.cpp"
   "./View/RubiksCubeView.cpp"
   "./Util/RubiksCubeException.cpp"
   "./Util/Random.cpp"
-  "./rubiksCube.cpp"
+  "./Util/Timer.cpp"
+  "./Util/AutoTimer.cpp"
+  "./Util/ThreadPool.cpp"
   "./Model/MoveStore.cpp"
   "./Model/RubiksCubeWorld.cpp"
   "./Model/Goal/Goal2.cpp"
