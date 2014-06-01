@@ -16,6 +16,7 @@ set (SRC
   "./Util/AutoTimer.cpp"
   "./Util/ThreadPool.cpp"
   "./Model/ModelMoveStore.cpp"
+  "./Model/CubeMoveStore.cpp"
   "./Model/RubiksCubeWorld.cpp"
   "./Model/Goal/Goal2.cpp"
   "./Model/Goal/Goal1.cpp"

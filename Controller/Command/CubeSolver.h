@@ -8,6 +8,7 @@
 #include "../../Model/WorldObject/RubiksCube.h"
 #include "../../Model/RubiksCubeModel.h"
 #include "../../Model/ModelMoveStore.h"
+#include "../../Model/CubeMoveStore.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/Goal/Goal1.h"
 #include "../../Model/Goal/Goal2.h"
