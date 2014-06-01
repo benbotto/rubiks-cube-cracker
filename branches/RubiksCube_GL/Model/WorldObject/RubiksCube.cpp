@@ -271,6 +271,15 @@ namespace busybin
   }
 
   /**
+   * Rotate the UP face twice.
+   */
+  void RubiksCube::u2()
+  {
+    this->u();
+    this->u();
+  }
+
+  /**
    * Rotate the LEFT face.
    */
   void RubiksCube::l()
@@ -296,6 +305,15 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFacePrime(this->faces["L"]);
+  }
+
+  /**
+   * Rotate the LEFT face twice.
+   */
+  void RubiksCube::l2()
+  {
+    this->l();
+    this->l();
   }
 
   /**
@@ -327,6 +345,15 @@ namespace busybin
   }
 
   /**
+   * Rotate the FRONT face twice.
+   */
+  void RubiksCube::f2()
+  {
+    this->f();
+    this->f();
+  }
+
+  /**
    * Rotate the RIGHT face.
    */
   void RubiksCube::r()
@@ -352,6 +379,15 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFacePrime(this->faces["R"]);
+  }
+
+  /**
+   * Rotate the RIGHT face twice.
+   */
+  void RubiksCube::r2()
+  {
+    this->r();
+    this->r();
   }
 
   /**
@@ -383,6 +419,15 @@ namespace busybin
   }
 
   /**
+   * Rotate the BACK face twice.
+   */
+  void RubiksCube::b2()
+  {
+    this->b();
+    this->b();
+  }
+
+  /**
    * Rotate the DOWN face.
    */
   void RubiksCube::d()
@@ -408,6 +453,15 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFacePrime(this->faces["D"]);
+  }
+
+  /**
+   * Rotate the DOWN face twice.
+   */
+  void RubiksCube::d2()
+  {
+    this->d();
+    this->d();
   }
 
   /**
@@ -439,6 +493,15 @@ namespace busybin
   }
 
   /**
+   * Rotate the MIDDLE slice twice (between L and R, same way as L).
+   */
+  void RubiksCube::m2()
+  {
+    return this->m();
+    return this->m();
+  }
+
+  /**
    * Rotate the E slice (between U and D, same way as D).
    */
   void RubiksCube::e()
@@ -467,6 +530,15 @@ namespace busybin
   }
 
   /**
+   * Rotate the E slice twice (between U and D, same way as D).
+   */
+  void RubiksCube::e2()
+  {
+    this->e();
+    this->e();
+  }
+
+  /**
    * Rotate the S slice (between F and B, same way as F).
    */
   void RubiksCube::s()
@@ -492,6 +564,15 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveSlicePrime(this->slices["S"]);
+  }
+
+  /**
+   * Rotate the S slice twice (between F and B, same way as F).
+   */
+  void RubiksCube::s2()
+  {
+    this->s2();
+    this->s2();
   }
 }
 

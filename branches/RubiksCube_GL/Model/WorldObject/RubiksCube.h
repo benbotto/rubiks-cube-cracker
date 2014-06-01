@@ -70,22 +70,39 @@ namespace busybin
 
     void u();
     void uPrime();
+    void u2();
+
     void l();
     void lPrime();
+    void l2();
+
     void f();
     void fPrime();
+    void f2();
+
     void r();
     void rPrime();
+    void r2();
+
     void b();
     void bPrime();
+    void b2();
+
     void d();
     void dPrime();
+    void d2();
+
     void m();
     void mPrime();
+    void m2();
+
     void e();
     void ePrime();
+    void e2();
+
     void s();
     void sPrime();
+    void s2();
   };
 }
 
