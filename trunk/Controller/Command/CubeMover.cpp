@@ -7,10 +7,10 @@ namespace busybin
    * @param pWorld Pointer to the world (must remain in scope).
    * @param pWorldWnd The world window, used to get the current width/heigth.
    */
-  CubeMover::CubeMover(World* pWorld, WorldWindow* pWorldWnd) : Command(pWorld, pWorldWnd)
-
+  CubeMover::CubeMover(World* pWorld, WorldWindow* pWorldWnd) :
+    Command(pWorld, pWorldWnd), moveEnabled(true)
   {
-    // Listen for frame buffer resize events.
+    // Listen for keypress events.
     pWorldWnd->onKeypress(bind(&CubeMover::onKeypress, ref(*this), _1, _2, _3, _4));
 
     this->pCube = dynamic_cast<RubiksCube*>(&pWorld->at("RubiksCube"));
@@ -26,7 +26,7 @@ namespace busybin
    */
   void CubeMover::onKeypress(int key, int scancode, int action, int mods)
   {
-    if (action != GLFW_PRESS)
+    if (action != GLFW_PRESS || !this->moveEnabled)
       return;
 
     switch (key)
@@ -126,6 +126,22 @@ namespace busybin
       default:
         break;
     }
+  }
+
+  /**
+   * Disable movement.
+   */
+  void CubeMover::disable()
+  {
+    this->moveEnabled = false;
+  }
+
+  /**
+   * Enable movement.
+   */
+  void CubeMover::enable()
+  {
+    this->moveEnabled = true;
   }
 }
 
