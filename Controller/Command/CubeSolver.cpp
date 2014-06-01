@@ -51,6 +51,7 @@ namespace busybin
   {
     RubiksCubeView cubeView;
     ModelMoveStore modelMoveStore(this->cubeModel);
+    CubeMoveStore  cubeMoveStore(*this->pCube);
     CubeSearcher   searcher(this->cubeModel, modelMoveStore);
     vector<string> allMoves;
     vector<string> goalMoves;
@@ -65,14 +66,20 @@ namespace busybin
     cout << "Found goal 1." << endl;
     allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());
     for (string move : goalMoves)
+    {
       modelMoveStore.getMoveFunc(move)();
+      cubeMoveStore.getMoveFunc(move)();
+    }
     goalMoves.clear();
 
     searcher.find(goal2, goalMoves);
     cout << "Found goal 2." << endl;
     allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());
     for (string move : goalMoves)
+    {
       modelMoveStore.getMoveFunc(move)();
+      cubeMoveStore.getMoveFunc(move)();
+    }
     goalMoves.clear();
 
     // Print the moves.
