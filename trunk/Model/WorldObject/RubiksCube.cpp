@@ -219,7 +219,6 @@ namespace busybin
     this->u();
     this->dPrime();
     this->ePrime();
-    this->rawCubeModel.rotateLeft();
   }
 
   /**
@@ -230,7 +229,6 @@ namespace busybin
     this->uPrime();
     this->d();
     this->e();
-    this->rawCubeModel.rotateRight();
   }
 
   /**
@@ -241,7 +239,6 @@ namespace busybin
     this->l();
     this->m();
     this->rPrime();
-    this->rawCubeModel.rotateDown();
   }
 
   /**
@@ -252,7 +249,6 @@ namespace busybin
     this->lPrime();
     this->mPrime();
     this->r();
-    this->rawCubeModel.rotateUp();
   }
 
   /**
