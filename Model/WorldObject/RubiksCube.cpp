@@ -10,6 +10,7 @@ namespace busybin
   RubiksCube::RubiksCube(Program* pProgram, MatrixStack* pMatrixStack) : 
     WorldObject("RubiksCube", pProgram, pMatrixStack)
   {
+    // Short-hand.
     RubiksCubeProgram* p = this->getProgram();
     MatrixStack*       m = this->getMatrixStack();
 
@@ -93,6 +94,14 @@ namespace busybin
   RubiksCubeProgram* RubiksCube::getProgram() const
   {
     return dynamic_cast<RubiksCubeProgram*>(WorldObject::getProgram());
+  }
+
+  /**
+   * Get a copy of the raw RubiksCube model.
+   */
+  RubiksCubeModel RubiksCube::getRawModel() const
+  {
+    return this->rawCubeModel;
   }
 
   /**
@@ -210,6 +219,7 @@ namespace busybin
     this->u();
     this->dPrime();
     this->ePrime();
+    this->rawCubeModel.rotateLeft();
   }
 
   /**
@@ -220,6 +230,7 @@ namespace busybin
     this->uPrime();
     this->d();
     this->e();
+    this->rawCubeModel.rotateRight();
   }
 
   /**
@@ -230,6 +241,7 @@ namespace busybin
     this->l();
     this->m();
     this->rPrime();
+    this->rawCubeModel.rotateDown();
   }
 
   /**
@@ -240,6 +252,7 @@ namespace busybin
     this->lPrime();
     this->mPrime();
     this->r();
+    this->rawCubeModel.rotateUp();
   }
 
   /**
@@ -254,6 +267,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFace(this->faces["U"]);
+    this->rawCubeModel.u();
   }
 
   /**
@@ -268,6 +282,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFacePrime(this->faces["U"]);
+    this->rawCubeModel.uPrime();
   }
 
   /**
@@ -277,6 +292,7 @@ namespace busybin
   {
     this->u();
     this->u();
+    this->rawCubeModel.u2();
   }
 
   /**
@@ -291,6 +307,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFace(this->faces["L"]);
+    this->rawCubeModel.l();
   }
 
   /**
@@ -305,6 +322,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFacePrime(this->faces["L"]);
+    this->rawCubeModel.lPrime();
   }
 
   /**
@@ -314,6 +332,7 @@ namespace busybin
   {
     this->l();
     this->l();
+    this->rawCubeModel.l2();
   }
 
   /**
@@ -328,6 +347,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFace(this->faces["F"]);
+    this->rawCubeModel.f();
   }
 
   /**
@@ -342,6 +362,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFacePrime(this->faces["F"]);
+    this->rawCubeModel.fPrime();
   }
 
   /**
@@ -351,6 +372,7 @@ namespace busybin
   {
     this->f();
     this->f();
+    this->rawCubeModel.f2();
   }
 
   /**
@@ -365,6 +387,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFace(this->faces["R"]);
+    this->rawCubeModel.r();
   }
 
   /**
@@ -379,6 +402,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFacePrime(this->faces["R"]);
+    this->rawCubeModel.rPrime();
   }
 
   /**
@@ -388,6 +412,7 @@ namespace busybin
   {
     this->r();
     this->r();
+    this->rawCubeModel.r2();
   }
 
   /**
@@ -402,6 +427,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFace(this->faces["B"]);
+    this->rawCubeModel.b();
   }
 
   /**
@@ -416,6 +442,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFacePrime(this->faces["B"]);
+    this->rawCubeModel.bPrime();
   }
 
   /**
@@ -425,6 +452,7 @@ namespace busybin
   {
     this->b();
     this->b();
+    this->rawCubeModel.b2();
   }
 
   /**
@@ -439,6 +467,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFace(this->faces["D"]);
+    this->rawCubeModel.d();
   }
 
   /**
@@ -453,6 +482,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveFacePrime(this->faces["D"]);
+    this->rawCubeModel.dPrime();
   }
 
   /**
@@ -462,6 +492,7 @@ namespace busybin
   {
     this->d();
     this->d();
+    this->rawCubeModel.d2();
   }
 
   /**
@@ -476,6 +507,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveSlice(this->slices["M"]);
+    this->rawCubeModel.m();
   }
 
   /**
@@ -490,6 +522,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveSlicePrime(this->slices["M"]);
+    this->rawCubeModel.mPrime();
   }
 
   /**
@@ -499,6 +532,7 @@ namespace busybin
   {
     return this->m();
     return this->m();
+    this->rawCubeModel.m2();
   }
 
   /**
@@ -513,6 +547,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveSlice(this->slices["E"]);
+    this->rawCubeModel.e();
   }
 
   /**
@@ -527,6 +562,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveSlicePrime(this->slices["E"]);
+    this->rawCubeModel.ePrime();
   }
 
   /**
@@ -536,6 +572,7 @@ namespace busybin
   {
     this->e();
     this->e();
+    this->rawCubeModel.e2();
   }
 
   /**
@@ -550,6 +587,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveSlice(this->slices["S"]);
+    this->rawCubeModel.s();
   }
 
   /**
@@ -564,6 +602,7 @@ namespace busybin
       this->cubies[face]->rotate(rads, axis);
 
     this->moveSlicePrime(this->slices["S"]);
+    this->rawCubeModel.sPrime();
   }
 
   /**
@@ -573,6 +612,7 @@ namespace busybin
   {
     this->s2();
     this->s2();
+    this->rawCubeModel.s2();
   }
 }
 

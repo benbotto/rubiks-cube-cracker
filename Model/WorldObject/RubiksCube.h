@@ -4,6 +4,7 @@
 #include "Cubie.h"
 #include "../../Controller/GL/Program/RubiksCubeProgram.h"
 #include "../../OpenGLSeed/Model/WorldObject/WorldObject.h"
+#include "../RubiksCubeModel.h"
 #include <glm/glm.hpp>
 using glm::mat4;
 using glm::vec3;
@@ -37,10 +38,11 @@ namespace busybin
     typedef map<string, array<string, 9> > FaceMap;
     typedef map<string, array<string, 8> > SliceMap;
 
-    CubieMap cubies;
-    FaceMap  faces;
-    SliceMap slices;
-    mat4     cubeTilt;
+    CubieMap        cubies;
+    FaceMap         faces;
+    SliceMap        slices;
+    mat4            cubeTilt;
+    RubiksCubeModel rawCubeModel;
 
     // For bobbing the cube up and down (levitation).
     struct
@@ -62,6 +64,8 @@ namespace busybin
 
     void draw(double elapsed);
     RubiksCubeProgram* getProgram() const;
+
+    RubiksCubeModel getRawModel() const;
 
     void rotateLeft();
     void rotateRight();
