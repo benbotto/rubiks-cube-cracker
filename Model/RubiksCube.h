@@ -78,6 +78,18 @@ namespace busybin
     RubiksCube& b();
     RubiksCube& bPrime();
     RubiksCube& b2();
+
+    RubiksCube& m();
+    RubiksCube& mPrime();
+    RubiksCube& m2();
+
+    RubiksCube& e();
+    RubiksCube& ePrime();
+    RubiksCube& e2();
+
+    RubiksCube& s();
+    RubiksCube& sPrime();
+    RubiksCube& s2();
   };
 }
 
