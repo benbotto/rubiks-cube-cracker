@@ -63,7 +63,7 @@ namespace busybin
    */
   void Cubie::rotate(float rads, const vec3& axis)
   {
-    this->cubeRot.desired = glm::rotate(quat(), rads, axis) * this->cubeRot.desired;
+    this->cubeRot.desired = normalize(glm::rotate(quat(), rads, axis) * this->cubeRot.desired);
   }
 
   /**
@@ -73,9 +73,10 @@ namespace busybin
   mat4 Cubie::animateCubeRotation(double elapsed)
   {
     // Spherical linear interpolation (SLERP) between the current and desired
-    // orientations.
-    this->cubeRot.orientation = slerp(this->cubeRot.orientation,
-      this->cubeRot.desired, this->cubeRot.speed * (float)elapsed);
+    // orientations.  The orientation needs to be normalized or precision
+    // will be lost over time, causing constantly animated cubes.
+    this->cubeRot.orientation = normalize(slerp(this->cubeRot.orientation,
+      this->cubeRot.desired, this->cubeRot.speed * (float)elapsed));
 
     return mat4_cast(this->cubeRot.orientation);
   }

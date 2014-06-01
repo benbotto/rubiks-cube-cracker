@@ -13,10 +13,6 @@ using glm::rotate;
 #include <glm/gtc/constants.hpp> 
 using glm::pi;
 using glm::half_pi;
-#include <glm/gtc/quaternion.hpp>
-using glm::quat;
-using glm::slerp;
-using glm::mat4_cast;
 #include <map>
 using std::map;
 #include <array>

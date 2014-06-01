@@ -15,6 +15,7 @@ using glm::translate;
 using glm::quat;
 using glm::slerp;
 using glm::mat4_cast;
+using glm::normalize;
 
 namespace busybin
 {
