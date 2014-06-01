@@ -590,5 +590,167 @@ namespace busybin
   {
     return this->b().b();
   }
+
+  /**
+   * Move the M slice (between L and R, same way as L).
+   */
+  RubiksCube& RubiksCube::m()
+  {
+    array<COLOR, 54> copy = this->cube;
+
+    this->cube.at(1)  = copy.at(43);
+    this->cube.at(4)  = copy.at(40);
+    this->cube.at(7)  = copy.at(37);
+    this->cube.at(19) = copy.at(1);
+    this->cube.at(22) = copy.at(4);
+    this->cube.at(25) = copy.at(7);
+    this->cube.at(46) = copy.at(19);
+    this->cube.at(49) = copy.at(22);
+    this->cube.at(52) = copy.at(25);
+    this->cube.at(43) = copy.at(46);
+    this->cube.at(40) = copy.at(49);
+    this->cube.at(37) = copy.at(52);
+
+    return *this;
+  }
+
+  /**
+   * Move the M slice prime (between L and R, same way as L).
+   */
+  RubiksCube& RubiksCube::mPrime()
+  {
+    array<COLOR, 54> copy = this->cube;
+
+    this->cube.at(43) = copy.at(1);
+    this->cube.at(40) = copy.at(4);
+    this->cube.at(37) = copy.at(7);
+    this->cube.at(1)  = copy.at(19);
+    this->cube.at(4)  = copy.at(22);
+    this->cube.at(7)  = copy.at(25);
+    this->cube.at(19) = copy.at(46);
+    this->cube.at(22) = copy.at(49);
+    this->cube.at(25) = copy.at(52);
+    this->cube.at(46) = copy.at(43);
+    this->cube.at(49) = copy.at(40);
+    this->cube.at(52) = copy.at(37);
+
+    return *this;
+  }
+
+  /**
+   * Move m slice twice.
+   */
+  RubiksCube& RubiksCube::m2()
+  {
+    return this->m().m();
+  }
+
+  /**
+   * Move the E slice (between U and D, same way as D).
+   */
+  RubiksCube& RubiksCube::e()
+  {
+    array<COLOR, 54> copy = this->cube;
+
+    this->cube.at(12) = copy.at(39);
+    this->cube.at(13) = copy.at(40);
+    this->cube.at(14) = copy.at(41);
+    this->cube.at(21) = copy.at(12);
+    this->cube.at(22) = copy.at(13);
+    this->cube.at(23) = copy.at(14);
+    this->cube.at(30) = copy.at(21);
+    this->cube.at(31) = copy.at(22);
+    this->cube.at(32) = copy.at(23);
+    this->cube.at(39) = copy.at(30);
+    this->cube.at(40) = copy.at(31);
+    this->cube.at(41) = copy.at(32);
+
+    return *this;
+  }
+
+  /**
+   * Move the E slice prime (between U and D, same way as D).
+   */
+  RubiksCube& RubiksCube::ePrime()
+  {
+    array<COLOR, 54> copy = this->cube;
+
+    this->cube.at(39) = copy.at(12);
+    this->cube.at(40) = copy.at(13);
+    this->cube.at(41) = copy.at(14);
+    this->cube.at(12) = copy.at(21);
+    this->cube.at(13) = copy.at(22);
+    this->cube.at(14) = copy.at(23);
+    this->cube.at(21) = copy.at(30);
+    this->cube.at(22) = copy.at(31);
+    this->cube.at(23) = copy.at(32);
+    this->cube.at(30) = copy.at(39);
+    this->cube.at(31) = copy.at(40);
+    this->cube.at(32) = copy.at(41);
+
+    return *this;
+  }
+
+  /**
+   * Move the E slice twice (between U and D, same way as D).
+   */
+  RubiksCube& RubiksCube::e2()
+  {
+    return this->e().e();
+  }
+
+  /**
+   * Move the S slice (between F and B, same way as F).
+   */
+  RubiksCube& RubiksCube::s()
+  {
+    array<COLOR, 54> copy = this->cube;
+
+    this->cube.at(3)  = copy.at(16);
+    this->cube.at(4)  = copy.at(13);
+    this->cube.at(5)  = copy.at(10);
+    this->cube.at(28) = copy.at(3);
+    this->cube.at(31) = copy.at(4);
+    this->cube.at(34) = copy.at(5);
+    this->cube.at(50) = copy.at(28);
+    this->cube.at(49) = copy.at(31);
+    this->cube.at(48) = copy.at(34);
+    this->cube.at(16) = copy.at(50);
+    this->cube.at(13) = copy.at(49);
+    this->cube.at(10) = copy.at(48);
+
+    return *this;
+  }
+
+  /**
+   * Move the S slice prime (between F and B, same way as F).
+   */
+  RubiksCube& RubiksCube::sPrime()
+  {
+    array<COLOR, 54> copy = this->cube;
+
+    this->cube.at(16) = copy.at(3);
+    this->cube.at(13) = copy.at(4);
+    this->cube.at(10) = copy.at(5);
+    this->cube.at(3)  = copy.at(28);
+    this->cube.at(4)  = copy.at(31);
+    this->cube.at(5)  = copy.at(34);
+    this->cube.at(28) = copy.at(50);
+    this->cube.at(31) = copy.at(49);
+    this->cube.at(34) = copy.at(48);
+    this->cube.at(50) = copy.at(16);
+    this->cube.at(49) = copy.at(13);
+    this->cube.at(48) = copy.at(10);
+
+    return *this;
+  }
+
+  /**
+   * Move the S slice twice (between F and B, same way as F).
+   */
+  RubiksCube& RubiksCube::s2()
+  {
+    return this->s().s();
+  }
 }
 
