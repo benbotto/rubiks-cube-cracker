@@ -1,27 +1,23 @@
 #ifndef _BUSYBIN_RUBIKS_CUBE_CONTROLLER_H_
 #define _BUSYBIN_RUBIKS_CUBE_CONTROLLER_H_
 
-#include "Scrambler.h"
-#include "CubeSearcher.h"
-#include "../Model/RubiksCube.h"
-#include "../Model/MoveStore.h"
-#include "../Model/Goal/Goal.h"
-#include "../Model/Goal/Goal1.h"
-#include "../Model/Goal/Goal2.h"
-#include "../View/RubiksCubeView.h"
-#include <vector>
-using std::vector;
+#include "Command/CubeMover.h"
+#include "../OpenGLSeed/View/WorldWindow.h"
+#include "../OpenGLSeed/Controller/Command/ViewManager.h"
+#include "../OpenGLSeed/Controller/Command/Renderer.h"
+#include "../Model/RubiksCubeWorld.h"
+#include <iostream>
+using std::cout;
+using std::endl;
+#include <exception>
+using std::exception;
 
 namespace busybin
 {
-  /**
-   * This class initializes and controls other classes.
-   */
   class RubiksCubeController
   {
   public:
-    RubiksCubeController();
-    void start();
+    void run();
   };
 }
 

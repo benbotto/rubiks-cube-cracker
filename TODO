@@ -1,5 +1,0 @@
-The move eval seems right but isn't really tested.  Double verified it by hand.
-ChromsomeGenerator should have NULL moves if all are going to be the same length.
-Add Chromosome class maybe with length == numNoNullMoves.
-Maybe Chromosome generates itself in its ctor.
-
