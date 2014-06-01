@@ -1,4 +1,4 @@
-#include "MoveStore.h"
+#include "ModelMoveStore.h"
 
 namespace busybin
 {
@@ -7,7 +7,7 @@ namespace busybin
    * @param cube A RubiksCubeModel reference for storing the move
    *        string->function map.
    */
-  MoveStore::MoveStore(RubiksCubeModel& cube) : 
+  ModelMoveStore::ModelMoveStore(RubiksCubeModel& cube) : 
     moves
     ({{
       "L", "L'", "L2",
@@ -56,7 +56,7 @@ namespace busybin
   /**
    * Return the list of available moves.
    */
-  const array<string, 18>& MoveStore::getMoves() const
+  const array<string, 18>& ModelMoveStore::getMoves() const
   {
     return this->moves;
   }
@@ -65,10 +65,10 @@ namespace busybin
    * Get a move by index.
    * @param ind The move index.
    */
-  string MoveStore::getMove(unsigned ind) const
+  string ModelMoveStore::getMove(unsigned ind) const
   {
     if (ind >= this->moves.size())
-      throw RubiksCubeException("Index out of bounds in MoveStore::getMove.");
+      throw RubiksCubeException("Index out of bounds in ModelMoveStore::getMove.");
 
     return this->moves.at(ind);
   }
@@ -77,10 +77,10 @@ namespace busybin
    * Get the inverse of a move (e.g. the inverse of L is L').
    * @param move The move for which the inverse shall be returned.
    */
-  string MoveStore::getInverseMove(const string& move) const
+  string ModelMoveStore::getInverseMove(const string& move) const
   {
     if (!this->inverseMoves.count(move))
-      throw RubiksCubeException("Index out of bounds in MoveStore::getInverseMove.");
+      throw RubiksCubeException("Index out of bounds in ModelMoveStore::getInverseMove.");
 
     return this->inverseMoves.at(move);
   }
@@ -88,7 +88,7 @@ namespace busybin
   /**
    * Return the number of available moves.
    */
-  unsigned MoveStore::getNumMoves() const
+  unsigned ModelMoveStore::getNumMoves() const
   {
     return this->moves.size();
   }
@@ -98,7 +98,7 @@ namespace busybin
    * to the corresponding move function in the cube passed
    * to the constructor.
    */
-  const MoveStore::moveMap_t& MoveStore::getMoveMap() const
+  const ModelMoveStore::moveMap_t& ModelMoveStore::getMoveMap() const
   {
     return this->moveMap;
   }
@@ -108,10 +108,10 @@ namespace busybin
    * based on the string representation.
    * @param string The string representation of the move.
    */
-  MoveStore::moveFunc_t& MoveStore::getMoveFunc(const string& move)
+  ModelMoveStore::moveFunc_t& ModelMoveStore::getMoveFunc(const string& move)
   {
     if (!this->moveMap.count(move))
-      throw RubiksCubeException("Invalid move in MoveStore::getMoveFunc.");
+      throw RubiksCubeException("Invalid move in ModelMoveStore::getMoveFunc.");
 
     return this->moveMap[move];
   }
@@ -121,7 +121,7 @@ namespace busybin
    * @param string The string representation of the move for which the inverse
    *        move function shall be returned.
    */
-  MoveStore::moveFunc_t& MoveStore::getInverseMoveFunc(const string& move)
+  ModelMoveStore::moveFunc_t& ModelMoveStore::getInverseMoveFunc(const string& move)
   {
     return this->moveMap[this->getInverseMove(move)];
   }
@@ -130,7 +130,7 @@ namespace busybin
    * Make sure the string representation of a move is valid.
    * @param string The string representation of the move.
    */
-  bool MoveStore::isValidMove(const string& move) const
+  bool ModelMoveStore::isValidMove(const string& move) const
   {
     return this->moveMap.count(move) == 1;
   }

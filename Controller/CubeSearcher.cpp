@@ -5,8 +5,10 @@ namespace busybin
   /**
    * Initialize.
    * @param cube The cube (must stay in scope).
+   * @param moveStore A reference to the move storage.
    */
-  CubeSearcher::CubeSearcher(RubiksCubeModel& cube) : pCube(&cube), moveStore(cube)
+  CubeSearcher::CubeSearcher(RubiksCubeModel& cube, ModelMoveStore& moveStore) :
+    pCube(&cube), pMoveStore(&moveStore)
   {
   }
 
@@ -46,12 +48,12 @@ namespace busybin
     if (depth == maxDepth)
       return false;
 
-    for (unsigned i = 0; i < this->moveStore.getNumMoves() && !solved; ++i)
+    for (unsigned i = 0; i < this->pMoveStore->getNumMoves() && !solved; ++i)
     {
       // Apply the next move.
-      string move = this->moveStore.getMove(i);
+      string move = this->pMoveStore->getMove(i);
       moves.push_back(move);
-      this->moveStore.getMoveFunc(move)();
+      this->pMoveStore->getMoveFunc(move)();
 
       // If this move satisfies the goal break out of the loop.
       if (this->find(goal, depth + 1, maxDepth, moves))
@@ -60,7 +62,7 @@ namespace busybin
         moves.pop_back();
 
       // Revert the move.
-      this->moveStore.getInverseMoveFunc(move)();
+      this->pMoveStore->getInverseMoveFunc(move)();
     }
 
     return solved;

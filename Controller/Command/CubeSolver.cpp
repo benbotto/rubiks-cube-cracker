@@ -11,9 +11,14 @@ namespace busybin
   CubeSolver::CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover) :
     Command(pWorld, pWorldWnd), threadPool(1), solving(false)
   {
+    // Store the mover of enabling/disabling movement.
+    this->pMover = pMover;
+
     // Listen for keypress events.
     pWorldWnd->onKeypress(bind(&CubeSolver::onKeypress, ref(*this), _1, _2, _3, _4));
-    this->pMover = pMover;
+
+    // Store the cube.
+    this->pCube  = dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube"));
   }
 
   /**
@@ -32,7 +37,7 @@ namespace busybin
       this->pMover->disable();
 
       // Get a copy of the underlying RC model.
-      this->cube = dynamic_cast<RubiksCube&>(this->getWorld()->at("RubiksCube")).getRawModel();
+      this->cubeModel = this->pCube->getRawModel();
 
       // Fire off a thread to solve the cube.
       this->threadPool.addJob(bind(&CubeSolver::solveCube, this));
@@ -45,29 +50,29 @@ namespace busybin
   void CubeSolver::solveCube()
   {
     RubiksCubeView cubeView;
-    MoveStore      moveStore(this->cube);
-    CubeSearcher   searcher(this->cube);
+    ModelMoveStore modelMoveStore(this->cubeModel);
+    CubeSearcher   searcher(this->cubeModel, modelMoveStore);
     vector<string> allMoves;
     vector<string> goalMoves;
     Goal1          goal1;
     Goal2          goal2;
 
     // Display the intial cube model.
-    cubeView.render(this->cube);
+    cubeView.render(this->cubeModel);
 
     // Try to achieve the goals.
     searcher.find(goal1, goalMoves);
     cout << "Found goal 1." << endl;
     allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());
     for (string move : goalMoves)
-      moveStore.getMoveFunc(move)();
+      modelMoveStore.getMoveFunc(move)();
     goalMoves.clear();
 
     searcher.find(goal2, goalMoves);
     cout << "Found goal 2." << endl;
     allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());
     for (string move : goalMoves)
-      moveStore.getMoveFunc(move)();
+      modelMoveStore.getMoveFunc(move)();
     goalMoves.clear();
 
     // Print the moves.
@@ -76,7 +81,7 @@ namespace busybin
     cout << endl;
 
     // Display the cube model.
-    cubeView.render(this->cube);
+    cubeView.render(this->cubeModel);
 
     // Done solving - re-enable movement.
     this->solving = false;
