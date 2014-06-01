@@ -1,7 +1,7 @@
 #ifndef _BUSYBIN_RUBIKS_CUBE_VIEW_H_
 #define _BUSYBIN_RUBIKS_CUBE_VIEW_H_
 
-#include "../Model/RubiksCube.h"
+#include "../Model/RubiksCubeModel.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -18,7 +18,7 @@ namespace busybin
   {
   public:
     RubiksCubeView();
-    void render(const RubiksCube& cube) const;
+    void render(const RubiksCubeModel& cube) const;
   };
 }
 

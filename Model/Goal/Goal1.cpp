@@ -13,20 +13,20 @@ namespace busybin
    * Check if any edge is solved.
    * @param cube The cube.
    */
-  bool Goal1::isSatisfied(const RubiksCube& cube)
+  bool Goal1::isSatisfied(const RubiksCubeModel& cube)
   {
     return
-      cube.isSolved(RubiksCube::FACE::UP,    RubiksCube::FACE::LEFT)  ||
-      cube.isSolved(RubiksCube::FACE::UP,    RubiksCube::FACE::FRONT) ||
-      cube.isSolved(RubiksCube::FACE::UP,    RubiksCube::FACE::RIGHT) ||
-      cube.isSolved(RubiksCube::FACE::UP,    RubiksCube::FACE::BACK)  ||
-      cube.isSolved(RubiksCube::FACE::LEFT,  RubiksCube::FACE::FRONT) ||
-      cube.isSolved(RubiksCube::FACE::FRONT, RubiksCube::FACE::RIGHT) ||
-      cube.isSolved(RubiksCube::FACE::RIGHT, RubiksCube::FACE::BACK)  ||
-      cube.isSolved(RubiksCube::FACE::LEFT,  RubiksCube::FACE::BACK)  ||
-      cube.isSolved(RubiksCube::FACE::LEFT,  RubiksCube::FACE::DOWN)  ||
-      cube.isSolved(RubiksCube::FACE::FRONT, RubiksCube::FACE::DOWN)  ||
-      cube.isSolved(RubiksCube::FACE::RIGHT, RubiksCube::FACE::DOWN)  ||
-      cube.isSolved(RubiksCube::FACE::BACK,  RubiksCube::FACE::DOWN);
+      cube.isSolved(RubiksCubeModel::FACE::UP,    RubiksCubeModel::FACE::LEFT)  ||
+      cube.isSolved(RubiksCubeModel::FACE::UP,    RubiksCubeModel::FACE::FRONT) ||
+      cube.isSolved(RubiksCubeModel::FACE::UP,    RubiksCubeModel::FACE::RIGHT) ||
+      cube.isSolved(RubiksCubeModel::FACE::UP,    RubiksCubeModel::FACE::BACK)  ||
+      cube.isSolved(RubiksCubeModel::FACE::LEFT,  RubiksCubeModel::FACE::FRONT) ||
+      cube.isSolved(RubiksCubeModel::FACE::FRONT, RubiksCubeModel::FACE::RIGHT) ||
+      cube.isSolved(RubiksCubeModel::FACE::RIGHT, RubiksCubeModel::FACE::BACK)  ||
+      cube.isSolved(RubiksCubeModel::FACE::LEFT,  RubiksCubeModel::FACE::BACK)  ||
+      cube.isSolved(RubiksCubeModel::FACE::LEFT,  RubiksCubeModel::FACE::DOWN)  ||
+      cube.isSolved(RubiksCubeModel::FACE::FRONT, RubiksCubeModel::FACE::DOWN)  ||
+      cube.isSolved(RubiksCubeModel::FACE::RIGHT, RubiksCubeModel::FACE::DOWN)  ||
+      cube.isSolved(RubiksCubeModel::FACE::BACK,  RubiksCubeModel::FACE::DOWN);
   }
 }

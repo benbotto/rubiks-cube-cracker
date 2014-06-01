@@ -2,7 +2,7 @@
 #define _BUSYBIN_MOVE_STORE_H_
 
 #include "../Util/RubiksCubeException.h"
-#include "RubiksCube.h"
+#include "RubiksCubeModel.h"
 #include <array>
 using std::array;
 #include <string>
@@ -31,7 +31,7 @@ namespace busybin
     invMove_t         inverseMoves;
 
   public:
-    MoveStore(RubiksCube& cube);
+    MoveStore(RubiksCubeModel& cube);
 
     const array<string, 18>& getMoves() const;
     string getMove(unsigned ind) const;

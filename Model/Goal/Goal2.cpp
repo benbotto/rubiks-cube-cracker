@@ -13,9 +13,9 @@ namespace busybin
    * Check if an adjacent edge is solved.
    * @param cube The cube.
    */
-  bool Goal2::isSatisfied(const RubiksCube& cube)
+  bool Goal2::isSatisfied(const RubiksCubeModel& cube)
   {
-    typedef RubiksCube::FACE F;
+    typedef RubiksCubeModel::FACE F;
 
     bool ul = cube.isSolved(F::UP, F::LEFT);
     bool uf = cube.isSolved(F::UP, F::FRONT);

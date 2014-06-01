@@ -1,7 +1,7 @@
 #ifndef _BUSYBIN_CUBE_SEARCHER_H_
 #define _BUSYBIN_CUBE_SEARCHER_H_
 
-#include "../Model/RubiksCube.h"
+#include "../Model/RubiksCubeModel.h"
 #include "../Model/Goal/Goal.h"
 #include "../Model/MoveStore.h"
 #include <vector>
@@ -16,14 +16,14 @@ namespace busybin
    */
   class CubeSearcher
   {
-    RubiksCube* const pCube;
+    RubiksCubeModel* const pCube;
     MoveStore moveStore;
 
     bool find(Goal& goal, unsigned depth, unsigned maxDepth,
       vector<string>& moves);
 
   public:
-    CubeSearcher(RubiksCube& cube);
+    CubeSearcher(RubiksCubeModel& cube);
     vector<string> find(Goal& goal, vector<string>& moves);
   };
 }
