@@ -3,7 +3,7 @@
 
 #include "../Model/RubiksCubeModel.h"
 #include "../Model/Goal/Goal.h"
-#include "../Model/ModelMoveStore.h"
+#include "../Model/MoveStore/ModelMoveStore.h"
 #include <vector>
 using std::vector;
 #include <string>

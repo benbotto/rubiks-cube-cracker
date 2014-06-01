@@ -1,8 +1,7 @@
-#ifndef _BUSYBIN_MODEL_MOVE_STORE_H_
-#define _BUSYBIN_MODEL_MOVE_STORE_H_
+#ifndef _BUSYBIN_MOVE_STORE_H_
+#define _BUSYBIN_MOVE_STORE_H_
 
-#include "../Util/RubiksCubeException.h"
-#include "RubiksCubeModel.h"
+#include "../../Util/RubiksCubeException.h"
 #include <array>
 using std::array;
 #include <string>
@@ -16,9 +15,9 @@ using std::bind;
 namespace busybin
 {
   /**
-   * Class for storing the available Rubik's Cube Model's moves.
+   * Base class for the MoveStore classes.
    */
-  class ModelMoveStore
+  class MoveStore
   {
   public:
     typedef function<void()>        moveFunc_t;
@@ -30,15 +29,18 @@ namespace busybin
     moveMap_t         moveMap;
     invMove_t         inverseMoves;
 
+  protected:
+    virtual moveMap_t& getMoveMap() = 0;
+
   public:
-    ModelMoveStore(RubiksCubeModel& cube);
+    MoveStore();
 
     const array<string, 18>& getMoves() const;
     string getMove(unsigned ind) const;
     string getInverseMove(const string& move) const;
     unsigned getNumMoves() const;
 
-    const moveMap_t& getMoveMap() const;
+    virtual const moveMap_t& getMoveMap() const = 0;
     bool isValidMove(const string& move) const;
     moveFunc_t& getMoveFunc(const string& move);
     moveFunc_t& getInverseMoveFunc(const string& move);
