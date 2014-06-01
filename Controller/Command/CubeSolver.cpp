@@ -44,6 +44,40 @@ namespace busybin
    */
   void CubeSolver::solveCube()
   {
+    RubiksCubeView cubeView;
+    MoveStore      moveStore(this->cube);
+    CubeSearcher   searcher(this->cube);
+    vector<string> allMoves;
+    vector<string> goalMoves;
+    Goal1          goal1;
+    Goal2          goal2;
+
+    // Display the intial cube model.
+    cubeView.render(this->cube);
+
+    // Try to achieve the goals.
+    searcher.find(goal1, goalMoves);
+    cout << "Found goal 1." << endl;
+    allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());
+    for (string move : goalMoves)
+      moveStore.getMoveFunc(move)();
+    goalMoves.clear();
+
+    searcher.find(goal2, goalMoves);
+    cout << "Found goal 2." << endl;
+    allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());
+    for (string move : goalMoves)
+      moveStore.getMoveFunc(move)();
+    goalMoves.clear();
+
+    // Print the moves.
+    for (string move : allMoves)
+      cout << move << ' ';
+    cout << endl;
+
+    // Display the cube model.
+    cubeView.render(this->cube);
+
     // Done solving - re-enable movement.
     this->solving = false;
     this->pMover->enable();

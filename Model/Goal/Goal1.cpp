@@ -15,18 +15,20 @@ namespace busybin
    */
   bool Goal1::isSatisfied(const RubiksCubeModel& cube)
   {
+    typedef RubiksCubeModel::FACE F;
+
     return
-      cube.isSolved(RubiksCubeModel::FACE::UP,    RubiksCubeModel::FACE::LEFT)  ||
-      cube.isSolved(RubiksCubeModel::FACE::UP,    RubiksCubeModel::FACE::FRONT) ||
-      cube.isSolved(RubiksCubeModel::FACE::UP,    RubiksCubeModel::FACE::RIGHT) ||
-      cube.isSolved(RubiksCubeModel::FACE::UP,    RubiksCubeModel::FACE::BACK)  ||
-      cube.isSolved(RubiksCubeModel::FACE::LEFT,  RubiksCubeModel::FACE::FRONT) ||
-      cube.isSolved(RubiksCubeModel::FACE::FRONT, RubiksCubeModel::FACE::RIGHT) ||
-      cube.isSolved(RubiksCubeModel::FACE::RIGHT, RubiksCubeModel::FACE::BACK)  ||
-      cube.isSolved(RubiksCubeModel::FACE::LEFT,  RubiksCubeModel::FACE::BACK)  ||
-      cube.isSolved(RubiksCubeModel::FACE::LEFT,  RubiksCubeModel::FACE::DOWN)  ||
-      cube.isSolved(RubiksCubeModel::FACE::FRONT, RubiksCubeModel::FACE::DOWN)  ||
-      cube.isSolved(RubiksCubeModel::FACE::RIGHT, RubiksCubeModel::FACE::DOWN)  ||
-      cube.isSolved(RubiksCubeModel::FACE::BACK,  RubiksCubeModel::FACE::DOWN);
+      cube.isSolved(F::UP,    F::LEFT)  ||
+      cube.isSolved(F::UP,    F::FRONT) ||
+      cube.isSolved(F::UP,    F::RIGHT) ||
+      cube.isSolved(F::UP,    F::BACK)  ||
+      cube.isSolved(F::LEFT,  F::FRONT) ||
+      cube.isSolved(F::FRONT, F::RIGHT) ||
+      cube.isSolved(F::RIGHT, F::BACK)  ||
+      cube.isSolved(F::LEFT,  F::BACK)  ||
+      cube.isSolved(F::LEFT,  F::DOWN)  ||
+      cube.isSolved(F::FRONT, F::DOWN)  ||
+      cube.isSolved(F::RIGHT, F::DOWN)  ||
+      cube.isSolved(F::BACK,  F::DOWN);
   }
 }
