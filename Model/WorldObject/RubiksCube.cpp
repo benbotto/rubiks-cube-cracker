@@ -256,8 +256,8 @@ namespace busybin
    */
   void RubiksCube::u()
   {
-    float    rads = half_pi<float>();
-    vec3     axis(0.0f, -1.0f, 0.0f);
+    float rads = half_pi<float>();
+    vec3  axis(0.0f, -1.0f, 0.0f);
 
     for (string face : this->faces["U"])
       this->cubies[face]->rotate(rads, axis);
@@ -288,7 +288,6 @@ namespace busybin
   {
     this->u();
     this->u();
-    this->rawCubeModel.u2();
   }
 
   /**
@@ -328,7 +327,6 @@ namespace busybin
   {
     this->l();
     this->l();
-    this->rawCubeModel.l2();
   }
 
   /**
@@ -368,7 +366,6 @@ namespace busybin
   {
     this->f();
     this->f();
-    this->rawCubeModel.f2();
   }
 
   /**
@@ -408,7 +405,6 @@ namespace busybin
   {
     this->r();
     this->r();
-    this->rawCubeModel.r2();
   }
 
   /**
@@ -448,7 +444,6 @@ namespace busybin
   {
     this->b();
     this->b();
-    this->rawCubeModel.b2();
   }
 
   /**
@@ -488,7 +483,6 @@ namespace busybin
   {
     this->d();
     this->d();
-    this->rawCubeModel.d2();
   }
 
   /**
@@ -528,7 +522,6 @@ namespace busybin
   {
     return this->m();
     return this->m();
-    this->rawCubeModel.m2();
   }
 
   /**
@@ -568,7 +561,6 @@ namespace busybin
   {
     this->e();
     this->e();
-    this->rawCubeModel.e2();
   }
 
   /**
@@ -606,9 +598,8 @@ namespace busybin
    */
   void RubiksCube::s2()
   {
-    this->s2();
-    this->s2();
-    this->rawCubeModel.s2();
+    this->s();
+    this->s();
   }
 }
 

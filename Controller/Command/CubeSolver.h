@@ -20,15 +20,19 @@ using std::cout;
 using std::endl;
 #include <functional>
 using std::bind;
-using std::ref;
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 using std::placeholders::_4;
 #include <atomic>
 using std::atomic_bool;
+#include <mutex>
+using std::mutex;
+using std::lock_guard;
 #include <vector>
 using std::vector;
+#include <queue>
+using std::queue;
 
 namespace busybin
 {
@@ -40,14 +44,21 @@ namespace busybin
     ThreadPool      threadPool;
     RubiksCube*     pCube;
     RubiksCubeModel cubeModel;
+    CubeMoveStore   cubeMoveStore;
     CubeMover*      pMover;
     atomic_bool     solving;
+    atomic_bool     movesInQueue;
+    queue<string>   moveQueue;
+    mutex           moveMutex;
 
     void solveCube();
+    void processGoalMoves(vector<string>& allMoves, vector<string>& goalMoves,
+      ModelMoveStore& modelMoveStore, unsigned goalNum);
 
   public:
     CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover);
     void onKeypress(int key, int scancode, int action, int mods);
+    void onPulse(double elapsed);
   };
 }
 
