@@ -9,16 +9,21 @@ namespace busybin
    * @param pMover Pointer to the CubeMover command.
    */
   CubeSolver::CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover) :
-    Command(pWorld, pWorldWnd), threadPool(1), solving(false)
+    Command(pWorld, pWorldWnd), threadPool(1),
+    cubeMoveStore(dynamic_cast<RubiksCube&>(this->getWorld()->at("RubiksCube"))),
+    solving(false), movesInQueue(false)
   {
     // Store the mover of enabling/disabling movement.
     this->pMover = pMover;
 
     // Listen for keypress events.
-    pWorldWnd->onKeypress(bind(&CubeSolver::onKeypress, ref(*this), _1, _2, _3, _4));
+    pWorldWnd->onKeypress(bind(&CubeSolver::onKeypress, this, _1, _2, _3, _4));
+
+    // Listen for pulse events.
+    pWorldWnd->onPulse(bind(&CubeSolver::onPulse, this, _1));
 
     // Store the cube.
-    this->pCube  = dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube"));
+    this->pCube = dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube"));
   }
 
   /**
@@ -45,13 +50,33 @@ namespace busybin
   }
 
   /**
+   * Check if there are queued up moves on pulse and render them as needed.
+   * @param elapsed The number of elapsed seconds since the last pulse.
+   */
+  void CubeSolver::onPulse(double elapsed)
+  {
+    if (this->movesInQueue)
+    {
+      lock_guard<mutex> threadLock(this->moveMutex);
+
+      while (!this->moveQueue.empty())
+      {
+        string move = this->moveQueue.front();
+        this->moveQueue.pop();
+        this->cubeMoveStore.getMoveFunc(move)();
+      }
+
+      this->movesInQueue = true;
+    }
+  }
+
+  /**
    * Solve the cube.  This is run in a separate thread.
    */
   void CubeSolver::solveCube()
   {
     RubiksCubeView cubeView;
     ModelMoveStore modelMoveStore(this->cubeModel);
-    CubeMoveStore  cubeMoveStore(*this->pCube);
     CubeSearcher   searcher(this->cubeModel, modelMoveStore);
     vector<string> allMoves;
     vector<string> goalMoves;
@@ -63,24 +88,9 @@ namespace busybin
 
     // Try to achieve the goals.
     searcher.find(goal1, goalMoves);
-    cout << "Found goal 1." << endl;
-    allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());
-    for (string move : goalMoves)
-    {
-      modelMoveStore.getMoveFunc(move)();
-      cubeMoveStore.getMoveFunc(move)();
-    }
-    goalMoves.clear();
-
+    this->processGoalMoves(allMoves, goalMoves, modelMoveStore, 1);
     searcher.find(goal2, goalMoves);
-    cout << "Found goal 2." << endl;
-    allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());
-    for (string move : goalMoves)
-    {
-      modelMoveStore.getMoveFunc(move)();
-      cubeMoveStore.getMoveFunc(move)();
-    }
-    goalMoves.clear();
+    this->processGoalMoves(allMoves, goalMoves, modelMoveStore, 2);
 
     // Print the moves.
     for (string move : allMoves)
@@ -93,6 +103,45 @@ namespace busybin
     // Done solving - re-enable movement.
     this->solving = false;
     this->pMover->enable();
+  }
+
+  /**
+   * Helper function to process moves after a goal is achived.
+   * @param allMoves This vector holds all the moves thus far.  The
+   *        goalMoves vector will be appended to it.
+   * @param goalMoves This vector holds the moves required to achieve
+   *        the goal.  These moves will be queued for the GL cube to
+   *        display, then the vector will be cleared.
+   * @param modelMoveStore The model move store for processing the moves
+   *        in the RC model copy.
+   * @param goalNum The goal number for verbosity.
+   */
+  void CubeSolver::processGoalMoves(vector<string>& allMoves,
+    vector<string>& goalMoves, ModelMoveStore& modelMoveStore,
+    unsigned goalNum)
+  {
+    cout << "Found goal " << goalNum << endl;
+
+    // Add goalMoves to the end of allMoves.
+    allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());
+
+    for (string move : goalMoves)
+    {
+      // Lock the move mutex so that onPulse doesn't simultaneously mangle
+      // the move queue.
+      lock_guard<mutex> threadLock(this->moveMutex);
+
+      // The RC model needs to be kept in sync as it is a copy
+      // of the actual RC model.
+      modelMoveStore.getMoveFunc(move)();
+
+      // Queue this move for the GL cube to render.
+      this->moveQueue.push(move);
+      this->movesInQueue = true;
+    }
+
+    // Clear the vector for the next goal.
+    goalMoves.clear();
   }
 }
 
