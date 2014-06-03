@@ -56,5 +56,13 @@ namespace busybin
       return secs.count();
     }
   }
+
+  /**
+   * Check if the timer is started.
+   */
+  bool Timer::isStarted() const
+  {
+    return this->started;
+  }
 }
 
