@@ -12,7 +12,6 @@ namespace busybin
   class Goal2 : public Goal
   {
   public:
-    Goal2();
     bool isSatisfied(const RubiksCubeModel& cube);
   };
 }

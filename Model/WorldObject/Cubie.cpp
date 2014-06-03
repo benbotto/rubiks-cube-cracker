@@ -23,6 +23,7 @@ namespace busybin
   {
     this->cubeRot.speed = 8.0f;
     this->translation   = translate(mat4(1.0f), position);
+    this->superGlow     = false;
     this->setMaterial(unique_ptr<Material>(new GrayPlastic()));
   }
 
@@ -43,6 +44,9 @@ namespace busybin
 
     // Install the material.
     this->getProgram()->setUniform("material", this->getMaterial());
+
+    // Setup super glow (debugging).
+    this->getProgram()->setUniform("superGlow", this->superGlow);
 
     // Draw the object.
     this->getProgram()->drawArrays(this->getVAO(), this->vertices.size());
@@ -79,6 +83,16 @@ namespace busybin
       this->cubeRot.desired, this->cubeRot.speed * (float)elapsed));
 
     return mat4_cast(this->cubeRot.orientation);
+  }
+
+  /**
+   * Enable super glow.  This is really for debugging - it highlights certain
+   * cubies in the Rubik's Cube.
+   * @param superGLow Whether or not to make this cube glow.
+   */
+  void Cubie::setSuperGlow(bool superGlow)
+  {
+    this->superGlow = superGlow;
   }
 }
 
