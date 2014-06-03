@@ -5,6 +5,7 @@
 #include "../CubeSearcher.h"
 #include "../../View/RubiksCubeView.h"
 #include "../../Util/ThreadPool.h"
+#include "../../Util/Timer.h"
 #include "../../Model/WorldObject/RubiksCube.h"
 #include "../../Model/RubiksCubeModel.h"
 #include "../../Model/MoveStore/ModelMoveStore.h"
@@ -51,6 +52,7 @@ namespace busybin
     atomic_bool     movesInQueue;
     queue<string>   moveQueue;
     mutex           moveMutex;
+    Timer           moveTimer;
 
     void solveCube();
     void processGoalMoves(vector<string>& allMoves, vector<string>& goalMoves,

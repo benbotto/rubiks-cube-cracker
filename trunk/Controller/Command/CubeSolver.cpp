@@ -11,7 +11,7 @@ namespace busybin
   CubeSolver::CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover) :
     Command(pWorld, pWorldWnd), threadPool(1),
     cubeMoveStore(dynamic_cast<RubiksCube&>(this->getWorld()->at("RubiksCube"))),
-    solving(false), movesInQueue(false)
+    solving(false), movesInQueue(false), moveTimer(false)
   {
     // Store the mover of enabling/disabling movement.
     this->pMover = pMover;
@@ -55,19 +55,26 @@ namespace busybin
    */
   void CubeSolver::onPulse(double elapsed)
   {
-    if (this->movesInQueue)
+    if (this->movesInQueue && 
+      (!this->moveTimer.isStarted() || this->moveTimer.getElapsedSeconds() >= 1))
     {
       lock_guard<mutex> threadLock(this->moveMutex);
+      
+      // Apply the next move.
+      string move = this->moveQueue.front();
+      this->moveQueue.pop();
+      this->cubeMoveStore.getMoveFunc(move)();
 
-      while (!this->moveQueue.empty())
-      {
-        string move = this->moveQueue.front();
-        this->moveQueue.pop();
-        this->cubeMoveStore.getMoveFunc(move)();
-      }
+      // Flag whether or not there are more moves for the next run.
+      this->movesInQueue = !this->moveQueue.empty();
 
-      this->movesInQueue = true;
+      // Restart the timer.
+      this->moveTimer.restart();
     }
+
+    // If solving is done and the queue is empty re-enable moves.
+    if (!solving && !this->movesInQueue)
+      this->pMover->enable();
   }
 
   /**
@@ -105,7 +112,6 @@ namespace busybin
 
     // Done solving - re-enable movement.
     this->solving = false;
-    this->pMover->enable();
   }
 
   /**

@@ -520,8 +520,8 @@ namespace busybin
    */
   void RubiksCube::m2()
   {
-    return this->m();
-    return this->m();
+    this->m();
+    this->m();
   }
 
   /**

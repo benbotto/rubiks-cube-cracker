@@ -22,6 +22,7 @@ namespace busybin
     void restart();
     void stop();
     double getElapsedSeconds() const;
+    bool isStarted() const;
   };
 }
 
