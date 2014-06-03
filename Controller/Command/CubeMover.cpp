@@ -55,6 +55,8 @@ namespace busybin
       case GLFW_KEY_U:
         if (mods & GLFW_MOD_SHIFT)
           this->pCube->uPrime();
+        else if (mods & GLFW_MOD_ALT)
+          this->pCube->u2();
         else
           this->pCube->u();
         break;
@@ -63,6 +65,8 @@ namespace busybin
       case GLFW_KEY_L:
         if (mods & GLFW_MOD_SHIFT)
           this->pCube->lPrime();
+        else if (mods & GLFW_MOD_ALT)
+          this->pCube->l2();
         else
           this->pCube->l();
         break;
@@ -71,6 +75,8 @@ namespace busybin
       case GLFW_KEY_F:
         if (mods & GLFW_MOD_SHIFT)
           this->pCube->fPrime();
+        else if (mods & GLFW_MOD_ALT)
+          this->pCube->f2();
         else
           this->pCube->f();
         break;
@@ -79,6 +85,8 @@ namespace busybin
       case GLFW_KEY_R:
         if (mods & GLFW_MOD_SHIFT)
           this->pCube->rPrime();
+        else if (mods & GLFW_MOD_ALT)
+          this->pCube->r2();
         else
           this->pCube->r();
         break;
@@ -87,6 +95,8 @@ namespace busybin
       case GLFW_KEY_B:
         if (mods & GLFW_MOD_SHIFT)
           this->pCube->bPrime();
+        else if (mods & GLFW_MOD_ALT)
+          this->pCube->b2();
         else
           this->pCube->b();
         break;
@@ -95,6 +105,8 @@ namespace busybin
       case GLFW_KEY_D:
         if (mods & GLFW_MOD_SHIFT)
           this->pCube->dPrime();
+        else if (mods & GLFW_MOD_ALT)
+          this->pCube->d2();
         else
           this->pCube->d();
         break;
@@ -103,6 +115,8 @@ namespace busybin
       case GLFW_KEY_M:
         if (mods & GLFW_MOD_SHIFT)
           this->pCube->mPrime();
+        else if (mods & GLFW_MOD_ALT)
+          this->pCube->m2();
         else
           this->pCube->m();
         break;
@@ -111,6 +125,8 @@ namespace busybin
       case GLFW_KEY_E:
         if (mods & GLFW_MOD_SHIFT)
           this->pCube->ePrime();
+        else if (mods & GLFW_MOD_ALT)
+          this->pCube->e2();
         else
           this->pCube->e();
         break;
@@ -119,6 +135,8 @@ namespace busybin
       case GLFW_KEY_S:
         if (mods & GLFW_MOD_SHIFT)
           this->pCube->sPrime();
+        else if (mods & GLFW_MOD_ALT)
+          this->pCube->s2();
         else
           this->pCube->s();
         break;

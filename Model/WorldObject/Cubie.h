@@ -16,6 +16,9 @@ using glm::quat;
 using glm::slerp;
 using glm::mat4_cast;
 using glm::normalize;
+using glm::dot;
+#include <cmath>
+using std::fabs;
 
 namespace busybin
 {
