@@ -12,10 +12,13 @@ in vec4 oColor;
 in vec3 oVertPos;
 in vec3 oTranslatedVertPos;
 
+// Lighting and material.
 uniform vec4           ambient;
 uniform DistanceLight  distLight;
 uniform Material       material;
+uniform bool           superGlow;
 
+// The resulting color.
 out vec4 fragColor;
 
 /**
@@ -81,6 +84,9 @@ void main()
       
       blendAmt  = min(min(blendX, blendY), blendZ);
       fragColor = mix(holdFrag, newFrag, blendAmt);
+
+      if (superGlow)
+        fragColor /= 2;
     }
   }
 

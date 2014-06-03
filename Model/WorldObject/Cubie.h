@@ -25,6 +25,7 @@ namespace busybin
   class Cubie : public Cube
   {
     mat4 translation;
+    bool superGlow;
 
     // For rotating the cubie.
     struct
@@ -43,6 +44,7 @@ namespace busybin
     RubiksCubeProgram* getProgram() const;
 
     void rotate(float rads, const vec3& axis);
+    void setSuperGlow(bool superGlow);
   };
 }
 
