@@ -82,6 +82,7 @@ namespace busybin
     vector<string> goalMoves;
     Goal1          goal1;
     Goal2          goal2;
+    Goal3          goal3;
 
     // Display the intial cube model.
     cubeView.render(this->cubeModel);
@@ -91,6 +92,8 @@ namespace busybin
     this->processGoalMoves(allMoves, goalMoves, modelMoveStore, 1);
     searcher.find(goal2, goalMoves);
     this->processGoalMoves(allMoves, goalMoves, modelMoveStore, 2);
+    searcher.find(goal3, goalMoves);
+    this->processGoalMoves(allMoves, goalMoves, modelMoveStore, 3);
 
     // Print the moves.
     for (string move : allMoves)

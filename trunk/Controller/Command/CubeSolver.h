@@ -12,6 +12,7 @@
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/Goal/Goal1.h"
 #include "../../Model/Goal/Goal2.h"
+#include "../../Model/Goal/Goal3.h"
 #include "../../OpenGLSeed/Controller/Command/Command.h"
 #include "../../OpenGLSeed/Model/World.h"
 #include "../../OpenGLSeed/View/WorldWindow.h"
