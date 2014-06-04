@@ -7,12 +7,12 @@
 namespace busybin
 {
   /**
-   * Goal 3 - solve a 2x2x2 cubie.
+   * Goal 3 - solve a 2x2x2 cube.
    */
   class Goal3 : public Goal
   {
   public:
-    bool isSatisfied(const RubiksCubeModel& cube);
+    bool isSatisfied(RubiksCubeModel& cube);
   };
 }
 
