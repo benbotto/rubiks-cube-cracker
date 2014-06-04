@@ -6,7 +6,7 @@ namespace busybin
    * Solve a 2x2x2 cube.
    * @param cube The cube.
    */
-  bool Goal3::isSatisfied(const RubiksCubeModel& cube)
+  bool Goal3::isSatisfied(RubiksCubeModel& cube)
   {
     this->updateSolved(cube);
 

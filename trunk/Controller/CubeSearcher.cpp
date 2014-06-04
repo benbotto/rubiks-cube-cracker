@@ -22,9 +22,15 @@ namespace busybin
   vector<string> CubeSearcher::find(Goal& goal, vector<string>& moves)
   {
     unsigned maxDepth = 0;
+    AutoTimer timer;
 
     while (!this->find(goal, 0, maxDepth, moves))
+    {
+      cout << "Finished depth " << maxDepth << ".  Elapsed time " 
+           << timer.getElapsedSeconds() << "s." << endl;
+
       ++maxDepth;
+    }
 
     return moves;
   }

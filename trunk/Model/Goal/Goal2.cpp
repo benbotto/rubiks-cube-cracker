@@ -6,7 +6,7 @@ namespace busybin
    * Check if an adjacent edge is solved.
    * @param cube The cube.
    */
-  bool Goal2::isSatisfied(const RubiksCubeModel& cube)
+  bool Goal2::isSatisfied(RubiksCubeModel& cube)
   {
     this->updateSolved(cube);
 
