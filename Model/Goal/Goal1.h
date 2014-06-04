@@ -12,7 +12,7 @@ namespace busybin
   class Goal1 : public Goal
   {
   public:
-    bool isSatisfied(const RubiksCubeModel& cube);
+    bool isSatisfied(RubiksCubeModel& cube);
   };
 }
 

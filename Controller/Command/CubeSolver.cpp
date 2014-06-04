@@ -87,20 +87,24 @@ namespace busybin
     CubeSearcher   searcher(this->cubeModel, modelMoveStore);
     vector<string> allMoves;
     vector<string> goalMoves;
-    Goal1          goal1;
-    Goal2          goal2;
-    Goal3          goal3;
+    vector<unique_ptr<Goal> > goals;
+
+    // Create the goals.
+    goals.push_back(unique_ptr<Goal>(new Goal1()));
+    goals.push_back(unique_ptr<Goal>(new Goal2()));
+    goals.push_back(unique_ptr<Goal>(new Goal3()));
+    goals.push_back(unique_ptr<Goal>(new Goal4()));
+    goals.push_back(unique_ptr<Goal>(new Goal5()));
 
     // Display the intial cube model.
     cubeView.render(this->cubeModel);
 
     // Try to achieve the goals.
-    searcher.find(goal1, goalMoves);
-    this->processGoalMoves(allMoves, goalMoves, modelMoveStore, 1);
-    searcher.find(goal2, goalMoves);
-    this->processGoalMoves(allMoves, goalMoves, modelMoveStore, 2);
-    searcher.find(goal3, goalMoves);
-    this->processGoalMoves(allMoves, goalMoves, modelMoveStore, 3);
+    for (unsigned i = 2; i < goals.size(); ++i)
+    {
+      searcher.find(*goals[i], goalMoves);
+      this->processGoalMoves(allMoves, goalMoves, modelMoveStore, i + 1);
+    }
 
     // Print the moves.
     for (string move : allMoves)
@@ -129,7 +133,7 @@ namespace busybin
     vector<string>& goalMoves, ModelMoveStore& modelMoveStore,
     unsigned goalNum)
   {
-    cout << "Found goal " << goalNum << endl;
+    cout << "Found goal " << goalNum << '.' << endl;
 
     // Add goalMoves to the end of allMoves.
     allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());

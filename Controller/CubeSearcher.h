@@ -4,6 +4,7 @@
 #include "../Model/RubiksCubeModel.h"
 #include "../Model/Goal/Goal.h"
 #include "../Model/MoveStore/ModelMoveStore.h"
+#include "../Util/AutoTimer.h"
 #include <vector>
 using std::vector;
 #include <string>

@@ -35,7 +35,7 @@ namespace busybin
     void updateSolved(const RubiksCubeModel& cube);
 
   public:
-    virtual bool isSatisfied(const RubiksCubeModel& cube) = 0;
+    virtual bool isSatisfied(RubiksCubeModel& cube) = 0;
   };
 }
 

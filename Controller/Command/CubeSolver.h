@@ -14,6 +14,8 @@
 #include "../../Model/Goal/Goal1.h"
 #include "../../Model/Goal/Goal2.h"
 #include "../../Model/Goal/Goal3.h"
+#include "../../Model/Goal/Goal4.h"
+#include "../../Model/Goal/Goal5.h"
 #include "../../OpenGLSeed/Controller/Command/Command.h"
 #include "../../OpenGLSeed/Model/World.h"
 #include "../../OpenGLSeed/View/WorldWindow.h"
@@ -35,6 +37,8 @@ using std::lock_guard;
 using std::vector;
 #include <queue>
 using std::queue;
+#include <memory>
+using std::unique_ptr;
 
 namespace busybin
 {
