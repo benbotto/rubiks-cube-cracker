@@ -7,7 +7,7 @@
 namespace busybin
 {
   /**
-   * Goal 6 - 2x2x3 cube with an additional edge solved.
+   * Goal 6 - 2x2x3 cube with an adjacent edge/corner solved.
    */
   class Goal6 : public Goal
   {
