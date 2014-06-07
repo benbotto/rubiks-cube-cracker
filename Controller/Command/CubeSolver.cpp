@@ -95,6 +95,8 @@ namespace busybin
     goals.push_back(unique_ptr<Goal>(new Goal3()));
     goals.push_back(unique_ptr<Goal>(new Goal4()));
     goals.push_back(unique_ptr<Goal>(new Goal5()));
+    goals.push_back(unique_ptr<Goal>(new Goal6()));
+    goals.push_back(unique_ptr<Goal>(new Goal7()));
 
     // Display the intial cube model.
     cubeView.render(this->cubeModel);

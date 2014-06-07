@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_GOAL6_H_
-#define _BUSYBIN_GOAL6_H_
+#ifndef _BUSYBIN_GOAL7_H_
+#define _BUSYBIN_GOAL7_H_
 
 #include "Goal.h"
 #include "../RubiksCubeModel.h"
@@ -7,9 +7,9 @@
 namespace busybin
 {
   /**
-   * Goal 6 - 2x2x3 cube with an additional edge solved.
+   * Goal 7 - 2 layers solved except for one corner/edge.
    */
-  class Goal6 : public Goal
+  class Goal7 : public Goal
   {
   public:
     bool isSatisfied(RubiksCubeModel& cube);
