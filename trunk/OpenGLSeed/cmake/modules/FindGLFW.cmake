@@ -21,11 +21,11 @@ if (GLFW_ROOT_DIR)
 endif (GLFW_ROOT_DIR)
 
 # Find the actual glfw header and library.
-find_path (GLFW_INCLUDE_DIR "GLFW/glfw3.h" paths ${_glfw_HEADER_SEARCH_DIRS})
+find_path (GLFW_INCLUDE_DIR "GLFW/glfw3.h" HINTS ${_glfw_HEADER_SEARCH_DIRS})
 if (UNIX)
-  find_library (GLFW_LIBRARY "glfw" paths ${_glfw_LIBRARY_SEARCH_DIRS})
+  find_library (GLFW_LIBRARY "glfw" HINTS ${_glfw_LIBRARY_SEARCH_DIRS})
 elseif (WIN32)
-  find_library (GLFW_LIBRARY "glfw3dll" paths ${_glfw_LIBRARY_SEARCH_DIRS}) # TODO: Maybe system32?
+  find_library (GLFW_LIBRARY "glfw3dll" HINTS ${_glfw_LIBRARY_SEARCH_DIRS})
 endif (UNIX)
 
 set (GLFW_INCLUDE_DIRS ${GLFW_INCLUDE_DIR})

@@ -8,7 +8,7 @@
 # Set up the search paths.
 if (UNIX)
   set (_glew_HEADER_SEARCH_DIRS "/usr/local/include" "/usr/include")
-  set (_glew_LIBRARY_SEARCH_DIRS "/usr/local/lib" "/usr/lib" "/usr/lib/x86_64-linux-gnu")
+  set (_glew_LIBRARY_SEARCH_DIRS "/usr/local/lib64" "/usr/local/lib" "/usr/lib" "/usr/lib/x86_64-linux-gnu")
 elseif (WIN32)
   set (_glew_HEADER_SEARCH_DIRS "c:/include")
   set (_glew_LIBRARY_SEARCH_DIRS "c:/lib")
@@ -21,11 +21,11 @@ if (GLEW_ROOT_DIR)
 endif (GLEW_ROOT_DIR)
 
 # Find the actual glew header and library.
-find_path (GLEW_INCLUDE_DIR "GL/glew.h" paths ${_glew_HEADER_SEARCH_DIRS})
+find_path (GLEW_INCLUDE_DIR "GL/glew.h" HINTS ${_glew_HEADER_SEARCH_DIRS})
 if (UNIX)
-  find_library (GLEW_LIBRARY "GLEW" paths ${_glew_LIBRARY_SEARCH_DIRS})
+  find_library (GLEW_LIBRARY "GLEW" HINTS ${_glew_LIBRARY_SEARCH_DIRS})
 elseif (WIN32)
-  find_library (GLEW_LIBRARY "glew32" paths ${_glew_LIBRARY_SEARCH_DIRS})
+  find_library (GLEW_LIBRARY "glew32" HINTS ${_glew_LIBRARY_SEARCH_DIRS})
 endif (UNIX)
 
 set (GLEW_INCLUDE_DIRS ${GLEW_INCLUDE_DIR})
