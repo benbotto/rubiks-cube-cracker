@@ -90,15 +90,11 @@ namespace busybin
     vector<unique_ptr<Goal> > goals;
 
     // Create the goals.
-    goals.push_back(unique_ptr<Goal>(new Goal1()));
-    goals.push_back(unique_ptr<Goal>(new Goal2()));
     goals.push_back(unique_ptr<Goal>(new Goal3()));
     goals.push_back(unique_ptr<Goal>(new Goal4()));
     goals.push_back(unique_ptr<Goal>(new Goal5()));
     goals.push_back(unique_ptr<Goal>(new Goal6()));
     goals.push_back(unique_ptr<Goal>(new Goal7()));
-    //goals.push_back(unique_ptr<Goal>(new Goal8()));
-    //goals.push_back(unique_ptr<Goal>(new Goal9()));
     goals.push_back(unique_ptr<Goal>(new Goal10()));
     goals.push_back(unique_ptr<Goal>(new Goal11()));
 
@@ -106,7 +102,7 @@ namespace busybin
     cubeView.render(this->cubeModel);
 
     // Try to achieve the goals.
-    for (unsigned i = 2; i < goals.size(); ++i)
+    for (unsigned i = 0; i < goals.size(); ++i)
     {
       searcher.find(*goals[i], goalMoves);
       this->processGoalMoves(allMoves, goalMoves, modelMoveStore, i + 1);
