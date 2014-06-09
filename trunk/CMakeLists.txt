@@ -27,6 +27,10 @@ set (SRC
   "./Model/Goal/Goal5.cpp"
   "./Model/Goal/Goal6.cpp"
   "./Model/Goal/Goal7.cpp"
+  "./Model/Goal/Goal8.cpp"
+  "./Model/Goal/Goal9.cpp"
+  "./Model/Goal/Goal10.cpp"
+  "./Model/Goal/Goal11.cpp"
   "./Model/RubiksCubeModel.cpp"
   "./Model/WorldObject/Cubie.cpp"
   "./Model/WorldObject/RubiksCube.cpp")
