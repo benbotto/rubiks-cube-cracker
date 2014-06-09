@@ -97,6 +97,10 @@ namespace busybin
     goals.push_back(unique_ptr<Goal>(new Goal5()));
     goals.push_back(unique_ptr<Goal>(new Goal6()));
     goals.push_back(unique_ptr<Goal>(new Goal7()));
+    //goals.push_back(unique_ptr<Goal>(new Goal8()));
+    //goals.push_back(unique_ptr<Goal>(new Goal9()));
+    goals.push_back(unique_ptr<Goal>(new Goal10()));
+    goals.push_back(unique_ptr<Goal>(new Goal11()));
 
     // Display the intial cube model.
     cubeView.render(this->cubeModel);
@@ -107,6 +111,9 @@ namespace busybin
       searcher.find(*goals[i], goalMoves);
       this->processGoalMoves(allMoves, goalMoves, modelMoveStore, i + 1);
     }
+
+    // At this point the two layers to solve have been decided, and two
+    // layers are solved except for one corner/edge pair.  
 
     // Print the moves.
     for (string move : allMoves)
