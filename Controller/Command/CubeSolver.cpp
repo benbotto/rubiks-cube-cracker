@@ -90,33 +90,33 @@ namespace busybin
     vector<unique_ptr<Goal> > goals;
 
     // Create the goals.
-    goals.push_back(unique_ptr<Goal>(new Goal3()));
-    goals.push_back(unique_ptr<Goal>(new Goal4()));
-    goals.push_back(unique_ptr<Goal>(new Goal5()));
-    goals.push_back(unique_ptr<Goal>(new Goal6()));
-    goals.push_back(unique_ptr<Goal>(new Goal7()));
-    goals.push_back(unique_ptr<Goal>(new Goal10()));
-    goals.push_back(unique_ptr<Goal>(new Goal11()));
+    goals.push_back(unique_ptr<Goal>(new Goal2x2x2()));
+    goals.push_back(unique_ptr<Goal>(new Goal2x2x2_Plus_One_Edge()));
+    goals.push_back(unique_ptr<Goal>(new Goal2x2x3()));
+    goals.push_back(unique_ptr<Goal>(new Goal2x2x3_Plus_One_Edge_Corner()));
+    goals.push_back(unique_ptr<Goal>(new Goal2_Layers_Minus_One_Corner_Edge()));
 
     // Display the intial cube model.
+    cout << "Initial cube state." << endl;
     cubeView.render(this->cubeModel);
+    cout << "Need to achieve " << goals.size() << " goals." << endl;
 
     // Try to achieve the goals.
     for (unsigned i = 0; i < goals.size(); ++i)
     {
       searcher.find(*goals[i], goalMoves);
-      this->processGoalMoves(allMoves, goalMoves, modelMoveStore, i + 1);
+      this->processGoalMoves(allMoves, goalMoves, modelMoveStore, i + 1, *goals[i]);
     }
 
-    // At this point the two layers to solve have been decided, and two
-    // layers are solved except for one corner/edge pair.  
-
     // Print the moves.
+    cout << "\n\nSolved the cube in " << allMoves.size() << " moves.\n";
+
     for (string move : allMoves)
       cout << move << ' ';
     cout << endl;
 
     // Display the cube model.
+    cout << "Resulting cube.\n";
     cubeView.render(this->cubeModel);
 
     // Done solving - re-enable movement.
@@ -133,12 +133,13 @@ namespace busybin
    * @param modelMoveStore The model move store for processing the moves
    *        in the RC model copy.
    * @param goalNum The goal number for verbosity.
+   * @param goal The goal for verbosity.
    */
   void CubeSolver::processGoalMoves(vector<string>& allMoves,
     vector<string>& goalMoves, ModelMoveStore& modelMoveStore,
-    unsigned goalNum)
+    unsigned goalNum, const Goal& goal)
   {
-    cout << "Found goal " << goalNum << '.' << endl;
+    cout << "Found goal " << goalNum << ": " << goal.getDescription() << '\n' << endl;
 
     // Add goalMoves to the end of allMoves.
     allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());

@@ -1,4 +1,4 @@
-#include "Goal3.h"
+#include "Goal2x2x2.h"
 
 namespace busybin
 {
@@ -6,7 +6,7 @@ namespace busybin
    * Solve a 2x2x2 cube.
    * @param cube The cube.
    */
-  bool Goal3::isSatisfied(RubiksCubeModel& cube)
+  bool Goal2x2x2::isSatisfied(RubiksCubeModel& cube)
   {
     this->updateSolved(cube);
 
@@ -20,5 +20,13 @@ namespace busybin
       (this->DF && this->RDF && this->RD && this->RF) ||
       (this->RD && this->RDB && this->DB && this->RB) ||
       (this->DB && this->LDB && this->LD && this->LB);
+  }
+
+  /**
+   * Describe the goal.
+   */
+  string Goal2x2x2::getDescription() const
+  {
+    return "Solve a 2x2x2 cube.";
   }
 }
