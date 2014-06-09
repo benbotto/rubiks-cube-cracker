@@ -1,4 +1,4 @@
-#include "Goal6.h"
+#include "Goal2x2x3_Plus_One_Edge_Corner.h"
 
 namespace busybin
 {
@@ -6,7 +6,7 @@ namespace busybin
    * Solve a 2x2x3 cube with an adjacent edge/corner solved.
    * @param cube The cube.
    */
-  bool Goal6::isSatisfied(RubiksCubeModel& cube)
+  bool Goal2x2x3_Plus_One_Edge_Corner::isSatisfied(RubiksCubeModel& cube)
   {
     this->updateSolved(cube);
 
@@ -60,5 +60,13 @@ namespace busybin
       (this->LU && this->LUB && this->UB && this->LB && this->LD && this->LDB && this->DB && this->LDF && this->DF) ||
       (this->LU && this->LUB && this->UB && this->LB && this->LD && this->LDB && this->DB && this->RUB && this->RU) ||
       (this->LU && this->LUB && this->UB && this->LB && this->LD && this->LDB && this->DB && this->RDB && this->RD);
+  }
+
+  /**
+   * Describe the goal.
+   */
+  string Goal2x2x3_Plus_One_Edge_Corner::getDescription() const
+  {
+    return "Solve a 2x2x3 cube with an adjacent edge/corner solved.";
   }
 }

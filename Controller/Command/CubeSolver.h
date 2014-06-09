@@ -11,17 +11,11 @@
 #include "../../Model/MoveStore/ModelMoveStore.h"
 #include "../../Model/MoveStore/CubeMoveStore.h"
 #include "../../Model/Goal/Goal.h"
-#include "../../Model/Goal/Goal1.h"
-#include "../../Model/Goal/Goal2.h"
-#include "../../Model/Goal/Goal3.h"
-#include "../../Model/Goal/Goal4.h"
-#include "../../Model/Goal/Goal5.h"
-#include "../../Model/Goal/Goal6.h"
-#include "../../Model/Goal/Goal7.h"
-#include "../../Model/Goal/Goal8.h"
-#include "../../Model/Goal/Goal9.h"
-#include "../../Model/Goal/Goal10.h"
-#include "../../Model/Goal/Goal11.h"
+#include "../../Model/Goal/Goal2x2x2.h"
+#include "../../Model/Goal/Goal2x2x2_Plus_One_Edge.h"
+#include "../../Model/Goal/Goal2x2x3.h"
+#include "../../Model/Goal/Goal2x2x3_Plus_One_Edge_Corner.h"
+#include "../../Model/Goal/Goal2_Layers_Minus_One_Corner_Edge.h"
 #include "../../OpenGLSeed/Controller/Command/Command.h"
 #include "../../OpenGLSeed/Model/World.h"
 #include "../../OpenGLSeed/View/WorldWindow.h"
@@ -66,7 +60,7 @@ namespace busybin
 
     void solveCube();
     void processGoalMoves(vector<string>& allMoves, vector<string>& goalMoves,
-      ModelMoveStore& modelMoveStore, unsigned goalNum);
+      ModelMoveStore& modelMoveStore, unsigned goalNum, const Goal& goal);
 
   public:
     CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover);
