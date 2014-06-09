@@ -1,12 +1,12 @@
-#include "Goal4.h"
+#include "Goal2x2x2_Plus_One_Edge.h"
 
 namespace busybin
 {
   /**
-   * Solve a 2x2x2 cube with two additional solved cubes with matching color.
+   * Solve a 2x2x2 cube with an additional edge.
    * @param cube The cube.
    */
-  bool Goal4::isSatisfied(RubiksCubeModel& cube)
+  bool Goal2x2x2_Plus_One_Edge::isSatisfied(RubiksCubeModel& cube)
   {
     this->updateSolved(cube);
 
@@ -19,5 +19,13 @@ namespace busybin
       (this->UF && this->RUF && this->RU && this->RF && this->RUB && (this->UB || this->RB)) ||
       (this->LD && this->LDF && this->DF && this->LF && this->LDB && (this->DB || this->LB)) ||
       (this->DF && this->RDF && this->RD && this->RF && this->RDB && (this->DB || this->RB));
+  }
+
+  /**
+   * Describe the goal.
+   */
+  string Goal2x2x2_Plus_One_Edge::getDescription() const
+  {
+    return "Solve a 2x2x2 cube with an additional edge.";
   }
 }

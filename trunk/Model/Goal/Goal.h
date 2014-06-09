@@ -2,6 +2,8 @@
 #define _BUSYBIN_GOAL_H_
 
 #include "../RubiksCubeModel.h"
+#include <string>
+using std::string;
 
 namespace busybin
 {
@@ -36,6 +38,7 @@ namespace busybin
 
   public:
     virtual bool isSatisfied(RubiksCubeModel& cube) = 0;
+    virtual string getDescription() const = 0;
   };
 }
 
