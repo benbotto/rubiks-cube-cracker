@@ -212,29 +212,10 @@ namespace busybin
   }
 
   /**
-   * Rotate the whole cube left.
+   * Rotate the whole cube about the x axis (e.g. down) counter-clockwise 
+   * as if looking at the R face.
    */
-  void RubiksCube::rotateLeft()
-  {
-    this->u();
-    this->dPrime();
-    this->ePrime();
-  }
-
-  /**
-   * Rotate the whole cube right.
-   */
-  void RubiksCube::rotateRight()
-  {
-    this->uPrime();
-    this->d();
-    this->e();
-  }
-
-  /**
-   * Rotate the whole cube down.
-   */
-  void RubiksCube::rotateDown()
+  void RubiksCube::xPrime()
   {
     this->l();
     this->m();
@@ -242,13 +223,85 @@ namespace busybin
   }
 
   /**
-   * Rotate the whole cube up.
+   * Rotate the whole cube about the x axis twice.
    */
-  void RubiksCube::rotateUp()
+  void RubiksCube::x2()
+  {
+    this->x();
+    this->x();
+  }
+
+  /**
+   * Rotate the whole cube about the y axis (e.g. left) as if looking at
+   * the U face.
+   */
+  void RubiksCube::y()
+  {
+    this->u();
+    this->dPrime();
+    this->ePrime();
+  }
+
+  /**
+   * Rotate the whole cube about the y axis (e.g. right) counter-clockwise
+   * as if looking at the U face.
+   */
+  void RubiksCube::yPrime()
+  {
+    this->uPrime();
+    this->d();
+    this->e();
+  }
+
+  /**
+   * Rotate the whole cube about the y axis twice.
+   */
+  void RubiksCube::y2()
+  {
+    this->y();
+    this->y();
+  }
+
+  /**
+   * Rotate the whole cube about the x axis (e.g. up) as if looking at the
+   * R face.
+   */
+  void RubiksCube::x()
   {
     this->lPrime();
     this->mPrime();
     this->r();
+  }
+
+  /**
+   * Rotate the whole cube about the z axis (e.g. sideways) as if looking at the
+   * F face.
+   */
+  void RubiksCube::z()
+  {
+    this->f();
+    this->s();
+    this->bPrime();
+  }
+
+  /**
+   * Rotate the whole cube about the z axis (e.g. sideways) counter-clockwise 
+   * as if looking at the F face.
+   */
+  void RubiksCube::zPrime()
+  {
+    this->fPrime();
+    this->sPrime();
+    this->b();
+  }
+
+  /**
+   * Rotate the whole cube about the z axis twice.
+   */
+  void RubiksCube::z2()
+  {
+    this->z();
+    this->z();
   }
 
   /**

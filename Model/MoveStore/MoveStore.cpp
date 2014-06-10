@@ -23,6 +23,18 @@ namespace busybin
       {"D", "D'"}, {"D'", "D"}, {"D2", "D2"},
       {"F", "F'"}, {"F'", "F"}, {"F2", "F2"},
       {"B", "B'"}, {"B'", "B"}, {"B2", "B2"}
+    }),
+    rotations
+    ({{
+      "X", "X'", "X2",
+      "Y", "Y'", "Y2",
+      "Z", "Z'", "Z2",
+    }}),
+    inverseRotations
+    ({
+      {"X",  "X'"}, {"X'", "X"}, {"X2", "X2"},
+      {"Y",  "Y'"}, {"Y'", "Y"}, {"Y2", "Y2"},
+      {"Z",  "Z'"}, {"Z'", "Z"}, {"Z2", "Z2"}
     })
   {
   }
@@ -97,6 +109,78 @@ namespace busybin
   bool MoveStore::isValidMove(const string& move) const
   {
     return this->getMoveMap().count(move) == 1;
+  }
+
+  /**
+   * Return the list of available rotations.
+   */
+  const array<string, 9>& MoveStore::getRotations() const
+  {
+    return this->rotations;
+  }
+
+  /**
+   * Get a rotation by index.
+   * @param ind The rotation index.
+   */
+  string MoveStore::getRotation(unsigned ind) const
+  {
+    if (ind >= this->rotations.size())
+      throw RubiksCubeException("Index out of bounds in MoveStore::getRotation.");
+
+    return this->rotations.at(ind);
+  }
+
+  /**
+   * Get the inverse of a rotation (e.g. the inverse of L is L').
+   * @param rotation The rotation for which the inverse shall be returned.
+   */
+  string MoveStore::getInverseRotation(const string& rotation) const
+  {
+    if (!this->inverseRotations.count(rotation))
+      throw RubiksCubeException("Index out of bounds in MoveStore::getInverseRotation.");
+
+    return this->inverseRotations.at(rotation);
+  }
+
+  /**
+   * Return the number of available rotations.
+   */
+  unsigned MoveStore::getNumRotations() const
+  {
+    return this->rotations.size();
+  }
+
+  /**
+   * Get the rotation function in the cube passed to the constructor
+   * based on the string representation.
+   * @param string The string representation of the rotation.
+   */
+  MoveStore::rotFunc_t& MoveStore::getRotationFunc(const string& rotation)
+  {
+    if (!this->getRotationMap().count(rotation))
+      throw RubiksCubeException("Invalid rotation in MoveStore::getRotationFunc.");
+
+    return this->getRotationMap()[rotation];
+  }
+
+  /**
+   * Get the inverse rotation function corresponding to rotation.
+   * @param string The string representation of the rotation for which the inverse
+   *        rotation function shall be returned.
+   */
+  MoveStore::rotFunc_t& MoveStore::getInverseRotationFunc(const string& rotation)
+  {
+    return this->getRotationMap()[this->getInverseRotation(rotation)];
+  }
+
+  /**
+   * Make sure the string representation of a rotation is valid.
+   * @param string The string representation of the rotation.
+   */
+  bool MoveStore::isValidRotation(const string& rotation) const
+  {
+    return this->getRotationMap().count(rotation) == 1;
   }
 }
 

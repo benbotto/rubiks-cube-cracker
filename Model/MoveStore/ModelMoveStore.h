@@ -12,13 +12,16 @@ namespace busybin
   class ModelMoveStore : public MoveStore
   {
     MoveStore::moveMap_t moveMap;
+    MoveStore::rotMap_t  rotMap;
 
   protected:
     MoveStore::moveMap_t& getMoveMap();
+    MoveStore::rotMap_t&  getRotationMap();
 
   public:
     ModelMoveStore(RubiksCubeModel& cube);
     const MoveStore::moveMap_t& getMoveMap() const;
+    const MoveStore::rotMap_t& getRotationMap() const;
   };
 }
 

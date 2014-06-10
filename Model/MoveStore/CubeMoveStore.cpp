@@ -33,6 +33,19 @@ namespace busybin
     this->moveMap["B"]  = bind(&RubiksCube::b,      &cube);
     this->moveMap["B'"] = bind(&RubiksCube::bPrime, &cube);
     this->moveMap["B2"] = bind(&RubiksCube::b2,     &cube);
+
+    // Set up the rotation map.
+    this->rotMap["X"]  = bind(&RubiksCube::x,      &cube);
+    this->rotMap["X'"] = bind(&RubiksCube::xPrime, &cube);
+    this->rotMap["X2"] = bind(&RubiksCube::x2,     &cube);
+
+    this->rotMap["Y"]  = bind(&RubiksCube::y,      &cube);
+    this->rotMap["Y'"] = bind(&RubiksCube::yPrime, &cube);
+    this->rotMap["Y2"] = bind(&RubiksCube::y2,     &cube);
+
+    this->rotMap["Z"]  = bind(&RubiksCube::z,      &cube);
+    this->rotMap["Z'"] = bind(&RubiksCube::zPrime, &cube);
+    this->rotMap["Z2"] = bind(&RubiksCube::z2,     &cube);
   }
 
   /**
@@ -46,11 +59,29 @@ namespace busybin
   }
 
   /**
-   * Constant version of the abolve.
+   * Constant version of the above.
    */
   const MoveStore::moveMap_t& CubeMoveStore::getMoveMap() const
   {
     return this->moveMap;
+  }
+
+  /**
+   * Get a rotation map with the string representation of a rotation
+   * to the corresponding rotation function in the cube passed
+   * to the constructor.
+   */
+  MoveStore::rotMap_t& CubeMoveStore::getRotationMap()
+  {
+    return this->rotMap;
+  }
+
+  /**
+   * Constant version of the above.
+   */
+  const MoveStore::rotMap_t& CubeMoveStore::getRotationMap() const
+  {
+    return this->rotMap;
   }
 }
 
