@@ -754,35 +754,81 @@ namespace busybin
   }
 
   /**
-   * Rotate the whole cube left.
+   * Rotate the whole cube about the x axis (e.g. up) as if looking at the
+   * R face.
    */
-  RubiksCubeModel& RubiksCubeModel::rotateLeft()
-  {
-    return this->u().dPrime().ePrime();
-  }
-
-  /**
-   * Rotate the whole cube right.
-   */
-  RubiksCubeModel& RubiksCubeModel::rotateRight()
-  {
-    return this->uPrime().d().e();
-  }
-
-  /**
-   * Rotate the whole cube up.
-   */
-  RubiksCubeModel& RubiksCubeModel::rotateUp()
+  RubiksCubeModel& RubiksCubeModel::x()
   {
     return this->lPrime().mPrime().r();
   }
 
   /**
-   * Rotate the whole cube down.
+   * Rotate the whole cube about the x axis (e.g. down) counter-clockwise 
+   * as if looking at the R face.
    */
-  RubiksCubeModel& RubiksCubeModel::rotateDown()
+  RubiksCubeModel& RubiksCubeModel::xPrime()
   {
     return this->l().m().rPrime();
+  }
+
+  /**
+   * Rotate the whole cube about the x axis twice.
+   */
+  RubiksCubeModel& RubiksCubeModel::x2()
+  {
+    return this->x().x();
+  }
+
+  /**
+   * Rotate the whole cube about the y axis (e.g. left) as if looking at
+   * the U face.
+   */
+  RubiksCubeModel& RubiksCubeModel::y()
+  {
+    return this->u().dPrime().ePrime();
+  }
+
+  /**
+   * Rotate the whole cube about the y axis (e.g. right) counter-clockwise
+   * as if looking at the U face.
+   */
+  RubiksCubeModel& RubiksCubeModel::yPrime()
+  {
+    return this->uPrime().d().e();
+  }
+
+  /**
+   * Rotate the whole cube about the y axis twice.
+   */
+  RubiksCubeModel& RubiksCubeModel::y2()
+  {
+    return this->y().y();
+  }
+
+  /**
+   * Rotate the whole cube about the z axis (e.g. sideways) as if looking at the
+   * F face.
+   */
+  RubiksCubeModel& RubiksCubeModel::z()
+  {
+    return this->f().s().bPrime();
+  }
+
+  /**
+   * Rotate the whole cube about the z axis (e.g. sideways) counter-clockwise 
+   * as if looking at the F face.
+   */
+  RubiksCubeModel& RubiksCubeModel::zPrime()
+  {
+    return this->fPrime().sPrime().b();
+  }
+
+  /**
+   * Rotate the whole cube about the z axis twice.
+   */
+  RubiksCubeModel& RubiksCubeModel::z2()
+  {
+    return this->z().z();
   }
 }
 
