@@ -13,6 +13,7 @@ namespace busybin
   {
   public:
     bool isSatisfied(RubiksCubeModel& cube);
+    bool isOriented(RubiksCubeModel& cube);
     string getDescription() const;
   };
 }

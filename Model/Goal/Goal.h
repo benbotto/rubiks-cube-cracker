@@ -38,6 +38,7 @@ namespace busybin
 
   public:
     virtual bool isSatisfied(RubiksCubeModel& cube) = 0;
+    virtual bool isOriented(RubiksCubeModel& cube);
     virtual string getDescription() const = 0;
   };
 }
