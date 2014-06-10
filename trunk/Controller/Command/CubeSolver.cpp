@@ -10,7 +10,7 @@ namespace busybin
    */
   CubeSolver::CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover) :
     Command(pWorld, pWorldWnd), threadPool(1),
-    cubeMoveStore(dynamic_cast<RubiksCube&>(this->getWorld()->at("RubiksCube"))),
+    cubeTwistStore(dynamic_cast<RubiksCube&>(this->getWorld()->at("RubiksCube"))),
     solving(false), movesInQueue(false), moveTimer(false)
   {
     // Store the mover of enabling/disabling movement.
@@ -63,7 +63,7 @@ namespace busybin
       // Apply the next move.
       string move = this->moveQueue.front();
       this->moveQueue.pop();
-      this->cubeMoveStore.getMoveFunc(move)();
+      this->cubeTwistStore.getMoveFunc(move)();
 
       // Flag whether or not there are more moves for the next run.
       this->movesInQueue = !this->moveQueue.empty();
@@ -82,11 +82,11 @@ namespace busybin
    */
   void CubeSolver::solveCube()
   {
-    RubiksCubeView cubeView;
-    ModelMoveStore modelMoveStore(this->cubeModel);
-    CubeSearcher   searcher(this->cubeModel, modelMoveStore);
-    vector<string> allMoves;
-    vector<string> goalMoves;
+    RubiksCubeView  cubeView;
+    ModelTwistStore modelTwistStore(this->cubeModel);
+    CubeSearcher    searcher(this->cubeModel, modelTwistStore);
+    vector<string>  allMoves;
+    vector<string>  goalMoves;
     vector<unique_ptr<Goal> > goals;
 
     // Create the goals.
@@ -101,11 +101,15 @@ namespace busybin
     cubeView.render(this->cubeModel);
     cout << "Need to achieve " << goals.size() << " goals." << endl;
 
-    // Try to achieve the goals.
     for (unsigned i = 0; i < goals.size(); ++i)
     {
-      searcher.find(*goals[i], goalMoves);
-      this->processGoalMoves(allMoves, goalMoves, modelMoveStore, i + 1, *goals[i]);
+      // Find the goal.
+      goalMoves = searcher.findGoal(*goals[i]);
+      this->processGoalMoves(allMoves, goalMoves, modelTwistStore, i + 1, *goals[i]);
+
+      // Find the orientation.  After each goal is achieved, the cube
+      // may need to be reoriented.
+      //goalMoves = searcher.findOrientation(*goals[i]);
     }
 
     // Print the moves.
@@ -136,7 +140,7 @@ namespace busybin
    * @param goal The goal for verbosity.
    */
   void CubeSolver::processGoalMoves(vector<string>& allMoves,
-    vector<string>& goalMoves, ModelMoveStore& modelMoveStore,
+    vector<string>& goalMoves, MoveStore& moveStore,
     unsigned goalNum, const Goal& goal)
   {
     cout << "Found goal " << goalNum << ": " << goal.getDescription() << '\n' << endl;
@@ -152,7 +156,7 @@ namespace busybin
 
       // The RC model needs to be kept in sync as it is a copy
       // of the actual RC model.
-      modelMoveStore.getMoveFunc(move)();
+      moveStore.getMoveFunc(move)();
 
       // Queue this move for the GL cube to render.
       this->moveQueue.push(move);

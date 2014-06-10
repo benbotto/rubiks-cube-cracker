@@ -3,7 +3,7 @@
 
 #include "../Model/RubiksCubeModel.h"
 #include "../Model/Goal/Goal.h"
-#include "../Model/MoveStore/ModelMoveStore.h"
+#include "../Model/MoveStore/MoveStore.h"
 #include "../Util/AutoTimer.h"
 #include <vector>
 using std::vector;
@@ -18,14 +18,16 @@ namespace busybin
   class CubeSearcher
   {
     RubiksCubeModel* const pCube;
-    ModelMoveStore*  pMoveStore;
+    MoveStore*       pMoveStore;
 
-    bool find(Goal& goal, unsigned depth, unsigned maxDepth,
+    bool findGoal(Goal& goal, unsigned depth, unsigned maxDepth,
       vector<string>& moves);
-
+    bool findOrientation(Goal& goal, unsigned depth, unsigned maxDepth,
+      vector<string>& moves);
   public:
-    CubeSearcher(RubiksCubeModel& cube, ModelMoveStore& moveStore);
-    vector<string> find(Goal& goal, vector<string>& moves);
+    CubeSearcher(RubiksCubeModel& cube, MoveStore& moveStore);
+    vector<string> findGoal(Goal& goal);
+    vector<string> findOrientation(Goal& goal);
   };
 }
 

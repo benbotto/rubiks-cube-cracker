@@ -7,7 +7,7 @@ namespace busybin
    * @param cube The cube (must stay in scope).
    * @param moveStore A reference to the move storage.
    */
-  CubeSearcher::CubeSearcher(RubiksCubeModel& cube, ModelMoveStore& moveStore) :
+  CubeSearcher::CubeSearcher(RubiksCubeModel& cube, MoveStore& moveStore) :
     pCube(&cube), pMoveStore(&moveStore)
   {
   }
@@ -15,23 +15,22 @@ namespace busybin
   /**
    * Search the cube until goal is reached and return the moves required
    * to acieve goal.
-   * @param goal The goal to achieve.
-   * @param moves A vector of strings to which the solving moves will
-   *        be appended.
+   * @param goal The goal to achieve (isSatisfied is called on the goal).
    */
-  vector<string> CubeSearcher::find(Goal& goal, vector<string>& moves)
+  vector<string> CubeSearcher::findGoal(Goal& goal)
   {
     unsigned maxDepth = 0;
+    vector<string> moves;
     AutoTimer timer;
 
-    while (!this->find(goal, 0, maxDepth, moves))
+    while (!this->findGoal(goal, 0, maxDepth, moves))
     {
       cout << "Finished depth " << maxDepth << ".  Elapsed time " 
            << timer.getElapsedSeconds() << "s." << endl;
 
       ++maxDepth;
     }
-
+    
     return moves;
   }
 
@@ -42,7 +41,7 @@ namespace busybin
    * @param maxDepth The maximum depth.
    * @param moves A vector of moves that will be filled.
    */
-  bool CubeSearcher::find(Goal& goal, unsigned depth,
+  bool CubeSearcher::findGoal(Goal& goal, unsigned depth,
     unsigned maxDepth, vector<string>& moves)
   {
     bool solved = false;
@@ -62,7 +61,7 @@ namespace busybin
       this->pMoveStore->getMoveFunc(move)();
 
       // If this move satisfies the goal break out of the loop.
-      if (this->find(goal, depth + 1, maxDepth, moves))
+      if (this->findGoal(goal, depth + 1, maxDepth, moves))
         solved = true;
       else
         moves.pop_back();
