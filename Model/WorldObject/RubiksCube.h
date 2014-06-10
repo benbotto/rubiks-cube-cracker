@@ -67,10 +67,17 @@ namespace busybin
 
     RubiksCubeModel getRawModel() const;
 
-    void rotateLeft();
-    void rotateRight();
-    void rotateDown();
-    void rotateUp();
+    void x();
+    void xPrime();
+    void x2();
+
+    void y();
+    void yPrime();
+    void y2();
+
+    void z();
+    void zPrime();
+    void z2();
 
     void u();
     void uPrime();
