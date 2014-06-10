@@ -8,8 +8,10 @@
 #include "../../Util/Timer.h"
 #include "../../Model/WorldObject/RubiksCube.h"
 #include "../../Model/RubiksCubeModel.h"
-#include "../../Model/MoveStore/ModelMoveStore.h"
-#include "../../Model/MoveStore/CubeMoveStore.h"
+#include "../../Model/MoveStore/ModelTwistStore.h"
+#include "../../Model/MoveStore/ModelRotationStore.h"
+#include "../../Model/MoveStore/CubeTwistStore.h"
+#include "../../Model/MoveStore/CubeRotationStore.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/Goal/Goal2x2x2.h"
 #include "../../Model/Goal/Goal2x2x2_Plus_One_Edge.h"
@@ -50,7 +52,7 @@ namespace busybin
     ThreadPool      threadPool;
     RubiksCube*     pCube;
     RubiksCubeModel cubeModel;
-    CubeMoveStore   cubeMoveStore;
+    CubeTwistStore  cubeTwistStore;
     CubeMover*      pMover;
     atomic_bool     solving;
     atomic_bool     movesInQueue;
@@ -60,7 +62,7 @@ namespace busybin
 
     void solveCube();
     void processGoalMoves(vector<string>& allMoves, vector<string>& goalMoves,
-      ModelMoveStore& modelMoveStore, unsigned goalNum, const Goal& goal);
+      MoveStore& moveStore, unsigned goalNum, const Goal& goal);
 
   public:
     CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover);

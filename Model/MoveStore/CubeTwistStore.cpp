@@ -1,4 +1,4 @@
-#include "CubeMoveStore.h"
+#include "CubeTwistStore.h"
 
 namespace busybin
 {
@@ -7,7 +7,7 @@ namespace busybin
    * @param cube A RubiksCube reference for storing the move
    *        string->function map.
    */
-  CubeMoveStore::CubeMoveStore(RubiksCube& cube)
+  CubeTwistStore::CubeTwistStore(RubiksCube& cube)
   {
     // Set up the move map.
     this->moveMap["L"]  = bind(&RubiksCube::l,      &cube);
@@ -33,19 +33,6 @@ namespace busybin
     this->moveMap["B"]  = bind(&RubiksCube::b,      &cube);
     this->moveMap["B'"] = bind(&RubiksCube::bPrime, &cube);
     this->moveMap["B2"] = bind(&RubiksCube::b2,     &cube);
-
-    // Set up the rotation map.
-    this->rotMap["X"]  = bind(&RubiksCube::x,      &cube);
-    this->rotMap["X'"] = bind(&RubiksCube::xPrime, &cube);
-    this->rotMap["X2"] = bind(&RubiksCube::x2,     &cube);
-
-    this->rotMap["Y"]  = bind(&RubiksCube::y,      &cube);
-    this->rotMap["Y'"] = bind(&RubiksCube::yPrime, &cube);
-    this->rotMap["Y2"] = bind(&RubiksCube::y2,     &cube);
-
-    this->rotMap["Z"]  = bind(&RubiksCube::z,      &cube);
-    this->rotMap["Z'"] = bind(&RubiksCube::zPrime, &cube);
-    this->rotMap["Z2"] = bind(&RubiksCube::z2,     &cube);
   }
 
   /**
@@ -53,7 +40,7 @@ namespace busybin
    * to the corresponding move function in the cube passed
    * to the constructor.
    */
-  MoveStore::moveMap_t& CubeMoveStore::getMoveMap()
+  MoveStore::moveFuncMap_t& CubeTwistStore::getMoveMap()
   {
     return this->moveMap;
   }
@@ -61,27 +48,9 @@ namespace busybin
   /**
    * Constant version of the above.
    */
-  const MoveStore::moveMap_t& CubeMoveStore::getMoveMap() const
+  const MoveStore::moveFuncMap_t& CubeTwistStore::getMoveMap() const
   {
     return this->moveMap;
-  }
-
-  /**
-   * Get a rotation map with the string representation of a rotation
-   * to the corresponding rotation function in the cube passed
-   * to the constructor.
-   */
-  MoveStore::rotMap_t& CubeMoveStore::getRotationMap()
-  {
-    return this->rotMap;
-  }
-
-  /**
-   * Constant version of the above.
-   */
-  const MoveStore::rotMap_t& CubeMoveStore::getRotationMap() const
-  {
-    return this->rotMap;
   }
 }
 
