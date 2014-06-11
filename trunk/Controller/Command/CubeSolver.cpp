@@ -9,8 +9,10 @@ namespace busybin
    * @param pMover Pointer to the CubeMover command.
    */
   CubeSolver::CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover) :
-    Command(pWorld, pWorldWnd), threadPool(1),
-    cubeTwistStore(dynamic_cast<RubiksCube&>(this->getWorld()->at("RubiksCube"))),
+    Command(pWorld, pWorldWnd),
+    threadPool(1),
+    pCube(dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube"))),
+    cubeTwistStore(*this->pCube), cubeRotStore(*this->pCube),
     solving(false), movesInQueue(false), moveTimer(false)
   {
     // Store the mover of enabling/disabling movement.
@@ -21,9 +23,6 @@ namespace busybin
 
     // Listen for pulse events.
     pWorldWnd->onPulse(bind(&CubeSolver::onPulse, this, _1));
-
-    // Store the cube.
-    this->pCube = dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube"));
   }
 
   /**
@@ -55,15 +54,21 @@ namespace busybin
    */
   void CubeSolver::onPulse(double elapsed)
   {
+    // If there is a move in the queue and the move timer isn't running
+    // (1 second is taken between moves to allow for animation).
     if (this->movesInQueue && 
       (!this->moveTimer.isStarted() || this->moveTimer.getElapsedSeconds() >= 1))
     {
       lock_guard<mutex> threadLock(this->moveMutex);
-      
-      // Apply the next move.
       string move = this->moveQueue.front();
       this->moveQueue.pop();
-      this->cubeTwistStore.getMoveFunc(move)();
+
+      // Apply the next move.  It could be a twist or a rotation.
+      if (this->cubeTwistStore.isValidMove(move))
+        this->cubeTwistStore.getMoveFunc(move)();
+      else
+        this->cubeRotStore.getMoveFunc(move)();
+
 
       // Flag whether or not there are more moves for the next run.
       this->movesInQueue = !this->moveQueue.empty();
@@ -82,19 +87,21 @@ namespace busybin
    */
   void CubeSolver::solveCube()
   {
-    RubiksCubeView  cubeView;
-    ModelTwistStore modelTwistStore(this->cubeModel);
-    CubeSearcher    searcher(this->cubeModel, modelTwistStore);
-    vector<string>  allMoves;
-    vector<string>  goalMoves;
-    vector<unique_ptr<Goal> > goals;
+    RubiksCubeView             cubeView;
+    CubeSearcher               searcher;
+    vector<string>             allMoves;
+    vector<string>             goalMoves;
+    ModelTwistStore            mdlTwistStore(this->cubeModel);
+    ModelRotationStore         mdlRotStore(this->cubeModel);
+    vector<GoalAndMoveStore>   goals;
 
     // Create the goals.
-    goals.push_back(unique_ptr<Goal>(new Goal2x2x2()));
-    goals.push_back(unique_ptr<Goal>(new Goal2x2x2_Plus_One_Edge()));
-    goals.push_back(unique_ptr<Goal>(new Goal2x2x3()));
-    goals.push_back(unique_ptr<Goal>(new Goal2x2x3_Plus_One_Edge_Corner()));
-    goals.push_back(unique_ptr<Goal>(new Goal2_Layers_Minus_One_Corner_Edge()));
+    goals.push_back({unique_ptr<Goal>(new Goal2x2x2()),                          &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new Orient2x2x2()),                        &mdlRotStore});
+    goals.push_back({unique_ptr<Goal>(new Goal2x2x2_Plus_One_Edge()),            &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new Goal2x2x3()),                          &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new Goal2x2x3_Plus_One_Edge_Corner()),     &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new Goal2_Layers_Minus_One_Corner_Edge()), &mdlTwistStore});
 
     // Display the intial cube model.
     cout << "Initial cube state." << endl;
@@ -104,12 +111,8 @@ namespace busybin
     for (unsigned i = 0; i < goals.size(); ++i)
     {
       // Find the goal.
-      goalMoves = searcher.findGoal(*goals[i]);
-      this->processGoalMoves(allMoves, goalMoves, modelTwistStore, i + 1, *goals[i]);
-
-      // Find the orientation.  After each goal is achieved, the cube
-      // may need to be reoriented.
-      //goalMoves = searcher.findOrientation(*goals[i]);
+      goalMoves = searcher.findGoal(*goals[i].pGoal, this->cubeModel, *goals[i].pMoveStore);
+      this->processGoalMoves(*goals[i].pGoal, *goals[i].pMoveStore, i + 1, allMoves, goalMoves);
     }
 
     // Print the moves.
@@ -129,19 +132,18 @@ namespace busybin
 
   /**
    * Helper function to process moves after a goal is achived.
+   * @param goal The goal for verbosity.
+   * @param moveStore The MoveStore for processing the moves
+   *        in the RC model copy.
+   * @param goalNum The goal number for verbosity.
    * @param allMoves This vector holds all the moves thus far.  The
    *        goalMoves vector will be appended to it.
    * @param goalMoves This vector holds the moves required to achieve
    *        the goal.  These moves will be queued for the GL cube to
    *        display, then the vector will be cleared.
-   * @param modelMoveStore The model move store for processing the moves
-   *        in the RC model copy.
-   * @param goalNum The goal number for verbosity.
-   * @param goal The goal for verbosity.
    */
-  void CubeSolver::processGoalMoves(vector<string>& allMoves,
-    vector<string>& goalMoves, MoveStore& moveStore,
-    unsigned goalNum, const Goal& goal)
+  void CubeSolver::processGoalMoves(const Goal& goal, MoveStore& moveStore,
+    unsigned goalNum, vector<string>& allMoves, vector<string>& goalMoves)
   {
     cout << "Found goal " << goalNum << ": " << goal.getDescription() << '\n' << endl;
 

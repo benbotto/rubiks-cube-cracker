@@ -23,17 +23,6 @@ namespace busybin
   }
 
   /**
-   * Orient the cube so that the 2x2x2 is in the front, left, down.
-   * @param cube The cube.
-   */
-  bool Goal2x2x2::isOriented(RubiksCubeModel& cube)
-  {
-    this->updateSolved(cube);
-
-    return this->LD && this->LDF && this->DF && this->LF;
-  }
-
-  /**
    * Describe the goal.
    */
   string Goal2x2x2::getDescription() const

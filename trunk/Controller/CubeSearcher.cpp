@@ -3,27 +3,19 @@
 namespace busybin
 {
   /**
-   * Initialize.
-   * @param cube The cube (must stay in scope).
-   * @param moveStore A reference to the move storage.
-   */
-  CubeSearcher::CubeSearcher(RubiksCubeModel& cube, MoveStore& moveStore) :
-    pCube(&cube), pMoveStore(&moveStore)
-  {
-  }
-
-  /**
    * Search the cube until goal is reached and return the moves required
    * to acieve goal.
    * @param goal The goal to achieve (isSatisfied is called on the goal).
+   * @param cube The cube to search.
+   * @param moveStore A MoveStore instance for retrieving moves.
    */
-  vector<string> CubeSearcher::findGoal(Goal& goal)
+  vector<string> CubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore)
   {
     unsigned maxDepth = 0;
     vector<string> moves;
     AutoTimer timer;
 
-    while (!this->findGoal(goal, 0, maxDepth, moves))
+    while (!this->findGoal(goal, cube, moveStore, 0, maxDepth, moves))
     {
       cout << "Finished depth " << maxDepth << ".  Elapsed time " 
            << timer.getElapsedSeconds() << "s." << endl;
@@ -37,37 +29,40 @@ namespace busybin
   /**
    * Find goal.
    * @param goal The goal to achieve.
+   * @param cube The cube to search.
+   * @param moveStore A MoveStore instance for retrieving moves.
    * @param depth The current depth of the search.
    * @param maxDepth The maximum depth.
    * @param moves A vector of moves that will be filled.
    */
-  bool CubeSearcher::findGoal(Goal& goal, unsigned depth,
-    unsigned maxDepth, vector<string>& moves)
+  bool CubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
+    unsigned depth, unsigned maxDepth, vector<string>& moves)
   {
-    bool solved = false;
+    bool     solved   = false;
+    unsigned numMoves = moveStore.getNumMoves();
 
     // Check if the goal is satisfied.
-    if (goal.isSatisfied(*this->pCube))
+    if (goal.isSatisfied(cube))
       return true;
 
     if (depth == maxDepth)
       return false;
 
-    for (unsigned i = 0; i < this->pMoveStore->getNumMoves() && !solved; ++i)
+    for (unsigned i = 0; i < numMoves && !solved; ++i)
     {
       // Apply the next move.
-      string move = this->pMoveStore->getMove(i);
+      string move = moveStore.getMove(i);
       moves.push_back(move);
-      this->pMoveStore->getMoveFunc(move)();
+      moveStore.getMoveFunc(move)();
 
       // If this move satisfies the goal break out of the loop.
-      if (this->findGoal(goal, depth + 1, maxDepth, moves))
+      if (this->findGoal(goal, cube, moveStore, depth + 1, maxDepth, moves))
         solved = true;
       else
         moves.pop_back();
 
       // Revert the move.
-      this->pMoveStore->getInverseMoveFunc(move)();
+      moveStore.getInverseMoveFunc(move)();
     }
 
     return solved;

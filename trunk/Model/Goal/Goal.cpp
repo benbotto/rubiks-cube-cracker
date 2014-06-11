@@ -31,13 +31,5 @@ namespace busybin
     this->RB  = cube.isSolved(F::RIGHT, F::BACK);
     this->RD  = cube.isSolved(F::RIGHT, F::DOWN);
   }
-
-  /**
-   * Check if the cube is oriented correctly.
-   */
-  bool Goal::isOriented(RubiksCubeModel& cube) // TODO: remove
-  {
-    return true;
-  }
 }
 
