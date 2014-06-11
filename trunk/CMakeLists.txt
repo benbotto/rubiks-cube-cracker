@@ -26,10 +26,10 @@ set (SRC
   "./Model/Goal/Goal.cpp"
   "./Model/Goal/Goal2x2x2.cpp"
   "./Model/Goal/Orient2x2x2.cpp"
-  "./Model/Goal/Goal2x2x2_Plus_One_Edge.cpp"
+  "./Model/Goal/Goal2x2x2_1x1x2.cpp"
   "./Model/Goal/Goal2x2x3.cpp"
-  "./Model/Goal/Goal2x2x3_Plus_One_Edge_Corner.cpp"
-  "./Model/Goal/Goal2_Layers_Minus_One_Corner_Edge.cpp"
+  "./Model/Goal/Goal2x2x3_1x1x2.cpp"
+  "./Model/Goal/Goal2x2x3_1x2x2.cpp"
   "./Model/RubiksCubeModel.cpp"
   "./Model/WorldObject/Cubie.cpp"
   "./Model/WorldObject/RubiksCube.cpp")
