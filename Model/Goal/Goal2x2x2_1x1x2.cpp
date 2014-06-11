@@ -1,12 +1,12 @@
-#include "Goal2x2x2_Plus_One_Edge.h"
+#include "Goal2x2x2_1x1x2.h"
 
 namespace busybin
 {
   /**
-   * Solve a 2x2x2 cube with an additional edge.
+   * Solve a 2x2x2 cube with an adjacent 1x1x2.
    * @param cube The cube.
    */
-  bool Goal2x2x2_Plus_One_Edge::isSatisfied(RubiksCubeModel& cube)
+  bool Goal2x2x2_1x1x2::isSatisfied(RubiksCubeModel& cube)
   {
     this->updateSolved(cube);
 
@@ -24,8 +24,8 @@ namespace busybin
   /**
    * Describe the goal.
    */
-  string Goal2x2x2_Plus_One_Edge::getDescription() const
+  string Goal2x2x2_1x1x2::getDescription() const
   {
-    return "Solve a 2x2x2 cube with an additional edge.";
+    return "Solve a 2x2x2 cube with an adjacent 1x1x2.";
   }
 }
