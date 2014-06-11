@@ -67,6 +67,13 @@ namespace busybin
     this->slices["M"] = {{"UB", "U", "UF", "F", "DF", "D", "DB", "B"}};
     this->slices["E"] = {{"LB", "L", "LF", "F", "RF", "R", "RB", "B"}};
     this->slices["S"] = {{"LU", "U", "RU", "R", "RD", "D", "LD", "L"}};
+
+    this->cubies["LD"]->setSuperGlow(true);
+    this->cubies["LDF"]->setSuperGlow(true);
+    this->cubies["DF"]->setSuperGlow(true);
+    this->cubies["LF"]->setSuperGlow(true);
+    this->cubies["RDF"]->setSuperGlow(true);
+    this->cubies["RF"]->setSuperGlow(true);
   }
 
   /**
