@@ -17,17 +17,11 @@ namespace busybin
    */
   class CubeSearcher
   {
-    RubiksCubeModel* const pCube;
-    MoveStore*       pMoveStore;
+    bool findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
+      unsigned depth, unsigned maxDepth, vector<string>& moves);
 
-    bool findGoal(Goal& goal, unsigned depth, unsigned maxDepth,
-      vector<string>& moves);
-    bool findOrientation(Goal& goal, unsigned depth, unsigned maxDepth,
-      vector<string>& moves);
   public:
-    CubeSearcher(RubiksCubeModel& cube, MoveStore& moveStore);
-    vector<string> findGoal(Goal& goal);
-    vector<string> findOrientation(Goal& goal);
+    vector<string> findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore);
   };
 }
 
