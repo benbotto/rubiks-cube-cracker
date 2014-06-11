@@ -1,12 +1,12 @@
-#include "Goal2_Layers_Minus_One_Corner_Edge.h"
+#include "Goal2x2x3_1x2x2.h"
 
 namespace busybin
 {
   /**
-   * Solve 2 layers except for one corner/edge.
+   * Solve 2 layers and an adjacent 1x2x2.
    * @param cube The cube.
    */
-  bool Goal2_Layers_Minus_One_Corner_Edge::isSatisfied(RubiksCubeModel& cube)
+  bool Goal2x2x3_1x2x2::isSatisfied(RubiksCubeModel& cube)
   {
     this->updateSolved(cube);
 
@@ -77,8 +77,8 @@ namespace busybin
   /**
    * Describe the goal.
    */
-  string Goal2_Layers_Minus_One_Corner_Edge::getDescription() const
+  string Goal2x2x3_1x2x2::getDescription() const
   {
-    return "Solve 2 layers except for one corner/edge.";
+    return "Solve 2 layers and an adjacent 1x2x2.";
   }
 }
