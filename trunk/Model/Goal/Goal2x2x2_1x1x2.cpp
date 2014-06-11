@@ -10,15 +10,16 @@ namespace busybin
   {
     this->updateSolved(cube);
 
+    // The cube is oriented with a 2x2x2 in the front, bottom, left
+    // courtesy of the last goal.  There are 6 ways of solving an
+    // adjacent 1x1x2.
     return
-      (this->LU && this->LUF && this->UF && this->LF && this->LDF && (this->LD || this->DF)) ||
-      (this->UF && this->RUF && this->RU && this->RF && this->RDF && (this->DF || this->RD)) ||
-      (this->RU && this->RUB && this->UB && this->RB && this->RDB && (this->DB || this->RD)) ||
-      (this->UB && this->LUB && this->LU && this->LB && this->LDB && (this->LD || this->DB)) ||
-      (this->LU && this->LUF && this->UF && this->LF && this->LUB && (this->LB || this->UB)) ||
-      (this->UF && this->RUF && this->RU && this->RF && this->RUB && (this->UB || this->RB)) ||
-      (this->LD && this->LDF && this->DF && this->LF && this->LDB && (this->DB || this->LB)) ||
-      (this->DF && this->RDF && this->RD && this->RF && this->RDB && (this->DB || this->RB));
+      (this->LD && this->LDF && this->DF && this->LF) &&
+      (
+        (this->LDB && (this->DB || this->LB)) ||
+        (this->LUF && (this->LU || this->UF)) ||
+        (this->RDF && (this->RD || this->RF))
+      );
   }
 
   /**
