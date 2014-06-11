@@ -14,6 +14,7 @@
 #include "../../Model/MoveStore/CubeRotationStore.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/Goal/Goal2x2x2.h"
+#include "../../Model/Goal/Orient2x2x2.h"
 #include "../../Model/Goal/Goal2x2x2_Plus_One_Edge.h"
 #include "../../Model/Goal/Goal2x2x3.h"
 #include "../../Model/Goal/Goal2x2x3_Plus_One_Edge_Corner.h"
@@ -41,6 +42,8 @@ using std::vector;
 using std::queue;
 #include <memory>
 using std::unique_ptr;
+#include <utility>
+using std::pair;
 
 namespace busybin
 {
@@ -49,20 +52,27 @@ namespace busybin
    */
   class CubeSolver : public Command
   {
-    ThreadPool      threadPool;
-    RubiksCube*     pCube;
-    RubiksCubeModel cubeModel;
-    CubeTwistStore  cubeTwistStore;
-    CubeMover*      pMover;
-    atomic_bool     solving;
-    atomic_bool     movesInQueue;
-    queue<string>   moveQueue;
-    mutex           moveMutex;
-    Timer           moveTimer;
+    struct GoalAndMoveStore
+    {
+      unique_ptr<Goal> pGoal;
+      MoveStore*       pMoveStore;
+    };
+
+    ThreadPool        threadPool;
+    RubiksCube*       pCube;
+    RubiksCubeModel   cubeModel;
+    CubeTwistStore    cubeTwistStore;
+    CubeRotationStore cubeRotStore;
+    CubeMover*        pMover;
+    atomic_bool       solving;
+    atomic_bool       movesInQueue;
+    queue<string>     moveQueue;
+    mutex             moveMutex;
+    Timer             moveTimer;
 
     void solveCube();
-    void processGoalMoves(vector<string>& allMoves, vector<string>& goalMoves,
-      MoveStore& moveStore, unsigned goalNum, const Goal& goal);
+    void processGoalMoves(const Goal& goal, MoveStore& moveStore,
+      unsigned goalNum, vector<string>& allMoves, vector<string>& goalMoves);
 
   public:
     CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover);

@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_MODEL_ROTATION_STORE_H_
-#define _BUSYBIN_MODEL_ROTATION_STORE_H_
+#ifndef _BUSYBIN_MODEL_TWIST_STORE_H_
+#define _BUSYBIN_MODEL_TWIST_STORE_H_
 
 #include "TwistStore.h"
 #include "../RubiksCubeModel.h"

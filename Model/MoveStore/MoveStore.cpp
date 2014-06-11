@@ -27,9 +27,9 @@ namespace busybin
    */
   string MoveStore::getInverseMove(const string& move) const
   {
-    invMove_t::const_iterator iMoveIt;
+    invMove_t::const_iterator iMoveIt = this->getInverseMoves().find(move);
 
-    if ((iMoveIt = this->getInverseMoves().find(move)) != this->getInverseMoves().end())
+    if (iMoveIt != this->getInverseMoves().end())
       return iMoveIt->second;
     else
       throw RubiksCubeException("Index out of bounds in MoveStore::getInverseMove.");
@@ -51,9 +51,9 @@ namespace busybin
    */
   MoveStore::moveFunc_t& MoveStore::getMoveFunc(const string& move)
   {
-    moveFuncMap_t::iterator mFuncIt;
+    moveFuncMap_t::iterator mFuncIt = this->getMoveMap().find(move);
 
-    if ((mFuncIt = this->getMoveMap().find(move)) != this->getMoveMap().end())
+    if (mFuncIt != this->getMoveMap().end())
       return mFuncIt->second;
     else
       throw RubiksCubeException("Invalid move in MoveStore::getMoveFunc.");

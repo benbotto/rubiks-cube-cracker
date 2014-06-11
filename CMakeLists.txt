@@ -25,6 +25,7 @@ set (SRC
   "./Model/RubiksCubeWorld.cpp"
   "./Model/Goal/Goal.cpp"
   "./Model/Goal/Goal2x2x2.cpp"
+  "./Model/Goal/Orient2x2x2.cpp"
   "./Model/Goal/Goal2x2x2_Plus_One_Edge.cpp"
   "./Model/Goal/Goal2x2x3.cpp"
   "./Model/Goal/Goal2x2x3_Plus_One_Edge_Corner.cpp"
