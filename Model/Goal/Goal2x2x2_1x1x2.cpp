@@ -14,7 +14,7 @@ namespace busybin
     // courtesy of the last goal.  There are 6 ways of solving an
     // adjacent 1x1x2.
     return
-      (this->LD && this->LDF && this->DF && this->LF) &&
+      this->LD && this->LDF && this->DF && this->LF &&
       (
         (this->LDB && (this->DB || this->LB)) ||
         (this->LUF && (this->LU || this->UF)) ||
