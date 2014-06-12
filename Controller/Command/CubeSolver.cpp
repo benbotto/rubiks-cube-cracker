@@ -96,12 +96,16 @@ namespace busybin
     vector<GoalAndMoveStore>   goals;
 
     // Create the goals.
-    goals.push_back({unique_ptr<Goal>(new Goal2x2x2()),       &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Orient2x2x2()),     &mdlRotStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x2x2_1x1x2()), &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x2x3()),       &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x2x3_1x1x2()), &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x2x3_1x2x2()), &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new Goal2x2x2()),         &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new Orient2x2x2()),       &mdlRotStore});
+    goals.push_back({unique_ptr<Goal>(new Goal2x2x2_1x1x2()),   &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new Orient2x2x2_1x1x2()), &mdlRotStore});
+    goals.push_back({unique_ptr<Goal>(new Goal2x2x3()),         &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new Orient2x2x3()),       &mdlRotStore});
+    goals.push_back({unique_ptr<Goal>(new Goal2x2x3_1x1x2()),   &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new Orient2x2x3_1x1x2()), &mdlRotStore});
+    goals.push_back({unique_ptr<Goal>(new Goal2x2x3_1x2x2()),   &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new Orient2x2x3_1x2x2()), &mdlRotStore});
 
     // Display the intial cube model.
     cout << "Initial cube state." << endl;
