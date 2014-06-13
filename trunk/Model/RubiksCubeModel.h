@@ -1,13 +1,10 @@
 #ifndef _BUSYBIN_RUBIKS_CUBE_MODEL_H_
 #define _BUSYBIN_RUBIKS_CUBE_MODEL_H_
 
-#include "../Util/RubiksCubeException.h"
 #include <array>
 using std::array;
 #include <set>
 using std::set;
-#include <unordered_map>
-using std::unordered_map;
 #include <algorithm>
 using std::fill;
 using std::next;
@@ -35,24 +32,13 @@ namespace busybin
     typedef array<COLOR, 3> CornerCubie;
 
   private:
-    /**
-     * Helper class for hashing cubies.
-     */
-    class CubieHasher
-    {
-    public:
-      unsigned operator()(const array<RubiksCubeModel::FACE, 2>& key) const;
-      unsigned operator()(const array<RubiksCubeModel::FACE, 3>& key) const;
-
-      unsigned operator()(const array<RubiksCubeModel::FACE, 2>& lhs,
-        const array<RubiksCubeModel::FACE, 2>& rhs) const;
-      unsigned operator()(const array<RubiksCubeModel::FACE, 3>& lhs,
-        const array<RubiksCubeModel::FACE, 3>& rhs) const;
-    };
-
+    // Note: poor man's hash table.  This was significantly faster than
+    // an unordered_map with the same hash function (over twice as fast).
     typedef array<unsigned, 6> centerMap;
-    typedef unordered_map<array<FACE, 2>, array<unsigned, 2>, CubieHasher, CubieHasher> edgeMap;
-    typedef unordered_map<array<FACE, 3>, array<unsigned, 3>, CubieHasher, CubieHasher> cornerMap;
+    // 42 == 5 << 3 | 4 (6 faces, 0-5).
+    typedef array<array<unsigned, 2>, 42> edgeMap;
+    // 355 = (5 << 6) | (4 << 3) | 3
+    typedef array<array<unsigned, 3>, 355> cornerMap;
 
     array<COLOR, 54> cube;
     centerMap        centerCubies;
@@ -61,6 +47,9 @@ namespace busybin
 
     void permuteEdge(array<FACE, 2> faces, array<unsigned, 2> indices);
     void permuteCorner(array<FACE, 3> faces, array<unsigned, 3> indices);
+
+    unsigned hashCubie(FACE f1, FACE f2) const;
+    unsigned hashCubie(FACE f1, FACE f2, FACE f3) const;
   public:
     RubiksCubeModel();
 
