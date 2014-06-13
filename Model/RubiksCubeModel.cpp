@@ -83,7 +83,7 @@ namespace busybin
   {
     do
     {
-      this->edgeCubies[faces] = indices;
+      this->edgeCubies[hashCubie(faces[0], faces[1])] = indices;
     }
     while (next_permutation(faces.begin(), faces.end()) &&
       next_permutation(indices.begin(), indices.end()));
@@ -98,14 +98,38 @@ namespace busybin
   {
     do
     {
-      this->cornerCubies[faces] = indices;
+      this->cornerCubies[hashCubie(faces[0], faces[1], faces[2])] = indices;
     }
     while (next_permutation(faces.begin(), faces.end()) &&
       next_permutation(indices.begin(), indices.end()));
   }
 
   /**
+   * Hash two faces.  There are 6 faces, 0-5, thus each face can fit in 3 
+   * bits.
+   * @param f1 The first face.
+   * @param f2 The second face.
+   */
+  unsigned RubiksCubeModel::hashCubie(FACE f1, FACE f2) const
+  {
+    return ((unsigned)f1 << 3) | (unsigned)f2;
+  }
+
+  /**
+   * Hash three faces.  There are 6 faces, 0-5, so each face can fit in 3
+   * bits.  The maximum has is (5 << 6) | (4 << 3) | 3 == 355.
+   * @param f1 The first face.
+   * @param f2 The second face.
+   * @param f3 The third face.
+   */
+  unsigned RubiksCubeModel::hashCubie(FACE f1, FACE f2, FACE f3) const
+  {
+    return ((unsigned)f1 << 6) | ((unsigned)f2 << 3) | (unsigned)f3;
+  }
+
+  /**
    * Get the color at index i.  The cube is laid out as follows.
+   * The index i is not checked (for speed).  Make sure i < 54!
    *
    *              W W W
    *              W W W
@@ -137,9 +161,7 @@ namespace busybin
    */
   RubiksCubeModel::COLOR RubiksCubeModel::get(unsigned i) const
   {
-    if (i > 53)
-      throw RubiksCubeException("Index out of bounds.");
-    return this->cube.at(i);
+    return this->cube[i];
   }
 
   /**
@@ -170,7 +192,7 @@ namespace busybin
    */
   RubiksCubeModel::EdgeCubie RubiksCubeModel::getCubie(FACE f1, FACE f2) const
   {
-    array<unsigned, 2> ind = this->edgeCubies.at({{f1, f2}});
+    array<unsigned, 2> ind = this->edgeCubies[hashCubie(f1, f2)];
 
     return {{this->cube[ind[0]], this->cube[ind[1]]}};
   }
@@ -183,7 +205,7 @@ namespace busybin
    */
   RubiksCubeModel::CornerCubie RubiksCubeModel::getCubie(FACE f1, FACE f2, FACE f3) const
   {
-    array<unsigned, 3> ind = this->cornerCubies.at({{f1, f2, f3}});
+    array<unsigned, 3> ind = this->cornerCubies[hashCubie(f1, f2, f3)];
 
     return {{this->cube[ind[0]], this->cube[ind[1]], this->cube[ind[2]]}};
   }
@@ -251,16 +273,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Up column.
-      this->cube.at(9  + i) = copy.at(18 + i);
-      this->cube.at(18 + i) = copy.at(27 + i);
-      this->cube.at(27 + i) = copy.at(36 + i);
-      this->cube.at(36 + i) = copy.at(9  + i);
+      this->cube[9  + i] = copy[18 + i];
+      this->cube[18 + i] = copy[27 + i];
+      this->cube[27 + i] = copy[36 + i];
+      this->cube[36 + i] = copy[9  + i];
 
       // Up face.
-      this->cube.at(0 + i)     = copy.at(6 - i * 3);
-      this->cube.at(0 + i * 3) = copy.at(6 + i);
-      this->cube.at(2 + i * 3) = copy.at(0 + i);
-      this->cube.at(6 + i)     = copy.at(8 - i * 3);
+      this->cube[0 + i]     = copy[6 - i * 3];
+      this->cube[0 + i * 3] = copy[6 + i];
+      this->cube[2 + i * 3] = copy[0 + i];
+      this->cube[6 + i]     = copy[8 - i * 3];
     }
 
     return *this;
@@ -276,16 +298,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Up column.
-      this->cube.at(9  + i) = copy.at(36 + i);
-      this->cube.at(18 + i) = copy.at(9  + i);
-      this->cube.at(27 + i) = copy.at(18 + i);
-      this->cube.at(36 + i) = copy.at(27 + i);
+      this->cube[9  + i] = copy[36 + i];
+      this->cube[18 + i] = copy[9  + i];
+      this->cube[27 + i] = copy[18 + i];
+      this->cube[36 + i] = copy[27 + i];
 
       // Up face.
-      this->cube.at(0 + i)     = copy.at(2 + i * 3);
-      this->cube.at(0 + i * 3) = copy.at(2 - i);
-      this->cube.at(2 + i * 3) = copy.at(8 - i);
-      this->cube.at(6 + i)     = copy.at(0 + i * 3);
+      this->cube[0 + i]     = copy[2 + i * 3];
+      this->cube[0 + i * 3] = copy[2 - i];
+      this->cube[2 + i * 3] = copy[8 - i];
+      this->cube[6 + i]     = copy[0 + i * 3];
     }
 
     return *this;
@@ -309,16 +331,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Down column.
-      this->cube.at(15 + i) = copy.at(42 + i);
-      this->cube.at(24 + i) = copy.at(15 + i);
-      this->cube.at(33 + i) = copy.at(24 + i);
-      this->cube.at(42 + i) = copy.at(33 + i);
+      this->cube[15 + i] = copy[42 + i];
+      this->cube[24 + i] = copy[15 + i];
+      this->cube[33 + i] = copy[24 + i];
+      this->cube[42 + i] = copy[33 + i];
 
       // Down face.
-      this->cube.at(45 + i)     = copy.at(51 - i * 3);
-      this->cube.at(45 + i * 3) = copy.at(51 + i);
-      this->cube.at(47 + i * 3) = copy.at(45 + i);
-      this->cube.at(51 + i)     = copy.at(53 - i * 3);
+      this->cube[45 + i]     = copy[51 - i * 3];
+      this->cube[45 + i * 3] = copy[51 + i];
+      this->cube[47 + i * 3] = copy[45 + i];
+      this->cube[51 + i]     = copy[53 - i * 3];
     }
 
     return *this;
@@ -334,16 +356,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Down column.
-      this->cube.at(15 + i) = copy.at(24 + i);
-      this->cube.at(24 + i) = copy.at(33  + i);
-      this->cube.at(33 + i) = copy.at(42 + i);
-      this->cube.at(42 + i) = copy.at(15 + i);
+      this->cube[15 + i] = copy[24 + i];
+      this->cube[24 + i] = copy[33  + i];
+      this->cube[33 + i] = copy[42 + i];
+      this->cube[42 + i] = copy[15 + i];
 
       // Down face.
-      this->cube.at(45 + i)     = copy.at(47 + i * 3);
-      this->cube.at(45 + i * 3) = copy.at(47 - i);
-      this->cube.at(47 + i * 3) = copy.at(53 - i);
-      this->cube.at(51 + i)     = copy.at(45 + i * 3);
+      this->cube[45 + i]     = copy[47 + i * 3];
+      this->cube[45 + i * 3] = copy[47 - i];
+      this->cube[47 + i * 3] = copy[53 - i];
+      this->cube[51 + i]     = copy[45 + i * 3];
     }
 
     return *this;
@@ -367,16 +389,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Left column.
-      this->cube.at(0  + i * 3) = copy.at(44 - i * 3);
-      this->cube.at(18 + i * 3) = copy.at(0  + i * 3);
-      this->cube.at(45 + i * 3) = copy.at(18 + i * 3);
-      this->cube.at(38 + i * 3) = copy.at(51 - i * 3);
+      this->cube[0  + i * 3] = copy[44 - i * 3];
+      this->cube[18 + i * 3] = copy[0  + i * 3];
+      this->cube[45 + i * 3] = copy[18 + i * 3];
+      this->cube[38 + i * 3] = copy[51 - i * 3];
 
       // Left face.
-      this->cube.at(9  + i)     = copy.at(15 - i * 3);
-      this->cube.at(9  + i * 3) = copy.at(15 + i);
-      this->cube.at(11 + i * 3) = copy.at(9  + i);
-      this->cube.at(15 + i)     = copy.at(17 - i * 3);
+      this->cube[9  + i]     = copy[15 - i * 3];
+      this->cube[9  + i * 3] = copy[15 + i];
+      this->cube[11 + i * 3] = copy[9  + i];
+      this->cube[15 + i]     = copy[17 - i * 3];
     }
 
     return *this;
@@ -392,16 +414,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Left column.
-      this->cube.at(0  + i * 3) = copy.at(18 + i * 3);
-      this->cube.at(18 + i * 3) = copy.at(45 + i * 3);
-      this->cube.at(45 + i * 3) = copy.at(44 - i * 3);
-      this->cube.at(38 + i * 3) = copy.at(6  - i * 3);
+      this->cube[0  + i * 3] = copy[18 + i * 3];
+      this->cube[18 + i * 3] = copy[45 + i * 3];
+      this->cube[45 + i * 3] = copy[44 - i * 3];
+      this->cube[38 + i * 3] = copy[6  - i * 3];
 
       // Left face.
-      this->cube.at(9  + i)     = copy.at(11 + i * 3);
-      this->cube.at(9  + i * 3) = copy.at(11 - i);
-      this->cube.at(11 + i * 3) = copy.at(17 - i);
-      this->cube.at(15 + i)     = copy.at(9  + i * 3);
+      this->cube[9  + i]     = copy[11 + i * 3];
+      this->cube[9  + i * 3] = copy[11 - i];
+      this->cube[11 + i * 3] = copy[17 - i];
+      this->cube[15 + i]     = copy[9  + i * 3];
     }
 
     return *this;
@@ -425,16 +447,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Right column.
-      this->cube.at(2  + i * 3) = copy.at(20 + i * 3);
-      this->cube.at(20 + i * 3) = copy.at(47 + i * 3);
-      this->cube.at(47 + i * 3) = copy.at(42 - i * 3);
-      this->cube.at(36 + i * 3) = copy.at(8  - i * 3);
+      this->cube[2  + i * 3] = copy[20 + i * 3];
+      this->cube[20 + i * 3] = copy[47 + i * 3];
+      this->cube[47 + i * 3] = copy[42 - i * 3];
+      this->cube[36 + i * 3] = copy[8  - i * 3];
 
       // Right face.
-      this->cube.at(27 + i)     = copy.at(33 - i * 3);
-      this->cube.at(27 + i * 3) = copy.at(33 + i);
-      this->cube.at(29 + i * 3) = copy.at(27 + i);
-      this->cube.at(33 + i)     = copy.at(35 - i * 3);
+      this->cube[27 + i]     = copy[33 - i * 3];
+      this->cube[27 + i * 3] = copy[33 + i];
+      this->cube[29 + i * 3] = copy[27 + i];
+      this->cube[33 + i]     = copy[35 - i * 3];
     }
 
     return *this;
@@ -450,16 +472,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Right column.
-      this->cube.at(2  + i * 3) = copy.at(42 - i * 3);
-      this->cube.at(20 + i * 3) = copy.at(2  + i * 3);
-      this->cube.at(47 + i * 3) = copy.at(20 + i * 3);
-      this->cube.at(36 + i * 3) = copy.at(53 - i * 3);
+      this->cube[2  + i * 3] = copy[42 - i * 3];
+      this->cube[20 + i * 3] = copy[2  + i * 3];
+      this->cube[47 + i * 3] = copy[20 + i * 3];
+      this->cube[36 + i * 3] = copy[53 - i * 3];
 
       // Right face.
-      this->cube.at(27 + i)     = copy.at(29 + i * 3);
-      this->cube.at(27 + i * 3) = copy.at(29 - i);
-      this->cube.at(29 + i * 3) = copy.at(35 - i);
-      this->cube.at(33 + i)     = copy.at(27 + i * 3);
+      this->cube[27 + i]     = copy[29 + i * 3];
+      this->cube[27 + i * 3] = copy[29 - i];
+      this->cube[29 + i * 3] = copy[35 - i];
+      this->cube[33 + i]     = copy[27 + i * 3];
     }
 
     return *this;
@@ -483,16 +505,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Front column.
-      this->cube.at(6  + i)     = copy.at(17 - i * 3);
-      this->cube.at(11 + i * 3) = copy.at(45 + i);
-      this->cube.at(27 + i * 3) = copy.at(6  + i);
-      this->cube.at(45 + i)     = copy.at(33 - i * 3);
+      this->cube[6  + i]     = copy[17 - i * 3];
+      this->cube[11 + i * 3] = copy[45 + i];
+      this->cube[27 + i * 3] = copy[6  + i];
+      this->cube[45 + i]     = copy[33 - i * 3];
 
       // Front face.
-      this->cube.at(18 + i)     = copy.at(24 - i * 3);
-      this->cube.at(18 + i * 3) = copy.at(24 + i);
-      this->cube.at(20 + i * 3) = copy.at(18 + i);
-      this->cube.at(24 + i)     = copy.at(26 - i * 3);
+      this->cube[18 + i]     = copy[24 - i * 3];
+      this->cube[18 + i * 3] = copy[24 + i];
+      this->cube[20 + i * 3] = copy[18 + i];
+      this->cube[24 + i]     = copy[26 - i * 3];
     }
 
     return *this;
@@ -508,16 +530,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Front column.
-      this->cube.at(6  + i)     = copy.at(27 + i * 3);
-      this->cube.at(11 + i * 3) = copy.at(8  - i);
-      this->cube.at(27 + i * 3) = copy.at(47 - i);
-      this->cube.at(45 + i)     = copy.at(11 + i * 3);
+      this->cube[6  + i]     = copy[27 + i * 3];
+      this->cube[11 + i * 3] = copy[8  - i];
+      this->cube[27 + i * 3] = copy[47 - i];
+      this->cube[45 + i]     = copy[11 + i * 3];
 
       // Front face.
-      this->cube.at(18 + i)     = copy.at(20 + i * 3);
-      this->cube.at(18 + i * 3) = copy.at(20 - i);
-      this->cube.at(20 + i * 3) = copy.at(26 - i);
-      this->cube.at(24 + i)     = copy.at(18 + i * 3);
+      this->cube[18 + i]     = copy[20 + i * 3];
+      this->cube[18 + i * 3] = copy[20 - i];
+      this->cube[20 + i * 3] = copy[26 - i];
+      this->cube[24 + i]     = copy[18 + i * 3];
     }
 
     return *this;
@@ -542,16 +564,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Back column.
-      this->cube.at(0  + i)     = copy.at(29 + i * 3);
-      this->cube.at(9  + i * 3) = copy.at(2  - i);
-      this->cube.at(29 + i * 3) = copy.at(53 - i);
-      this->cube.at(51 + i)     = copy.at(9  + i * 3);
+      this->cube[0  + i]     = copy[29 + i * 3];
+      this->cube[9  + i * 3] = copy[2  - i];
+      this->cube[29 + i * 3] = copy[53 - i];
+      this->cube[51 + i]     = copy[9  + i * 3];
 
       // Back face.
-      this->cube.at(36 + i)     = copy.at(42 - i * 3);
-      this->cube.at(36 + i * 3) = copy.at(42 + i);
-      this->cube.at(38 + i * 3) = copy.at(36 + i);
-      this->cube.at(42 + i)     = copy.at(44 - i * 3);
+      this->cube[36 + i]     = copy[42 - i * 3];
+      this->cube[36 + i * 3] = copy[42 + i];
+      this->cube[38 + i * 3] = copy[36 + i];
+      this->cube[42 + i]     = copy[44 - i * 3];
     }
 
     return *this;
@@ -568,16 +590,16 @@ namespace busybin
     for (int i = 0; i < 3; ++i)
     {
       // Back column.
-      this->cube.at(0  + i)     = copy.at(15 - i * 3);
-      this->cube.at(9  + i * 3) = copy.at(51 + i);
-      this->cube.at(29 + i * 3) = copy.at(0  + i);
-      this->cube.at(51 + i)     = copy.at(35 - i * 3);
+      this->cube[0  + i]     = copy[15 - i * 3];
+      this->cube[9  + i * 3] = copy[51 + i];
+      this->cube[29 + i * 3] = copy[0  + i];
+      this->cube[51 + i]     = copy[35 - i * 3];
 
       // Back face.
-      this->cube.at(36 + i)     = copy.at(38 + i * 3);
-      this->cube.at(36 + i * 3) = copy.at(38 - i);
-      this->cube.at(38 + i * 3) = copy.at(44 - i);
-      this->cube.at(42 + i)     = copy.at(36 + i * 3);
+      this->cube[36 + i]     = copy[38 + i * 3];
+      this->cube[36 + i * 3] = copy[38 - i];
+      this->cube[38 + i * 3] = copy[44 - i];
+      this->cube[42 + i]     = copy[36 + i * 3];
     }
 
     return *this;
@@ -598,18 +620,18 @@ namespace busybin
   {
     array<COLOR, 54> copy = this->cube;
 
-    this->cube.at(1)  = copy.at(43);
-    this->cube.at(4)  = copy.at(40);
-    this->cube.at(7)  = copy.at(37);
-    this->cube.at(19) = copy.at(1);
-    this->cube.at(22) = copy.at(4);
-    this->cube.at(25) = copy.at(7);
-    this->cube.at(46) = copy.at(19);
-    this->cube.at(49) = copy.at(22);
-    this->cube.at(52) = copy.at(25);
-    this->cube.at(43) = copy.at(46);
-    this->cube.at(40) = copy.at(49);
-    this->cube.at(37) = copy.at(52);
+    this->cube[1]  = copy[43];
+    this->cube[4]  = copy[40];
+    this->cube[7]  = copy[37];
+    this->cube[19] = copy[1];
+    this->cube[22] = copy[4];
+    this->cube[25] = copy[7];
+    this->cube[46] = copy[19];
+    this->cube[49] = copy[22];
+    this->cube[52] = copy[25];
+    this->cube[43] = copy[46];
+    this->cube[40] = copy[49];
+    this->cube[37] = copy[52];
 
     return *this;
   }
@@ -621,18 +643,18 @@ namespace busybin
   {
     array<COLOR, 54> copy = this->cube;
 
-    this->cube.at(43) = copy.at(1);
-    this->cube.at(40) = copy.at(4);
-    this->cube.at(37) = copy.at(7);
-    this->cube.at(1)  = copy.at(19);
-    this->cube.at(4)  = copy.at(22);
-    this->cube.at(7)  = copy.at(25);
-    this->cube.at(19) = copy.at(46);
-    this->cube.at(22) = copy.at(49);
-    this->cube.at(25) = copy.at(52);
-    this->cube.at(46) = copy.at(43);
-    this->cube.at(49) = copy.at(40);
-    this->cube.at(52) = copy.at(37);
+    this->cube[43] = copy[1];
+    this->cube[40] = copy[4];
+    this->cube[37] = copy[7];
+    this->cube[1]  = copy[19];
+    this->cube[4]  = copy[22];
+    this->cube[7]  = copy[25];
+    this->cube[19] = copy[46];
+    this->cube[22] = copy[49];
+    this->cube[25] = copy[52];
+    this->cube[46] = copy[43];
+    this->cube[49] = copy[40];
+    this->cube[52] = copy[37];
 
     return *this;
   }
@@ -652,18 +674,18 @@ namespace busybin
   {
     array<COLOR, 54> copy = this->cube;
 
-    this->cube.at(12) = copy.at(39);
-    this->cube.at(13) = copy.at(40);
-    this->cube.at(14) = copy.at(41);
-    this->cube.at(21) = copy.at(12);
-    this->cube.at(22) = copy.at(13);
-    this->cube.at(23) = copy.at(14);
-    this->cube.at(30) = copy.at(21);
-    this->cube.at(31) = copy.at(22);
-    this->cube.at(32) = copy.at(23);
-    this->cube.at(39) = copy.at(30);
-    this->cube.at(40) = copy.at(31);
-    this->cube.at(41) = copy.at(32);
+    this->cube[12] = copy[39];
+    this->cube[13] = copy[40];
+    this->cube[14] = copy[41];
+    this->cube[21] = copy[12];
+    this->cube[22] = copy[13];
+    this->cube[23] = copy[14];
+    this->cube[30] = copy[21];
+    this->cube[31] = copy[22];
+    this->cube[32] = copy[23];
+    this->cube[39] = copy[30];
+    this->cube[40] = copy[31];
+    this->cube[41] = copy[32];
 
     return *this;
   }
@@ -675,18 +697,18 @@ namespace busybin
   {
     array<COLOR, 54> copy = this->cube;
 
-    this->cube.at(39) = copy.at(12);
-    this->cube.at(40) = copy.at(13);
-    this->cube.at(41) = copy.at(14);
-    this->cube.at(12) = copy.at(21);
-    this->cube.at(13) = copy.at(22);
-    this->cube.at(14) = copy.at(23);
-    this->cube.at(21) = copy.at(30);
-    this->cube.at(22) = copy.at(31);
-    this->cube.at(23) = copy.at(32);
-    this->cube.at(30) = copy.at(39);
-    this->cube.at(31) = copy.at(40);
-    this->cube.at(32) = copy.at(41);
+    this->cube[39] = copy[12];
+    this->cube[40] = copy[13];
+    this->cube[41] = copy[14];
+    this->cube[12] = copy[21];
+    this->cube[13] = copy[22];
+    this->cube[14] = copy[23];
+    this->cube[21] = copy[30];
+    this->cube[22] = copy[31];
+    this->cube[23] = copy[32];
+    this->cube[30] = copy[39];
+    this->cube[31] = copy[40];
+    this->cube[32] = copy[41];
 
     return *this;
   }
@@ -706,18 +728,18 @@ namespace busybin
   {
     array<COLOR, 54> copy = this->cube;
 
-    this->cube.at(3)  = copy.at(16);
-    this->cube.at(4)  = copy.at(13);
-    this->cube.at(5)  = copy.at(10);
-    this->cube.at(28) = copy.at(3);
-    this->cube.at(31) = copy.at(4);
-    this->cube.at(34) = copy.at(5);
-    this->cube.at(50) = copy.at(28);
-    this->cube.at(49) = copy.at(31);
-    this->cube.at(48) = copy.at(34);
-    this->cube.at(16) = copy.at(50);
-    this->cube.at(13) = copy.at(49);
-    this->cube.at(10) = copy.at(48);
+    this->cube[3]  = copy[16];
+    this->cube[4]  = copy[13];
+    this->cube[5]  = copy[10];
+    this->cube[28] = copy[3];
+    this->cube[31] = copy[4];
+    this->cube[34] = copy[5];
+    this->cube[50] = copy[28];
+    this->cube[49] = copy[31];
+    this->cube[48] = copy[34];
+    this->cube[16] = copy[50];
+    this->cube[13] = copy[49];
+    this->cube[10] = copy[48];
 
     return *this;
   }
@@ -729,18 +751,18 @@ namespace busybin
   {
     array<COLOR, 54> copy = this->cube;
 
-    this->cube.at(16) = copy.at(3);
-    this->cube.at(13) = copy.at(4);
-    this->cube.at(10) = copy.at(5);
-    this->cube.at(3)  = copy.at(28);
-    this->cube.at(4)  = copy.at(31);
-    this->cube.at(5)  = copy.at(34);
-    this->cube.at(28) = copy.at(50);
-    this->cube.at(31) = copy.at(49);
-    this->cube.at(34) = copy.at(48);
-    this->cube.at(50) = copy.at(16);
-    this->cube.at(49) = copy.at(13);
-    this->cube.at(48) = copy.at(10);
+    this->cube[16] = copy[3];
+    this->cube[13] = copy[4];
+    this->cube[10] = copy[5];
+    this->cube[3]  = copy[28];
+    this->cube[4]  = copy[31];
+    this->cube[5]  = copy[34];
+    this->cube[28] = copy[50];
+    this->cube[31] = copy[49];
+    this->cube[34] = copy[48];
+    this->cube[50] = copy[16];
+    this->cube[49] = copy[13];
+    this->cube[48] = copy[10];
 
     return *this;
   }
