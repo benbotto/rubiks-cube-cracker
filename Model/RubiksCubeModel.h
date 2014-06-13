@@ -6,8 +6,8 @@
 using std::array;
 #include <set>
 using std::set;
-#include <map>
-using std::map;
+#include <unordered_map>
+using std::unordered_map;
 #include <algorithm>
 using std::fill;
 using std::next;
@@ -35,9 +35,24 @@ namespace busybin
     typedef array<COLOR, 3> CornerCubie;
 
   private:
-    typedef map<FACE, unsigned> centerMap;
-    typedef map<array<FACE, 2>, array<unsigned, 2> > edgeMap;
-    typedef map<array<FACE, 3>, array<unsigned, 3> > cornerMap;
+    /**
+     * Helper class for hashing cubies.
+     */
+    class CubieHasher
+    {
+    public:
+      unsigned operator()(const array<RubiksCubeModel::FACE, 2>& key) const;
+      unsigned operator()(const array<RubiksCubeModel::FACE, 3>& key) const;
+
+      unsigned operator()(const array<RubiksCubeModel::FACE, 2>& lhs,
+        const array<RubiksCubeModel::FACE, 2>& rhs) const;
+      unsigned operator()(const array<RubiksCubeModel::FACE, 3>& lhs,
+        const array<RubiksCubeModel::FACE, 3>& rhs) const;
+    };
+
+    typedef array<unsigned, 6> centerMap;
+    typedef unordered_map<array<FACE, 2>, array<unsigned, 2>, CubieHasher, CubieHasher> edgeMap;
+    typedef unordered_map<array<FACE, 3>, array<unsigned, 3>, CubieHasher, CubieHasher> cornerMap;
 
     array<COLOR, 54> cube;
     centerMap        centerCubies;
