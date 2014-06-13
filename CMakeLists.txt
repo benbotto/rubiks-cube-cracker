@@ -37,6 +37,7 @@ set (SRC
   "./Model/Goal/Goal2x2x3_1x2x2_1x1x2.cpp"
   "./Model/Goal/Goal2x3x3.cpp"
   "./Model/RubiksCubeModel.cpp"
+  "./Model/CubieHasher.cpp"
   "./Model/WorldObject/Cubie.cpp"
   "./Model/WorldObject/RubiksCube.cpp")
 
