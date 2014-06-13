@@ -39,12 +39,12 @@ namespace busybin
     fill(it, end, COLOR::YELLOW);
 
     // Center cubies.
-    this->centerCubies[FACE::UP]    = 4;
-    this->centerCubies[FACE::LEFT]  = 13;
-    this->centerCubies[FACE::FRONT] = 22;
-    this->centerCubies[FACE::RIGHT] = 31;
-    this->centerCubies[FACE::BACK]  = 40;
-    this->centerCubies[FACE::DOWN]  = 49;
+    this->centerCubies[(unsigned)FACE::UP]    = 4;
+    this->centerCubies[(unsigned)FACE::LEFT]  = 13;
+    this->centerCubies[(unsigned)FACE::FRONT] = 22;
+    this->centerCubies[(unsigned)FACE::RIGHT] = 31;
+    this->centerCubies[(unsigned)FACE::BACK]  = 40;
+    this->centerCubies[(unsigned)FACE::DOWN]  = 49;
 
     // Edge cubies (order matters for the next_permuation calls).
     this->permuteEdge({{FACE::UP,    FACE::LEFT}},  {{3,  10}});
@@ -160,7 +160,7 @@ namespace busybin
    */
   RubiksCubeModel::CenterCubie RubiksCubeModel::getCubie(FACE f) const
   {
-    return this->cube.at(this->centerCubies.at(f));
+    return this->cube[this->centerCubies[(unsigned)f]];
   }
 
   /**
@@ -172,7 +172,7 @@ namespace busybin
   {
     array<unsigned, 2> ind = this->edgeCubies.at({{f1, f2}});
 
-    return {{this->cube.at(ind[0]), this->cube.at(ind[1])}};
+    return {{this->cube[ind[0]], this->cube[ind[1]]}};
   }
 
   /**
@@ -185,7 +185,7 @@ namespace busybin
   {
     array<unsigned, 3> ind = this->cornerCubies.at({{f1, f2, f3}});
 
-    return {{this->cube.at(ind[0]), this->cube.at(ind[1]), this->cube.at(ind[2])}};
+    return {{this->cube[ind[0]], this->cube[ind[1]], this->cube[ind[2]]}};
   }
 
   /**
