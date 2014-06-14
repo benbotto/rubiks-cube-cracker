@@ -11,9 +11,9 @@ namespace busybin
    */
   vector<string> CubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore)
   {
-    unsigned maxDepth = 0;
+    AutoTimer      timer;
+    unsigned       maxDepth = 0;
     vector<string> moves;
-    AutoTimer timer;
 
     while (!this->findGoal(goal, cube, moveStore, 0, maxDepth, moves))
     {
@@ -42,11 +42,8 @@ namespace busybin
     unsigned numMoves = moveStore.getNumMoves();
 
     // Check if the goal is satisfied.
-    if (goal.isSatisfied(cube))
-      return true;
-
     if (depth == maxDepth)
-      return false;
+      return goal.isSatisfied(cube);
 
     for (unsigned i = 0; i < numMoves && !solved; ++i)
     {
