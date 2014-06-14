@@ -25,6 +25,8 @@
 #include "../../Model/Goal/Orient2x2x3_1x2x2.h"
 #include "../../Model/Goal/Goal2x2x3_1x2x2_1x1x2.h"
 #include "../../Model/Goal/Goal2x3x3.h"
+#include "../../Model/Goal/Goal2x3x3_OE.h"
+#include "../../Model/Goal/Goal3x3x3.h"
 #include "../../OpenGLSeed/Controller/Command/Command.h"
 #include "../../OpenGLSeed/Model/World.h"
 #include "../../OpenGLSeed/View/WorldWindow.h"

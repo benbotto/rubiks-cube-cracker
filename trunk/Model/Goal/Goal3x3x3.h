@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_GOAL2x2x2_H_
-#define _BUSYBIN_GOAL2x2x2_H_
+#ifndef _BUSYBIN_GOAL3x3x3_H_
+#define _BUSYBIN_GOAL3x3x3_H_
 
 #include "Goal.h"
 #include "../RubiksCubeModel.h"
@@ -7,9 +7,9 @@
 namespace busybin
 {
   /**
-   * Solve a 2x2x2 cube.
+   * Solve a 3x3x3 cube.
    */
-  class Goal2x2x2 : public Goal
+  class Goal3x3x3 : public Goal
   {
   public:
     bool isSatisfied(RubiksCubeModel& cube);
