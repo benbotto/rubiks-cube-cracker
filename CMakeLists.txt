@@ -56,7 +56,7 @@ set (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} " -Wall -pedantic -std=c++0x -Wno-strict
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/OpenGLSeed/cmake/modules/")
 
 # GLM.
-find_package (GLEW REQUIRED)
+find_package (GLM REQUIRED)
 include_directories (${GLM_INCLUDE_DIRS})
 
 # GLEW.
@@ -66,7 +66,7 @@ target_link_libraries (rubiksCube ${GLEW_LIBRARIES})
 
 # GLFW.
 find_package (GLFW REQUIRED)
-include_directories (${GLEW_INCLUDE_DIRS})
+include_directories (${GLFW_INCLUDE_DIRS})
 target_link_libraries (rubiksCube ${GLFW_LIBRARIES})
 
 # OpenGL.
