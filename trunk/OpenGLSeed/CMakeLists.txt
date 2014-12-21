@@ -56,7 +56,7 @@ include_directories (${GLEW_INCLUDE_DIRS})
 
 # GLFW.
 find_package (GLFW REQUIRED)
-include_directories (${GLEW_INCLUDE_DIRS})
+include_directories (${GLFW_INCLUDE_DIRS})
 
 # OpenGL.
 find_package(OpenGL REQUIRED)
