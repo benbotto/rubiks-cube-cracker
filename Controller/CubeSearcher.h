@@ -19,6 +19,7 @@ namespace busybin
   {
     bool findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
       unsigned depth, unsigned maxDepth, vector<string>& moves);
+    bool prune(const string& move, const MoveStore& moveStore, const vector<string>& moves) const;
 
   public:
     vector<string> findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore);
