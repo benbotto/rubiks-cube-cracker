@@ -47,22 +47,58 @@ namespace busybin
 
     for (unsigned i = 0; i < numMoves && !solved; ++i)
     {
-      // Apply the next move.
       string move = moveStore.getMove(i);
-      moves.push_back(move);
-      moveStore.getMoveFunc(move)();
 
-      // If this move satisfies the goal break out of the loop.
-      if (this->findGoal(goal, cube, moveStore, depth + 1, maxDepth, moves))
-        solved = true;
-      else
-        moves.pop_back();
+      if (!this->prune(move, moveStore, moves))
+      {
+        // Apply the next move.
+        moves.push_back(move);
+        moveStore.getMoveFunc(move)();
 
-      // Revert the move.
-      moveStore.getInverseMoveFunc(move)();
+        // If this move satisfies the goal break out of the loop.
+        if (this->findGoal(goal, cube, moveStore, depth + 1, maxDepth, moves))
+          solved = true;
+        else
+          moves.pop_back();
+
+        // Revert the move.
+        moveStore.getInverseMoveFunc(move)();
+      }
     }
 
     return solved;
+  }
+
+  /**
+   * Check if the next move should be skipped.
+   * @param move The next move, not yet applied.
+   * @param moveStore A MoveStore instance for retrieving moves.
+   * @param moves A vector of moves that will be filled.
+   */
+  bool CubeSearcher::prune(const string& move, const MoveStore& moveStore, const vector<string>& moves) const
+  {
+    if (moves.size() == 0)
+      return false;
+
+    string lastMove = moves.back();
+
+    // If the last move is the same as this move, no reason to attempt it.
+    // e.g. L L is the same as L2.  L2 L2 is a 360 degree twist.
+    // Two moves that can be accomplished in one.  For instance, L2 L is the
+    // same as L'.  L2 L' is the same as L.  Commutative.
+    // In other words, if two moves  on the same side occur successively,
+    // prune.
+    if (move.at(0) == lastMove.at(0)) return true;
+
+    // Redundant moves.  For example, F B is the same as B F.
+    if (move == "F"  && lastMove == "B")  return true;
+    if (move == "F2" && lastMove == "B2") return true;
+    if (move == "L"  && lastMove == "R")  return true;
+    if (move == "L2" && lastMove == "R2") return true;
+    if (move == "U"  && lastMove == "D")  return true;
+    if (move == "U2" && lastMove == "D2") return true;
+    
+    return false;
   }
 }
 
