@@ -45,6 +45,9 @@ set (SRC
 # Build the RubiksCubee executable.
 add_executable (rubiksCube ${SRC})
 
+# Release build by default.
+set(CMAKE_BUILD_TYPE Release)
+
 # Link the OpenGLSeed library.
 add_subdirectory(OpenGLSeed)
 target_link_libraries (rubiksCube OpenGLSeed)
