@@ -1,5 +1,6 @@
 GLFW
   Download and extract the source.  Version 3.0.4 was used during development.
+    sudo apt-get install libglu1-mesa-dev xorg-dev (from install guide)
     mkdir build
     cd build
     cmake -DBUILD_SHARED_LIBS=ON ..
@@ -10,7 +11,6 @@ GLFW
 GLM
   Download and extract the source.  Version 0.9.5.3 was used during development.
   sudo cp -R glm/glm /usr/local/include/
-  sudo make install GLEW_DEST=/usr/local
 
 GLEW
   Download and extract the source.  Version 1.6.0-4 was available in the Ubuntu
