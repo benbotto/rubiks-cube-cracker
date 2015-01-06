@@ -117,7 +117,7 @@ namespace busybin
 
   /**
    * Hash three faces.  There are 6 faces, 0-5, so each face can fit in 3
-   * bits.  The maximum has is (5 << 6) | (4 << 3) | 3 == 355.
+   * bits.  The maximum hash is (5 << 6) | (4 << 3) | 3 == 355.
    * @param f1 The first face.
    * @param f2 The second face.
    * @param f3 The third face.
@@ -268,22 +268,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::u()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Up column.
-      this->cube[9  + i] = copy[18 + i];
-      this->cube[18 + i] = copy[27 + i];
-      this->cube[27 + i] = copy[36 + i];
-      this->cube[36 + i] = copy[9  + i];
+    // Up row.  Order is important!
+    hold[0] = this->cube[9];
+    hold[1] = this->cube[10];
+    hold[2] = this->cube[11];
 
-      // Up face.
-      this->cube[0 + i]     = copy[6 - i * 3];
-      this->cube[0 + i * 3] = copy[6 + i];
-      this->cube[2 + i * 3] = copy[0 + i];
-      this->cube[6 + i]     = copy[8 - i * 3];
-    }
+    this->cube[9]  = this->cube[18];
+    this->cube[10] = this->cube[19];
+    this->cube[11] = this->cube[20];
+    this->cube[18] = this->cube[27];
+    this->cube[19] = this->cube[28];
+    this->cube[20] = this->cube[29];
+    this->cube[27] = this->cube[36];
+    this->cube[28] = this->cube[37];
+    this->cube[29] = this->cube[38];
+    this->cube[36] = hold[0];
+    this->cube[37] = hold[1];
+    this->cube[38] = hold[2];
+
+    // Up face. Order is important!
+    hold[0] = this->cube[0];
+    hold[1] = this->cube[1];
+
+    this->cube[0] = this->cube[6];
+    this->cube[6] = this->cube[8];
+    this->cube[8] = this->cube[2];
+    this->cube[2] = hold[0];
+    this->cube[1] = this->cube[3];
+    this->cube[3] = this->cube[7];
+    this->cube[7] = this->cube[5];
+    this->cube[5] = hold[1];
 
     return *this;
   }
@@ -293,22 +309,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::uPrime()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Up column.
-      this->cube[9  + i] = copy[36 + i];
-      this->cube[18 + i] = copy[9  + i];
-      this->cube[27 + i] = copy[18 + i];
-      this->cube[36 + i] = copy[27 + i];
+    // Up row.
+    hold[0] = this->cube[38];
+    hold[1] = this->cube[37];
+    hold[2] = this->cube[36];
 
-      // Up face.
-      this->cube[0 + i]     = copy[2 + i * 3];
-      this->cube[0 + i * 3] = copy[2 - i];
-      this->cube[2 + i * 3] = copy[8 - i];
-      this->cube[6 + i]     = copy[0 + i * 3];
-    }
+    this->cube[38] = this->cube[29];
+    this->cube[29] = this->cube[20];
+    this->cube[20] = this->cube[11];
+    this->cube[11] = hold[0];
+    this->cube[37] = this->cube[28];
+    this->cube[28] = this->cube[19];
+    this->cube[19] = this->cube[10];
+    this->cube[10] = hold[1];
+    this->cube[36] = this->cube[27];
+    this->cube[27] = this->cube[18];
+    this->cube[18] = this->cube[9];
+    this->cube[9]  = hold[2];
+
+    // Up face.
+    hold[0] = this->cube[0];
+    hold[1] = this->cube[1];
+
+    this->cube[0] = this->cube[2];
+    this->cube[2] = this->cube[8];
+    this->cube[8] = this->cube[6];
+    this->cube[6] = hold[0];
+    this->cube[1] = this->cube[5];
+    this->cube[5] = this->cube[7];
+    this->cube[7] = this->cube[3];
+    this->cube[3] = hold[1];
 
     return *this;
   }
@@ -318,7 +350,21 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::u2()
   {
-    return this->u().u();
+    // Up row.
+    swap(this->cube[9],  this->cube[27]);
+    swap(this->cube[18], this->cube[36]);
+    swap(this->cube[10], this->cube[28]);
+    swap(this->cube[19], this->cube[37]);
+    swap(this->cube[11], this->cube[29]);
+    swap(this->cube[20], this->cube[38]);
+
+    // Up face.
+    swap(this->cube[0], this->cube[8]);
+    swap(this->cube[2], this->cube[6]);
+    swap(this->cube[1], this->cube[7]);
+    swap(this->cube[3], this->cube[5]);
+
+    return *this;
   }
 
   /**
@@ -326,22 +372,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::d()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Down column.
-      this->cube[15 + i] = copy[42 + i];
-      this->cube[24 + i] = copy[15 + i];
-      this->cube[33 + i] = copy[24 + i];
-      this->cube[42 + i] = copy[33 + i];
+    // Down row.
+    hold[0] = this->cube[15];
+    hold[1] = this->cube[16];
+    hold[2] = this->cube[17];
 
-      // Down face.
-      this->cube[45 + i]     = copy[51 - i * 3];
-      this->cube[45 + i * 3] = copy[51 + i];
-      this->cube[47 + i * 3] = copy[45 + i];
-      this->cube[51 + i]     = copy[53 - i * 3];
-    }
+    this->cube[15] = this->cube[42];
+    this->cube[42] = this->cube[33];
+    this->cube[33] = this->cube[24];
+    this->cube[24] = hold[0];
+    this->cube[16] = this->cube[43];
+    this->cube[43] = this->cube[34];
+    this->cube[34] = this->cube[25];
+    this->cube[25] = hold[1];
+    this->cube[17] = this->cube[44];
+    this->cube[44] = this->cube[35];
+    this->cube[35] = this->cube[26];
+    this->cube[26] = hold[2];
+
+    // Down face.
+    hold[0] = this->cube[45];
+    hold[1] = this->cube[46];
+
+    this->cube[45] = this->cube[51];
+    this->cube[51] = this->cube[53];
+    this->cube[53] = this->cube[47];
+    this->cube[47] = hold[0];
+    this->cube[46] = this->cube[48];
+    this->cube[48] = this->cube[52];
+    this->cube[52] = this->cube[50];
+    this->cube[50] = hold[1];
 
     return *this;
   }
@@ -351,22 +413,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::dPrime()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Down column.
-      this->cube[15 + i] = copy[24 + i];
-      this->cube[24 + i] = copy[33  + i];
-      this->cube[33 + i] = copy[42 + i];
-      this->cube[42 + i] = copy[15 + i];
+    // Down row.
+    hold[0] = this->cube[15];
+    hold[1] = this->cube[16];
+    hold[2] = this->cube[17];
 
-      // Down face.
-      this->cube[45 + i]     = copy[47 + i * 3];
-      this->cube[45 + i * 3] = copy[47 - i];
-      this->cube[47 + i * 3] = copy[53 - i];
-      this->cube[51 + i]     = copy[45 + i * 3];
-    }
+    this->cube[15] = this->cube[24];
+    this->cube[24] = this->cube[33];
+    this->cube[33] = this->cube[42];
+    this->cube[42] = hold[0];
+    this->cube[16] = this->cube[25];
+    this->cube[25] = this->cube[34];
+    this->cube[34] = this->cube[43];
+    this->cube[43] = hold[1];
+    this->cube[17] = this->cube[26];
+    this->cube[26] = this->cube[35];
+    this->cube[35] = this->cube[44];
+    this->cube[44] = hold[2];
+
+    // Down face.
+    hold[0] = this->cube[45];
+    hold[1] = this->cube[46];
+
+    this->cube[45] = this->cube[47];
+    this->cube[47] = this->cube[53];
+    this->cube[53] = this->cube[51];
+    this->cube[51] = hold[0];
+    this->cube[46] = this->cube[50];
+    this->cube[50] = this->cube[52];
+    this->cube[52] = this->cube[48];
+    this->cube[48] = hold[1];
 
     return *this;
   }
@@ -376,7 +454,21 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::d2()
   {
-    return this->d().d();
+    // Down row.
+    swap(this->cube[15], this->cube[33]);
+    swap(this->cube[16], this->cube[34]);
+    swap(this->cube[17], this->cube[35]);
+    swap(this->cube[24], this->cube[42]);
+    swap(this->cube[25], this->cube[43]);
+    swap(this->cube[26], this->cube[44]);
+
+    // Down face.
+    swap(this->cube[45], this->cube[53]);
+    swap(this->cube[46], this->cube[52]);
+    swap(this->cube[47], this->cube[51]);
+    swap(this->cube[48], this->cube[50]);
+
+    return *this;
   }
 
   /**
@@ -384,22 +476,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::l()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Left column.
-      this->cube[0  + i * 3] = copy[44 - i * 3];
-      this->cube[18 + i * 3] = copy[0  + i * 3];
-      this->cube[45 + i * 3] = copy[18 + i * 3];
-      this->cube[38 + i * 3] = copy[51 - i * 3];
+    // Left column.  Order is important!
+    hold[0] = this->cube[0];
+    hold[1] = this->cube[38];
+    hold[2] = this->cube[3];
 
-      // Left face.
-      this->cube[9  + i]     = copy[15 - i * 3];
-      this->cube[9  + i * 3] = copy[15 + i];
-      this->cube[11 + i * 3] = copy[9  + i];
-      this->cube[15 + i]     = copy[17 - i * 3];
-    }
+    this->cube[0]  = this->cube[44];
+    this->cube[44] = this->cube[45];
+    this->cube[45] = this->cube[18];
+    this->cube[18] = hold[0];
+    this->cube[38] = this->cube[51];
+    this->cube[51] = this->cube[24];
+    this->cube[24] = this->cube[6];
+    this->cube[6]  = hold[1];
+    this->cube[3]  = this->cube[41];
+    this->cube[41] = this->cube[48];
+    this->cube[48] = this->cube[21];
+    this->cube[21] = hold[2];
+
+    // Left face. Order is important!
+    hold[0] = this->cube[9];
+    hold[1] = this->cube[10];
+
+    this->cube[9] = this->cube[15];
+    this->cube[15] = this->cube[17];
+    this->cube[17] = this->cube[11];
+    this->cube[11] = hold[0];
+    this->cube[10] = this->cube[12];
+    this->cube[12] = this->cube[16];
+    this->cube[16] = this->cube[14];
+    this->cube[14] = hold[1];
 
     return *this;
   }
@@ -409,22 +517,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::lPrime()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Left column.
-      this->cube[0  + i * 3] = copy[18 + i * 3];
-      this->cube[18 + i * 3] = copy[45 + i * 3];
-      this->cube[45 + i * 3] = copy[44 - i * 3];
-      this->cube[38 + i * 3] = copy[6  - i * 3];
+    // Left column.  Order is important!
+    hold[0] = this->cube[0];
+    hold[1] = this->cube[38];
+    hold[2] = this->cube[3];
 
-      // Left face.
-      this->cube[9  + i]     = copy[11 + i * 3];
-      this->cube[9  + i * 3] = copy[11 - i];
-      this->cube[11 + i * 3] = copy[17 - i];
-      this->cube[15 + i]     = copy[9  + i * 3];
-    }
+    this->cube[0] = this->cube[18];
+    this->cube[18] = this->cube[45];
+    this->cube[45] = this->cube[44];
+    this->cube[44] = hold[0];
+    this->cube[38] = this->cube[6];
+    this->cube[6] = this->cube[24];
+    this->cube[24] = this->cube[51];
+    this->cube[51] = hold[1];
+    this->cube[3] = this->cube[21];
+    this->cube[21] = this->cube[48];
+    this->cube[48] = this->cube[41];
+    this->cube[41] = hold[2];
+
+    // Left face.  Order is important!
+    hold[0] = this->cube[9];
+    hold[1] = this->cube[10];
+
+    this->cube[9] = this->cube[11];
+    this->cube[11] = this->cube[17];
+    this->cube[17] = this->cube[15];
+    this->cube[15] = hold[0];
+    this->cube[10] = this->cube[14];
+    this->cube[14] = this->cube[16];
+    this->cube[16] = this->cube[12];
+    this->cube[12] = hold[1];
 
     return *this;
   }
@@ -434,7 +558,21 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::l2()
   {
-    return this->l().l();
+    // Left column.
+    swap(this->cube[0],  this->cube[45]);
+    swap(this->cube[3],  this->cube[48]);
+    swap(this->cube[6],  this->cube[51]);
+    swap(this->cube[18], this->cube[44]);
+    swap(this->cube[21], this->cube[41]);
+    swap(this->cube[24], this->cube[38]);
+
+    // Left face.
+    swap(this->cube[9],  this->cube[17]);
+    swap(this->cube[10], this->cube[16]);
+    swap(this->cube[11], this->cube[15]);
+    swap(this->cube[12], this->cube[14]);
+
+    return *this;
   }
 
   /**
@@ -442,22 +580,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::r()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Right column.
-      this->cube[2  + i * 3] = copy[20 + i * 3];
-      this->cube[20 + i * 3] = copy[47 + i * 3];
-      this->cube[47 + i * 3] = copy[42 - i * 3];
-      this->cube[36 + i * 3] = copy[8  - i * 3];
+    // Right column.  Order is important!
+    hold[0] = this->cube[2];
+    hold[1] = this->cube[36];
+    hold[2] = this->cube[5];
 
-      // Right face.
-      this->cube[27 + i]     = copy[33 - i * 3];
-      this->cube[27 + i * 3] = copy[33 + i];
-      this->cube[29 + i * 3] = copy[27 + i];
-      this->cube[33 + i]     = copy[35 - i * 3];
-    }
+    this->cube[2]  = this->cube[20];
+    this->cube[20] = this->cube[47];
+    this->cube[47] = this->cube[42];
+    this->cube[42] = hold[0];
+    this->cube[36] = this->cube[8];
+    this->cube[8]  = this->cube[26];
+    this->cube[26] = this->cube[53];
+    this->cube[53] = hold[1];
+    this->cube[5]  = this->cube[23];
+    this->cube[23] = this->cube[50];
+    this->cube[50] = this->cube[39];
+    this->cube[39] = hold[2];
+
+    // Right face.  Order is important!
+    hold[0] = this->cube[27];
+    hold[1] = this->cube[28];
+
+    this->cube[27] = this->cube[33];
+    this->cube[33] = this->cube[35];
+    this->cube[35] = this->cube[29];
+    this->cube[29] = hold[0];
+    this->cube[28] = this->cube[30];
+    this->cube[30] = this->cube[34];
+    this->cube[34] = this->cube[32];
+    this->cube[32] = hold[1];
 
     return *this;
   }
@@ -467,22 +621,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::rPrime()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Right column.
-      this->cube[2  + i * 3] = copy[42 - i * 3];
-      this->cube[20 + i * 3] = copy[2  + i * 3];
-      this->cube[47 + i * 3] = copy[20 + i * 3];
-      this->cube[36 + i * 3] = copy[53 - i * 3];
+    // Right column.  Order is important!
+    hold[0] = this->cube[2];
+    hold[1] = this->cube[36];
+    hold[2] = this->cube[5];
 
-      // Right face.
-      this->cube[27 + i]     = copy[29 + i * 3];
-      this->cube[27 + i * 3] = copy[29 - i];
-      this->cube[29 + i * 3] = copy[35 - i];
-      this->cube[33 + i]     = copy[27 + i * 3];
-    }
+    this->cube[2]  = this->cube[42];
+    this->cube[42] = this->cube[47];
+    this->cube[47] = this->cube[20];
+    this->cube[20] = hold[0];
+    this->cube[36] = this->cube[53];
+    this->cube[53] = this->cube[26];
+    this->cube[26] = this->cube[8];
+    this->cube[8]  = hold[1];
+    this->cube[5]  = this->cube[39];
+    this->cube[39] = this->cube[50];
+    this->cube[50] = this->cube[23];
+    this->cube[23] = hold[2];
+
+    // Right face.  Order is important!
+    hold[0] = this->cube[27];
+    hold[1] = this->cube[28];
+
+    this->cube[27] = this->cube[29];
+    this->cube[29] = this->cube[35];
+    this->cube[35] = this->cube[33];
+    this->cube[33] = hold[0];
+    this->cube[28] = this->cube[32];
+    this->cube[32] = this->cube[34];
+    this->cube[34] = this->cube[30];
+    this->cube[30] = hold[1];
 
     return *this;
   }
@@ -492,7 +662,21 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::r2()
   {
-    return this->r().r();
+    // Right column.
+    swap(this->cube[2], this->cube[47]);
+    swap(this->cube[5], this->cube[50]);
+    swap(this->cube[8], this->cube[53]);
+    swap(this->cube[20], this->cube[42]);
+    swap(this->cube[23], this->cube[39]);
+    swap(this->cube[26], this->cube[36]);
+
+    // Right face.
+    swap(this->cube[27], this->cube[35]);
+    swap(this->cube[28], this->cube[34]);
+    swap(this->cube[29], this->cube[33]);
+    swap(this->cube[30], this->cube[32]);
+
+    return *this;
   }
 
   /**
@@ -500,22 +684,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::f()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Front column.
-      this->cube[6  + i]     = copy[17 - i * 3];
-      this->cube[11 + i * 3] = copy[45 + i];
-      this->cube[27 + i * 3] = copy[6  + i];
-      this->cube[45 + i]     = copy[33 - i * 3];
+    // Front column.  Order is important!
+    hold[0] = this->cube[6];
+    hold[1] = this->cube[11];
+    hold[2] = this->cube[7];
 
-      // Front face.
-      this->cube[18 + i]     = copy[24 - i * 3];
-      this->cube[18 + i * 3] = copy[24 + i];
-      this->cube[20 + i * 3] = copy[18 + i];
-      this->cube[24 + i]     = copy[26 - i * 3];
-    }
+    this->cube[6]  = this->cube[17];
+    this->cube[17] = this->cube[47];
+    this->cube[47] = this->cube[27];
+    this->cube[27] = hold[0];
+    this->cube[11] = this->cube[45];
+    this->cube[45] = this->cube[33];
+    this->cube[33] = this->cube[8];
+    this->cube[8]  = hold[1];
+    this->cube[7]  = this->cube[14];
+    this->cube[14] = this->cube[46];
+    this->cube[46] = this->cube[30];
+    this->cube[30] = hold[2];
+
+    // Front face.  Order is important!
+    hold[0] = this->cube[18];
+    hold[1] = this->cube[19];
+
+    this->cube[18] = this->cube[24];
+    this->cube[24] = this->cube[26];
+    this->cube[26] = this->cube[20];
+    this->cube[20] = hold[0];
+    this->cube[19] = this->cube[21];
+    this->cube[21] = this->cube[25];
+    this->cube[25] = this->cube[23];
+    this->cube[23] = hold[1];
 
     return *this;
   }
@@ -525,22 +725,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::fPrime()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Front column.
-      this->cube[6  + i]     = copy[27 + i * 3];
-      this->cube[11 + i * 3] = copy[8  - i];
-      this->cube[27 + i * 3] = copy[47 - i];
-      this->cube[45 + i]     = copy[11 + i * 3];
+    // Front column.  Order is important!
+    hold[0] = this->cube[6];
+    hold[1] = this->cube[11];
+    hold[2] = this->cube[7];
 
-      // Front face.
-      this->cube[18 + i]     = copy[20 + i * 3];
-      this->cube[18 + i * 3] = copy[20 - i];
-      this->cube[20 + i * 3] = copy[26 - i];
-      this->cube[24 + i]     = copy[18 + i * 3];
-    }
+    this->cube[6]  = this->cube[27];
+    this->cube[27] = this->cube[47];
+    this->cube[47] = this->cube[17];
+    this->cube[17] = hold[0];
+    this->cube[11] = this->cube[8];
+    this->cube[8]  = this->cube[33];
+    this->cube[33] = this->cube[45];
+    this->cube[45] = hold[1];
+    this->cube[7]  = this->cube[30];
+    this->cube[30] = this->cube[46];
+    this->cube[46] = this->cube[14];
+    this->cube[14] = hold[2];
+
+    // Front face.  Order is important!
+    hold[0] = this->cube[18];
+    hold[1] = this->cube[19];
+
+    this->cube[18] = this->cube[20];
+    this->cube[20] = this->cube[26];
+    this->cube[26] = this->cube[24];
+    this->cube[24] = hold[0];
+    this->cube[19] = this->cube[23];
+    this->cube[23] = this->cube[25];
+    this->cube[25] = this->cube[21];
+    this->cube[21] = hold[1];
 
     return *this;
   }
@@ -550,7 +766,21 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::f2()
   {
-    return this->f().f();
+    // Front column.
+    swap(this->cube[6], this->cube[47]);
+    swap(this->cube[7], this->cube[46]);
+    swap(this->cube[8], this->cube[45]);
+    swap(this->cube[27], this->cube[17]);
+    swap(this->cube[30], this->cube[14]);
+    swap(this->cube[33], this->cube[11]);
+
+    // Front face.
+    swap(this->cube[18], this->cube[26]);
+    swap(this->cube[19], this->cube[25]);
+    swap(this->cube[20], this->cube[24]);
+    swap(this->cube[21], this->cube[23]);
+
+    return *this;
   }
 
   /**
@@ -559,22 +789,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::b()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Back column.
-      this->cube[0  + i]     = copy[29 + i * 3];
-      this->cube[9  + i * 3] = copy[2  - i];
-      this->cube[29 + i * 3] = copy[53 - i];
-      this->cube[51 + i]     = copy[9  + i * 3];
+    // Back column.  Order is important!
+    hold[0] = this->cube[0];
+    hold[1] = this->cube[9];
+    hold[2] = this->cube[1];
 
-      // Back face.
-      this->cube[36 + i]     = copy[42 - i * 3];
-      this->cube[36 + i * 3] = copy[42 + i];
-      this->cube[38 + i * 3] = copy[36 + i];
-      this->cube[42 + i]     = copy[44 - i * 3];
-    }
+    this->cube[0] = this->cube[29];
+    this->cube[29] = this->cube[53];
+    this->cube[53] = this->cube[15];
+    this->cube[15] = hold[0];
+    this->cube[9] = this->cube[2];
+    this->cube[2] = this->cube[35];
+    this->cube[35] = this->cube[51];
+    this->cube[51] = hold[1];
+    this->cube[1] = this->cube[32];
+    this->cube[32] = this->cube[52];
+    this->cube[52] = this->cube[12];
+    this->cube[12] = hold[2];
+
+    // Back face.  Order is important!
+    hold[0] = this->cube[36];
+    hold[1] = this->cube[37];
+
+    this->cube[36] = this->cube[42];
+    this->cube[42] = this->cube[44];
+    this->cube[44] = this->cube[38];
+    this->cube[38] = hold[0];
+    this->cube[37] = this->cube[39];
+    this->cube[39] = this->cube[43];
+    this->cube[43] = this->cube[41];
+    this->cube[41] = hold[1];
 
     return *this;
   }
@@ -585,22 +831,38 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::bPrime()
   {
-    array<COLOR, 54> copy = this->cube;
+    array<COLOR, 3> hold;
 
-    for (int i = 0; i < 3; ++i)
-    {
-      // Back column.
-      this->cube[0  + i]     = copy[15 - i * 3];
-      this->cube[9  + i * 3] = copy[51 + i];
-      this->cube[29 + i * 3] = copy[0  + i];
-      this->cube[51 + i]     = copy[35 - i * 3];
+    // Back column.  Order is important!
+    hold[0] = this->cube[0];
+    hold[1] = this->cube[9];
+    hold[2] = this->cube[1];
 
-      // Back face.
-      this->cube[36 + i]     = copy[38 + i * 3];
-      this->cube[36 + i * 3] = copy[38 - i];
-      this->cube[38 + i * 3] = copy[44 - i];
-      this->cube[42 + i]     = copy[36 + i * 3];
-    }
+    this->cube[0]  = this->cube[15];
+    this->cube[15] = this->cube[53];
+    this->cube[53] = this->cube[29];
+    this->cube[29] = hold[0];
+    this->cube[9]  = this->cube[51];
+    this->cube[51] = this->cube[35];
+    this->cube[35] = this->cube[2];
+    this->cube[2]  = hold[1];
+    this->cube[1]  = this->cube[12];
+    this->cube[12] = this->cube[52];
+    this->cube[52] = this->cube[32];
+    this->cube[32] = hold[2];
+
+    // Back face.  Order is important!
+    hold[0] = this->cube[36];
+    hold[1] = this->cube[37];
+
+    this->cube[36] = this->cube[38];
+    this->cube[38] = this->cube[44];
+    this->cube[44] = this->cube[42];
+    this->cube[42] = hold[0];
+    this->cube[37] = this->cube[41];
+    this->cube[41] = this->cube[43];
+    this->cube[43] = this->cube[39];
+    this->cube[39] = hold[1];
 
     return *this;
   }
@@ -610,7 +872,21 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::b2()
   {
-    return this->b().b();
+    // Back column.
+    swap(this->cube[0],  this->cube[53]);
+    swap(this->cube[1],  this->cube[52]);
+    swap(this->cube[2],  this->cube[51]);
+    swap(this->cube[9],  this->cube[35]);
+    swap(this->cube[12], this->cube[32]);
+    swap(this->cube[15], this->cube[29]);
+
+    // Back face.
+    swap(this->cube[36], this->cube[44]);
+    swap(this->cube[37], this->cube[43]);
+    swap(this->cube[38], this->cube[42]);
+    swap(this->cube[39], this->cube[41]);
+
+    return *this;
   }
 
   /**

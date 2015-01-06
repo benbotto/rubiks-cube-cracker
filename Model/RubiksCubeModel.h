@@ -10,6 +10,8 @@ using std::fill;
 using std::next;
 using std::set_intersection;
 using std::next_permutation;
+#include <utility>
+using std::swap;
 #include <iterator>
 using std::advance;
 
