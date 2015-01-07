@@ -3,14 +3,7 @@
 namespace busybin
 {
   /**
-   * Init.
-   */
-  RubiksCubeView::RubiksCubeView()
-  {
-  }
-
-  /**
-   * Render the cuve.
+   * Render the cube.
    * @param cube The RubiksCube.
    */
   void RubiksCubeView::render(const RubiksCubeModel& cube) const
