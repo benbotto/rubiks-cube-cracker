@@ -110,7 +110,7 @@ namespace busybin
     goals.push_back({unique_ptr<Goal>(new Goal2x3x3()),             &mdlTwistStore});
     goals.push_back({unique_ptr<Goal>(new Goal2x3x3_OE(2)),         &mdlTwistStore});
     goals.push_back({unique_ptr<Goal>(new Goal2x3x3_OE(4)),         &mdlTwistStore});
-    //goals.push_back({unique_ptr<Goal>(new Goal3x3x3()),             &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new Goal3x3x3()),             &mdlTwistStore});
 
     // Display the intial cube model.
     cout << "Initial cube state." << endl;

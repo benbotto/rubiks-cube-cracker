@@ -17,7 +17,6 @@ namespace busybin
   class RubiksCubeView
   {
   public:
-    RubiksCubeView();
     void render(const RubiksCubeModel& cube) const;
   };
 }

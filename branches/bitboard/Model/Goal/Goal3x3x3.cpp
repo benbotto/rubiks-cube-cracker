@@ -8,7 +8,8 @@ namespace busybin
    */
   bool Goal3x3x3::isSatisfied(RubiksCubeModel& cube)
   {
-    return cube.isSolved();
+    //return cube.isSolved();
+    return false;
   }
 
   /**
