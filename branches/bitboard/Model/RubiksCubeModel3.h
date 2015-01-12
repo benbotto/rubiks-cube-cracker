@@ -17,8 +17,45 @@ namespace busybin
    * A raw Rubik's Cube model.  This is _not_ what is drawn.  It's a fairly
    * fast Rubik's Cube model used by the solver, and kept in sync with the
    * drawable Rubik's Cube WorldObject.
+   *
+   * The cube is laid out as follows.
+   *
+   *
+   *          W W W
+   *          W W W
+   *          W W W
+   *
+   *  G G G   R R R   B B B   O O O
+   *  G G G   R R R   B B B   O O O
+   *  G G G   R R R   B B B   O O O
+   *
+   *          Y Y Y
+   *          Y Y Y
+   *          Y Y Y
+   *
+   * The sides:
+   *
+   *     U
+   *   L F R B
+   *     D
+   *
+   * Index wise:
+   *
+   *
+   *              0  1  2
+   *              7     3
+   *              6  5  4
+   *
+   *   8  9 10   16 17 18   24 25 26   32 33 34
+   *  15    11   23    19   31    27   39    35
+   *  14 13 12   22 21 20   30 29 28   38 37 36
+   *
+   *             40 41 42
+   *             47    43
+   *             46 45 44
+   *
    */
-  class RubiksCubeModel3 // TODO
+  class RubiksCubeModel3
   {
     typedef char uchar;
 
@@ -51,11 +88,9 @@ namespace busybin
       unsigned c_i0, unsigned c_i1, unsigned c_i2, unsigned c_i3);
 
   public:
-    RubiksCubeModel3(); // TODO
-    //unsigned getFace(FACE f) const;
+    RubiksCubeModel3();
 
-    //COLOR get(unsigned i) const;
-    COLOR get(FACE face, unsigned row, unsigned col) const; // TODO 
+    COLOR get(FACE face, unsigned row, unsigned col) const;
     
     RubiksCubeModel3& u();
 
