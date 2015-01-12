@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
   ctlr.run();*/
 
   RubiksCubeModel cube;
-  RubiksCubeModel2 cube2;
+  //RubiksCubeModel2 cube2;
   RubiksCubeModel3 cube3;
   //RubiksCubeView2 view2;
   RubiksCubeView3 view3;
@@ -40,6 +40,30 @@ int main(int argc, char* argv[])
   view3.render(cube3);
   cube3.u();
   view3.render(cube3);
+  cube3.l();
+  view3.render(cube3);
+  cube3.f();
+  /*view3.render(cube3);
+  cube3.r();
+  view3.render(cube3);
+  cube3.b();
+  view3.render(cube3);
+  cube3.b();
+  view3.render(cube3);
+  cube3.d();
+  view3.render(cube3);
+  cube3.uPrime();
+  view3.render(cube3);*/
+  cube3.lPrime();
+  view3.render(cube3);
+  cube3.fPrime();
+  view3.render(cube3);
+  cube3.rPrime();
+  view3.render(cube3);
+  cube3.bPrime();
+  view3.render(cube3);
+  cube3.dPrime();
+  view3.render(cube3);
   
   /** Profiling. **/
   unsigned long nodes = pow(15, 8);
@@ -48,7 +72,7 @@ int main(int argc, char* argv[])
     AutoTimer at;
 
     for (unsigned long i = 0; i < nodes; ++i)
-      cube3.u();
+      cube3.dPrime();
   }
 
   /*{
@@ -58,12 +82,12 @@ int main(int argc, char* argv[])
       cube2.f();
   }*/
 
-  {
+  /*{
     AutoTimer at;
 
     for (unsigned long i = 0; i < nodes; ++i)
       cube.u();
-  }
+  }*/
 
   return 0;
 }

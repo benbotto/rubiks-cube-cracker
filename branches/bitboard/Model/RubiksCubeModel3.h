@@ -80,11 +80,10 @@ namespace busybin
     array<COLOR, 6>  centers;
 
     inline void roll90(FACE f);
-    void roll180(FACE f);
-    void roll270(FACE f);
+    inline void roll180(FACE f);
+    inline void roll270(FACE f);
 
-    //inline void rotate90(unsigned i0, unsigned i02, unsigned i1, unsigned i12, unsigned i2, unsigned i22, unsigned i3, unsigned i32);
-    inline void rotate90(unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
+    inline void rotate(unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
       unsigned c_i0, unsigned c_i1, unsigned c_i2, unsigned c_i3);
 
   public:
@@ -93,14 +92,22 @@ namespace busybin
     COLOR get(FACE face, unsigned row, unsigned col) const;
     
     RubiksCubeModel3& u();
+    RubiksCubeModel3& uPrime();
 
     RubiksCubeModel3& l();
+    RubiksCubeModel3& lPrime();
 
     RubiksCubeModel3& f();
+    RubiksCubeModel3& fPrime();
 
     RubiksCubeModel3& r();
+    RubiksCubeModel3& rPrime();
 
     RubiksCubeModel3& b();
+    RubiksCubeModel3& bPrime();
+
+    RubiksCubeModel3& d();
+    RubiksCubeModel3& dPrime();
   };
 }
 
