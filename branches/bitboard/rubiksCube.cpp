@@ -81,9 +81,21 @@ int main(int argc, char* argv[])
   view3.render(cube3);
   cube3.e();
   view3.render(cube3);*/
-  cube3.f().b().l().r();
+  /*cube3.f().b().l().r();
   view3.render(cube3);
   cube3.s();
+  view3.render(cube3);*/
+  /*cube3.l().r().u().d();
+  view3.render(cube3);
+  cube3.mPrime();
+  view3.render(cube3);*/
+  /*cube3.f().b().u().d().l().r();
+  view3.render(cube3);
+  cube3.ePrime();
+  view3.render(cube3);*/
+  cube3.f().b().l().r();
+  view3.render(cube3);
+  cube3.sPrime();
   view3.render(cube3);
   
   /** Profiling. **/
@@ -93,7 +105,7 @@ int main(int argc, char* argv[])
     AutoTimer at;
 
     for (unsigned long i = 0; i < nodes; ++i)
-      cube3.s();
+      cube3.sPrime();
   }
 
   /*{
@@ -107,7 +119,7 @@ int main(int argc, char* argv[])
     AutoTimer at;
 
     for (unsigned long i = 0; i < nodes; ++i)
-      cube.s();
+      cube.sPrime();
   }
 
   return 0;

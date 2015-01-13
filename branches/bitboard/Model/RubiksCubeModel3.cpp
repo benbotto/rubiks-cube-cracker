@@ -419,6 +419,15 @@ namespace busybin
   }
 
   /**
+   * Rotate the M slice counter clockwise.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::mPrime()
+  {
+    this->rotateSlice90(17, 41, 37, 1, 21, 45, 33, 5, 2, 5, 4, 0);
+    return *this;
+  }
+
+  /**
    * Rotate the E slice clockwise (between U and D, same way as D).
    */
   RubiksCubeModel3& RubiksCubeModel3::e()
@@ -428,11 +437,29 @@ namespace busybin
   }
 
   /**
+   * Rotate the E slice counter clockwise.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::ePrime()
+  {
+    this->rotateSlice90(23, 31, 39, 15, 19, 27, 35, 11, 2, 3, 4, 1);
+    return *this;
+  }
+
+  /**
    * Rotate the S slice clockwise (between B and F, same way as F).
    */
   RubiksCubeModel3& RubiksCubeModel3::s()
   {
     this->rotateSlice90(3, 9, 47, 29, 7, 13, 43, 25, 0, 1, 5, 3);
+    return *this;
+  }
+
+  /**
+   * Rotate the S slice counter clockwise.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::sPrime()
+  {
+    this->rotateSlice90(29, 47, 9, 3, 25, 43, 13, 7, 3, 5, 1, 0);
     return *this;
   }
 }

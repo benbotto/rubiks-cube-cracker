@@ -133,10 +133,13 @@ namespace busybin
 
     // Slice moves.
     RubiksCubeModel3& m();
+    RubiksCubeModel3& mPrime();
 
     RubiksCubeModel3& e();
+    RubiksCubeModel3& ePrime();
 
     RubiksCubeModel3& s();
+    RubiksCubeModel3& sPrime();
   };
 }
 
