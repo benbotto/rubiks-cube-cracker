@@ -10,7 +10,6 @@ set (SRC
   "./Controller/GL/Program/RubiksCubeProgram.cpp"
   "./Controller/CubeSearcher.cpp"
   "./View/RubiksCubeView.cpp"
-  "./View/RubiksCubeView2.cpp"
   "./View/RubiksCubeView3.cpp"
   "./Util/RubiksCubeException.cpp"
   "./Util/Random.cpp"
@@ -41,7 +40,6 @@ set (SRC
   "./Model/Goal/Goal2x3x3_OE.cpp"
   "./Model/Goal/Goal3x3x3.cpp"
   "./Model/RubiksCubeModel.cpp"
-  "./Model/RubiksCubeModel2.cpp"
   "./Model/RubiksCubeModel3.cpp"
   "./Model/WorldObject/Cubie.cpp"
   "./Model/WorldObject/RubiksCube.cpp")

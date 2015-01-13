@@ -2,9 +2,7 @@
 
 // TODO
 #include "Model/RubiksCubeModel3.h"
-#include "Model/RubiksCubeModel2.h"
 #include "Model/RubiksCubeModel.h"
-#include "View/RubiksCubeView2.h"
 #include "View/RubiksCubeView3.h"
 #include "Util/AutoTimer.h"
 #include <cmath>
