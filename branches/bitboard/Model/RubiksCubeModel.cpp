@@ -1,22 +1,11 @@
-#include "RubiksCubeModel3.h" // TODO
-// TODO
-#include <iostream>
-using std::cout;
-using std::endl;
-#include <iomanip>
-using std::hex;
-using std::setfill;
-using std::setw;
-#include <bitset>
-using std::bitset;
-// END TODO
+#include "RubiksCubeModel.h"
 
 namespace busybin
 {
   /**
    * Initialize the cube, white on top, red in front.
    */
-  RubiksCubeModel3::RubiksCubeModel3() // TODO
+  RubiksCubeModel::RubiksCubeModel()
   {
     array<COLOR, 48>::iterator it  = this->cube.begin();
     array<COLOR, 48>::iterator end = next(it, 8);
@@ -65,7 +54,7 @@ namespace busybin
    *
    * @param f The face to roll.
    */
-  inline void RubiksCubeModel3::roll90(FACE f)
+  inline void RubiksCubeModel::roll90(FACE f)
   {
     uint64_t face = *(uint64_t*)&this->cube[(unsigned)f * 8];
     asm volatile ("rolq $16, %[face]" : [face] "+r" (face) : );
@@ -81,7 +70,7 @@ namespace busybin
    *
    * @param f The face to roll.
    */
-  inline void RubiksCubeModel3::roll180(FACE f)
+  inline void RubiksCubeModel::roll180(FACE f)
   {
     uint64_t face = *(uint64_t*)&this->cube[(unsigned)f * 8];
     asm volatile ("rolq $32, %[face]" : [face] "+r" (face) : );
@@ -97,7 +86,7 @@ namespace busybin
    *
    * @param f The face to roll.
    */
-  inline void RubiksCubeModel3::roll270(FACE f)
+  inline void RubiksCubeModel::roll270(FACE f)
   {
     uint64_t face = *(uint64_t*)&this->cube[(unsigned)f * 8];
     asm volatile ("rorq $16, %[face]" : [face] "+r" (face) : );
@@ -115,7 +104,7 @@ namespace busybin
    * @param c_i2 The third index, treated as a char.
    * @param c_i3 The fourth index, treated as a char.
    */
-  inline void RubiksCubeModel3::rotateSides90(unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
+  inline void RubiksCubeModel::rotateSides90(unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
     unsigned c_i0, unsigned c_i1, unsigned c_i2, unsigned c_i3)
   {
     // The number of operations is reduced by moving two cubes at a time (e.g.
@@ -147,7 +136,7 @@ namespace busybin
    * @param c_i2 The third index, treated as a char.
    * @param c_i3 The fourth index, treated as a char.
    */
-  inline void RubiksCubeModel3::rotateSides180(
+  inline void RubiksCubeModel::rotateSides180(
     unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
     unsigned c_i0, unsigned c_i1, unsigned c_i2, unsigned c_i3)
   {
@@ -172,7 +161,7 @@ namespace busybin
    * @param c_ci2 Center index 2.
    * @param c_ci3 Center index 3.
    */
-  inline void RubiksCubeModel3::rotateSlice90(
+  inline void RubiksCubeModel::rotateSlice90(
     unsigned c_fi0, unsigned c_fi1, unsigned c_fi2, unsigned c_fi3,
     unsigned c_fi4, unsigned c_fi5, unsigned c_fi6, unsigned c_fi7,
     unsigned c_ci0, unsigned c_ci1, unsigned c_ci2, unsigned c_ci3)
@@ -211,7 +200,7 @@ namespace busybin
    * @param c_ci2 Center index 2.
    * @param c_ci3 Center index 3.
    */
-  inline void RubiksCubeModel3::rotateSlice180(
+  inline void RubiksCubeModel::rotateSlice180(
     unsigned c_fi0, unsigned c_fi1, unsigned c_fi2, unsigned c_fi3,
     unsigned c_fi4, unsigned c_fi5, unsigned c_fi6, unsigned c_fi7,
     unsigned c_ci0, unsigned c_ci1, unsigned c_ci2, unsigned c_ci3)
@@ -231,7 +220,7 @@ namespace busybin
    * @param row The 0-based row, unfolded as described in get(i).
    * @param col The 0-based col, unfulded as described in get(i).
    */
-  RubiksCubeModel3::COLOR RubiksCubeModel3::get(
+  RubiksCubeModel::COLOR RubiksCubeModel::get(
     FACE f, unsigned row, unsigned col) const
   {
     if (row == 1 and col == 1)
@@ -257,7 +246,7 @@ namespace busybin
   /**
    * Move the up face clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::u()
+  RubiksCubeModel& RubiksCubeModel::u()
   {
     // Rotate the stickers on the face.
     this->roll90(FACE::UP);
@@ -271,7 +260,7 @@ namespace busybin
   /**
    * Move the up face counter clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::uPrime()
+  RubiksCubeModel& RubiksCubeModel::uPrime()
   {
     this->roll270(FACE::UP);
     this->rotateSides90(32, 24, 16, 8, 34, 26, 18, 10);
@@ -281,7 +270,7 @@ namespace busybin
   /**
    * Move the up face twice
    */
-  RubiksCubeModel3& RubiksCubeModel3::u2()
+  RubiksCubeModel& RubiksCubeModel::u2()
   {
     this->roll180(FACE::UP);
     this->rotateSides180(8, 24, 16, 32, 10, 26, 18, 34);
@@ -291,7 +280,7 @@ namespace busybin
   /**
    * Move the left face clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::l()
+  RubiksCubeModel& RubiksCubeModel::l()
   {
     this->roll90(FACE::LEFT);
     this->rotateSides90(6, 34, 46, 22, 0, 36, 40, 16);
@@ -301,7 +290,7 @@ namespace busybin
   /**
    * Move the left face counter clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::lPrime()
+  RubiksCubeModel& RubiksCubeModel::lPrime()
   {
     this->roll270(FACE::LEFT);
     this->rotateSides90(22, 46, 34, 6, 16, 40, 36, 0);
@@ -311,7 +300,7 @@ namespace busybin
   /**
    * Move the left face twice.
    */
-  RubiksCubeModel3& RubiksCubeModel3::l2()
+  RubiksCubeModel& RubiksCubeModel::l2()
   {
     this->roll180(FACE::LEFT);
     this->rotateSides180(6, 46, 34, 22, 0, 40, 36, 16);
@@ -321,7 +310,7 @@ namespace busybin
   /**
    * Move the front face clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::f()
+  RubiksCubeModel& RubiksCubeModel::f()
   {
     this->roll90(FACE::FRONT);
     this->rotateSides90(4, 10, 40, 30, 6, 12, 42, 24);
@@ -331,7 +320,7 @@ namespace busybin
   /**
    * Move the front face counter clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::fPrime()
+  RubiksCubeModel& RubiksCubeModel::fPrime()
   {
     this->roll270(FACE::FRONT);
     this->rotateSides90(30, 40, 10, 4, 24, 42, 12, 6);
@@ -341,7 +330,7 @@ namespace busybin
   /**
    * Move the front face twice.
    */
-  RubiksCubeModel3& RubiksCubeModel3::f2()
+  RubiksCubeModel& RubiksCubeModel::f2()
   {
     this->roll180(FACE::FRONT);
     this->rotateSides180(4, 40, 10, 30, 6, 42, 12, 24);
@@ -351,7 +340,7 @@ namespace busybin
   /**
    * Move the right face clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::r()
+  RubiksCubeModel& RubiksCubeModel::r()
   {
     this->roll90(FACE::RIGHT);
     this->rotateSides90(2, 18, 42, 38, 4, 20, 44, 32);
@@ -361,7 +350,7 @@ namespace busybin
   /**
    * Move the right face counter clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::rPrime()
+  RubiksCubeModel& RubiksCubeModel::rPrime()
   {
     this->roll270(FACE::RIGHT);
     this->rotateSides90(38, 42, 18, 2, 32, 44, 20, 4);
@@ -371,7 +360,7 @@ namespace busybin
   /**
    * Move the right face twice.
    */
-  RubiksCubeModel3& RubiksCubeModel3::r2()
+  RubiksCubeModel& RubiksCubeModel::r2()
   {
     this->roll180(FACE::RIGHT);
     this->rotateSides180(2, 42, 18, 38, 4, 44, 20, 32);
@@ -381,7 +370,7 @@ namespace busybin
   /**
    * Move the back face clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::b()
+  RubiksCubeModel& RubiksCubeModel::b()
   {
     this->roll90(FACE::BACK);
     this->rotateSides90(0, 26, 44, 14, 2, 28, 46, 8);
@@ -391,7 +380,7 @@ namespace busybin
   /**
    * Move the back face counter clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::bPrime()
+  RubiksCubeModel& RubiksCubeModel::bPrime()
   {
     this->roll270(FACE::BACK);
     this->rotateSides90(14, 44, 26, 0, 8, 46, 28, 2);
@@ -401,7 +390,7 @@ namespace busybin
   /**
    * Move the back face twice.
    */
-  RubiksCubeModel3& RubiksCubeModel3::b2()
+  RubiksCubeModel& RubiksCubeModel::b2()
   {
     this->roll180(FACE::BACK);
     this->rotateSides180(0, 44, 26, 14, 2, 46, 28, 8);
@@ -411,7 +400,7 @@ namespace busybin
   /**
    * Move the down face clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::d()
+  RubiksCubeModel& RubiksCubeModel::d()
   {
     this->roll90(FACE::DOWN);
     this->rotateSides90(12, 36, 28, 20, 14, 38, 30, 22);
@@ -421,7 +410,7 @@ namespace busybin
   /**
    * Move the down face counter clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::dPrime()
+  RubiksCubeModel& RubiksCubeModel::dPrime()
   {
     this->roll270(FACE::DOWN);
     this->rotateSides90(20, 28, 36, 12, 22, 30, 38, 14);
@@ -431,7 +420,7 @@ namespace busybin
   /**
    * Move the down face twice.
    */
-  RubiksCubeModel3& RubiksCubeModel3::d2()
+  RubiksCubeModel& RubiksCubeModel::d2()
   {
     this->roll180(FACE::DOWN);
     this->rotateSides180(12, 28, 36, 20, 14, 30, 38, 22);
@@ -441,7 +430,7 @@ namespace busybin
   /**
    * Rotate the M slice clockwise (between R and L, same way as L).
    */
-  RubiksCubeModel3& RubiksCubeModel3::m()
+  RubiksCubeModel& RubiksCubeModel::m()
   {
     this->rotateSlice90(1, 37, 41, 17, 5, 33, 45, 21, 0, 4, 5, 2);
     return *this;
@@ -450,7 +439,7 @@ namespace busybin
   /**
    * Rotate the M slice counter clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::mPrime()
+  RubiksCubeModel& RubiksCubeModel::mPrime()
   {
     this->rotateSlice90(17, 41, 37, 1, 21, 45, 33, 5, 2, 5, 4, 0);
     return *this;
@@ -459,7 +448,7 @@ namespace busybin
   /**
    * Rotate the M slice twice.
    */
-  RubiksCubeModel3& RubiksCubeModel3::m2()
+  RubiksCubeModel& RubiksCubeModel::m2()
   {
     this->rotateSlice180(1, 41, 37, 17, 5, 45, 33, 21, 0, 5, 4, 2);
     return *this;
@@ -468,7 +457,7 @@ namespace busybin
   /**
    * Rotate the E slice clockwise (between U and D, same way as D).
    */
-  RubiksCubeModel3& RubiksCubeModel3::e()
+  RubiksCubeModel& RubiksCubeModel::e()
   {
     this->rotateSlice90(15, 39, 31, 23, 11, 35, 27, 19, 1, 4, 3, 2);
     return *this;
@@ -477,7 +466,7 @@ namespace busybin
   /**
    * Rotate the E slice counter clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::ePrime()
+  RubiksCubeModel& RubiksCubeModel::ePrime()
   {
     this->rotateSlice90(23, 31, 39, 15, 19, 27, 35, 11, 2, 3, 4, 1);
     return *this;
@@ -486,7 +475,7 @@ namespace busybin
   /**
    * Rotate the E slice twice.
    */
-  RubiksCubeModel3& RubiksCubeModel3::e2()
+  RubiksCubeModel& RubiksCubeModel::e2()
   {
     this->rotateSlice180(15, 31, 39, 23, 11, 27, 35, 19, 1, 3, 4, 2);
     return *this;
@@ -495,7 +484,7 @@ namespace busybin
   /**
    * Rotate the S slice clockwise (between B and F, same way as F).
    */
-  RubiksCubeModel3& RubiksCubeModel3::s()
+  RubiksCubeModel& RubiksCubeModel::s()
   {
     this->rotateSlice90(3, 9, 47, 29, 7, 13, 43, 25, 0, 1, 5, 3);
     return *this;
@@ -504,7 +493,7 @@ namespace busybin
   /**
    * Rotate the S slice counter clockwise.
    */
-  RubiksCubeModel3& RubiksCubeModel3::sPrime()
+  RubiksCubeModel& RubiksCubeModel::sPrime()
   {
     this->rotateSlice90(29, 47, 9, 3, 25, 43, 13, 7, 3, 5, 1, 0);
     return *this;
@@ -513,7 +502,7 @@ namespace busybin
   /**
    * Rotate the S slice twice.
    */
-  RubiksCubeModel3& RubiksCubeModel3::s2()
+  RubiksCubeModel& RubiksCubeModel::s2()
   {
     this->rotateSlice180(3, 47, 9, 29, 7, 43, 13, 25, 0, 5, 1, 3);
     return *this;
@@ -523,7 +512,7 @@ namespace busybin
    * Rotate the whole cube about the x axis (e.g. up) as if looking at the
    * R face.
    */
-  RubiksCubeModel3& RubiksCubeModel3::x()
+  RubiksCubeModel& RubiksCubeModel::x()
   {
     return this->lPrime().mPrime().r();
   }
@@ -532,7 +521,7 @@ namespace busybin
    * Rotate the whole cube about the x axis (e.g. down) counter clockwise 
    * as if looking at the R face.
    */
-  RubiksCubeModel3& RubiksCubeModel3::xPrime()
+  RubiksCubeModel& RubiksCubeModel::xPrime()
   {
     return this->l().m().rPrime();
   }
@@ -540,7 +529,7 @@ namespace busybin
   /**
    * Rotate the whole cube about the x axis twice.
    */
-  RubiksCubeModel3& RubiksCubeModel3::x2()
+  RubiksCubeModel& RubiksCubeModel::x2()
   {
     return this->x().x();
   }
@@ -549,7 +538,7 @@ namespace busybin
    * Rotate the whole cube about the y axis (e.g. left) as if looking at
    * the U face.
    */
-  RubiksCubeModel3& RubiksCubeModel3::y()
+  RubiksCubeModel& RubiksCubeModel::y()
   {
     return this->u().dPrime().ePrime();
   }
@@ -558,7 +547,7 @@ namespace busybin
    * Rotate the whole cube about the y axis (e.g. right) counter clockwise
    * as if looking at the U face.
    */
-  RubiksCubeModel3& RubiksCubeModel3::yPrime()
+  RubiksCubeModel& RubiksCubeModel::yPrime()
   {
     return this->uPrime().d().e();
   }
@@ -566,7 +555,7 @@ namespace busybin
   /**
    * Rotate the whole cube about the y axis twice.
    */
-  RubiksCubeModel3& RubiksCubeModel3::y2()
+  RubiksCubeModel& RubiksCubeModel::y2()
   {
     return this->y().y();
   }
@@ -575,7 +564,7 @@ namespace busybin
    * Rotate the whole cube about the z axis (e.g. sideways) as if looking at the
    * F face.
    */
-  RubiksCubeModel3& RubiksCubeModel3::z()
+  RubiksCubeModel& RubiksCubeModel::z()
   {
     return this->f().s().bPrime();
   }
@@ -584,7 +573,7 @@ namespace busybin
    * Rotate the whole cube about the z axis (e.g. sideways) counter clockwise 
    * as if looking at the F face.
    */
-  RubiksCubeModel3& RubiksCubeModel3::zPrime()
+  RubiksCubeModel& RubiksCubeModel::zPrime()
   {
     return this->fPrime().sPrime().b();
   }
@@ -592,7 +581,7 @@ namespace busybin
   /**
    * Rotate the whole cube about the z axis twice.
    */
-  RubiksCubeModel3& RubiksCubeModel3::z2()
+  RubiksCubeModel& RubiksCubeModel::z2()
   {
     return this->z().z();
   }

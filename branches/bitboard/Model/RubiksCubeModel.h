@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_RUBIKS_CUBE_MODEL3_H_ // TODO
-#define _BUSYBIN_RUBIKS_CUBE_MODEL3_H_ // TODO
+#ifndef _BUSYBIN_RUBIKS_CUBE_MODEL_H_
+#define _BUSYBIN_RUBIKS_CUBE_MODEL_H_
 
 #include "../Util/RubiksCubeException.h"
 #include <array>
@@ -62,7 +62,7 @@ namespace busybin
    *  1 2 3 4
    *    5
    */
-  class RubiksCubeModel3
+  class RubiksCubeModel
   {
     typedef char uchar;
 
@@ -107,61 +107,61 @@ namespace busybin
       unsigned c_ci0, unsigned c_ci1, unsigned c_ci2, unsigned c_ci3);
 
   public:
-    RubiksCubeModel3();
+    RubiksCubeModel();
 
     COLOR get(FACE face, unsigned row, unsigned col) const;
     
     // Face moves.
-    RubiksCubeModel3& u();
-    RubiksCubeModel3& uPrime();
-    RubiksCubeModel3& u2();
+    RubiksCubeModel& u();
+    RubiksCubeModel& uPrime();
+    RubiksCubeModel& u2();
 
-    RubiksCubeModel3& l();
-    RubiksCubeModel3& lPrime();
-    RubiksCubeModel3& l2();
+    RubiksCubeModel& l();
+    RubiksCubeModel& lPrime();
+    RubiksCubeModel& l2();
 
-    RubiksCubeModel3& f();
-    RubiksCubeModel3& fPrime();
-    RubiksCubeModel3& f2();
+    RubiksCubeModel& f();
+    RubiksCubeModel& fPrime();
+    RubiksCubeModel& f2();
 
-    RubiksCubeModel3& r();
-    RubiksCubeModel3& rPrime();
-    RubiksCubeModel3& r2();
+    RubiksCubeModel& r();
+    RubiksCubeModel& rPrime();
+    RubiksCubeModel& r2();
 
-    RubiksCubeModel3& b();
-    RubiksCubeModel3& bPrime();
-    RubiksCubeModel3& b2();
+    RubiksCubeModel& b();
+    RubiksCubeModel& bPrime();
+    RubiksCubeModel& b2();
 
-    RubiksCubeModel3& d();
-    RubiksCubeModel3& dPrime();
-    RubiksCubeModel3& d2();
+    RubiksCubeModel& d();
+    RubiksCubeModel& dPrime();
+    RubiksCubeModel& d2();
 
     // Slice moves.
-    RubiksCubeModel3& m();
-    RubiksCubeModel3& mPrime();
-    RubiksCubeModel3& m2();
+    RubiksCubeModel& m();
+    RubiksCubeModel& mPrime();
+    RubiksCubeModel& m2();
 
-    RubiksCubeModel3& e();
-    RubiksCubeModel3& ePrime();
-    RubiksCubeModel3& e2();
+    RubiksCubeModel& e();
+    RubiksCubeModel& ePrime();
+    RubiksCubeModel& e2();
 
-    RubiksCubeModel3& s();
-    RubiksCubeModel3& sPrime();
-    RubiksCubeModel3& s2();
+    RubiksCubeModel& s();
+    RubiksCubeModel& sPrime();
+    RubiksCubeModel& s2();
 
     // Move the entire cube.  These moves are implemented in terms of
     // the moves above, and are therefore slower.
-    RubiksCubeModel3& y();
-    RubiksCubeModel3& y2();
-    RubiksCubeModel3& yPrime();
+    RubiksCubeModel& y();
+    RubiksCubeModel& y2();
+    RubiksCubeModel& yPrime();
 
-    RubiksCubeModel3& x();
-    RubiksCubeModel3& xPrime();
-    RubiksCubeModel3& x2();
+    RubiksCubeModel& x();
+    RubiksCubeModel& xPrime();
+    RubiksCubeModel& x2();
 
-    RubiksCubeModel3& z();
-    RubiksCubeModel3& zPrime();
-    RubiksCubeModel3& z2();
+    RubiksCubeModel& z();
+    RubiksCubeModel& zPrime();
+    RubiksCubeModel& z2();
   };
 }
 

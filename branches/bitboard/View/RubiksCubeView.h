@@ -1,7 +1,7 @@
-#ifndef _BUSYBIN_RUBIKS_CUBE_VIEW3_H_ // TODO
-#define _BUSYBIN_RUBIKS_CUBE_VIEW3_H_ // TODO
+#ifndef _BUSYBIN_RUBIKS_CUBE_VIEW_H_
+#define _BUSYBIN_RUBIKS_CUBE_VIEW_H_
 
-#include "../Model/RubiksCubeModel3.h" // TODO
+#include "../Model/RubiksCubeModel.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -20,10 +20,10 @@ namespace busybin
   /**
    * Console view for the cube.
    */
-  class RubiksCubeView3 // TODO
+  class RubiksCubeView
   {
   public:
-    void render(const RubiksCubeModel3& cube) const; // TODO
+    void render(const RubiksCubeModel& cube) const;
   };
 }
 

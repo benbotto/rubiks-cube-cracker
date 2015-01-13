@@ -1,4 +1,4 @@
-#include "RubiksCubeView3.h"
+#include "RubiksCubeView.h"
 
 namespace busybin
 {
@@ -6,8 +6,10 @@ namespace busybin
    * Render the cube.
    * @param cube The RubiksCube.
    */
-  void RubiksCubeView3::render(const RubiksCubeModel3& cube) const
+  void RubiksCubeView::render(const RubiksCubeModel& cube) const
   {
+    typedef RubiksCubeModel::FACE F;
+
     char colors[] = {'W', 'G', 'R', 'B', 'O', 'Y'};
 
     cout << setfill(' ') << '\n';
@@ -18,7 +20,7 @@ namespace busybin
       cout << setw(8) << right;
 
       for (unsigned col = 0; col < 3; ++ col)
-        cout << colors[(unsigned)cube.get(RubiksCubeModel3::FACE::UP, row, col)] << ' ';
+        cout << colors[(unsigned)cube.get(F::UP, row, col)] << ' ';
       cout << '\n';
     }
     cout << endl;
@@ -28,19 +30,19 @@ namespace busybin
     for (unsigned row = 0; row < 3; ++ row)
     {
       for (unsigned col = 0; col < 3; ++ col)
-        cout << colors[(unsigned)cube.get(RubiksCubeModel3::FACE::LEFT,  row, col)] << ' ';
+        cout << colors[(unsigned)cube.get(F::LEFT,  row, col)] << ' ';
       cout << ' ';
 
       for (unsigned col = 0; col < 3; ++ col)
-        cout << colors[(unsigned)cube.get(RubiksCubeModel3::FACE::FRONT, row, col)] << ' ';
+        cout << colors[(unsigned)cube.get(F::FRONT, row, col)] << ' ';
       cout << ' ';
 
       for (unsigned col = 0; col < 3; ++ col)
-        cout << colors[(unsigned)cube.get(RubiksCubeModel3::FACE::RIGHT, row, col)] << ' ';
+        cout << colors[(unsigned)cube.get(F::RIGHT, row, col)] << ' ';
       cout << ' ';
 
       for (unsigned col = 0; col < 3; ++ col)
-        cout << colors[(unsigned)cube.get(RubiksCubeModel3::FACE::BACK,  row, col)] << ' ';
+        cout << colors[(unsigned)cube.get(F::BACK,  row, col)] << ' ';
       cout << '\n';
     }
     cout << endl;
@@ -51,7 +53,7 @@ namespace busybin
       cout << setw(8) << right;
 
       for (unsigned col = 0; col < 3; ++ col)
-        cout << colors[(unsigned)cube.get(RubiksCubeModel3::FACE::DOWN, row, col)] << ' ';
+        cout << colors[(unsigned)cube.get(F::DOWN, row, col)] << ' ';
       cout << '\n';
     }
 
