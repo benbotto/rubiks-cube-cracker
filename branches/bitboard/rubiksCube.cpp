@@ -2,7 +2,6 @@
 
 // TODO
 #include "Model/RubiksCubeModel3.h"
-#include "Model/RubiksCubeModel.h"
 #include "View/RubiksCubeView3.h"
 #include "Util/AutoTimer.h"
 #include <cmath>
@@ -17,10 +16,7 @@ int main(int argc, char* argv[])
   /*busybin::RubiksCubeController ctlr;
   ctlr.run();*/
 
-  RubiksCubeModel cube;
-  //RubiksCubeModel2 cube2;
   RubiksCubeModel3 cube3;
-  //RubiksCubeView2 view2;
   RubiksCubeView3 view3;
 
   //view2.renderRaw(cube2);
@@ -119,13 +115,6 @@ int main(int argc, char* argv[])
 
     for (unsigned long i = 0; i < nodes; ++i)
       cube3.s2();
-  }
-
-  {
-    AutoTimer at;
-
-    for (unsigned long i = 0; i < nodes; ++i)
-      cube.s2();
   }
 
   return 0;
