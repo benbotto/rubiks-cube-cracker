@@ -197,6 +197,35 @@ namespace busybin
   }
 
   /**
+   * Rotate a slice 180 degrees.
+   * @param c_fi0 Face index 0.
+   * @param c_fi1 Face index 1.
+   * @param c_fi2 Face index 2.
+   * @param c_fi3 Face index 3.
+   * @param c_fi4 Face index 4.
+   * @param c_fi5 Face index 5.
+   * @param c_fi6 Face index 6.
+   * @param c_fi7 Face index 7.
+   * @param c_ci0 Center index 0.
+   * @param c_ci1 Center index 1.
+   * @param c_ci2 Center index 2.
+   * @param c_ci3 Center index 3.
+   */
+  inline void RubiksCubeModel3::rotateSlice180(
+    unsigned c_fi0, unsigned c_fi1, unsigned c_fi2, unsigned c_fi3,
+    unsigned c_fi4, unsigned c_fi5, unsigned c_fi6, unsigned c_fi7,
+    unsigned c_ci0, unsigned c_ci1, unsigned c_ci2, unsigned c_ci3)
+  {
+    swap(this->cube[c_fi0], this->cube[c_fi1]);
+    swap(this->cube[c_fi2], this->cube[c_fi3]);
+    swap(this->cube[c_fi4], this->cube[c_fi5]);
+    swap(this->cube[c_fi6], this->cube[c_fi7]);
+
+    swap(this->centers[c_ci0], this->centers[c_ci1]);
+    swap(this->centers[c_ci2], this->centers[c_ci3]);
+  }
+
+  /**
    * Get the color at FACE, row, col.
    * @param f The face of the cube.
    * @param row The 0-based row, unfolded as described in get(i).
@@ -428,6 +457,15 @@ namespace busybin
   }
 
   /**
+   * Rotate the M slice twice.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::m2()
+  {
+    this->rotateSlice180(1, 41, 37, 17, 5, 45, 33, 21, 0, 5, 4, 2);
+    return *this;
+  }
+
+  /**
    * Rotate the E slice clockwise (between U and D, same way as D).
    */
   RubiksCubeModel3& RubiksCubeModel3::e()
@@ -446,6 +484,15 @@ namespace busybin
   }
 
   /**
+   * Rotate the E slice twice.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::e2()
+  {
+    this->rotateSlice180(15, 31, 39, 23, 11, 27, 35, 19, 1, 3, 4, 2);
+    return *this;
+  }
+
+  /**
    * Rotate the S slice clockwise (between B and F, same way as F).
    */
   RubiksCubeModel3& RubiksCubeModel3::s()
@@ -460,6 +507,15 @@ namespace busybin
   RubiksCubeModel3& RubiksCubeModel3::sPrime()
   {
     this->rotateSlice90(29, 47, 9, 3, 25, 43, 13, 7, 3, 5, 1, 0);
+    return *this;
+  }
+
+  /**
+   * Rotate the S slice twice.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::s2()
+  {
+    this->rotateSlice180(3, 47, 9, 29, 7, 43, 13, 25, 0, 5, 1, 3);
     return *this;
   }
 }

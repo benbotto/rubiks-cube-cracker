@@ -96,7 +96,12 @@ namespace busybin
     inline void rotateSides180(
       unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
       unsigned c_i0, unsigned c_i1, unsigned c_i2, unsigned c_i3);
+
     inline void rotateSlice90(
+      unsigned c_fi0, unsigned c_fi1, unsigned c_fi2, unsigned c_fi3,
+      unsigned c_fi4, unsigned c_fi5, unsigned c_fi6, unsigned c_fi7,
+      unsigned c_ci0, unsigned c_ci1, unsigned c_ci2, unsigned c_ci3);
+    inline void rotateSlice180(
       unsigned c_fi0, unsigned c_fi1, unsigned c_fi2, unsigned c_fi3,
       unsigned c_fi4, unsigned c_fi5, unsigned c_fi6, unsigned c_fi7,
       unsigned c_ci0, unsigned c_ci1, unsigned c_ci2, unsigned c_ci3);
@@ -134,12 +139,15 @@ namespace busybin
     // Slice moves.
     RubiksCubeModel3& m();
     RubiksCubeModel3& mPrime();
+    RubiksCubeModel3& m2();
 
     RubiksCubeModel3& e();
     RubiksCubeModel3& ePrime();
+    RubiksCubeModel3& e2();
 
     RubiksCubeModel3& s();
     RubiksCubeModel3& sPrime();
+    RubiksCubeModel3& s2();
   };
 }
 
