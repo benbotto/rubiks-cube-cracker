@@ -105,9 +105,12 @@ int main(int argc, char* argv[])
   view3.render(cube3);
   cube3.e2();
   view3.render(cube3);*/
-  cube3.f().b().l().r();
+  /*cube3.f().b().l().r();
   view3.render(cube3);
   cube3.s2();
+  view3.render(cube3);*/
+  view3.render(cube3);
+  cube3.zPrime();
   view3.render(cube3);
   
   /** Profiling. **/

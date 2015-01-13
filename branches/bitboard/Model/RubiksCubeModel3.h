@@ -148,6 +148,20 @@ namespace busybin
     RubiksCubeModel3& s();
     RubiksCubeModel3& sPrime();
     RubiksCubeModel3& s2();
+
+    // Move the entire cube.  These moves are implemented in terms of
+    // the moves above, and are therefore slower.
+    RubiksCubeModel3& y();
+    RubiksCubeModel3& y2();
+    RubiksCubeModel3& yPrime();
+
+    RubiksCubeModel3& x();
+    RubiksCubeModel3& xPrime();
+    RubiksCubeModel3& x2();
+
+    RubiksCubeModel3& z();
+    RubiksCubeModel3& zPrime();
+    RubiksCubeModel3& z2();
   };
 }
 

@@ -518,5 +518,83 @@ namespace busybin
     this->rotateSlice180(3, 47, 9, 29, 7, 43, 13, 25, 0, 5, 1, 3);
     return *this;
   }
+
+  /**
+   * Rotate the whole cube about the x axis (e.g. up) as if looking at the
+   * R face.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::x()
+  {
+    return this->lPrime().mPrime().r();
+  }
+
+  /**
+   * Rotate the whole cube about the x axis (e.g. down) counter clockwise 
+   * as if looking at the R face.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::xPrime()
+  {
+    return this->l().m().rPrime();
+  }
+
+  /**
+   * Rotate the whole cube about the x axis twice.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::x2()
+  {
+    return this->x().x();
+  }
+
+  /**
+   * Rotate the whole cube about the y axis (e.g. left) as if looking at
+   * the U face.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::y()
+  {
+    return this->u().dPrime().ePrime();
+  }
+
+  /**
+   * Rotate the whole cube about the y axis (e.g. right) counter clockwise
+   * as if looking at the U face.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::yPrime()
+  {
+    return this->uPrime().d().e();
+  }
+
+  /**
+   * Rotate the whole cube about the y axis twice.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::y2()
+  {
+    return this->y().y();
+  }
+
+  /**
+   * Rotate the whole cube about the z axis (e.g. sideways) as if looking at the
+   * F face.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::z()
+  {
+    return this->f().s().bPrime();
+  }
+
+  /**
+   * Rotate the whole cube about the z axis (e.g. sideways) counter clockwise 
+   * as if looking at the F face.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::zPrime()
+  {
+    return this->fPrime().sPrime().b();
+  }
+
+  /**
+   * Rotate the whole cube about the z axis twice.
+   */
+  RubiksCubeModel3& RubiksCubeModel3::z2()
+  {
+    return this->z().z();
+  }
 }
 
