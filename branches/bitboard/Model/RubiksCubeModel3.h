@@ -21,24 +21,25 @@ namespace busybin
    *
    * The cube is laid out as follows.
    *
-   *
-   *          W W W
-   *          W W W
-   *          W W W
-   *
-   *  G G G   R R R   B B B   O O O
-   *  G G G   R R R   B B B   O O O
-   *  G G G   R R R   B B B   O O O
-   *
-   *          Y Y Y
-   *          Y Y Y
-   *          Y Y Y
-   *
    * The sides:
    *
-   *     U
-   *   L F R B
-   *     D
+   *    U
+   *  L F R B
+   *    D
+   *
+   * Color wise:
+   *
+   *          W W W
+   *          W W W
+   *          W W W
+   *
+   *  G G G   R R R   B B B   O O O
+   *  G G G   R R R   B B B   O O O
+   *  G G G   R R R   B B B   O O O
+   *
+   *          Y Y Y
+   *          Y Y Y
+   *          Y Y Y
    *
    * Index wise:
    *
@@ -55,6 +56,11 @@ namespace busybin
    *             47    43
    *             46 45 44
    *
+   * Centers:
+   *
+   *    0
+   *  1 2 3 4
+   *    5
    */
   class RubiksCubeModel3
   {
@@ -84,16 +90,23 @@ namespace busybin
     inline void roll180(FACE f);
     inline void roll270(FACE f);
 
-    inline void rotate90(unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
+    inline void rotateSides90(
+      unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
       unsigned c_i0, unsigned c_i1, unsigned c_i2, unsigned c_i3);
-    inline void rotate180(unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
+    inline void rotateSides180(
+      unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
       unsigned c_i0, unsigned c_i1, unsigned c_i2, unsigned c_i3);
+    inline void rotateSlice90(
+      unsigned c_fi0, unsigned c_fi1, unsigned c_fi2, unsigned c_fi3,
+      unsigned c_fi4, unsigned c_fi5, unsigned c_fi6, unsigned c_fi7,
+      unsigned c_ci0, unsigned c_ci1, unsigned c_ci2, unsigned c_ci3);
 
   public:
     RubiksCubeModel3();
 
     COLOR get(FACE face, unsigned row, unsigned col) const;
     
+    // Face moves.
     RubiksCubeModel3& u();
     RubiksCubeModel3& uPrime();
     RubiksCubeModel3& u2();
@@ -117,6 +130,13 @@ namespace busybin
     RubiksCubeModel3& d();
     RubiksCubeModel3& dPrime();
     RubiksCubeModel3& d2();
+
+    // Slice moves.
+    RubiksCubeModel3& m();
+
+    RubiksCubeModel3& e();
+
+    RubiksCubeModel3& s();
   };
 }
 
