@@ -12,6 +12,10 @@ namespace busybin
    */
   class Goal
   {
+  protected:
+    typedef RubiksCubeModel::FACE  FACE;
+    typedef RubiksCubeModel::COLOR COLOR;
+
   public:
     virtual bool isSatisfied(RubiksCubeModel& cube) = 0;
     virtual string getDescription() const = 0;

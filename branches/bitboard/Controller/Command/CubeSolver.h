@@ -13,6 +13,7 @@
 #include "../../Model/MoveStore/CubeTwistStore.h"
 #include "../../Model/MoveStore/CubeRotationStore.h"
 #include "../../Model/Goal/Goal.h"
+#include "../../Model/Goal/OrientG0.h"
 #include "../../OpenGLSeed/Controller/Command/Command.h"
 #include "../../OpenGLSeed/Model/World.h"
 #include "../../OpenGLSeed/View/WorldWindow.h"

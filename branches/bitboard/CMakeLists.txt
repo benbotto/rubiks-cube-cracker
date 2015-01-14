@@ -25,6 +25,7 @@ set (SRC
   "./Model/MoveStore/ModelTwistStore.cpp"
   "./Model/RubiksCubeWorld.cpp"
   "./Model/RubiksCubeModel.cpp"
+  "./Model/Goal/OrientG0.cpp"
   "./Model/WorldObject/Cubie.cpp"
   "./Model/WorldObject/RubiksCube.cpp")
 
