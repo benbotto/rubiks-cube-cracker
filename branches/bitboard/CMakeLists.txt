@@ -26,6 +26,7 @@ set (SRC
   "./Model/RubiksCubeWorld.cpp"
   "./Model/RubiksCubeModel.cpp"
   "./Model/Goal/OrientG0.cpp"
+  "./Model/Goal/GoalG0_orient_edges.cpp"
   "./Model/WorldObject/Cubie.cpp"
   "./Model/WorldObject/RubiksCube.cpp")
 
