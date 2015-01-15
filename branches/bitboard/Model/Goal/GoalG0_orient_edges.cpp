@@ -39,8 +39,24 @@ namespace busybin
     COLOR DR = cube.get(FACE::DOWN, 1, 2);
     COLOR DB = cube.get(FACE::DOWN, 2, 1);
 
+    // See the spreadsheet in this directory for possible "good" edges.  Each
+    // should be movable to its solved position without using U, U', D, or D'.
     return
-      (UF == COLOR::RED && FU == COLOR::WHITE) ||
+      (UF == COLOR::BLUE  || UF == COLOR::GREEN || FU == COLOR::WHITE || FU == COLOR::YELLOW) &&
+      (UB == COLOR::BLUE  || UB == COLOR::GREEN || BU == COLOR::WHITE || BU == COLOR::YELLOW) &&
+      (DF == COLOR::BLUE  || DF == COLOR::GREEN || FD == COLOR::WHITE || FD == COLOR::YELLOW) &&
+      (DB == COLOR::BLUE  || DB == COLOR::GREEN || BD == COLOR::WHITE || BD == COLOR::YELLOW) &&
+      (LU == COLOR::BLUE  || LU == COLOR::GREEN || UL == COLOR::WHITE || UL == COLOR::YELLOW) &&
+      (LD == COLOR::BLUE  || LD == COLOR::GREEN || DL == COLOR::WHITE || DL == COLOR::YELLOW) &&
+      (RU == COLOR::BLUE  || RU == COLOR::GREEN || UR == COLOR::WHITE || UR == COLOR::YELLOW) &&
+      (RD == COLOR::BLUE  || RD == COLOR::GREEN || DR == COLOR::WHITE || DR == COLOR::YELLOW) &&
+      (LF == COLOR::BLUE  || LF == COLOR::GREEN || FL == COLOR::WHITE || FL == COLOR::YELLOW) &&
+      (LB == COLOR::BLUE  || LB == COLOR::GREEN || BL == COLOR::WHITE || BL == COLOR::YELLOW) &&
+      (RF == COLOR::BLUE  || RF == COLOR::GREEN || FR == COLOR::WHITE || FR == COLOR::YELLOW) &&
+      (RB == COLOR::BLUE  || RB == COLOR::GREEN || BR == COLOR::WHITE || BR == COLOR::YELLOW);
+      
+
+
 
     /*
     return
