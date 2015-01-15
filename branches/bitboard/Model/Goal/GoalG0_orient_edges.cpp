@@ -54,52 +54,6 @@ namespace busybin
       (LB == COLOR::BLUE  || LB == COLOR::GREEN || BL == COLOR::WHITE || BL == COLOR::YELLOW) &&
       (RF == COLOR::BLUE  || RF == COLOR::GREEN || FR == COLOR::WHITE || FR == COLOR::YELLOW) &&
       (RB == COLOR::BLUE  || RB == COLOR::GREEN || BR == COLOR::WHITE || BR == COLOR::YELLOW);
-      
-
-
-
-    /*
-    return
-      // U(B|F), D(B|F), L(F|B), R(F|B) cannot be white or yellow.
-      (UF != COLOR::WHITE && UF != COLOR::YELLOW) &&
-      (UB != COLOR::WHITE && UB != COLOR::YELLOW) &&
-
-      (DF != COLOR::WHITE && DF != COLOR::YELLOW) &&
-      (DB != COLOR::WHITE && DB != COLOR::YELLOW) &&
-
-      (LF != COLOR::WHITE && LF != COLOR::YELLOW) &&
-      (LB != COLOR::WHITE && LB != COLOR::YELLOW) &&
-
-      (RF != COLOR::WHITE && RF != COLOR::YELLOW) &&
-      (RB != COLOR::WHITE && RB != COLOR::YELLOW) &&
-
-      // U(L|R), D(L|R), F(L|R), B(L|R) cannot be blue or green.
-      (UL != COLOR::BLUE && UL != COLOR::GREEN) &&
-      (UR != COLOR::BLUE && UR != COLOR::GREEN) &&
-
-      (DL != COLOR::BLUE && DL != COLOR::GREEN) &&
-      (DR != COLOR::BLUE && DR != COLOR::GREEN) &&
-
-      (FL != COLOR::BLUE && FL != COLOR::GREEN) &&
-      (FR != COLOR::BLUE && FR != COLOR::GREEN) &&
-
-      (BL != COLOR::BLUE && BL != COLOR::GREEN) &&
-      (BR != COLOR::BLUE && BR != COLOR::GREEN) &&
-
-      // L(U|D), R(U|D) cannot be yellow or white.
-      (LU != COLOR::YELLOW || LU == COLOR::WHITE) && 
-      (LD != COLOR::YELLOW || LD == COLOR::WHITE) && 
-
-      (RU != COLOR::YELLOW || RU == COLOR::WHITE) && 
-      (RD != COLOR::YELLOW || RD == COLOR::WHITE) && 
-
-      // F(U|D), B(U|D) cannot be blue or green.
-      (FU != COLOR::BLUE && FU != COLOR::GREEN) &&
-      (FD != COLOR::BLUE && FD != COLOR::GREEN) &&
-
-      (BU != COLOR::BLUE && BU != COLOR::GREEN) &&
-      (BD != COLOR::BLUE && BD != COLOR::GREEN);*/
-
   }
 
   /**
