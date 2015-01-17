@@ -1,4 +1,4 @@
-#include "ModelTwistStore.h"
+#include "ModelG1TwistStore.h"
 
 namespace busybin
 {
@@ -7,7 +7,7 @@ namespace busybin
    * @param cube A RubiksCubeModel reference for storing the move
    *        string->function map.
    */
-  ModelTwistStore::ModelTwistStore(RubiksCubeModel& cube)
+  ModelG1TwistStore::ModelG1TwistStore(RubiksCubeModel& cube)
   {
     // Set up the move map.
     this->moveMap["L"]  = bind(&RubiksCubeModel::l,      &cube);
@@ -18,12 +18,8 @@ namespace busybin
     this->moveMap["R'"] = bind(&RubiksCubeModel::rPrime, &cube);
     this->moveMap["R2"] = bind(&RubiksCubeModel::r2,     &cube);
 
-    this->moveMap["U"]  = bind(&RubiksCubeModel::u,      &cube);
-    this->moveMap["U'"] = bind(&RubiksCubeModel::uPrime, &cube);
     this->moveMap["U2"] = bind(&RubiksCubeModel::u2,     &cube);
 
-    this->moveMap["D"]  = bind(&RubiksCubeModel::d,      &cube);
-    this->moveMap["D'"] = bind(&RubiksCubeModel::dPrime, &cube);
     this->moveMap["D2"] = bind(&RubiksCubeModel::d2,     &cube);
 
     this->moveMap["F"]  = bind(&RubiksCubeModel::f,      &cube);
@@ -40,15 +36,15 @@ namespace busybin
    * to the corresponding move function in the cube passed
    * to the constructor.
    */
-  MoveStore::moveFuncMap_t& ModelTwistStore::getMoveMap()
+  MoveStore::moveFuncMap_t& ModelG1TwistStore::getMoveMap()
   {
     return this->moveMap;
   }
 
   /**
-   * Constant version of the above.
+   * Constant version of the abolve.
    */
-  const MoveStore::moveFuncMap_t& ModelTwistStore::getMoveMap() const
+  const MoveStore::moveFuncMap_t& ModelG1TwistStore::getMoveMap() const
   {
     return this->moveMap;
   }

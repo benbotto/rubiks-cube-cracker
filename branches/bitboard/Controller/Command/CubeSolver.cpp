@@ -92,12 +92,14 @@ namespace busybin
     vector<string>             allMoves;
     vector<string>             goalMoves;
     ModelTwistStore            mdlTwistStore(this->cubeModel);
+    ModelG1TwistStore          mdlG1TwistStore(this->cubeModel);
     ModelRotationStore         mdlRotStore(this->cubeModel);
     vector<GoalAndMoveStore>   goals;
 
     // Create the goals.
-    goals.push_back({unique_ptr<Goal>(new OrientG0()),         &mdlRotStore});
+    goals.push_back({unique_ptr<Goal>(new OrientG0()),            &mdlRotStore});
     goals.push_back({unique_ptr<Goal>(new GoalG0_orient_edges()), &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new GoalG1_G2()),           &mdlG1TwistStore});
 
     // Display the intial cube model.
     cout << "Initial cube state." << endl;
