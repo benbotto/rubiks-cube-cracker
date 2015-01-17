@@ -24,11 +24,13 @@ set (SRC
   "./Model/MoveStore/ModelRotationStore.cpp"
   "./Model/MoveStore/ModelTwistStore.cpp"
   "./Model/MoveStore/ModelG1TwistStore.cpp"
+  "./Model/MoveStore/ModelG2TwistStore.cpp"
   "./Model/RubiksCubeWorld.cpp"
   "./Model/RubiksCubeModel.cpp"
   "./Model/Goal/OrientG0.cpp"
   "./Model/Goal/GoalG0_orient_edges.cpp"
   "./Model/Goal/GoalG1_G2.cpp"
+  "./Model/Goal/GoalG2_G3.cpp"
   "./Model/WorldObject/Cubie.cpp"
   "./Model/WorldObject/RubiksCube.cpp")
 

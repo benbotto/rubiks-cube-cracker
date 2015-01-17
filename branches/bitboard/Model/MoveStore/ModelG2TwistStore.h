@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_MODEL_G1_TWIST_STORE_H_
-#define _BUSYBIN_MODEL_G1_TWIST_STORE_H_
+#ifndef _BUSYBIN_MODEL_G2_TWIST_STORE_H_
+#define _BUSYBIN_MODEL_G2_TWIST_STORE_H_
 
 #include "TwistStore.h"
 #include "../RubiksCubeModel.h"
@@ -8,9 +8,9 @@ namespace busybin
 {
   /**
    * Class for storing the available Rubik's Cube Model's twists in the
-   * G1 group.  (This group excludes quarter turns of U and D.)
+   * G2 group.  <L,R,F2,B2,U2,D2>
    */
-  class ModelG1TwistStore : public TwistStore
+  class ModelG2TwistStore : public TwistStore
   {
     MoveStore::moveFuncMap_t moveMap;
 
@@ -18,7 +18,7 @@ namespace busybin
     MoveStore::moveFuncMap_t& getMoveMap();
 
   public:
-    ModelG1TwistStore(RubiksCubeModel& cube);
+    ModelG2TwistStore(RubiksCubeModel& cube);
     const MoveStore::moveFuncMap_t& getMoveMap() const;
   };
 }

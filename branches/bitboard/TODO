@@ -4,4 +4,5 @@ When checking if a corner is solved, it's probably only necessary to check two s
 Consider using bitboards for the cube storage.  If each layer is stored in a long then shifting sould move the layer.
 I commented out one of the prunes in CubeSearcher.cpp.  This can't be used currently because G1 moves exclude primes and doubles.
 There's some repeated code in the model twist stores.  Doesn't bug me that bad.
+Rename GoalG0_orient_edges to GoalG0_G1.
 
