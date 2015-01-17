@@ -7,7 +7,16 @@ namespace busybin
    * @param cube A RubiksCubeModel reference for storing the move
    *        string->function map.
    */
-  ModelG1TwistStore::ModelG1TwistStore(RubiksCubeModel& cube)
+  ModelG1TwistStore::ModelG1TwistStore(RubiksCubeModel& cube) :
+    TwistStore(vector<string>
+    ({{
+      "L", "L'", "L2",
+      "R", "R'", "R2",
+                 "U2",
+                 "D2",
+      "F", "F'", "F2",
+      "B", "B'", "B2"
+    }}))
   {
     // Set up the move map.
     this->moveMap["L"]  = bind(&RubiksCubeModel::l,      &cube);

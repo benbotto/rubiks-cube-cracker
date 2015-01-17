@@ -34,8 +34,29 @@ namespace busybin
 
 
     return
-      (LUB == COLOR::BLUE && LUF == COLOR::BLUE && LDB == COLOR::BLUE && LDF == COLOR::BLUE) && 
-      (RUB == COLOR::GREEN && RUF == COLOR::GREEN && RDB == COLOR::GREEN && RDF == COLOR::GREEN);
+      // All left/right corner facets either blue or green.
+      (LUB == COLOR::BLUE || LUB == COLOR::GREEN) &&
+      (LUF == COLOR::BLUE || LUF == COLOR::GREEN) &&
+      (LDB == COLOR::BLUE || LDB == COLOR::GREEN) &&
+      (LDF == COLOR::BLUE || LDF == COLOR::GREEN) &&
+      (RUB == COLOR::BLUE || RUB == COLOR::GREEN) &&
+      (RUF == COLOR::BLUE || RUF == COLOR::GREEN) &&
+      (RDB == COLOR::BLUE || RDB == COLOR::GREEN) &&
+      (RDF == COLOR::BLUE || RDF == COLOR::GREEN) &&
+
+      // UF, UB, DF, DB in the M slice.  Note that the edges
+      // are already oriented.
+      (UF == COLOR::RED   || UF == COLOR::ORANGE)  &&
+      (FU == COLOR::WHITE || FU == COLOR::YELLOW)  &&
+
+      (UB == COLOR::RED   || UB == COLOR::ORANGE)  &&
+      (BU == COLOR::WHITE || BU == COLOR::YELLOW)  &&
+
+      (DF == COLOR::RED   || DF == COLOR::ORANGE)  &&
+      (FD == COLOR::WHITE || FD == COLOR::YELLOW)  &&
+
+      (DB == COLOR::RED   || DB == COLOR::ORANGE)  &&
+      (BD == COLOR::WHITE || BD == COLOR::YELLOW);
   }
 
   /**
