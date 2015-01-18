@@ -33,6 +33,22 @@ namespace busybin
     COLOR DRF = cube.get(FACE::DOWN,  0, 2);
     COLOR RDF = cube.get(FACE::RIGHT, 2, 0);
 
+    
+
+    COLOR BUL = cube.get(FACE::BACK, 0, 2);
+    COLOR BDL = cube.get(FACE::BACK, 2, 2);
+
+    COLOR BUR = cube.get(FACE::BACK, 0, 0);
+    COLOR BDR = cube.get(FACE::BACK, 0, 2);
+
+    COLOR FUL = cube.get(FACE::FRONT, 0, 0);
+    COLOR FDL = cube.get(FACE::FRONT, 2, 0);
+
+    COLOR FUR = cube.get(FACE::FRONT, 0, 2);
+    COLOR FDR = cube.get(FACE::FRONT, 2, 2);
+
+
+
     // Edges.  Note that the edge pieces in the M slice were taken care
     // of in the previous goal.
     COLOR UL = cube.get(FACE::UP,    1, 0);
@@ -60,9 +76,13 @@ namespace busybin
     COLOR FR = cube.get(FACE::FRONT, 1, 2);
 
 
-    // Ffter this goal, the cube will be solvable with only 180-degree turns.
+    // After this goal, the cube will be solvable with only 180-degree turns.
     return
-      // only 180-degree turns.
+      /*ULB == COLOR::RED    && ULF == COLOR::RED    && URB == COLOR::RED    && URF == COLOR::RED    &&
+      DLB == COLOR::ORANGE && DLF == COLOR::ORANGE && DRB == COLOR::ORANGE && DRF == COLOR::ORANGE &&
+      LUB == COLOR::BLUE   && LDB == COLOR::BLUE   && LUF == COLOR::BLUE   && LDF == COLOR::BLUE   &&
+      RUB == COLOR::GREEN  && RDB == COLOR::GREEN  && RUF == COLOR::GREEN  && RDF == COLOR::GREEN  &&*/
+      // Corners in their orbits.
       (ULB == COLOR::RED || ULB == COLOR::ORANGE) && (LUB == COLOR::BLUE || LUB == COLOR::GREEN) && 
       (ULF == COLOR::RED || ULF == COLOR::ORANGE) && (LUF == COLOR::BLUE || LUF == COLOR::GREEN) &&
       (URB == COLOR::RED || URB == COLOR::ORANGE) && (RUB == COLOR::BLUE || RUB == COLOR::GREEN) && 
@@ -71,6 +91,19 @@ namespace busybin
       (DLF == COLOR::RED || DLF == COLOR::ORANGE) && (LDF == COLOR::BLUE || LDF == COLOR::GREEN) &&
       (DRB == COLOR::RED || DRB == COLOR::ORANGE) && (RDB == COLOR::BLUE || RDB == COLOR::GREEN) && 
       (DRF == COLOR::RED || DRF == COLOR::ORANGE) && (RDF == COLOR::BLUE || RDF == COLOR::GREEN) &&
+
+      /*ULB == ULF && LUB == LUF && URB == URF && RUB == RUF &&
+      DLB == DLF && LDB == LDF && DRB == DRF && RDB == RDF &&*/ // Seems like it's solvable after this but it takes too long.
+      /*((ULB == ULF && LUB == LUF) || (BUL == BDL && LUB == LDB)) && 
+      ((URB == URF && RUB == RUF) || (BUR == BDR && RUB == RDB)) && 
+      ((URB == URF && RUB == RUF) || (BUR == BDR && RUB == RDB)) && */
+
+      (
+        (ULB == ULF && LUB == LUF && URB == URF && RUB == RUF &&
+         DLB == DLF && LDB == LDF && DRB == DRF && RDB == RDF) ||
+        (BUL == BDL && LUB == LDB && BUR == BDR && RUB == RDB &&
+         FUL == FDL && LUF == LDF && FUR == FDR && RUF == RDF)
+      ) &&
 
       // Edges in their slices.
       (UL == COLOR::RED   || UL == COLOR::ORANGE) && (LU == COLOR::BLUE || LU == COLOR::GREEN)  &&
