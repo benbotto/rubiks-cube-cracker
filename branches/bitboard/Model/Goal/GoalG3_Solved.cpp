@@ -29,7 +29,6 @@ namespace busybin
     COLOR RDB = cube.get(FACE::RIGHT, 2, 2);
     COLOR RDF = cube.get(FACE::RIGHT, 2, 0);
 
-
     // Edges.  Note that the edge pieces in the M slice were taken care
     // of in the previous goal.
     COLOR UL = cube.get(FACE::UP,    1, 0);
@@ -61,8 +60,6 @@ namespace busybin
     COLOR BD = cube.get(FACE::BACK, 2, 1);
     COLOR BL = cube.get(FACE::BACK, 1, 2);
     COLOR BR = cube.get(FACE::BACK, 1, 0);
-
-    //return true;
 
     return
       // Corners solved.
