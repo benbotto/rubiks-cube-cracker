@@ -12,9 +12,9 @@ namespace busybin
       // Pass width and height for windowed-mode.
       WorldWindow     worldWnd("Rubik's Cube", 1024, 768);
       RubiksCubeWorld world(unique_ptr<Program>(new RubiksCubeProgram()));
-      ViewManager     viewMan(&world,   &worldWnd);
-      Renderer        renderer(&world,  &worldWnd);
-      CubeMover       cubeMover(&world, &worldWnd);
+      ViewManager     viewMan(&world,    &worldWnd);
+      Renderer        renderer(&world,   &worldWnd);
+      CubeMover       cubeMover(&world,  &worldWnd);
       CubeSolver      cubeSolver(&world, &worldWnd, &cubeMover);
       CubeDumper      cubeDumper(&world, &worldWnd);
 

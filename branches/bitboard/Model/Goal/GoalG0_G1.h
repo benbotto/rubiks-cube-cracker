@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_GoalG2_G3_H_
-#define _BUSYBIN_GoalG2_G3_H_
+#ifndef _BUSYBIN_GOALG0_G1_H_
+#define _BUSYBIN_GOALG0_G1_H_
 
 #include "Goal.h"
 #include "../RubiksCubeModel.h"
@@ -7,9 +7,10 @@
 namespace busybin
 {
   /**
-   * Get all edges in the correct slice and all corners in the correct orbit.
+   * Orient all edges so that they can be moved home without quarter turns of U
+   * or D.
    */
-  class GoalG2_G3 : public Goal
+  class GoalG0_G1 : public Goal
   {
   public:
     bool isSatisfied(RubiksCubeModel& cube);

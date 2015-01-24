@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_GoalG3_Solved_H_
-#define _BUSYBIN_GoalG3_Solved_H_
+#ifndef _BUSYBIN_GOALG3_SOLVED_H_
+#define _BUSYBIN_GOALG3_SOLVED_H_
 
 #include "Goal.h"
 #include "../RubiksCubeModel.h"

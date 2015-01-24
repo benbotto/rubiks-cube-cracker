@@ -1,4 +1,4 @@
-#include "GoalG0_orient_edges.h"
+#include "GoalG0_G1.h"
 
 namespace busybin
 {
@@ -7,7 +7,7 @@ namespace busybin
    * or D.
    * @param cube The cube.
    */
-  bool GoalG0_orient_edges::isSatisfied(RubiksCubeModel& cube)
+  bool GoalG0_G1::isSatisfied(RubiksCubeModel& cube)
   {
     COLOR UB = cube.get(FACE::UP, 0, 1);
     COLOR UL = cube.get(FACE::UP, 1, 0);
@@ -59,7 +59,7 @@ namespace busybin
   /**
    * Describe the goal.
    */
-  string GoalG0_orient_edges::getDescription() const
+  string GoalG0_G1::getDescription() const
   {
     return "Orient all edges so that they can be moved home without quarter turns of U or D.";
   }

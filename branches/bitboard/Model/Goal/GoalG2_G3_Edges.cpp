@@ -1,49 +1,56 @@
-#include "GoalG2_G3.h"
+#include "GoalG2_G3_Edges.h"
 
 namespace busybin
 {
   /**
-   * Get all edges in the correct slice and all corners in the correct orbit.
+   * Store the permutations of the corners that are achievable with only
+   * 180-degree turns.
+   * @param perms All permutations of corners in the G3 group.
+   */
+  GoalG2_G3_Edges::GoalG2_G3_Edges(GoalG3_Permute_Corners& perms)
+  {
+    this->perms = perms;
+  }
+
+  /**
+   * Get all edges in the correct slice so that they can be solved with only
+   * 180-degree turns.
    * @param cube The cube.
    */
-  bool GoalG2_G3::isSatisfied(RubiksCubeModel& cube)
+  bool GoalG2_G3_Edges::isSatisfied(RubiksCubeModel& cube)
   {
     // Corners.
-    COLOR ULB = cube.get(FACE::UP,    0, 0);
+    /*COLOR ULB = cube.get(FACE::UP,    0, 0);
     COLOR LUB = cube.get(FACE::LEFT,  0, 0);
+    COLOR BUL = cube.get(FACE::BACK,  0, 2);
 
     COLOR ULF = cube.get(FACE::UP,    2, 0);
     COLOR LUF = cube.get(FACE::LEFT,  0, 2);
+    COLOR FUL = cube.get(FACE::FRONT, 0, 0);
 
     COLOR URB = cube.get(FACE::UP,    0, 2);
     COLOR RUB = cube.get(FACE::RIGHT, 0, 0);
+    COLOR BUR = cube.get(FACE::BACK,  0, 0);
 
     COLOR URF = cube.get(FACE::UP,    2, 2);
     COLOR RUF = cube.get(FACE::RIGHT, 0, 0);
+    COLOR FUR = cube.get(FACE::FRONT, 0, 2);
 
     COLOR DLB = cube.get(FACE::DOWN,  2, 0);
     COLOR LDB = cube.get(FACE::LEFT,  2, 0);
+    COLOR BDL = cube.get(FACE::BACK, 2, 2);
 
     COLOR DLF = cube.get(FACE::DOWN,  0, 0);
     COLOR LDF = cube.get(FACE::LEFT,  2, 2);
+    COLOR FDL = cube.get(FACE::FRONT, 2, 0);
 
     COLOR DRB = cube.get(FACE::DOWN,  2, 2);
     COLOR RDB = cube.get(FACE::RIGHT, 2, 2);
+    COLOR BDR = cube.get(FACE::BACK, 0, 2);
 
     COLOR DRF = cube.get(FACE::DOWN,  0, 2);
     COLOR RDF = cube.get(FACE::RIGHT, 2, 0);
-
-    COLOR BUL = cube.get(FACE::BACK, 0, 2);
-    COLOR BDL = cube.get(FACE::BACK, 2, 2);
-
-    COLOR BUR = cube.get(FACE::BACK, 0, 0);
-    COLOR BDR = cube.get(FACE::BACK, 0, 2);
-
-    COLOR FUL = cube.get(FACE::FRONT, 0, 0);
-    COLOR FDL = cube.get(FACE::FRONT, 2, 0);
-
-    COLOR FUR = cube.get(FACE::FRONT, 0, 2);
-    COLOR FDR = cube.get(FACE::FRONT, 2, 2);
+    COLOR FDR = cube.get(FACE::FRONT, 2, 2);*/
 
     // Edges.  Note that the edge pieces in the M slice were taken care
     // of in the previous goal.
@@ -74,8 +81,9 @@ namespace busybin
 
     // After this goal, the cube will be solvable with only 180-degree turns.
     return
+      this->perms.permutationExists(cube) &&
       // Corners in their orbits.
-      (ULB == COLOR::RED || ULB == COLOR::ORANGE) && (LUB == COLOR::BLUE || LUB == COLOR::GREEN) && 
+      /*(ULB == COLOR::RED || ULB == COLOR::ORANGE) && (LUB == COLOR::BLUE || LUB == COLOR::GREEN) && 
       (ULF == COLOR::RED || ULF == COLOR::ORANGE) && (LUF == COLOR::BLUE || LUF == COLOR::GREEN) &&
       (URB == COLOR::RED || URB == COLOR::ORANGE) && (RUB == COLOR::BLUE || RUB == COLOR::GREEN) && 
       (URF == COLOR::RED || URF == COLOR::ORANGE) && (RUF == COLOR::BLUE || RUF == COLOR::GREEN) &&
@@ -93,7 +101,7 @@ namespace busybin
          FUL == FDL && LUF == LDF && FUR == FDR && RUF == RDF) ||
         (ULB == URB && BUL == BUR && ULF == URF && FUL == FUR &&
          DLB == DRB && BDL == BDR && DLF == DRF && FDL == FDR)
-      ) &&
+      ) &&*/
         
       // Edges in their slices.
       (UL == COLOR::RED   || UL == COLOR::ORANGE) && (LU == COLOR::BLUE || LU == COLOR::GREEN)  &&
@@ -109,8 +117,8 @@ namespace busybin
   /**
    * Describe the goal.
    */
-  string GoalG2_G3::getDescription() const
+  string GoalG2_G3_Edges::getDescription() const
   {
-    return "Get all edges in the correct slice and all corners in the correct orbit.";
+    return "Get all edges in the correct slice so that they can be solved with only 180-degree turns.";
   }
 }
