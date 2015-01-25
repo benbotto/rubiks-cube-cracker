@@ -6,174 +6,57 @@ namespace busybin
    * Convert a permutation of the corners to a string.
    * @param cube The cube.
    */
-  string GoalG3_Permute_Corners::permToString(const RubiksCubeModel& cube) const
+  GoalG3_Permute_Corners::perm_t GoalG3_Permute_Corners::permToArr(const RubiksCubeModel& cube) const
   {
-    char colors[] = {'W', 'G', 'R', 'B', 'O', 'Y'};
+    // Note that two facets of a corner dictate the orientation of a corner.
+    // The third facet doesn't need to be stored, therefore.
+    perm_t perm =
+    {{
+      cube.get(FACE::UP,    0, 0),
+      cube.get(FACE::LEFT,  0, 0),
 
-    COLOR ULB = cube.get(FACE::UP,    0, 0);
-    COLOR LUB = cube.get(FACE::LEFT,  0, 0);
-    COLOR BUL = cube.get(FACE::BACK,  0, 2);
+      cube.get(FACE::UP,    2, 0),
+      cube.get(FACE::LEFT,  0, 2),
 
-    COLOR ULF = cube.get(FACE::UP,    2, 0);
-    COLOR LUF = cube.get(FACE::LEFT,  0, 2);
-    COLOR FUL = cube.get(FACE::FRONT, 0, 0);
+      cube.get(FACE::UP,    0, 2),
+      cube.get(FACE::RIGHT, 0, 0),
 
-    COLOR URB = cube.get(FACE::UP,    0, 2);
-    COLOR RUB = cube.get(FACE::RIGHT, 0, 0);
-    COLOR BUR = cube.get(FACE::BACK,  0, 0);
+      cube.get(FACE::UP,    2, 2),
+      cube.get(FACE::RIGHT, 0, 0),
 
-    COLOR URF = cube.get(FACE::UP,    2, 2);
-    COLOR RUF = cube.get(FACE::RIGHT, 0, 0);
-    COLOR FUR = cube.get(FACE::FRONT, 0, 2);
+      cube.get(FACE::DOWN,  2, 0),
+      cube.get(FACE::LEFT,  2, 0),
 
-    COLOR DLB = cube.get(FACE::DOWN,  2, 0);
-    COLOR LDB = cube.get(FACE::LEFT,  2, 0);
-    COLOR BDL = cube.get(FACE::BACK,  2, 2);
+      cube.get(FACE::DOWN,  0, 0),
+      cube.get(FACE::LEFT,  2, 2),
 
-    COLOR DLF = cube.get(FACE::DOWN,  0, 0);
-    COLOR LDF = cube.get(FACE::LEFT,  2, 2);
-    COLOR FDL = cube.get(FACE::FRONT, 2, 0);
+      cube.get(FACE::DOWN,  2, 2),
+      cube.get(FACE::RIGHT, 2, 2),
 
-    COLOR DRB = cube.get(FACE::DOWN,  2, 2);
-    COLOR RDB = cube.get(FACE::RIGHT, 2, 2);
-    COLOR BDR = cube.get(FACE::BACK,  0, 2);
-
-    COLOR DRF = cube.get(FACE::DOWN,  0, 2);
-    COLOR RDF = cube.get(FACE::RIGHT, 2, 0);
-    COLOR FDR = cube.get(FACE::FRONT, 2, 2);
-
-
-
-    /*COLOR UL = cube.get(FACE::UP,    1, 0);
-    COLOR LU = cube.get(FACE::LEFT,  0, 1);
-
-    COLOR UR = cube.get(FACE::UP,    1, 2);
-    COLOR RU = cube.get(FACE::RIGHT, 0, 1);
-
-    COLOR DL = cube.get(FACE::DOWN,  1, 0);
-    COLOR LD = cube.get(FACE::LEFT,  2, 1);
-
-    COLOR DR = cube.get(FACE::DOWN,  1, 2);
-    COLOR RD = cube.get(FACE::RIGHT, 2, 1);
-
-    COLOR LB = cube.get(FACE::LEFT,  1, 0);
-    COLOR BL = cube.get(FACE::BACK,  1, 2);
-
-    COLOR LF = cube.get(FACE::LEFT,  1, 2);
-    COLOR FL = cube.get(FACE::FRONT, 1, 0);
-
-    COLOR RB = cube.get(FACE::RIGHT, 1, 2);
-    COLOR BR = cube.get(FACE::BACK,  1, 0);
-
-    COLOR RF = cube.get(FACE::RIGHT, 1, 0);
-    COLOR FR = cube.get(FACE::FRONT, 1, 2);
-
-    COLOR UF = cube.get(FACE::UP,    2, 1);
-    COLOR FU = cube.get(FACE::FRONT, 0, 1);
-
-    COLOR UB = cube.get(FACE::UP,    0, 1);
-    COLOR BU = cube.get(FACE::BACK,  0, 1);
-
-    COLOR DF = cube.get(FACE::DOWN,  0, 1);
-    COLOR FD = cube.get(FACE::FRONT, 2, 1);
-
-    COLOR DB = cube.get(FACE::DOWN,  2, 1);
-    COLOR BD = cube.get(FACE::BACK,  2, 1);*/
-
-
-    // Make a string out of the corner permutations.
-    string perm = "";
-
-    perm += colors[(unsigned)ULB];
-    perm += colors[(unsigned)LUB];
-    perm += colors[(unsigned)BUL];
-
-    perm += colors[(unsigned)ULF];
-    perm += colors[(unsigned)LUF];
-    perm += colors[(unsigned)FUL];
-
-    perm += colors[(unsigned)URB];
-    perm += colors[(unsigned)RUB];
-    perm += colors[(unsigned)BUR];
-
-    perm += colors[(unsigned)URF];
-    perm += colors[(unsigned)RUF];
-    perm += colors[(unsigned)FUR];
-
-    perm += colors[(unsigned)DLB];
-    perm += colors[(unsigned)LDB];
-    perm += colors[(unsigned)BDL];
-
-    perm += colors[(unsigned)DLF];
-    perm += colors[(unsigned)LDF];
-    perm += colors[(unsigned)FDL];
-
-    perm += colors[(unsigned)DRB];
-    perm += colors[(unsigned)RDB];
-    perm += colors[(unsigned)BDR];
-
-    perm += colors[(unsigned)DRF];
-    perm += colors[(unsigned)RDF];
-    perm += colors[(unsigned)FDR];
-
-    /*perm += colors[(unsigned)UL];
-    perm += colors[(unsigned)LU];
-
-    perm += colors[(unsigned)UR];
-    perm += colors[(unsigned)RU];
-
-    perm += colors[(unsigned)DL];
-    perm += colors[(unsigned)LD];
-
-    perm += colors[(unsigned)DR];
-    perm += colors[(unsigned)RD];
-
-    perm += colors[(unsigned)LB];
-    perm += colors[(unsigned)BL];
-
-    perm += colors[(unsigned)LF];
-    perm += colors[(unsigned)FL];
-
-    perm += colors[(unsigned)RB];
-    perm += colors[(unsigned)BR];
-
-    perm += colors[(unsigned)RF];
-    perm += colors[(unsigned)FR];
-
-    perm += colors[(unsigned)UF];
-    perm += colors[(unsigned)FU];
-
-    perm += colors[(unsigned)UB];
-    perm += colors[(unsigned)BU];
-
-    perm += colors[(unsigned)DF];
-    perm += colors[(unsigned)FD];
-
-    perm += colors[(unsigned)DB];
-    perm += colors[(unsigned)BD];*/
+      cube.get(FACE::DOWN,  0, 2),
+      cube.get(FACE::RIGHT, 2, 0),
+    }};
 
     return perm;
   }
 
-
   /**
-   * Solve the cube.
+   * If the corner permutation is unique, save it in a set.  There are a
+   * total of 96 possible corner permutations that can be achieved from the
+   * solved state using only 180-degree turns.
    * @param cube The cube.
    */
   bool GoalG3_Permute_Corners::isSatisfied(RubiksCubeModel& cube)
   {
-    string perm = this->permToString(cube);
+    perm_t perm = this->permToArr(cube);
 
     if (this->perms.count(perm) == 0)
     {
       this->perms.insert(perm);
-      //cout << this->perms.size() << " " << perm << endl;
 
       // There are 96 total permutations.
       if (this->perms.size() == 96)
         return true;
-      /*if (this->perms.size() == 376820)
-        return true;*/
     }
 
     return false;
@@ -186,7 +69,7 @@ namespace busybin
    */
   bool GoalG3_Permute_Corners::permutationExists(const RubiksCubeModel& cube) const
   {
-    string perm = this->permToString(cube);
+    perm_t perm = this->permToArr(cube);
     return this->perms.count(perm) == 1;
   }
 
@@ -197,4 +80,29 @@ namespace busybin
   {
     return "All permutations of corners in G3.";
   }
+
+  /**
+   * Quick compare for two permutation arrays.
+   * @param lhs The left array.
+   * @param rhs The right array.
+   */
+  bool GoalG3_Permute_Corners::PermComp::operator()(const perm_t& lhs, const perm_t& rhs) const
+  {
+    // 16 corner facets are stored (see note in the ctor).  Each facet is an
+    // 8-bit char (a COLOR), so the array of corners can be treated as two
+    // 64-bit ints.  This is quite a bit faster than the default
+    // set comparator.
+    int64_t lDiff = *(int64_t*)&lhs[0] - *(int64_t*)&rhs[0];
+
+    if (lDiff < 0)
+      return true;
+    else if (lDiff == 0)
+    {
+      if (*(int64_t*)&lhs[8] < *(int64_t*)&rhs[8])
+        return true;
+    }
+
+    return false;
+  }
 }
+

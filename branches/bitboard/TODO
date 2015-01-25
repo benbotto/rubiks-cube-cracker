@@ -1,10 +1,3 @@
-Maybe rearranging the moves in twiststore would speed up the search.
-Use a hash map for getting moves/moveFuncs.
-When checking if a corner is solved, it's probably only necessary to check two sides.
-Consider using bitboards for the cube storage.  If each layer is stored in a long then shifting sould move the layer.
-I commented out one of the prunes in CubeSearcher.cpp.  This can't be used currently because G1 moves exclude primes and doubles.
-There's some repeated code in the model twist stores.  Doesn't bug me that bad.
 Clean up all commented code in GoalG2_G3_*
 Try to solve the cube outright, then bail at depth 10.
-Reduce resulting move set (e.g. L L L is L').
 
