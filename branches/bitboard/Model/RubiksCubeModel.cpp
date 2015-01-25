@@ -244,6 +244,15 @@ namespace busybin
   }
 
   /**
+   * Get an entire face of the cube as a 64-bit int.
+   * @param face The face to get.
+   */
+  uint64_t RubiksCubeModel::getFace(FACE face) const
+  {
+    return *(uint64_t*)&this->cube[(unsigned)face * 8];
+  }
+
+  /**
    * Move the up face clockwise.
    */
   RubiksCubeModel& RubiksCubeModel::u()

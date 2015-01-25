@@ -98,6 +98,7 @@ namespace busybin
     RubiksCubeModel();
 
     COLOR get(FACE face, unsigned row, unsigned col) const;
+    uint64_t getFace(FACE face) const;
     
     // Face moves.
     RubiksCubeModel& u();
