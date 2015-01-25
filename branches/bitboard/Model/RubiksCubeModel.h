@@ -69,18 +69,6 @@ namespace busybin
   public:
     enum class FACE  : uchar {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
     enum class COLOR : uchar {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
-    enum class CUBIE : uchar
-    {
-      UP_LEFT_BACK,    UP_BACK,    UP_RIGHT_BACK,
-      UP_LEFT,         UP,         UP_RIGHT,
-      UP_LEFT_FRONT,   UP_FRONT,   UP_RIGHT_FRONT,
-      LEFT_BACK,       BACK,       RIGHT_BACK,
-      LEFT,            RIGHT,
-      LEFT_FRONT,      FRONT,      RIGHT_FRONT,
-      DOWN_LEFT_BACK,  DOWN_BACK,  DOWN_RIGHT_BACK,
-      DOWN_LEFT,       DOWN,       DOWN_RIGHT,
-      DOWN_LEFT_FRONT, DOWN_FRONT, DOWN_RIGHT_FRONT
-    };
 
   private:
     array<COLOR, 48> cube;
