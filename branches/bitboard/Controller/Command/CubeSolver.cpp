@@ -152,8 +152,6 @@ namespace busybin
       cout << move << ' ';
     cout << endl;
 
-    //cout << "Simplified: " << this->simplifyMoves(allMoves) << endl;
-
     // Display the cube model.
     cout << "Resulting cube.\n";
     cubeView.render(this->cubeModel);
@@ -220,6 +218,20 @@ namespace busybin
     this->replace("R2 R2 ", movesStr, " ");
     this->replace("B2 B2 ", movesStr, " ");
     this->replace("D2 D2 ", movesStr, " ");
+
+    this->replace("U U' ", movesStr, " ");
+    this->replace("L L' ", movesStr, " ");
+    this->replace("F F' ", movesStr, " ");
+    this->replace("R R' ", movesStr, " ");
+    this->replace("B B' ", movesStr, " ");
+    this->replace("D D' ", movesStr, " ");
+
+    this->replace("U' U ", movesStr, " ");
+    this->replace("L' L ", movesStr, " ");
+    this->replace("F' F ", movesStr, " ");
+    this->replace("R' R ", movesStr, " ");
+    this->replace("B' B ", movesStr, " ");
+    this->replace("D' D ", movesStr, " ");
 
     this->replace("U U U ", movesStr, "U' ");
     this->replace("L L L ", movesStr, "L' ");
