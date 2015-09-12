@@ -7,7 +7,13 @@ using std::cout;
 using std::endl;
 #include <iomanip>
 using std::setw;
+using std::setfill;
+using std::left;
 using std::right;
+using std::hex;
+using std::dec;
+#include <bitset>
+using std::bitset;
 
 namespace busybin
 {
