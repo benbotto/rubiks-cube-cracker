@@ -7,260 +7,249 @@ namespace busybin
    */
   RubiksCubeModel::RubiksCubeModel()
   {
-    array<COLOR, 54>::iterator it  = this->cube.begin();
-    array<COLOR, 54>::iterator end = next(it, 9);
+    array<COLOR, 48>::iterator it  = this->cube.begin();
+    array<COLOR, 48>::iterator end = next(it, 8);
 
     // Top.
     fill(it, end, COLOR::WHITE);
 
     // Left.
     it = end;
-    advance(end, 9);
+    advance(end, 8);
     fill(it, end, COLOR::GREEN);
 
     // Front.
     it = end;
-    advance(end, 9);
+    advance(end, 8);
     fill(it, end, COLOR::RED);
 
     // Right.
     it = end;
-    advance(end, 9);
+    advance(end, 8);
     fill(it, end, COLOR::BLUE);
 
     // Back.
     it = end;
-    advance(end, 9);
+    advance(end, 8);
     fill(it, end, COLOR::ORANGE);
 
     // Bottom.
     it = end;
-    advance(end, 9);
+    advance(end, 8);
     fill(it, end, COLOR::YELLOW);
 
-    // Center cubies.
-    this->centerCubies[(unsigned)FACE::UP]    = 4;
-    this->centerCubies[(unsigned)FACE::LEFT]  = 13;
-    this->centerCubies[(unsigned)FACE::FRONT] = 22;
-    this->centerCubies[(unsigned)FACE::RIGHT] = 31;
-    this->centerCubies[(unsigned)FACE::BACK]  = 40;
-    this->centerCubies[(unsigned)FACE::DOWN]  = 49;
-
-    // Edge cubies (order matters for the next_permuation calls).
-    this->permuteEdge({{FACE::UP,    FACE::LEFT}},  {{3,  10}});
-    this->permuteEdge({{FACE::UP,    FACE::FRONT}}, {{7,  19}});
-    this->permuteEdge({{FACE::UP,    FACE::RIGHT}}, {{5,  28}});
-    this->permuteEdge({{FACE::UP,    FACE::BACK}},  {{1,  37}});
-
-    this->permuteEdge({{FACE::LEFT,  FACE::FRONT}}, {{14, 21}});
-    this->permuteEdge({{FACE::FRONT, FACE::RIGHT}}, {{23, 30}});
-    this->permuteEdge({{FACE::RIGHT, FACE::BACK}},  {{32, 39}});
-    this->permuteEdge({{FACE::LEFT,  FACE::BACK}},  {{12, 41}});
-
-    this->permuteEdge({{FACE::LEFT,  FACE::DOWN}},  {{16, 48}});
-    this->permuteEdge({{FACE::FRONT, FACE::DOWN}},  {{25, 46}});
-    this->permuteEdge({{FACE::RIGHT, FACE::DOWN}},  {{34, 50}});
-    this->permuteEdge({{FACE::BACK,  FACE::DOWN}},  {{43, 52}});
-
-    // Corner cubies.
-    this->permuteCorner({{FACE::UP,    FACE::LEFT,  FACE::BACK}},  {{0,   9, 38}});
-    this->permuteCorner({{FACE::UP,    FACE::LEFT,  FACE::FRONT}}, {{6,  11, 18}});
-    this->permuteCorner({{FACE::UP,    FACE::FRONT, FACE::RIGHT}}, {{8,  20, 27}});
-    this->permuteCorner({{FACE::UP,    FACE::RIGHT, FACE::BACK}},  {{2,  29, 36}});
-
-    this->permuteCorner({{FACE::LEFT,  FACE::BACK,  FACE::DOWN}}, {{15, 44, 51}});
-    this->permuteCorner({{FACE::LEFT,  FACE::FRONT, FACE::DOWN}}, {{17, 24, 45}});
-    this->permuteCorner({{FACE::FRONT, FACE::RIGHT, FACE::DOWN}}, {{26, 33, 47}});
-    this->permuteCorner({{FACE::RIGHT, FACE::BACK,  FACE::DOWN}}, {{35, 42, 53}});
+    // The center cubes are stored separately.  This allows for very fast
+    // face rotations.  Additionally this allows each face to fit in
+    // 64 bits, which can speed up solution checks.
+    for (int i = 0; i < 6; ++i)
+      this->centers[i] = (COLOR)i;
   }
 
   /**
-   * Insert all permutations of two faces/edges into the edgeCubies map.
-   * @param faces The two faces.
-   * @param indices The corresponding indices into the cube.
+   * Roll an array right 2 places, and wrap around.  This is a 90-degree
+   * rotation of a face.
+   *
+   * Input:  0 1 2 3 4 5 6 7 
+   * Output: 6 7 0 1 2 3 4 5 
+   *
+   * @param f The face to roll.
    */
-  void RubiksCubeModel::permuteEdge(array<FACE, 2> faces, array<unsigned, 2> indices)
+  inline void RubiksCubeModel::roll90(FACE f)
   {
-    do
-    {
-      this->edgeCubies[hashCubie(faces[0], faces[1])] = indices;
-    }
-    while (next_permutation(faces.begin(), faces.end()) &&
-      next_permutation(indices.begin(), indices.end()));
+    uint64_t face = *(uint64_t*)&this->cube[(unsigned)f * 8];
+    asm volatile ("rolq $16, %[face]" : [face] "+r" (face) : );
+    *(uint64_t*)&this->cube[(unsigned)f * 8] = face;
   }
 
   /**
-   * Insert all permutations of two faces/edges into the cornerCubies map.
-   * @param faces The three faces.
-   * @param indices The corresponding indices into the cube.
+   * Roll an array right 4 places, and wrap away.  This is a 180-degree
+   * rotation of a face.
+   *
+   * Input:  0 1 2 3 4 5 6 7 
+   * Output: 4 5 6 7 0 1 2 3 
+   *
+   * @param f The face to roll.
    */
-  void RubiksCubeModel::permuteCorner(array<FACE, 3> faces, array<unsigned, 3> indices)
+  inline void RubiksCubeModel::roll180(FACE f)
   {
-    do
-    {
-      this->cornerCubies[hashCubie(faces[0], faces[1], faces[2])] = indices;
-    }
-    while (next_permutation(faces.begin(), faces.end()) &&
-      next_permutation(indices.begin(), indices.end()));
+    uint64_t face = *(uint64_t*)&this->cube[(unsigned)f * 8];
+    asm volatile ("rolq $32, %[face]" : [face] "+r" (face) : );
+    *(uint64_t*)&this->cube[(unsigned)f * 8] = face;
   }
 
   /**
-   * Hash two faces.  There are 6 faces, 0-5, thus each face can fit in 3 
-   * bits.
-   * @param f1 The first face.
-   * @param f2 The second face.
+   * Roll an array right 6 places, and wrap away.  This is a 270-degree
+   * rotation of a face.
+   *
+   * Input:  0 1 2 3 4 5 6 7 
+   * Output: 2 3 4 5 6 7 0 1
+   *
+   * @param f The face to roll.
    */
-  unsigned RubiksCubeModel::hashCubie(FACE f1, FACE f2) const
+  inline void RubiksCubeModel::roll270(FACE f)
   {
-    return ((unsigned)f1 << 3) | (unsigned)f2;
+    uint64_t face = *(uint64_t*)&this->cube[(unsigned)f * 8];
+    asm volatile ("rorq $16, %[face]" : [face] "+r" (face) : );
+    *(uint64_t*)&this->cube[(unsigned)f * 8] = face;
   }
 
   /**
-   * Hash three faces.  There are 6 faces, 0-5, so each face can fit in 3
-   * bits.  The maximum hash is (5 << 6) | (4 << 3) | 3 == 355.
-   * @param f1 The first face.
-   * @param f2 The second face.
-   * @param f3 The third face.
+   * Rotate four sides 90 degrees.  Use roll to rotate the face.
+   * @param s_i0 The first index, treated as a short.
+   * @param s_i1 The second index, treated as a short.
+   * @param s_i2 The third index, treated as a short.
+   * @param s_i3 The fourth index, treated as a short.
+   * @param c_i0 The first index, treated as a char.
+   * @param c_i1 The second index, treated as a char.
+   * @param c_i2 The third index, treated as a char.
+   * @param c_i3 The fourth index, treated as a char.
    */
-  unsigned RubiksCubeModel::hashCubie(FACE f1, FACE f2, FACE f3) const
+  inline void RubiksCubeModel::rotateSides90(unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
+    unsigned c_i0, unsigned c_i1, unsigned c_i2, unsigned c_i3)
   {
-    return ((unsigned)f1 << 6) | ((unsigned)f2 << 3) | (unsigned)f3;
+    // The number of operations is reduced by moving two cubes at a time (e.g.
+    // treating the cubes at index s_i0..s_i3 as 16-bit shorts).
+    uint16_t hold_s_i0 = *((uint16_t*)&this->cube[s_i0]);
+
+    *((uint16_t*)&this->cube[s_i0]) = *((uint16_t*)&this->cube[s_i1]);
+    *((uint16_t*)&this->cube[s_i1]) = *((uint16_t*)&this->cube[s_i2]);
+    *((uint16_t*)&this->cube[s_i2]) = *((uint16_t*)&this->cube[s_i3]);
+    *((uint16_t*)&this->cube[s_i3]) = hold_s_i0;
+
+    // The last four cubes need to be moved one at a time.
+    COLOR hold_c_i0 = this->cube[c_i0];
+
+    this->cube[c_i0] = this->cube[c_i1];
+    this->cube[c_i1] = this->cube[c_i2];
+    this->cube[c_i2] = this->cube[c_i3];
+    this->cube[c_i3] = hold_c_i0;
   }
 
   /**
-   * Get the color at index i.  The cube is laid out as follows.
-   * The index i is not checked (for speed).  Make sure i < 54!
-   *
-   *              W W W
-   *              W W W
-   *              W W W
-   *
-   *       G G G  R R R  B B B  O O O
-   *       G G G  R R R  B B B  O O O
-   *       G G G  R R R  B B B  O O O
-   *
-   *              Y Y Y
-   *              Y Y Y
-   *              Y Y Y
-   *
-   * Index wise:
-   *
-   *             0  1  2
-   *             3  4  5
-   *             6  7  8
-   *
-   *   9 10 11  18 19 20  27 28 29  36 37 38
-   *  12 13 14  21 22 23  30 31 32  39 40 41
-   *  15 16 17  24 25 26  33 34 35  42 43 44
-   *
-   *            45 46 47
-   *            48 49 50
-   *            51 52 53
-   *
-   * @param i The index.
+   * Rotate four sides 180 degrees.  Use roll to rotate the face.
+   * @param s_i0 The first index, treated as a short.
+   * @param s_i1 The second index, treated as a short.
+   * @param s_i2 The third index, treated as a short.
+   * @param s_i3 The fourth index, treated as a short.
+   * @param c_i0 The first index, treated as a char.
+   * @param c_i1 The second index, treated as a char.
+   * @param c_i2 The third index, treated as a char.
+   * @param c_i3 The fourth index, treated as a char.
    */
-  RubiksCubeModel::COLOR RubiksCubeModel::get(unsigned i) const
+  inline void RubiksCubeModel::rotateSides180(
+    unsigned s_i0, unsigned s_i1, unsigned s_i2, unsigned s_i3,
+    unsigned c_i0, unsigned c_i1, unsigned c_i2, unsigned c_i3)
   {
-    return this->cube[i];
+    swap(*((uint16_t*)&this->cube[s_i0]), *((uint16_t*)&this->cube[s_i1]));
+    swap(*((uint16_t*)&this->cube[s_i2]), *((uint16_t*)&this->cube[s_i3]));
+    swap(this->cube[c_i0], this->cube[c_i1]);
+    swap(this->cube[c_i2], this->cube[c_i3]);
   }
 
   /**
-   * Get the color at FACE, row, col.  See get(i) overload for doc.
-   * @param face The face of the cube.
+   * Rotate a slice 90 degrees.
+   * @param c_fi0 Face index 0.
+   * @param c_fi1 Face index 1.
+   * @param c_fi2 Face index 2.
+   * @param c_fi3 Face index 3.
+   * @param c_fi4 Face index 4.
+   * @param c_fi5 Face index 5.
+   * @param c_fi6 Face index 6.
+   * @param c_fi7 Face index 7.
+   * @param c_ci0 Center index 0.
+   * @param c_ci1 Center index 1.
+   * @param c_ci2 Center index 2.
+   * @param c_ci3 Center index 3.
+   */
+  inline void RubiksCubeModel::rotateSlice90(
+    unsigned c_fi0, unsigned c_fi1, unsigned c_fi2, unsigned c_fi3,
+    unsigned c_fi4, unsigned c_fi5, unsigned c_fi6, unsigned c_fi7,
+    unsigned c_ci0, unsigned c_ci1, unsigned c_ci2, unsigned c_ci3)
+  {
+    COLOR hold_c_fi0  = this->cube[c_fi0];
+    this->cube[c_fi0] = this->cube[c_fi1];
+    this->cube[c_fi1] = this->cube[c_fi2];
+    this->cube[c_fi2] = this->cube[c_fi3];
+    this->cube[c_fi3] = hold_c_fi0;
+    
+    COLOR hold_c_fi4  = this->cube[c_fi4];
+    this->cube[c_fi4] = this->cube[c_fi5];
+    this->cube[c_fi5] = this->cube[c_fi6];
+    this->cube[c_fi6] = this->cube[c_fi7];
+    this->cube[c_fi7] = hold_c_fi4;
+
+    COLOR hold_c_ci0     = this->centers[c_ci0];
+    this->centers[c_ci0] = this->centers[c_ci1];
+    this->centers[c_ci1] = this->centers[c_ci2];
+    this->centers[c_ci2] = this->centers[c_ci3];
+    this->centers[c_ci3] = hold_c_ci0;
+  }
+
+  /**
+   * Rotate a slice 180 degrees.
+   * @param c_fi0 Face index 0.
+   * @param c_fi1 Face index 1.
+   * @param c_fi2 Face index 2.
+   * @param c_fi3 Face index 3.
+   * @param c_fi4 Face index 4.
+   * @param c_fi5 Face index 5.
+   * @param c_fi6 Face index 6.
+   * @param c_fi7 Face index 7.
+   * @param c_ci0 Center index 0.
+   * @param c_ci1 Center index 1.
+   * @param c_ci2 Center index 2.
+   * @param c_ci3 Center index 3.
+   */
+  inline void RubiksCubeModel::rotateSlice180(
+    unsigned c_fi0, unsigned c_fi1, unsigned c_fi2, unsigned c_fi3,
+    unsigned c_fi4, unsigned c_fi5, unsigned c_fi6, unsigned c_fi7,
+    unsigned c_ci0, unsigned c_ci1, unsigned c_ci2, unsigned c_ci3)
+  {
+    swap(this->cube[c_fi0], this->cube[c_fi1]);
+    swap(this->cube[c_fi2], this->cube[c_fi3]);
+    swap(this->cube[c_fi4], this->cube[c_fi5]);
+    swap(this->cube[c_fi6], this->cube[c_fi7]);
+
+    swap(this->centers[c_ci0], this->centers[c_ci1]);
+    swap(this->centers[c_ci2], this->centers[c_ci3]);
+  }
+
+  /**
+   * Get the color at FACE, row, col.
+   * @param f The face of the cube.
    * @param row The 0-based row, unfolded as described in get(i).
    * @param col The 0-based col, unfulded as described in get(i).
    */
-  RubiksCubeModel::COLOR RubiksCubeModel::get(RubiksCubeModel::FACE face,
-    unsigned row, unsigned col) const
+  RubiksCubeModel::COLOR RubiksCubeModel::get(
+    FACE f, unsigned row, unsigned col) const
   {
-    return this->get(9 * (unsigned)face + row * 3 + col);
+    if (row == 1 and col == 1)
+      return (COLOR)this->centers[(unsigned)f];
+    else
+    {
+      /* Row-column lookup.  A face stores stickers as follows.
+       *  
+       *  0 1 2
+       *  7   3
+       *  6 5 4
+       *
+       *  So, for example, row 2 col 1 is at index 5.
+       *  row * 3 + col = 2 * 3 + 1 = 7.  lookup[7] == 5.
+       */
+      unsigned lookup[] = {0, 1, 2, 7, 0, 3, 6, 5, 4};
+      unsigned index    = lookup[row * 3 + col];
+
+      return (COLOR)this->cube[(unsigned)f * 8 + index];
+    }
   }
 
   /**
-   * Get a center cubie by face.
-   * @param f The face.
+   * Get an entire face of the cube as a 64-bit int.
+   * @param face The face to get.
    */
-  RubiksCubeModel::CenterCubie RubiksCubeModel::getCubie(FACE f) const
+  uint64_t RubiksCubeModel::getFace(FACE face) const
   {
-    return this->cube[this->centerCubies[(unsigned)f]];
-  }
-
-  /**
-   * Get an edge cubie by face.  e.g. TOP, LEFT edge.
-   * @param f1 The first face.
-   * @param f2 The second face.
-   */
-  RubiksCubeModel::EdgeCubie RubiksCubeModel::getCubie(FACE f1, FACE f2) const
-  {
-    array<unsigned, 2> ind = this->edgeCubies[hashCubie(f1, f2)];
-
-    return {{this->cube[ind[0]], this->cube[ind[1]]}};
-  }
-
-  /**
-   * Get an edge cubie by face.  e.g. TOP, LEFT, BACK corner.
-   * @param f1 The first face.
-   * @param f2 The second face.
-   * @param f3 The third face.
-   */
-  RubiksCubeModel::CornerCubie RubiksCubeModel::getCubie(FACE f1, FACE f2, FACE f3) const
-  {
-    array<unsigned, 3> ind = this->cornerCubies[hashCubie(f1, f2, f3)];
-
-    return {{this->cube[ind[0]], this->cube[ind[1]], this->cube[ind[2]]}};
-  }
-
-  /**
-   * Check if the cube is solved.
-   */
-  bool RubiksCubeModel::isSolved() const
-  {
-    return
-      this->isSolved(FACE::UP,    FACE::LEFT)  &&
-      this->isSolved(FACE::UP,    FACE::FRONT) &&
-      this->isSolved(FACE::UP,    FACE::RIGHT) &&
-      this->isSolved(FACE::UP,    FACE::BACK)  &&
-      this->isSolved(FACE::LEFT,  FACE::FRONT) &&
-      this->isSolved(FACE::FRONT, FACE::RIGHT) &&
-      this->isSolved(FACE::RIGHT, FACE::BACK)  &&
-      this->isSolved(FACE::LEFT,  FACE::BACK)  &&
-      this->isSolved(FACE::LEFT,  FACE::DOWN)  &&
-      this->isSolved(FACE::FRONT, FACE::DOWN)  &&
-      this->isSolved(FACE::RIGHT, FACE::DOWN)  &&
-      this->isSolved(FACE::BACK,  FACE::DOWN)  &&
-      this->isSolved(FACE::UP,    FACE::LEFT,  FACE::BACK)  &&
-      this->isSolved(FACE::UP,    FACE::LEFT,  FACE::FRONT) &&
-      this->isSolved(FACE::UP,    FACE::FRONT, FACE::RIGHT) &&
-      this->isSolved(FACE::UP,    FACE::RIGHT, FACE::BACK)  &&
-      this->isSolved(FACE::LEFT,  FACE::BACK,  FACE::DOWN)  &&
-      this->isSolved(FACE::LEFT,  FACE::FRONT, FACE::DOWN)  &&
-      this->isSolved(FACE::FRONT, FACE::RIGHT, FACE::DOWN)  &&
-      this->isSolved(FACE::RIGHT, FACE::BACK,  FACE::DOWN);
-  }
-
-  /**
-   * Check if a cubie is solved.
-   * @param f1 The first face.
-   * @param f2 The second face.
-   */
-  bool RubiksCubeModel::isSolved(FACE f1, FACE f2) const
-  {
-    EdgeCubie c = getCubie(f1, f2);
-
-    return c[0] == getCubie(f1) && c[1] == getCubie(f2);
-  }
-
-  /**
-   * Check if a cubie is solved.
-   * @param f1 The first face.
-   * @param f2 The second face.
-   * @param f3 The third face.
-   */
-  bool RubiksCubeModel::isSolved(FACE f1, FACE f2, FACE f3) const
-  {
-    CornerCubie c = getCubie(f1, f2, f3);
-
-    return c[0] == getCubie(f1) && c[1] == getCubie(f2) && c[2] == getCubie(f3);
+    return *(uint64_t*)&this->cube[(unsigned)face * 8];
   }
 
   /**
@@ -268,38 +257,11 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::u()
   {
-    array<COLOR, 3> hold;
+    // Rotate the stickers on the face.
+    this->roll90(FACE::UP);
 
-    // Up row.  Order is important!
-    hold[0] = this->cube[9];
-    hold[1] = this->cube[10];
-    hold[2] = this->cube[11];
-
-    this->cube[9]  = this->cube[18];
-    this->cube[10] = this->cube[19];
-    this->cube[11] = this->cube[20];
-    this->cube[18] = this->cube[27];
-    this->cube[19] = this->cube[28];
-    this->cube[20] = this->cube[29];
-    this->cube[27] = this->cube[36];
-    this->cube[28] = this->cube[37];
-    this->cube[29] = this->cube[38];
-    this->cube[36] = hold[0];
-    this->cube[37] = hold[1];
-    this->cube[38] = hold[2];
-
-    // Up face. Order is important!
-    hold[0] = this->cube[0];
-    hold[1] = this->cube[1];
-
-    this->cube[0] = this->cube[6];
-    this->cube[6] = this->cube[8];
-    this->cube[8] = this->cube[2];
-    this->cube[2] = hold[0];
-    this->cube[1] = this->cube[3];
-    this->cube[3] = this->cube[7];
-    this->cube[7] = this->cube[5];
-    this->cube[5] = hold[1];
+    // Update the sides.
+    this->rotateSides90(8, 16, 24, 32, 10, 18, 26, 34);
 
     return *this;
   }
@@ -309,165 +271,18 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::uPrime()
   {
-    array<COLOR, 3> hold;
-
-    // Up row.
-    hold[0] = this->cube[38];
-    hold[1] = this->cube[37];
-    hold[2] = this->cube[36];
-
-    this->cube[38] = this->cube[29];
-    this->cube[29] = this->cube[20];
-    this->cube[20] = this->cube[11];
-    this->cube[11] = hold[0];
-    this->cube[37] = this->cube[28];
-    this->cube[28] = this->cube[19];
-    this->cube[19] = this->cube[10];
-    this->cube[10] = hold[1];
-    this->cube[36] = this->cube[27];
-    this->cube[27] = this->cube[18];
-    this->cube[18] = this->cube[9];
-    this->cube[9]  = hold[2];
-
-    // Up face.
-    hold[0] = this->cube[0];
-    hold[1] = this->cube[1];
-
-    this->cube[0] = this->cube[2];
-    this->cube[2] = this->cube[8];
-    this->cube[8] = this->cube[6];
-    this->cube[6] = hold[0];
-    this->cube[1] = this->cube[5];
-    this->cube[5] = this->cube[7];
-    this->cube[7] = this->cube[3];
-    this->cube[3] = hold[1];
-
+    this->roll270(FACE::UP);
+    this->rotateSides90(32, 24, 16, 8, 34, 26, 18, 10);
     return *this;
   }
 
   /**
-   * Move the up face twice.
+   * Move the up face twice
    */
   RubiksCubeModel& RubiksCubeModel::u2()
   {
-    // Up row.
-    swap(this->cube[9],  this->cube[27]);
-    swap(this->cube[18], this->cube[36]);
-    swap(this->cube[10], this->cube[28]);
-    swap(this->cube[19], this->cube[37]);
-    swap(this->cube[11], this->cube[29]);
-    swap(this->cube[20], this->cube[38]);
-
-    // Up face.
-    swap(this->cube[0], this->cube[8]);
-    swap(this->cube[2], this->cube[6]);
-    swap(this->cube[1], this->cube[7]);
-    swap(this->cube[3], this->cube[5]);
-
-    return *this;
-  }
-
-  /**
-   * Move the down face clockwise.
-   */
-  RubiksCubeModel& RubiksCubeModel::d()
-  {
-    array<COLOR, 3> hold;
-
-    // Down row.
-    hold[0] = this->cube[15];
-    hold[1] = this->cube[16];
-    hold[2] = this->cube[17];
-
-    this->cube[15] = this->cube[42];
-    this->cube[42] = this->cube[33];
-    this->cube[33] = this->cube[24];
-    this->cube[24] = hold[0];
-    this->cube[16] = this->cube[43];
-    this->cube[43] = this->cube[34];
-    this->cube[34] = this->cube[25];
-    this->cube[25] = hold[1];
-    this->cube[17] = this->cube[44];
-    this->cube[44] = this->cube[35];
-    this->cube[35] = this->cube[26];
-    this->cube[26] = hold[2];
-
-    // Down face.
-    hold[0] = this->cube[45];
-    hold[1] = this->cube[46];
-
-    this->cube[45] = this->cube[51];
-    this->cube[51] = this->cube[53];
-    this->cube[53] = this->cube[47];
-    this->cube[47] = hold[0];
-    this->cube[46] = this->cube[48];
-    this->cube[48] = this->cube[52];
-    this->cube[52] = this->cube[50];
-    this->cube[50] = hold[1];
-
-    return *this;
-  }
-
-  /**
-   * Move the down face counter clockwise.
-   */
-  RubiksCubeModel& RubiksCubeModel::dPrime()
-  {
-    array<COLOR, 3> hold;
-
-    // Down row.
-    hold[0] = this->cube[15];
-    hold[1] = this->cube[16];
-    hold[2] = this->cube[17];
-
-    this->cube[15] = this->cube[24];
-    this->cube[24] = this->cube[33];
-    this->cube[33] = this->cube[42];
-    this->cube[42] = hold[0];
-    this->cube[16] = this->cube[25];
-    this->cube[25] = this->cube[34];
-    this->cube[34] = this->cube[43];
-    this->cube[43] = hold[1];
-    this->cube[17] = this->cube[26];
-    this->cube[26] = this->cube[35];
-    this->cube[35] = this->cube[44];
-    this->cube[44] = hold[2];
-
-    // Down face.
-    hold[0] = this->cube[45];
-    hold[1] = this->cube[46];
-
-    this->cube[45] = this->cube[47];
-    this->cube[47] = this->cube[53];
-    this->cube[53] = this->cube[51];
-    this->cube[51] = hold[0];
-    this->cube[46] = this->cube[50];
-    this->cube[50] = this->cube[52];
-    this->cube[52] = this->cube[48];
-    this->cube[48] = hold[1];
-
-    return *this;
-  }
-
-  /**
-   * Move the down face twice.
-   */
-  RubiksCubeModel& RubiksCubeModel::d2()
-  {
-    // Down row.
-    swap(this->cube[15], this->cube[33]);
-    swap(this->cube[16], this->cube[34]);
-    swap(this->cube[17], this->cube[35]);
-    swap(this->cube[24], this->cube[42]);
-    swap(this->cube[25], this->cube[43]);
-    swap(this->cube[26], this->cube[44]);
-
-    // Down face.
-    swap(this->cube[45], this->cube[53]);
-    swap(this->cube[46], this->cube[52]);
-    swap(this->cube[47], this->cube[51]);
-    swap(this->cube[48], this->cube[50]);
-
+    this->roll180(FACE::UP);
+    this->rotateSides180(8, 24, 16, 32, 10, 26, 18, 34);
     return *this;
   }
 
@@ -476,39 +291,8 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::l()
   {
-    array<COLOR, 3> hold;
-
-    // Left column.  Order is important!
-    hold[0] = this->cube[0];
-    hold[1] = this->cube[38];
-    hold[2] = this->cube[3];
-
-    this->cube[0]  = this->cube[44];
-    this->cube[44] = this->cube[45];
-    this->cube[45] = this->cube[18];
-    this->cube[18] = hold[0];
-    this->cube[38] = this->cube[51];
-    this->cube[51] = this->cube[24];
-    this->cube[24] = this->cube[6];
-    this->cube[6]  = hold[1];
-    this->cube[3]  = this->cube[41];
-    this->cube[41] = this->cube[48];
-    this->cube[48] = this->cube[21];
-    this->cube[21] = hold[2];
-
-    // Left face. Order is important!
-    hold[0] = this->cube[9];
-    hold[1] = this->cube[10];
-
-    this->cube[9] = this->cube[15];
-    this->cube[15] = this->cube[17];
-    this->cube[17] = this->cube[11];
-    this->cube[11] = hold[0];
-    this->cube[10] = this->cube[12];
-    this->cube[12] = this->cube[16];
-    this->cube[16] = this->cube[14];
-    this->cube[14] = hold[1];
-
+    this->roll90(FACE::LEFT);
+    this->rotateSides90(6, 34, 46, 22, 0, 36, 40, 16);
     return *this;
   }
 
@@ -517,39 +301,8 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::lPrime()
   {
-    array<COLOR, 3> hold;
-
-    // Left column.  Order is important!
-    hold[0] = this->cube[0];
-    hold[1] = this->cube[38];
-    hold[2] = this->cube[3];
-
-    this->cube[0] = this->cube[18];
-    this->cube[18] = this->cube[45];
-    this->cube[45] = this->cube[44];
-    this->cube[44] = hold[0];
-    this->cube[38] = this->cube[6];
-    this->cube[6] = this->cube[24];
-    this->cube[24] = this->cube[51];
-    this->cube[51] = hold[1];
-    this->cube[3] = this->cube[21];
-    this->cube[21] = this->cube[48];
-    this->cube[48] = this->cube[41];
-    this->cube[41] = hold[2];
-
-    // Left face.  Order is important!
-    hold[0] = this->cube[9];
-    hold[1] = this->cube[10];
-
-    this->cube[9] = this->cube[11];
-    this->cube[11] = this->cube[17];
-    this->cube[17] = this->cube[15];
-    this->cube[15] = hold[0];
-    this->cube[10] = this->cube[14];
-    this->cube[14] = this->cube[16];
-    this->cube[16] = this->cube[12];
-    this->cube[12] = hold[1];
-
+    this->roll270(FACE::LEFT);
+    this->rotateSides90(22, 46, 34, 6, 16, 40, 36, 0);
     return *this;
   }
 
@@ -558,124 +311,8 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::l2()
   {
-    // Left column.
-    swap(this->cube[0],  this->cube[45]);
-    swap(this->cube[3],  this->cube[48]);
-    swap(this->cube[6],  this->cube[51]);
-    swap(this->cube[18], this->cube[44]);
-    swap(this->cube[21], this->cube[41]);
-    swap(this->cube[24], this->cube[38]);
-
-    // Left face.
-    swap(this->cube[9],  this->cube[17]);
-    swap(this->cube[10], this->cube[16]);
-    swap(this->cube[11], this->cube[15]);
-    swap(this->cube[12], this->cube[14]);
-
-    return *this;
-  }
-
-  /**
-   * Move the right face clockwise.
-   */
-  RubiksCubeModel& RubiksCubeModel::r()
-  {
-    array<COLOR, 3> hold;
-
-    // Right column.  Order is important!
-    hold[0] = this->cube[2];
-    hold[1] = this->cube[36];
-    hold[2] = this->cube[5];
-
-    this->cube[2]  = this->cube[20];
-    this->cube[20] = this->cube[47];
-    this->cube[47] = this->cube[42];
-    this->cube[42] = hold[0];
-    this->cube[36] = this->cube[8];
-    this->cube[8]  = this->cube[26];
-    this->cube[26] = this->cube[53];
-    this->cube[53] = hold[1];
-    this->cube[5]  = this->cube[23];
-    this->cube[23] = this->cube[50];
-    this->cube[50] = this->cube[39];
-    this->cube[39] = hold[2];
-
-    // Right face.  Order is important!
-    hold[0] = this->cube[27];
-    hold[1] = this->cube[28];
-
-    this->cube[27] = this->cube[33];
-    this->cube[33] = this->cube[35];
-    this->cube[35] = this->cube[29];
-    this->cube[29] = hold[0];
-    this->cube[28] = this->cube[30];
-    this->cube[30] = this->cube[34];
-    this->cube[34] = this->cube[32];
-    this->cube[32] = hold[1];
-
-    return *this;
-  }
-
-  /**
-   * Move the right face counter clockwise.
-   */
-  RubiksCubeModel& RubiksCubeModel::rPrime()
-  {
-    array<COLOR, 3> hold;
-
-    // Right column.  Order is important!
-    hold[0] = this->cube[2];
-    hold[1] = this->cube[36];
-    hold[2] = this->cube[5];
-
-    this->cube[2]  = this->cube[42];
-    this->cube[42] = this->cube[47];
-    this->cube[47] = this->cube[20];
-    this->cube[20] = hold[0];
-    this->cube[36] = this->cube[53];
-    this->cube[53] = this->cube[26];
-    this->cube[26] = this->cube[8];
-    this->cube[8]  = hold[1];
-    this->cube[5]  = this->cube[39];
-    this->cube[39] = this->cube[50];
-    this->cube[50] = this->cube[23];
-    this->cube[23] = hold[2];
-
-    // Right face.  Order is important!
-    hold[0] = this->cube[27];
-    hold[1] = this->cube[28];
-
-    this->cube[27] = this->cube[29];
-    this->cube[29] = this->cube[35];
-    this->cube[35] = this->cube[33];
-    this->cube[33] = hold[0];
-    this->cube[28] = this->cube[32];
-    this->cube[32] = this->cube[34];
-    this->cube[34] = this->cube[30];
-    this->cube[30] = hold[1];
-
-    return *this;
-  }
-
-  /**
-   * Move the right face twice.
-   */
-  RubiksCubeModel& RubiksCubeModel::r2()
-  {
-    // Right column.
-    swap(this->cube[2], this->cube[47]);
-    swap(this->cube[5], this->cube[50]);
-    swap(this->cube[8], this->cube[53]);
-    swap(this->cube[20], this->cube[42]);
-    swap(this->cube[23], this->cube[39]);
-    swap(this->cube[26], this->cube[36]);
-
-    // Right face.
-    swap(this->cube[27], this->cube[35]);
-    swap(this->cube[28], this->cube[34]);
-    swap(this->cube[29], this->cube[33]);
-    swap(this->cube[30], this->cube[32]);
-
+    this->roll180(FACE::LEFT);
+    this->rotateSides180(6, 46, 34, 22, 0, 40, 36, 16);
     return *this;
   }
 
@@ -684,39 +321,8 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::f()
   {
-    array<COLOR, 3> hold;
-
-    // Front column.  Order is important!
-    hold[0] = this->cube[6];
-    hold[1] = this->cube[11];
-    hold[2] = this->cube[7];
-
-    this->cube[6]  = this->cube[17];
-    this->cube[17] = this->cube[47];
-    this->cube[47] = this->cube[27];
-    this->cube[27] = hold[0];
-    this->cube[11] = this->cube[45];
-    this->cube[45] = this->cube[33];
-    this->cube[33] = this->cube[8];
-    this->cube[8]  = hold[1];
-    this->cube[7]  = this->cube[14];
-    this->cube[14] = this->cube[46];
-    this->cube[46] = this->cube[30];
-    this->cube[30] = hold[2];
-
-    // Front face.  Order is important!
-    hold[0] = this->cube[18];
-    hold[1] = this->cube[19];
-
-    this->cube[18] = this->cube[24];
-    this->cube[24] = this->cube[26];
-    this->cube[26] = this->cube[20];
-    this->cube[20] = hold[0];
-    this->cube[19] = this->cube[21];
-    this->cube[21] = this->cube[25];
-    this->cube[25] = this->cube[23];
-    this->cube[23] = hold[1];
-
+    this->roll90(FACE::FRONT);
+    this->rotateSides90(4, 10, 40, 30, 6, 12, 42, 24);
     return *this;
   }
 
@@ -725,39 +331,8 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::fPrime()
   {
-    array<COLOR, 3> hold;
-
-    // Front column.  Order is important!
-    hold[0] = this->cube[6];
-    hold[1] = this->cube[11];
-    hold[2] = this->cube[7];
-
-    this->cube[6]  = this->cube[27];
-    this->cube[27] = this->cube[47];
-    this->cube[47] = this->cube[17];
-    this->cube[17] = hold[0];
-    this->cube[11] = this->cube[8];
-    this->cube[8]  = this->cube[33];
-    this->cube[33] = this->cube[45];
-    this->cube[45] = hold[1];
-    this->cube[7]  = this->cube[30];
-    this->cube[30] = this->cube[46];
-    this->cube[46] = this->cube[14];
-    this->cube[14] = hold[2];
-
-    // Front face.  Order is important!
-    hold[0] = this->cube[18];
-    hold[1] = this->cube[19];
-
-    this->cube[18] = this->cube[20];
-    this->cube[20] = this->cube[26];
-    this->cube[26] = this->cube[24];
-    this->cube[24] = hold[0];
-    this->cube[19] = this->cube[23];
-    this->cube[23] = this->cube[25];
-    this->cube[25] = this->cube[21];
-    this->cube[21] = hold[1];
-
+    this->roll270(FACE::FRONT);
+    this->rotateSides90(30, 40, 10, 4, 24, 42, 12, 6);
     return *this;
   }
 
@@ -766,104 +341,58 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::f2()
   {
-    // Front column.
-    swap(this->cube[6], this->cube[47]);
-    swap(this->cube[7], this->cube[46]);
-    swap(this->cube[8], this->cube[45]);
-    swap(this->cube[27], this->cube[17]);
-    swap(this->cube[30], this->cube[14]);
-    swap(this->cube[33], this->cube[11]);
-
-    // Front face.
-    swap(this->cube[18], this->cube[26]);
-    swap(this->cube[19], this->cube[25]);
-    swap(this->cube[20], this->cube[24]);
-    swap(this->cube[21], this->cube[23]);
-
+    this->roll180(FACE::FRONT);
+    this->rotateSides180(4, 40, 10, 30, 6, 42, 12, 24);
     return *this;
   }
 
   /**
-   * Move the back face clockwise as if looking at the back.  From
-   * the front this is counter clockwise.
+   * Move the right face clockwise.
+   */
+  RubiksCubeModel& RubiksCubeModel::r()
+  {
+    this->roll90(FACE::RIGHT);
+    this->rotateSides90(2, 18, 42, 38, 4, 20, 44, 32);
+    return *this;
+  }
+
+  /**
+   * Move the right face counter clockwise.
+   */
+  RubiksCubeModel& RubiksCubeModel::rPrime()
+  {
+    this->roll270(FACE::RIGHT);
+    this->rotateSides90(38, 42, 18, 2, 32, 44, 20, 4);
+    return *this;
+  }
+
+  /**
+   * Move the right face twice.
+   */
+  RubiksCubeModel& RubiksCubeModel::r2()
+  {
+    this->roll180(FACE::RIGHT);
+    this->rotateSides180(2, 42, 18, 38, 4, 44, 20, 32);
+    return *this;
+  }
+
+  /**
+   * Move the back face clockwise.
    */
   RubiksCubeModel& RubiksCubeModel::b()
   {
-    array<COLOR, 3> hold;
-
-    // Back column.  Order is important!
-    hold[0] = this->cube[0];
-    hold[1] = this->cube[9];
-    hold[2] = this->cube[1];
-
-    this->cube[0] = this->cube[29];
-    this->cube[29] = this->cube[53];
-    this->cube[53] = this->cube[15];
-    this->cube[15] = hold[0];
-    this->cube[9] = this->cube[2];
-    this->cube[2] = this->cube[35];
-    this->cube[35] = this->cube[51];
-    this->cube[51] = hold[1];
-    this->cube[1] = this->cube[32];
-    this->cube[32] = this->cube[52];
-    this->cube[52] = this->cube[12];
-    this->cube[12] = hold[2];
-
-    // Back face.  Order is important!
-    hold[0] = this->cube[36];
-    hold[1] = this->cube[37];
-
-    this->cube[36] = this->cube[42];
-    this->cube[42] = this->cube[44];
-    this->cube[44] = this->cube[38];
-    this->cube[38] = hold[0];
-    this->cube[37] = this->cube[39];
-    this->cube[39] = this->cube[43];
-    this->cube[43] = this->cube[41];
-    this->cube[41] = hold[1];
-
+    this->roll90(FACE::BACK);
+    this->rotateSides90(0, 26, 44, 14, 2, 28, 46, 8);
     return *this;
   }
 
   /**
-   * Move the back face counter clockwise as if looking at the back.  From
-   * the front this is clockwise.
+   * Move the back face counter clockwise.
    */
   RubiksCubeModel& RubiksCubeModel::bPrime()
   {
-    array<COLOR, 3> hold;
-
-    // Back column.  Order is important!
-    hold[0] = this->cube[0];
-    hold[1] = this->cube[9];
-    hold[2] = this->cube[1];
-
-    this->cube[0]  = this->cube[15];
-    this->cube[15] = this->cube[53];
-    this->cube[53] = this->cube[29];
-    this->cube[29] = hold[0];
-    this->cube[9]  = this->cube[51];
-    this->cube[51] = this->cube[35];
-    this->cube[35] = this->cube[2];
-    this->cube[2]  = hold[1];
-    this->cube[1]  = this->cube[12];
-    this->cube[12] = this->cube[52];
-    this->cube[52] = this->cube[32];
-    this->cube[32] = hold[2];
-
-    // Back face.  Order is important!
-    hold[0] = this->cube[36];
-    hold[1] = this->cube[37];
-
-    this->cube[36] = this->cube[38];
-    this->cube[38] = this->cube[44];
-    this->cube[44] = this->cube[42];
-    this->cube[42] = hold[0];
-    this->cube[37] = this->cube[41];
-    this->cube[41] = this->cube[43];
-    this->cube[43] = this->cube[39];
-    this->cube[39] = hold[1];
-
+    this->roll270(FACE::BACK);
+    this->rotateSides90(14, 44, 26, 0, 8, 46, 28, 2);
     return *this;
   }
 
@@ -872,183 +401,120 @@ namespace busybin
    */
   RubiksCubeModel& RubiksCubeModel::b2()
   {
-    // Back column.
-    swap(this->cube[0],  this->cube[53]);
-    swap(this->cube[1],  this->cube[52]);
-    swap(this->cube[2],  this->cube[51]);
-    swap(this->cube[9],  this->cube[35]);
-    swap(this->cube[12], this->cube[32]);
-    swap(this->cube[15], this->cube[29]);
-
-    // Back face.
-    swap(this->cube[36], this->cube[44]);
-    swap(this->cube[37], this->cube[43]);
-    swap(this->cube[38], this->cube[42]);
-    swap(this->cube[39], this->cube[41]);
-
+    this->roll180(FACE::BACK);
+    this->rotateSides180(0, 44, 26, 14, 2, 46, 28, 8);
     return *this;
   }
 
   /**
-   * Move the M slice (between L and R, same way as L).
+   * Move the down face clockwise.
+   */
+  RubiksCubeModel& RubiksCubeModel::d()
+  {
+    this->roll90(FACE::DOWN);
+    this->rotateSides90(12, 36, 28, 20, 14, 38, 30, 22);
+    return *this;
+  }
+
+  /**
+   * Move the down face counter clockwise.
+   */
+  RubiksCubeModel& RubiksCubeModel::dPrime()
+  {
+    this->roll270(FACE::DOWN);
+    this->rotateSides90(20, 28, 36, 12, 22, 30, 38, 14);
+    return *this;
+  }
+
+  /**
+   * Move the down face twice.
+   */
+  RubiksCubeModel& RubiksCubeModel::d2()
+  {
+    this->roll180(FACE::DOWN);
+    this->rotateSides180(12, 28, 36, 20, 14, 30, 38, 22);
+    return *this;
+  }
+
+  /**
+   * Rotate the M slice clockwise (between R and L, same way as L).
    */
   RubiksCubeModel& RubiksCubeModel::m()
   {
-    array<COLOR, 54> copy = this->cube;
-
-    this->cube[1]  = copy[43];
-    this->cube[4]  = copy[40];
-    this->cube[7]  = copy[37];
-    this->cube[19] = copy[1];
-    this->cube[22] = copy[4];
-    this->cube[25] = copy[7];
-    this->cube[46] = copy[19];
-    this->cube[49] = copy[22];
-    this->cube[52] = copy[25];
-    this->cube[43] = copy[46];
-    this->cube[40] = copy[49];
-    this->cube[37] = copy[52];
-
+    this->rotateSlice90(1, 37, 41, 17, 5, 33, 45, 21, 0, 4, 5, 2);
     return *this;
   }
 
   /**
-   * Move the M slice prime (between L and R, same way as L).
+   * Rotate the M slice counter clockwise.
    */
   RubiksCubeModel& RubiksCubeModel::mPrime()
   {
-    array<COLOR, 54> copy = this->cube;
-
-    this->cube[43] = copy[1];
-    this->cube[40] = copy[4];
-    this->cube[37] = copy[7];
-    this->cube[1]  = copy[19];
-    this->cube[4]  = copy[22];
-    this->cube[7]  = copy[25];
-    this->cube[19] = copy[46];
-    this->cube[22] = copy[49];
-    this->cube[25] = copy[52];
-    this->cube[46] = copy[43];
-    this->cube[49] = copy[40];
-    this->cube[52] = copy[37];
-
+    this->rotateSlice90(17, 41, 37, 1, 21, 45, 33, 5, 2, 5, 4, 0);
     return *this;
   }
 
   /**
-   * Move m slice twice.
+   * Rotate the M slice twice.
    */
   RubiksCubeModel& RubiksCubeModel::m2()
   {
-    return this->m().m();
+    this->rotateSlice180(1, 41, 37, 17, 5, 45, 33, 21, 0, 5, 4, 2);
+    return *this;
   }
 
   /**
-   * Move the E slice (between U and D, same way as D).
+   * Rotate the E slice clockwise (between U and D, same way as D).
    */
   RubiksCubeModel& RubiksCubeModel::e()
   {
-    array<COLOR, 54> copy = this->cube;
-
-    this->cube[12] = copy[39];
-    this->cube[13] = copy[40];
-    this->cube[14] = copy[41];
-    this->cube[21] = copy[12];
-    this->cube[22] = copy[13];
-    this->cube[23] = copy[14];
-    this->cube[30] = copy[21];
-    this->cube[31] = copy[22];
-    this->cube[32] = copy[23];
-    this->cube[39] = copy[30];
-    this->cube[40] = copy[31];
-    this->cube[41] = copy[32];
-
+    this->rotateSlice90(15, 39, 31, 23, 11, 35, 27, 19, 1, 4, 3, 2);
     return *this;
   }
 
   /**
-   * Move the E slice prime (between U and D, same way as D).
+   * Rotate the E slice counter clockwise.
    */
   RubiksCubeModel& RubiksCubeModel::ePrime()
   {
-    array<COLOR, 54> copy = this->cube;
-
-    this->cube[39] = copy[12];
-    this->cube[40] = copy[13];
-    this->cube[41] = copy[14];
-    this->cube[12] = copy[21];
-    this->cube[13] = copy[22];
-    this->cube[14] = copy[23];
-    this->cube[21] = copy[30];
-    this->cube[22] = copy[31];
-    this->cube[23] = copy[32];
-    this->cube[30] = copy[39];
-    this->cube[31] = copy[40];
-    this->cube[32] = copy[41];
-
+    this->rotateSlice90(23, 31, 39, 15, 19, 27, 35, 11, 2, 3, 4, 1);
     return *this;
   }
 
   /**
-   * Move the E slice twice (between U and D, same way as D).
+   * Rotate the E slice twice.
    */
   RubiksCubeModel& RubiksCubeModel::e2()
   {
-    return this->e().e();
+    this->rotateSlice180(15, 31, 39, 23, 11, 27, 35, 19, 1, 3, 4, 2);
+    return *this;
   }
 
   /**
-   * Move the S slice (between F and B, same way as F).
+   * Rotate the S slice clockwise (between B and F, same way as F).
    */
   RubiksCubeModel& RubiksCubeModel::s()
   {
-    array<COLOR, 54> copy = this->cube;
-
-    this->cube[3]  = copy[16];
-    this->cube[4]  = copy[13];
-    this->cube[5]  = copy[10];
-    this->cube[28] = copy[3];
-    this->cube[31] = copy[4];
-    this->cube[34] = copy[5];
-    this->cube[50] = copy[28];
-    this->cube[49] = copy[31];
-    this->cube[48] = copy[34];
-    this->cube[16] = copy[50];
-    this->cube[13] = copy[49];
-    this->cube[10] = copy[48];
-
+    this->rotateSlice90(3, 9, 47, 29, 7, 13, 43, 25, 0, 1, 5, 3);
     return *this;
   }
 
   /**
-   * Move the S slice prime (between F and B, same way as F).
+   * Rotate the S slice counter clockwise.
    */
   RubiksCubeModel& RubiksCubeModel::sPrime()
   {
-    array<COLOR, 54> copy = this->cube;
-
-    this->cube[16] = copy[3];
-    this->cube[13] = copy[4];
-    this->cube[10] = copy[5];
-    this->cube[3]  = copy[28];
-    this->cube[4]  = copy[31];
-    this->cube[5]  = copy[34];
-    this->cube[28] = copy[50];
-    this->cube[31] = copy[49];
-    this->cube[34] = copy[48];
-    this->cube[50] = copy[16];
-    this->cube[49] = copy[13];
-    this->cube[48] = copy[10];
-
+    this->rotateSlice90(29, 47, 9, 3, 25, 43, 13, 7, 3, 5, 1, 0);
     return *this;
   }
 
   /**
-   * Move the S slice twice (between F and B, same way as F).
+   * Rotate the S slice twice.
    */
   RubiksCubeModel& RubiksCubeModel::s2()
   {
-    return this->s().s();
+    this->rotateSlice180(3, 47, 9, 29, 7, 43, 13, 25, 0, 5, 1, 3);
+    return *this;
   }
 
   /**
@@ -1061,7 +527,7 @@ namespace busybin
   }
 
   /**
-   * Rotate the whole cube about the x axis (e.g. down) counter-clockwise 
+   * Rotate the whole cube about the x axis (e.g. down) counter clockwise 
    * as if looking at the R face.
    */
   RubiksCubeModel& RubiksCubeModel::xPrime()
@@ -1087,7 +553,7 @@ namespace busybin
   }
 
   /**
-   * Rotate the whole cube about the y axis (e.g. right) counter-clockwise
+   * Rotate the whole cube about the y axis (e.g. right) counter clockwise
    * as if looking at the U face.
    */
   RubiksCubeModel& RubiksCubeModel::yPrime()
@@ -1113,7 +579,7 @@ namespace busybin
   }
 
   /**
-   * Rotate the whole cube about the z axis (e.g. sideways) counter-clockwise 
+   * Rotate the whole cube about the z axis (e.g. sideways) counter clockwise 
    * as if looking at the F face.
    */
   RubiksCubeModel& RubiksCubeModel::zPrime()

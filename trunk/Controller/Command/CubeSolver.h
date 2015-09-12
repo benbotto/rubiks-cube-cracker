@@ -9,24 +9,20 @@
 #include "../../Model/WorldObject/RubiksCube.h"
 #include "../../Model/RubiksCubeModel.h"
 #include "../../Model/MoveStore/ModelTwistStore.h"
+#include "../../Model/MoveStore/ModelG1TwistStore.h"
+#include "../../Model/MoveStore/ModelG2TwistStore.h"
+#include "../../Model/MoveStore/ModelG3TwistStore.h"
 #include "../../Model/MoveStore/ModelRotationStore.h"
 #include "../../Model/MoveStore/CubeTwistStore.h"
 #include "../../Model/MoveStore/CubeRotationStore.h"
 #include "../../Model/Goal/Goal.h"
-#include "../../Model/Goal/Goal2x2x2.h"
-#include "../../Model/Goal/Orient2x2x2.h"
-#include "../../Model/Goal/Goal2x2x2_1x1x2.h"
-#include "../../Model/Goal/Orient2x2x2_1x1x2.h"
-#include "../../Model/Goal/Goal2x2x3.h"
-#include "../../Model/Goal/Orient2x2x3.h"
-#include "../../Model/Goal/Goal2x2x3_1x1x2.h"
-#include "../../Model/Goal/Orient2x2x3_1x1x2.h"
-#include "../../Model/Goal/Goal2x2x3_1x2x2.h"
-#include "../../Model/Goal/Orient2x2x3_1x2x2.h"
-#include "../../Model/Goal/Goal2x2x3_1x2x2_1x1x2.h"
-#include "../../Model/Goal/Goal2x3x3.h"
-#include "../../Model/Goal/Goal2x3x3_OE.h"
-#include "../../Model/Goal/Goal3x3x3.h"
+#include "../../Model/Goal/OrientG0.h"
+#include "../../Model/Goal/GoalG0_G1.h"
+#include "../../Model/Goal/GoalG1_G2.h"
+#include "../../Model/Goal/GoalG2_G3_Corners.h"
+#include "../../Model/Goal/GoalG2_G3_Edges.h"
+#include "../../Model/Goal/GoalG3_Solved.h"
+#include "../../Model/Goal/GoalG3_Permute_Corners.h"
 #include "../../OpenGLSeed/Controller/Command/Command.h"
 #include "../../OpenGLSeed/Model/World.h"
 #include "../../OpenGLSeed/View/WorldWindow.h"
@@ -52,6 +48,12 @@ using std::queue;
 using std::unique_ptr;
 #include <utility>
 using std::pair;
+#include <string>
+using std::string;
+#include <sstream>
+using std::istringstream;
+#include <iterator>
+using std::istream_iterator;
 
 namespace busybin
 {
@@ -66,26 +68,30 @@ namespace busybin
       MoveStore*       pMoveStore;
     };
 
-    ThreadPool        threadPool;
-    RubiksCube*       pCube;
-    RubiksCubeModel   cubeModel;
-    CubeTwistStore    cubeTwistStore;
-    CubeRotationStore cubeRotStore;
-    CubeMover*        pMover;
-    atomic_bool       solving;
-    atomic_bool       movesInQueue;
-    queue<string>     moveQueue;
-    mutex             moveMutex;
-    Timer             moveTimer;
+    ThreadPool             threadPool;
+    RubiksCube*            pCube;
+    RubiksCubeModel        cubeModel;
+    CubeTwistStore         cubeTwistStore;
+    CubeRotationStore      cubeRotStore;
+    CubeMover*             pMover;
+    atomic_bool            solving;
+    atomic_bool            movesInQueue;
+    queue<string>          moveQueue;
+    mutex                  moveMutex;
+    Timer                  moveTimer;
+    GoalG3_Permute_Corners g3Perms;
+    CubeSearcher           searcher;
 
     void solveCube();
     void processGoalMoves(const Goal& goal, MoveStore& moveStore,
       unsigned goalNum, vector<string>& allMoves, vector<string>& goalMoves);
+    void replace(const string& needle, string& haystack, const string& with) const;
 
   public:
     CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover);
     void onKeypress(int key, int scancode, int action, int mods);
     void onPulse(double elapsed);
+    vector<string> simplifyMoves(const vector<string>& moves) const;
   };
 }
 

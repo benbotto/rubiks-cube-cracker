@@ -3,6 +3,7 @@
 
 #include "Command/CubeMover.h"
 #include "Command/CubeSolver.h"
+#include "Command/CubeDumper.h"
 #include "../OpenGLSeed/View/WorldWindow.h"
 #include "../OpenGLSeed/Controller/Command/ViewManager.h"
 #include "../OpenGLSeed/Controller/Command/Renderer.h"

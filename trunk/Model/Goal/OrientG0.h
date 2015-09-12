@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_ORIENT2x2x2_H_
-#define _BUSYBIN_ORIENT2x2x2_H_
+#ifndef _BUSYBIN_ORIENTG0_H_
+#define _BUSYBIN_ORIENTG0_H_
 
 #include "Goal.h"
 #include "../RubiksCubeModel.h"
@@ -7,9 +7,9 @@
 namespace busybin
 {
   /**
-   * Orient the 2x2x2 cube at the front, bottom, left.
+   * Orient the scambled cube with red on the top and white on the front.
    */
-  class Orient2x2x2 : public Goal
+  class OrientG0 : public Goal
   {
   public:
     bool isSatisfied(RubiksCubeModel& cube);

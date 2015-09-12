@@ -28,6 +28,25 @@ namespace busybin
   }
 
   /**
+   * Overloded ctor which allows for passing in a custom
+   * set of moves.
+   * @param moves A vector of moves.
+   */
+  TwistStore::TwistStore(const vector<string>& moves) :
+    moves(moves),
+    inverseMoves
+    ({
+      {"L", "L'"}, {"L'", "L"}, {"L2", "L2"},
+      {"R", "R'"}, {"R'", "R"}, {"R2", "R2"},
+      {"U", "U'"}, {"U'", "U"}, {"U2", "U2"},
+      {"D", "D'"}, {"D'", "D"}, {"D2", "D2"},
+      {"F", "F'"}, {"F'", "F"}, {"F2", "F2"},
+      {"B", "B'"}, {"B'", "B"}, {"B2", "B2"}
+    })
+  {
+  }
+
+  /**
    * Return the list of available moves.
    */
   const vector<string>& TwistStore::getMoves() const
@@ -41,14 +60,6 @@ namespace busybin
   const MoveStore::invMove_t& TwistStore::getInverseMoves() const
   {
     return this->inverseMoves;
-  }
-
-  /**
-   * Return the number of available moves.
-   */
-  unsigned TwistStore::getNumMoves() const
-  {
-    return 18;
   }
 }
 
