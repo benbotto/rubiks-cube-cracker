@@ -8,7 +8,11 @@ namespace busybin
    */
   void RubiksCubeView::render(const RubiksCubeModel& cube) const
   {
-    cout << '\n';
+    typedef RubiksCubeModel::FACE F;
+
+    char colors[] = {'W', 'G', 'R', 'B', 'O', 'Y'};
+
+    cout << setfill(' ') << '\n';
 
     // Up face.
     for (unsigned row = 0; row < 3; ++ row)
@@ -16,7 +20,7 @@ namespace busybin
       cout << setw(8) << right;
 
       for (unsigned col = 0; col < 3; ++ col)
-        cout << (char)cube.get(RubiksCubeModel::FACE::UP, row, col) << ' ';
+        cout << colors[(unsigned)cube.get(F::UP, row, col)] << ' ';
       cout << '\n';
     }
     cout << endl;
@@ -26,19 +30,19 @@ namespace busybin
     for (unsigned row = 0; row < 3; ++ row)
     {
       for (unsigned col = 0; col < 3; ++ col)
-        cout << (char)cube.get(RubiksCubeModel::FACE::LEFT,  row, col) << ' ';
+        cout << colors[(unsigned)cube.get(F::LEFT,  row, col)] << ' ';
       cout << ' ';
 
       for (unsigned col = 0; col < 3; ++ col)
-        cout << (char)cube.get(RubiksCubeModel::FACE::FRONT, row, col) << ' ';
+        cout << colors[(unsigned)cube.get(F::FRONT, row, col)] << ' ';
       cout << ' ';
 
       for (unsigned col = 0; col < 3; ++ col)
-        cout << (char)cube.get(RubiksCubeModel::FACE::RIGHT, row, col) << ' ';
+        cout << colors[(unsigned)cube.get(F::RIGHT, row, col)] << ' ';
       cout << ' ';
 
       for (unsigned col = 0; col < 3; ++ col)
-        cout << (char)cube.get(RubiksCubeModel::FACE::BACK,  row, col) << ' ';
+        cout << colors[(unsigned)cube.get(F::BACK,  row, col)] << ' ';
       cout << '\n';
     }
     cout << endl;
@@ -49,7 +53,7 @@ namespace busybin
       cout << setw(8) << right;
 
       for (unsigned col = 0; col < 3; ++ col)
-        cout << (char)cube.get(RubiksCubeModel::FACE::DOWN, row, col) << ' ';
+        cout << colors[(unsigned)cube.get(F::DOWN, row, col)] << ' ';
       cout << '\n';
     }
 

@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_GOAL2x2x3_1x1x2_H_
-#define _BUSYBIN_GOAL2x2x3_1x1x2_H_
+#ifndef _BUSYBIN_GOALG1_G2_H_
+#define _BUSYBIN_GOALG1_G2_H_
 
 #include "Goal.h"
 #include "../RubiksCubeModel.h"
@@ -7,9 +7,9 @@
 namespace busybin
 {
   /**
-   * Solve a 2x2x3 cube with an adjacent 1x1x2.
+   * Orient all corners, and place FU, FD, BU, BD in the correct slice.
    */
-  class Goal2x2x3_1x1x2 : public Goal
+  class GoalG1_G2 : public Goal
   {
   public:
     bool isSatisfied(RubiksCubeModel& cube);

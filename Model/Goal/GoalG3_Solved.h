@@ -1,15 +1,16 @@
-#ifndef _BUSYBIN_ORIENT2x2x3_H_
-#define _BUSYBIN_ORIENT2x2x3_H_
+#ifndef _BUSYBIN_GOALG3_SOLVED_H_
+#define _BUSYBIN_GOALG3_SOLVED_H_
 
 #include "Goal.h"
 #include "../RubiksCubeModel.h"
+#include <cstdint>
 
 namespace busybin
 {
   /**
-   * Orient a 2x2x3 cube in the back, bottom.
+   * Solve the cube.
    */
-  class Orient2x2x3 : public Goal
+  class GoalG3_Solved : public Goal
   {
   public:
     bool isSatisfied(RubiksCubeModel& cube);

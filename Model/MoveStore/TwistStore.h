@@ -19,10 +19,10 @@ namespace busybin
 
   public:
     TwistStore();
+    TwistStore(const vector<string>& moves);
 
     const vector<string>& getMoves() const;
     const MoveStore::invMove_t& getInverseMoves() const;
-    unsigned getNumMoves() const;
 
     virtual const moveFuncMap_t& getMoveMap() const = 0;
   };

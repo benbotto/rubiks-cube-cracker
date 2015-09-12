@@ -15,14 +15,34 @@ namespace busybin
     cubeTwistStore(*this->pCube), cubeRotStore(*this->pCube),
     solving(false), movesInQueue(false), moveTimer(false)
   {
-    // Store the mover of enabling/disabling movement.
+    // This twist store contains 180-degree twists only (L2, R2, etc.).
+    ModelG3TwistStore mdlG3TwistStore(this->cubeModel);
+
+    // Store the mover for enabling/disabling movement.  Movement of the cube
+    // is disabled while the cube is being solved, and while the initial corner
+    // permutations are being generated.
     this->pMover = pMover;
+    this->pMover->disable();
+    this->solving = true;
 
     // Listen for keypress events.
     pWorldWnd->onKeypress(bind(&CubeSolver::onKeypress, this, _1, _2, _3, _4));
 
     // Listen for pulse events.
     pWorldWnd->onPulse(bind(&CubeSolver::onPulse, this, _1));
+
+    // The cube solver keeps red on the top and white up front.  X Y2 puts
+    // the cube in that state.
+    this->pCube->x();
+    this->pCube->y2();
+    this->cubeModel = this->pCube->getRawModel();
+
+    // Generate all corner permutations that can be reached from the solved state
+    // using only double twists.  These are stored in this->g3Perms, and used
+    // by Group 2 goals.
+    this->searcher.findGoal(this->g3Perms, this->cubeModel, mdlG3TwistStore);
+    this->solving = false;
+    this->pMover->enable();
   }
 
   /**
@@ -88,29 +108,23 @@ namespace busybin
   void CubeSolver::solveCube()
   {
     RubiksCubeView             cubeView;
-    CubeSearcher               searcher;
     vector<string>             allMoves;
     vector<string>             goalMoves;
+    vector<string>             simpMoves;
     ModelTwistStore            mdlTwistStore(this->cubeModel);
+    ModelG1TwistStore          mdlG1TwistStore(this->cubeModel);
+    ModelG2TwistStore          mdlG2TwistStore(this->cubeModel);
+    ModelG3TwistStore          mdlG3TwistStore(this->cubeModel);
     ModelRotationStore         mdlRotStore(this->cubeModel);
     vector<GoalAndMoveStore>   goals;
 
     // Create the goals.
-    goals.push_back({unique_ptr<Goal>(new Goal2x2x2()),             &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Orient2x2x2()),           &mdlRotStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x2x2_1x1x2()),       &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Orient2x2x2_1x1x2()),     &mdlRotStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x2x3()),             &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Orient2x2x3()),           &mdlRotStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x2x3_1x1x2()),       &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Orient2x2x3_1x1x2()),     &mdlRotStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x2x3_1x2x2()),       &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Orient2x2x3_1x2x2()),     &mdlRotStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x2x3_1x2x2_1x1x2()), &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x3x3()),             &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x3x3_OE(2)),         &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new Goal2x3x3_OE(4)),         &mdlTwistStore});
-    //goals.push_back({unique_ptr<Goal>(new Goal3x3x3()),             &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new OrientG0()),                       &mdlRotStore});
+    goals.push_back({unique_ptr<Goal>(new GoalG0_G1()),                      &mdlTwistStore});
+    goals.push_back({unique_ptr<Goal>(new GoalG1_G2()),                      &mdlG1TwistStore});
+    goals.push_back({unique_ptr<Goal>(new GoalG2_G3_Corners(this->g3Perms)), &mdlG2TwistStore});
+    goals.push_back({unique_ptr<Goal>(new GoalG2_G3_Edges(this->g3Perms)),   &mdlG2TwistStore});
+    goals.push_back({unique_ptr<Goal>(new GoalG3_Solved()),                  &mdlG3TwistStore});
 
     // Display the intial cube model.
     cout << "Initial cube state." << endl;
@@ -120,7 +134,7 @@ namespace busybin
     for (unsigned i = 0; i < goals.size(); ++i)
     {
       // Find the goal.
-      goalMoves = searcher.findGoal(*goals[i].pGoal, this->cubeModel, *goals[i].pMoveStore);
+      goalMoves = this->searcher.findGoal(*goals[i].pGoal, this->cubeModel, *goals[i].pMoveStore);
       this->processGoalMoves(*goals[i].pGoal, *goals[i].pMoveStore, i + 1, allMoves, goalMoves);
     }
 
@@ -128,6 +142,13 @@ namespace busybin
     cout << "\n\nSolved the cube in " << allMoves.size() << " moves.\n";
 
     for (string move : allMoves)
+      cout << move << ' ';
+    cout << endl;
+
+    // Simplify the moves if posible.
+    simpMoves = this->simplifyMoves(allMoves);
+    cout << "Simplified to " << simpMoves.size() << " moves.\n";
+    for (string move : simpMoves)
       cout << move << ' ';
     cout << endl;
 
@@ -176,6 +197,77 @@ namespace busybin
 
     // Clear the vector for the next goal.
     goalMoves.clear();
+  }
+
+  /**
+   * Reduce moves.  For example, L2 L2 can be removed.  L L L is the same as L'.
+   * etc.
+   * @param moves The set of moves required to solve the cube.
+   */
+  vector<string> CubeSolver::simplifyMoves(const vector<string>& moves) const
+  {
+    string        movesStr = "";
+    istringstream stream;
+
+    for (string move : moves)
+      movesStr += move + " ";
+
+    this->replace("U2 U2 ", movesStr, " ");
+    this->replace("L2 L2 ", movesStr, " ");
+    this->replace("F2 F2 ", movesStr, " ");
+    this->replace("R2 R2 ", movesStr, " ");
+    this->replace("B2 B2 ", movesStr, " ");
+    this->replace("D2 D2 ", movesStr, " ");
+
+    this->replace("U U' ", movesStr, " ");
+    this->replace("L L' ", movesStr, " ");
+    this->replace("F F' ", movesStr, " ");
+    this->replace("R R' ", movesStr, " ");
+    this->replace("B B' ", movesStr, " ");
+    this->replace("D D' ", movesStr, " ");
+
+    this->replace("U' U ", movesStr, " ");
+    this->replace("L' L ", movesStr, " ");
+    this->replace("F' F ", movesStr, " ");
+    this->replace("R' R ", movesStr, " ");
+    this->replace("B' B ", movesStr, " ");
+    this->replace("D' D ", movesStr, " ");
+
+    this->replace("U U U ", movesStr, "U' ");
+    this->replace("L L L ", movesStr, "L' ");
+    this->replace("F F F ", movesStr, "F' ");
+    this->replace("R R R ", movesStr, "R' ");
+    this->replace("B B B ", movesStr, "B' ");
+    this->replace("B B B ", movesStr, "B' ");
+
+    this->replace("U U ", movesStr, "U2 ");
+    this->replace("L L ", movesStr, "L2 ");
+    this->replace("F F ", movesStr, "F2 ");
+    this->replace("R R ", movesStr, "R2 ");
+    this->replace("B B ", movesStr, "B2 ");
+    this->replace("D D ", movesStr, "D2 ");
+
+    // Copy the moves back to a vector.
+    stream.str(movesStr);
+    return vector<string>(istream_iterator<string>(stream), istream_iterator<string>());
+  }
+
+  /**
+   * Helper for replacing in a string.
+   * @param needle What to replace,
+   * @param haystack Where to search for needle.
+   * @param with What to replace needle with.
+   */
+  void CubeSolver::replace(const string& needle, string& haystack, const string& with) const
+  {
+    string::size_type pos;
+
+    while ((pos = haystack.find(needle)) != string::npos)
+    {
+      cout << "Found " << needle << " in " << haystack << " at position " << pos
+           << ".  Replacing with " << with << '.' << endl;
+      haystack.replace(pos, needle.length(), with);
+    }
   }
 }
 
