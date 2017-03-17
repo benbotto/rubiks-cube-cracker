@@ -88,7 +88,7 @@ namespace busybin
     // same as L'.  L2 L' is the same as L.  Commutative.
     // In other words, if two moves  on the same side occur successively,
     // prune.
-    //if (move.at(0) == lastMove.at(0)) return true;
+    if (move.at(0) == lastMove.at(0)) return true;
 
     // Redundant moves.  For example, F B is the same as B F.
     if (move == "F"  && lastMove == "B")  return true;

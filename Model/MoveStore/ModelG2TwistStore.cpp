@@ -13,8 +13,10 @@ namespace busybin
     // Set up the move map.
     this->moveMap["L"]  = bind(&RubiksCubeModel::l,      &cube);
     this->moveMap["L'"] = bind(&RubiksCubeModel::lPrime, &cube);
+    this->moveMap["L2"] = bind(&RubiksCubeModel::l2,     &cube);
     this->moveMap["R"]  = bind(&RubiksCubeModel::r,      &cube);
     this->moveMap["R'"] = bind(&RubiksCubeModel::rPrime, &cube);
+    this->moveMap["R2"] = bind(&RubiksCubeModel::r2,     &cube);
     this->moveMap["U2"] = bind(&RubiksCubeModel::u2,     &cube);
     this->moveMap["D2"] = bind(&RubiksCubeModel::d2,     &cube);
     this->moveMap["F2"] = bind(&RubiksCubeModel::f2,     &cube);
