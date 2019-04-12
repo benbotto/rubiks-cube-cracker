@@ -11,6 +11,7 @@ set(SRC
   "./Controller/RubiksCubeController.cpp"
   "./Controller/GL/Program/RubiksCubeProgram.cpp"
   "./Controller/CubeSearcher.cpp"
+  "./Controller/IDDFSCubeSearcher.cpp"
   "./View/RubiksCubeView.cpp"
   "./Util/RubiksCubeException.cpp"
   "./Util/Random.cpp"
