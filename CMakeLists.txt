@@ -6,6 +6,7 @@ set(SRC
   "./rubiksCube.cpp"
   "./Controller/Command/CubeMover.cpp"
   "./Controller/Command/CubeSolver.cpp"
+  "./Controller/Command/ThistlethwaiteCubeSolver.cpp"
   "./Controller/Command/CubeDumper.cpp"
   "./Controller/RubiksCubeController.cpp"
   "./Controller/GL/Program/RubiksCubeProgram.cpp"
@@ -49,7 +50,7 @@ add_subdirectory(OpenGLSeed)
 target_link_libraries(rubiksCube OpenGLSeed)
 
 # TODO: Make cross platform.
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} " -Wall -pedantic -std=c++0x -Wno-strict-aliasing")
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} " -Wall -pedantic -std=c++0x -Wno-strict-aliasing -pthread")
 
 # The Find*.cmake files are here.
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/OpenGLSeed/cmake/modules/")
