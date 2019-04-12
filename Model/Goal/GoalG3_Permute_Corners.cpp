@@ -9,7 +9,13 @@ namespace busybin
   GoalG3_Permute_Corners::perm_t GoalG3_Permute_Corners::permToArr(const RubiksCubeModel& cube) const
   {
     // Note that two facets of a corner dictate the orientation of a corner.
-    // The third facet doesn't need to be stored, therefore.
+    // The third facet doesn't need to be stored, therefore.  For example,
+    // there are two corner cubies with red and blue facets: RBW, and RBY.
+    // With red up top and blue on the left, the RBW cubie occupies the top,
+    // left, front position.  There's no possible way to get the RBY cubie to
+    // occupy that same position such that red is on top and blue is on the
+    // left.  Indexing top, left, front, the RBY corner cubie can be in three
+    // permutations: RYB, YBR, BRY, but never RBY.
     perm_t perm =
     {{
       cube.get(FACE::UP,    0, 0),
