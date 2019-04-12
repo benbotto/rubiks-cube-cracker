@@ -4,7 +4,6 @@
 #include "../Model/RubiksCubeModel.h"
 #include "../Model/Goal/Goal.h"
 #include "../Model/MoveStore/MoveStore.h"
-#include "../Util/AutoTimer.h"
 #include <vector>
 using std::vector;
 #include <string>
@@ -13,16 +12,22 @@ using std::string;
 namespace busybin
 {
   /**
-   * Iterative deepening search for the cube.
+   * Base class for CubeSearchers.  A CubeSearcher is a class that searchers
+   * for a Goal using a MoveStore (a set of moves).
    */
   class CubeSearcher
   {
-    bool findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
-      unsigned depth, unsigned maxDepth, vector<string>& moves);
-    bool prune(const string& move, const MoveStore& moveStore, const vector<string>& moves) const;
-
   public:
-    vector<string> findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore);
+    // Find goal using moveStore and return the list of moves required to
+    // achieve goal.
+    virtual vector<string> findGoal(
+      Goal& goal,
+      RubiksCubeModel& cube,
+      MoveStore& moveStore) = 0;
+
+    // Return true if move should be pruned (e.g. not performed and pruned
+    // from the search tree).
+    virtual bool prune(const string& move, const vector<string>& moves) const;
   };
 }
 
