@@ -3,7 +3,7 @@
 
 #include "CubeSolver.h"
 #include "CubeMover.h"
-#include "../CubeSearcher.h"
+#include "../IDDFSCubeSearcher.h"
 #include "../../View/RubiksCubeView.h"
 #include "../../Model/RubiksCubeModel.h"
 #include "../../Model/MoveStore/ModelTwistStore.h"
@@ -49,7 +49,7 @@ namespace busybin
     };
 
     GoalG3_Permute_Corners g3Perms;
-    CubeSearcher           searcher;
+    IDDFSCubeSearcher      searcher;
 
   protected:
     void solveCube();
