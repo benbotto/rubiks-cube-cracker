@@ -7,46 +7,45 @@ namespace busybin
    * @param pWorld Pointer to the world (must remain in scope).
    * @param pWorldWnd The world window, used to get the current width/heigth.
    * @param pMover Pointer to the CubeMover command.
+   * @param solveKey The GLFW key that triggers the solver to start.
    */
-  CubeSolver::CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover) :
+  CubeSolver::CubeSolver(
+    World* pWorld,
+    WorldWindow* pWorldWnd,
+    CubeMover* pMover,
+    int solveKey) :
+
     Command(pWorld, pWorldWnd),
+
     threadPool(1),
+    solving(false),
+    movesInQueue(false),
+    moveTimer(false),
+    solveKey(solveKey),
     pCube(dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube"))),
-    cubeTwistStore(*this->pCube), cubeRotStore(*this->pCube),
-    solving(false), movesInQueue(false), moveTimer(false)
+    cubeTwistStore(*this->pCube),
+    cubeRotStore(*this->pCube)
   {
-    // This twist store contains 180-degree twists only (L2, R2, etc.).
-    ModelG3TwistStore mdlG3TwistStore(this->cubeModel);
-
     // Store the mover for enabling/disabling movement.  Movement of the cube
-    // is disabled while the cube is being solved, and while the initial corner
-    // permutations are being generated.
+    // is disabled while the cube is being solved.
     this->pMover = pMover;
-    this->pMover->disable();
-    this->solving = true;
+    this->setSolving(true);
 
-    // Listen for keypress events.
-    pWorldWnd->onKeypress(bind(&CubeSolver::onKeypress, this, _1, _2, _3, _4));
-
-    // Listen for pulse events.
-    pWorldWnd->onPulse(bind(&CubeSolver::onPulse, this, _1));
-
-    // The cube solver keeps red on the top and white up front.  X Y2 puts
-    // the cube in that state.
+    // The cube solver keeps red on the top and white up front.  X Y2 puts the
+    // graphical cube in that state.
     this->pCube->x();
     this->pCube->y2();
-    this->cubeModel = this->pCube->getRawModel();
+    this->setSolving(false);
 
-    // Generate all corner permutations that can be reached from the solved state
-    // using only double twists.  These are stored in this->g3Perms, and used
-    // by Group 2 goals.
-    this->searcher.findGoal(this->g3Perms, this->cubeModel, mdlG3TwistStore);
-    this->solving = false;
-    this->pMover->enable();
+    // Listen for keypress events and start the solve when solveKey is pressed.
+    pWorldWnd->onKeypress(bind(&CubeSolver::onKeypress, this, _1, _2, _3, _4));
+
+    // Listen for pulse events and apply solution moves.
+    pWorldWnd->onPulse(bind(&CubeSolver::onPulse, this, _1));
   }
 
   /**
-   * Fires when a key is pressed
+   * Fires when a key is pressed.
    * @param window The window (same as this->pWindow).
    * @param key The key code.
    * @param scancode The platform-dependent scan code of the key.
@@ -55,13 +54,9 @@ namespace busybin
    */
   void CubeSolver::onKeypress(int key, int scancode, int action, int mods)
   {
-    if (action == GLFW_PRESS && key == GLFW_KEY_ESCAPE && !this->solving)
+    if (action == GLFW_PRESS && key == this->solveKey && !this->solving)
     {
-      this->solving = true;
-      this->pMover->disable();
-
-      // Get a copy of the underlying RC model.
-      this->cubeModel = this->pCube->getRawModel();
+      this->setSolving(true);
 
       // Fire off a thread to solve the cube.
       this->threadPool.addJob(bind(&CubeSolver::solveCube, this));
@@ -76,7 +71,7 @@ namespace busybin
   {
     // If there is a move in the queue and the move timer isn't running
     // (1 second is taken between moves to allow for animation).
-    if (this->movesInQueue && 
+    if (this->movesInQueue &&
       (!this->moveTimer.isStarted() || this->moveTimer.getElapsedSeconds() >= 1))
     {
       lock_guard<mutex> threadLock(this->moveMutex);
@@ -88,7 +83,6 @@ namespace busybin
         this->cubeTwistStore.getMoveFunc(move)();
       else
         this->cubeRotStore.getMoveFunc(move)();
-
 
       // Flag whether or not there are more moves for the next run.
       this->movesInQueue = !this->moveQueue.empty();
@@ -103,61 +97,16 @@ namespace busybin
   }
 
   /**
-   * Solve the cube.  This is run in a separate thread.
+   * Put the cube in a "solving" state, which disables cube movement.
+   * @param solving Whether or not the cube is being solved.  When so, cube movement
+   *        is disabled.
    */
-  void CubeSolver::solveCube()
+  void CubeSolver::setSolving(bool solving)
   {
-    RubiksCubeView             cubeView;
-    vector<string>             allMoves;
-    vector<string>             goalMoves;
-    vector<string>             simpMoves;
-    ModelTwistStore            mdlTwistStore(this->cubeModel);
-    ModelG1TwistStore          mdlG1TwistStore(this->cubeModel);
-    ModelG2TwistStore          mdlG2TwistStore(this->cubeModel);
-    ModelG3TwistStore          mdlG3TwistStore(this->cubeModel);
-    ModelRotationStore         mdlRotStore(this->cubeModel);
-    vector<GoalAndMoveStore>   goals;
+    this->solving = solving;
 
-    // Create the goals.
-    goals.push_back({unique_ptr<Goal>(new OrientG0()),                       &mdlRotStore});
-    goals.push_back({unique_ptr<Goal>(new GoalG0_G1()),                      &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new GoalG1_G2()),                      &mdlG1TwistStore});
-    goals.push_back({unique_ptr<Goal>(new GoalG2_G3_Corners(this->g3Perms)), &mdlG2TwistStore});
-    goals.push_back({unique_ptr<Goal>(new GoalG2_G3_Edges(this->g3Perms)),   &mdlG2TwistStore});
-    goals.push_back({unique_ptr<Goal>(new GoalG3_Solved()),                  &mdlG3TwistStore});
-
-    // Display the intial cube model.
-    cout << "Initial cube state." << endl;
-    cubeView.render(this->cubeModel);
-    cout << "Need to achieve " << goals.size() << " goals." << endl;
-
-    for (unsigned i = 0; i < goals.size(); ++i)
-    {
-      // Find the goal.
-      goalMoves = this->searcher.findGoal(*goals[i].pGoal, this->cubeModel, *goals[i].pMoveStore);
-      this->processGoalMoves(*goals[i].pGoal, *goals[i].pMoveStore, i + 1, allMoves, goalMoves);
-    }
-
-    // Print the moves.
-    cout << "\n\nSolved the cube in " << allMoves.size() << " moves.\n";
-
-    for (string move : allMoves)
-      cout << move << ' ';
-    cout << endl;
-
-    // Simplify the moves if posible.
-    simpMoves = this->simplifyMoves(allMoves);
-    cout << "Simplified to " << simpMoves.size() << " moves.\n";
-    for (string move : simpMoves)
-      cout << move << ' ';
-    cout << endl;
-
-    // Display the cube model.
-    cout << "Resulting cube.\n";
-    cubeView.render(this->cubeModel);
-
-    // Done solving - re-enable movement.
-    this->solving = false;
+    if (this->solving)
+      this->pMover->disable();
   }
 
   /**
