@@ -25,7 +25,7 @@ namespace busybin
       cube.get(FACE::LEFT,  0, 2),
 
       cube.get(FACE::UP,    0, 2),
-      cube.get(FACE::RIGHT, 0, 0),
+      cube.get(FACE::RIGHT, 0, 2),
 
       cube.get(FACE::UP,    2, 2),
       cube.get(FACE::RIGHT, 0, 0),
