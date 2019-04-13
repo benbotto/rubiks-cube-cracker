@@ -38,7 +38,8 @@ set(SRC
   "./Model/Goal/GoalG3_Solved.cpp"
   "./Model/Goal/GoalG3_Permute_Corners.cpp"
   "./Model/WorldObject/Cubie.cpp"
-  "./Model/WorldObject/RubiksCube.cpp")
+  "./Model/WorldObject/RubiksCube.cpp"
+  "./Model/Permutation/CornerPermutation.cpp")
 
 # Build the RubiksCubee executable.
 add_executable(rubiksCube ${SRC})
