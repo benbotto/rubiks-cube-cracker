@@ -18,6 +18,8 @@ set(SRC
   "./Util/Timer.cpp"
   "./Util/AutoTimer.cpp"
   "./Util/ThreadPool.cpp"
+  "./Util/EdgePermutationIndexer.cpp"
+  "./Util/CornerPermutationIndexer.cpp"
   "./Model/MoveStore/MoveStore.cpp"
   "./Model/MoveStore/RotationStore.cpp"
   "./Model/MoveStore/TwistStore.cpp"
