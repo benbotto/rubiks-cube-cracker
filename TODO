@@ -1,4 +1,6 @@
+Delete CornerPermutation.
+Remove bitset from RubiksCubeView (unused).
+Remove CornerPermutationIndexer and EdgePermutationIndexer.
 Don't orient the cube in CubeSearcher because there are now multiple.  Orient
 the cube in the RubiksCube world object.
 Try to solve the cube outright, then bail at depth 10.
-
