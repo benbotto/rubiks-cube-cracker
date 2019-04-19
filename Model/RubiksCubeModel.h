@@ -64,7 +64,7 @@ namespace busybin
    */
   class RubiksCubeModel
   {
-    typedef char uchar;
+    typedef unsigned char uchar;
 
   public:
     enum class FACE  : uchar {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
