@@ -12,8 +12,6 @@ using std::left;
 using std::right;
 using std::hex;
 using std::dec;
-#include <bitset>
-using std::bitset;
 
 namespace busybin
 {
