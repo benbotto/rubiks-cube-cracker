@@ -16,6 +16,7 @@ namespace busybin
       Renderer                 renderer(&world,   &worldWnd);
       CubeMover                cubeMover(&world,  &worldWnd);
       ThistlethwaiteCubeSolver tCubeSolver(&world, &worldWnd, &cubeMover);
+      KorfCubeSolver           kCubeSolver(&world, &worldWnd, &cubeMover);
       CubeDumper               cubeDumper(&world, &worldWnd);
 
       // All wired up, run the main loop.
