@@ -32,6 +32,7 @@ namespace busybin
     pWorldWnd->onPulse(bind(&CubeSolver::onPulse, this, _1));
 
     // Launch an initialization thread.
+    this->setSolving(true);
     this->threadPool.addJob(bind(&CubeSolver::initialize, this));
   }
 
@@ -42,6 +43,7 @@ namespace busybin
    */
   void CubeSolver::initialize()
   {
+    this->setSolving(false);
   }
 
   /**
