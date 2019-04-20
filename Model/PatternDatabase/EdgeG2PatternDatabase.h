@@ -12,7 +12,7 @@ namespace busybin
    * the number of moves required to get the edges to the solved state.  The 6
    * edges are the back 2 in the middle layer, and the bottom 4.
    */
-  class EdgeG2PatternDatabase : EdgePatternDatabase
+  class EdgeG2PatternDatabase : public EdgePatternDatabase
   {
   public:
     uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const;
