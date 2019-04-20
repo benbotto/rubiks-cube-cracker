@@ -1,6 +1,4 @@
-Delete CornerPermutation.
 Remove bitset from RubiksCubeView (unused).
-Remove CornerPermutationIndexer and EdgePermutationIndexer.
 Make the underlying datastructure of NibbleArray a vector, otherwise there
 will be stack limitation failures imposed by the OS.
 Don't orient the cube in CubeSearcher because there are now multiple.  Orient
