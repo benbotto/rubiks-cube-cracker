@@ -183,5 +183,13 @@ namespace busybin
   {
     this->moveEnabled = true;
   }
+
+  /**
+   * Check if movement is enabled.
+   */
+  bool CubeMover::isEnabled() const
+  {
+    return this->moveEnabled;
+  }
 }
 

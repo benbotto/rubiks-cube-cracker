@@ -30,6 +30,7 @@ namespace busybin
     void onKeypress(int key, int scancode, int action, int mods);
     void disable();
     void enable();
+    bool isEnabled() const;
   };
 }
 
