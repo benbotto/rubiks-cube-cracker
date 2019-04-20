@@ -10,7 +10,7 @@ namespace busybin
    */
   ThistlethwaiteCubeSolver::ThistlethwaiteCubeSolver(World* pWorld,
     WorldWindow* pWorldWnd, CubeMover* pMover) :
-    CubeSolver(pWorld, pWorldWnd, pMover, GLFW_KEY_ESCAPE)
+    CubeSolver(pWorld, pWorldWnd, pMover, GLFW_KEY_F1)
   {
   }
 
