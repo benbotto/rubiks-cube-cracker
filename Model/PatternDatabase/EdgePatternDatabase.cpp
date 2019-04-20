@@ -3,6 +3,16 @@
 namespace busybin
 {
   /**
+   * Initialize the database storage.  There are 12P6 * 2^6 possible scrambles.
+   * (12 cubies occupying 6 positions in a group, and each cubie can be in 1 of
+   * 2 states). Each scramble is reachable in 10 moves or fewer, so each move
+   * can be stored in 4 bits.  That gives 12P6 * 2^6 / 2 / 1024 / 1024 (~20MB).
+   */
+  EdgePatternDatabase::EdgePatternDatabase() : PatternDatabase(42577920)
+  {
+  }
+
+  /**
    * Given an permutation of edge indexes and an array of edge orientations,
    * calculate a unique index into the pattern database.
    * @param edgePerm An array of 6 edges indexes, numbered 0-11 (12 edges could
