@@ -3,7 +3,7 @@
 
 #include "CubeSolver.h"
 #include "CubeMover.h"
-#include "../IDDFSCubeSearcher.h"
+#include "../Searcher/IDDFSCubeSearcher.h"
 #include "../../View/RubiksCubeView.h"
 #include "../../Model/RubiksCubeModel.h"
 #include "../../Model/MoveStore/ModelTwistStore.h"

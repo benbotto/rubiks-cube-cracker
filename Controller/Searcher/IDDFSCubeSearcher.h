@@ -2,10 +2,10 @@
 #define _BUSYBIN_IDDFS_CUBE_SEARCHER_H_
 
 #include "CubeSearcher.h"
-#include "../Model/RubiksCubeModel.h"
-#include "../Model/Goal/Goal.h"
-#include "../Model/MoveStore/MoveStore.h"
-#include "../Util/AutoTimer.h"
+#include "../../Model/RubiksCubeModel.h"
+#include "../../Model/Goal/Goal.h"
+#include "../../Model/MoveStore/MoveStore.h"
+#include "../../Util/AutoTimer.h"
 #include <vector>
 using std::vector;
 #include <string>

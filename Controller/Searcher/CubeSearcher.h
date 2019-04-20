@@ -1,9 +1,9 @@
 #ifndef _BUSYBIN_CUBE_SEARCHER_H_
 #define _BUSYBIN_CUBE_SEARCHER_H_
 
-#include "../Model/RubiksCubeModel.h"
-#include "../Model/Goal/Goal.h"
-#include "../Model/MoveStore/MoveStore.h"
+#include "../../Model/RubiksCubeModel.h"
+#include "../../Model/Goal/Goal.h"
+#include "../../Model/MoveStore/MoveStore.h"
 #include <vector>
 using std::vector;
 #include <string>
