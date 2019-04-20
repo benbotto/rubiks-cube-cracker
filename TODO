@@ -1,3 +1,5 @@
 Don't orient the cube in CubeSearcher because there are now multiple.  Orient
 the cube in the RubiksCube world object.
+There's a pattern database (GoalG3_Permate_Corners) that could be refactored to
+use the new CornerPatternDatabase class.
 Try to solve the cube outright, then bail at depth 10.
