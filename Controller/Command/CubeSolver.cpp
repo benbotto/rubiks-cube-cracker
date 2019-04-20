@@ -5,18 +5,13 @@ namespace busybin
   /**
    * Init.
    * @param pWorld Pointer to the world (must remain in scope).
-   * @param pWorldWnd The world window, used to get the current width/heigth.
+   * @param pWorldWnd The world window, used to bind key and pulse events.
    * @param pMover Pointer to the CubeMover command.
    * @param solveKey The GLFW key that triggers the solver to start.
    */
-  CubeSolver::CubeSolver(
-    World* pWorld,
-    WorldWindow* pWorldWnd,
-    CubeMover* pMover,
-    int solveKey) :
-
+  CubeSolver::CubeSolver(World* pWorld, WorldWindow* pWorldWnd,
+    CubeMover* pMover, int solveKey) :
     Command(pWorld, pWorldWnd),
-
     threadPool(1),
     solving(false),
     movesInQueue(false),

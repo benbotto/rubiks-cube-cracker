@@ -5,14 +5,11 @@ namespace busybin
   /**
    * Init.
    * @param pWorld Pointer to the world (must remain in scope).
-   * @param pWorldWnd The world window, used to get the current width/heigth.
+   * @param pWorldWnd The world window, used to bind key and pulse events.
    * @param pMover Pointer to the CubeMover command.
    */
-  ThistlethwaiteCubeSolver::ThistlethwaiteCubeSolver(
-    World* pWorld,
-    WorldWindow* pWorldWnd,
-    CubeMover* pMover) :
-
+  ThistlethwaiteCubeSolver::ThistlethwaiteCubeSolver(World* pWorld,
+    WorldWindow* pWorldWnd, CubeMover* pMover) :
     CubeSolver(pWorld, pWorldWnd, pMover, GLFW_KEY_ESCAPE)
   {
     // Get a copy of the underlying RC model.
