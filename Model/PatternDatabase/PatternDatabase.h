@@ -20,6 +20,8 @@ namespace busybin
 
     PatternDatabase();
 
+    size_t size;
+
   protected:
     typedef unsigned char uchar;
 
@@ -30,6 +32,7 @@ namespace busybin
     void setNumMoves(const uint32_t ind, const uchar numMoves);
     uchar getNumMoves(const RubiksCubeModel& cube) const;
     uchar getNumMoves(const uint32_t ind) const;
+    size_t getSize() const;
 
     /**
      * Given a permutation of cubies, return the Lehmer code.  This is used

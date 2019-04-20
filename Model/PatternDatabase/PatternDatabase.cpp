@@ -5,7 +5,7 @@ namespace busybin
   /**
    * Initialize the underlying array.
    */
-  PatternDatabase::PatternDatabase(const size_t size) : database(size, 0xFF)
+  PatternDatabase::PatternDatabase(const size_t size) : database(size, 0xFF), size(0)
   {
   }
 
@@ -20,7 +20,10 @@ namespace busybin
   void PatternDatabase::setNumMoves(const uint32_t ind, const uchar numMoves) 
   {
     if (this->getNumMoves(ind) == 0xF)
+    {
       this->database.set(ind, numMoves);
+      ++this->size;
+    }
   }
 
   /**
@@ -55,6 +58,14 @@ namespace busybin
   unsigned char PatternDatabase::getNumMoves(const RubiksCubeModel& cube) const
   {
     return this->getNumMoves(this->getDatabaseIndex(cube));
+  }
+
+  /**
+   * Get the size of the database.
+   */
+  size_t PatternDatabase::getSize() const
+  {
+    return this->size;
   }
 }
 
