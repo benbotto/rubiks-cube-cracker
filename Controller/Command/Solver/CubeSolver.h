@@ -68,6 +68,7 @@ namespace busybin
     CubeTwistStore    cubeTwistStore;
     CubeRotationStore cubeRotStore;
 
+    virtual void initialize();
     virtual void solveCube() = 0;
     void setSolving(bool solving);
     void processGoalMoves(const Goal& goal, MoveStore& moveStore,

@@ -30,6 +30,18 @@ namespace busybin
 
     // Listen for pulse events and apply solution moves.
     pWorldWnd->onPulse(bind(&CubeSolver::onPulse, this, _1));
+
+    // Launch an initialization thread.
+    this->threadPool.addJob(bind(&CubeSolver::initialize, this));
+  }
+
+  /**
+   * This can be overridden in sub classes and gives solvers the chance to
+   * initialize pattern databases and such (whatever's needed for the solver).
+   * It's launched in a thread.
+   */
+  void CubeSolver::initialize()
+  {
   }
 
   /**
