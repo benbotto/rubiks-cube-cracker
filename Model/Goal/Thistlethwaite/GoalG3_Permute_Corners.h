@@ -1,8 +1,8 @@
 #ifndef _BUSYBIN_GOALG3_PERMUTE_CORNERS_H_
 #define _BUSYBIN_GOALG3_PERMUTE_CORNERS_H_
 
-#include "Goal.h"
-#include "../RubiksCubeModel.h"
+#include "../Goal.h"
+#include "../../RubiksCubeModel.h"
 #include <string>
 using std::string;
 #include <set>

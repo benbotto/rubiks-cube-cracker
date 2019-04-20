@@ -1,8 +1,8 @@
 #ifndef _BUSYBIN_GOALG1_G2_H_
 #define _BUSYBIN_GOALG1_G2_H_
 
-#include "Goal.h"
-#include "../RubiksCubeModel.h"
+#include "../Goal.h"
+#include "../../RubiksCubeModel.h"
 
 namespace busybin
 {

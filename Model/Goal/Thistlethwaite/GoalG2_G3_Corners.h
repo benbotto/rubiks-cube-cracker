@@ -1,9 +1,9 @@
 #ifndef _BUSYBIN_GOALG2_G3_CORNERS_H_
 #define _BUSYBIN_GOALG2_G3_CORNERS_H_
 
-#include "Goal.h"
+#include "../Goal.h"
 #include "GoalG3_Permute_Corners.h"
-#include "../RubiksCubeModel.h"
+#include "../../RubiksCubeModel.h"
 
 namespace busybin
 {
