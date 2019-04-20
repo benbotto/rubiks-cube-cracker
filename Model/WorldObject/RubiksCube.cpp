@@ -67,6 +67,13 @@ namespace busybin
     this->slices["M"] = {{"UB", "U", "UF", "F", "DF", "D", "DB", "B"}};
     this->slices["E"] = {{"LB", "L", "LF", "F", "RF", "R", "RB", "B"}};
     this->slices["S"] = {{"LU", "U", "RU", "R", "RD", "D", "LD", "L"}};
+
+    // This model by default has white on the top and red in the front, but the solver
+    // has red on the top and white in the front.  (Why?  I guess because that's
+    // how the cube was sitting on my desk when I wrote each piece.)  These two
+    // moves make this model match the solver (red on top, white up front).
+    this->x();
+    this->y2();
   }
 
   /**

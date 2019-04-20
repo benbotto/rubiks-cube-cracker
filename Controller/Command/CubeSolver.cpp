@@ -29,13 +29,6 @@ namespace busybin
     // Store the mover for enabling/disabling movement.  Movement of the cube
     // is disabled while the cube is being solved.
     this->pMover = pMover;
-    this->setSolving(true);
-
-    // The cube solver keeps red on the top and white up front.  X Y2 puts the
-    // graphical cube in that state.
-    this->pCube->x();
-    this->pCube->y2();
-    this->setSolving(false);
 
     // Listen for keypress events and start the solve when solveKey is pressed.
     pWorldWnd->onKeypress(bind(&CubeSolver::onKeypress, this, _1, _2, _3, _4));
