@@ -1,7 +1,4 @@
 #include "EdgePatternDatabase.h"
-#include <iostream>
-using std::cout;
-using std::endl;
 
 namespace busybin
 {
@@ -20,11 +17,6 @@ namespace busybin
     perm_t lehmer;
     this->getLehmerCode(edgePerm, lehmer);
 
-    cout << "Edge lehmer code." << endl;
-    for (uint32_t i : lehmer)
-      cout << i << ' ';
-    cout << endl;
-
     // Now convert the Lehmer code to a base-10 number.  This differs from the
     // corner conversion, because there are 12 edges that could occupy the 6
     // places in this group.  E.g. there are 12 pick 6 (12P6) possible permutations,
@@ -39,8 +31,6 @@ namespace busybin
       index += lehmer[i] * factorials[i];
     index += lehmer[5];
 
-    cout << "Lehmer in base 10: " << index << endl;
-
     // Treat the orientations as a base-2 number, and convert it
     // to base-10.
     array<unsigned, 5> b2Places = {32, 16, 8, 4, 2};
@@ -49,8 +39,6 @@ namespace busybin
     for (unsigned i = 0; i < 5; ++i)
       orientationNum += edgeOrientations[i] * b2Places[i];
     orientationNum += edgeOrientations[5];
-
-    cout << "Edge orientation in base 10: " << orientationNum << endl;
 
     // Combine the permutation and orientation into a single index.
     // p * 2^6 + o;
