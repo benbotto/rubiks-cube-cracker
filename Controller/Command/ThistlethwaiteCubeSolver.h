@@ -42,12 +42,6 @@ namespace busybin
    */
   class ThistlethwaiteCubeSolver : public CubeSolver
   {
-    struct GoalAndMoveStore
-    {
-      unique_ptr<Goal> pGoal;
-      MoveStore*       pMoveStore;
-    };
-
     GoalG3_Permute_Corners g3Perms;
     IDDFSCubeSearcher      searcher;
 

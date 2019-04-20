@@ -58,6 +58,12 @@ namespace busybin
     void replace(const string& needle, string& haystack, const string& with) const;
 
   protected:
+    struct GoalAndMoveStore
+    {
+      unique_ptr<Goal> pGoal;
+      MoveStore*       pMoveStore;
+    };
+
     RubiksCube*       pCube;
     CubeTwistStore    cubeTwistStore;
     CubeRotationStore cubeRotStore;
