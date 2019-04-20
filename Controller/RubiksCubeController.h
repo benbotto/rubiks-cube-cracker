@@ -2,8 +2,8 @@
 #define _BUSYBIN_RUBIKS_CUBE_CONTROLLER_H_
 
 #include "Command/CubeMover.h"
-#include "Command/ThistlethwaiteCubeSolver.h"
-#include "Command/KorfCubeSolver.h"
+#include "Command/Solver/ThistlethwaiteCubeSolver.h"
+#include "Command/Solver/KorfCubeSolver.h"
 #include "Command/CubeDumper.h"
 #include "../OpenGLSeed/View/WorldWindow.h"
 #include "../OpenGLSeed/Controller/Command/ViewManager.h"

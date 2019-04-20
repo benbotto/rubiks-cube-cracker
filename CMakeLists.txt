@@ -5,10 +5,10 @@ project(RubiksCube)
 set(SRC
   "./rubiksCube.cpp"
   "./Controller/Command/CubeMover.cpp"
-  "./Controller/Command/CubeSolver.cpp"
-  "./Controller/Command/ThistlethwaiteCubeSolver.cpp"
-  "./Controller/Command/KorfCubeSolver.cpp"
   "./Controller/Command/CubeDumper.cpp"
+  "./Controller/Command/Solver/CubeSolver.cpp"
+  "./Controller/Command/Solver/ThistlethwaiteCubeSolver.cpp"
+  "./Controller/Command/Solver/KorfCubeSolver.cpp"
   "./Controller/RubiksCubeController.cpp"
   "./Controller/GL/Program/RubiksCubeProgram.cpp"
   "./Controller/Searcher/CubeSearcher.cpp"

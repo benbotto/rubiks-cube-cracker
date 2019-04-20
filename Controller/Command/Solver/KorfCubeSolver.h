@@ -2,12 +2,12 @@
 #define _BUSYBIN_KORF_CUBE_SOLVER_H_
 
 #include "CubeSolver.h"
-#include "CubeMover.h"
-#include "../../View/RubiksCubeView.h"
-#include "../../Model/RubiksCubeModel.h"
-#include "../../Model/Goal/Goal.h"
-#include "../../OpenGLSeed/Model/World.h"
-#include "../../OpenGLSeed/View/WorldWindow.h"
+#include "../CubeMover.h"
+#include "../../../View/RubiksCubeView.h"
+#include "../../../Model/RubiksCubeModel.h"
+#include "../../../Model/Goal/Goal.h"
+#include "../../../OpenGLSeed/Model/World.h"
+#include "../../../OpenGLSeed/View/WorldWindow.h"
 #include <iostream>
 using std::cout;
 using std::endl;
