@@ -2,6 +2,7 @@
 #define _BUSYBIN_Pattern_PATTERN_DATABASE_
 
 #include "../RubiksCubeModel.h"
+#include "../../Util/NibbleArray.h"
 #include <cstdint>
 #include <cstddef>
 using std::size_t;
@@ -15,10 +16,20 @@ namespace busybin
    */
   class PatternDatabase
   {
+    NibbleArray database;
+
+    PatternDatabase();
+
+  protected:
     typedef unsigned char uchar;
 
   public:
+    PatternDatabase(const size_t size);
     virtual uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const = 0;
+    void setNumMoves(const RubiksCubeModel& cube, const uchar numMoves);
+    void setNumMoves(const uint32_t ind, const uchar numMoves);
+    uchar getNumMoves(const RubiksCubeModel& cube) const;
+    uchar getNumMoves(const uint32_t ind) const;
 
     /**
      * Given a permutation of cubies, return the Lehmer code.  This is used
