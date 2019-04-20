@@ -3,10 +3,14 @@
 namespace busybin
 {
   /**
-   * Initialize the array of permutations, each of which points to its
-   * sequential index.  This is a costly operation (it takes ~11.3 MB).
+   * Initialize the vector of permutations indexes.  Each permutation, in base
+   * 12, will point to its sequential index.  This is a costly operation (it
+   * takes ~11.3 MB).
+   * 2961307 is the permutation (11 10 9 8 7 6) converted to base 12 + 1.
+   * I.e. The the sum from 6 to 11 of i*12^(i-6).
+   * 6*12^0 + 7*12^1 + 8*12^2 + ... + 11*12^5
    */
-  EdgePermutationIndexer::EdgePermutationIndexer() : indexes{{0xFFFFFFFF}}
+  EdgePermutationIndexer::EdgePermutationIndexer() : indexes(2961307, 0xFFFFFFFF)
   {
     perm_t perm = {0};
     uint32_t index = 0;

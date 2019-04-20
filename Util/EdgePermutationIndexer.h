@@ -3,6 +3,8 @@
 
 #include <array>
 using std::array;
+#include <vector>
+using std::vector;
 #include <cstdint>
 #include <cmath>
 using std::pow;
@@ -21,11 +23,10 @@ namespace busybin
     typedef unsigned char uchar;
     typedef array<uchar, 6> perm_t;
 
-    // 2961307 is the permutation (11 10 9 8 7 6) converted to base 12 + 1.
-    // I.e. The the sum from 6 to 11 of i*12^(i-6).
-    // 6*12^0 + 7*12^1 + 8*12^2 + ... + 11*12^5
-    // Thus, ~11.3MB of storage is used for this lookup table.
-    array<uint32_t, 2961307> indexes;
+    // A vector is used rather than an array because an array of this size
+    // exceeds the stack space on most systems, and a vector allocates memory
+    // dynamically.
+    vector<uint32_t> indexes;
 
     void genNextPerm(perm_t& perm, unsigned place, uint32_t& index);
 
