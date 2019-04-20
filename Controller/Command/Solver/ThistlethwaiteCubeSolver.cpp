@@ -30,7 +30,6 @@ namespace busybin
     // by Group 2 goals.
     cout << "Initializing pattern databases for ThistlethwaiteCubeSolver." << endl;
 
-    this->setSolving(true);
     this->searcher.findGoal(this->g3Perms, cubeModel, mdlG3TwistStore);
     this->setSolving(false);
 
