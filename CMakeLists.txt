@@ -18,6 +18,7 @@ set(SRC
   "./Util/Timer.cpp"
   "./Util/AutoTimer.cpp"
   "./Util/ThreadPool.cpp"
+  "./Util/NibbleArray.cpp"
   "./Model/MoveStore/MoveStore.cpp"
   "./Model/MoveStore/RotationStore.cpp"
   "./Model/MoveStore/TwistStore.cpp"
