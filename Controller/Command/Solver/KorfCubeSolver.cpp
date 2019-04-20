@@ -14,6 +14,22 @@ namespace busybin
   }
 
   /**
+   * Initialize the pattern databases for corners and two edge groups.
+   */
+  void KorfCubeSolver::initialize()
+  {
+    // Get a copy of the underlying RC model.
+    RubiksCubeModel cubeModel = this->pCube->getRawModel();
+
+    cout << "Initializing pattern databases for KorfCubeSolver." << endl;
+
+    //this->searcher.findGoal(this->g3Perms, cubeModel, mdlG3TwistStore);
+    this->setSolving(false);
+
+    cout << "Done." << endl;
+  }
+
+  /**
    * Solve the cube.  This is run in a separate thread.
    */
   void KorfCubeSolver::solveCube()

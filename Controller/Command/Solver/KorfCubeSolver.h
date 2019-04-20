@@ -30,6 +30,7 @@ namespace busybin
   class KorfCubeSolver : public CubeSolver
   {
   protected:
+    void initialize();
     void solveCube();
 
   public:
