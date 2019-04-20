@@ -29,6 +29,7 @@ set(SRC
   "./Model/MoveStore/ModelG1TwistStore.cpp"
   "./Model/MoveStore/ModelG2TwistStore.cpp"
   "./Model/MoveStore/ModelG3TwistStore.cpp"
+  "./Model/PatternDatabase/PatternDatabase.cpp"
   "./Model/PatternDatabase/CornerPatternDatabase.cpp"
   "./Model/PatternDatabase/EdgePatternDatabase.cpp"
   "./Model/PatternDatabase/EdgeG1PatternDatabase.cpp"
