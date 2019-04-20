@@ -21,6 +21,7 @@ namespace busybin
     PatternDatabase();
 
     size_t size;
+    size_t numItems;
 
   protected:
     typedef unsigned char uchar;
@@ -33,6 +34,8 @@ namespace busybin
     uchar getNumMoves(const RubiksCubeModel& cube) const;
     uchar getNumMoves(const uint32_t ind) const;
     size_t getSize() const;
+    size_t getNumItems() const;
+    bool isFull() const;
 
     /**
      * Given a permutation of cubies, return the Lehmer code.  This is used

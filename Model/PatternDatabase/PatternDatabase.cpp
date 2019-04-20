@@ -5,7 +5,8 @@ namespace busybin
   /**
    * Initialize the underlying array.
    */
-  PatternDatabase::PatternDatabase(const size_t size) : database(size, 0xFF), size(0)
+  PatternDatabase::PatternDatabase(const size_t size) :
+    database(size, 0xFF), size(size), numItems(0)
   {
   }
 
@@ -22,7 +23,7 @@ namespace busybin
     if (this->getNumMoves(ind) == 0xF)
     {
       this->database.set(ind, numMoves);
-      ++this->size;
+      ++this->numItems;
     }
   }
 
@@ -66,6 +67,22 @@ namespace busybin
   size_t PatternDatabase::getSize() const
   {
     return this->size;
+  }
+
+  /**
+   * Get the number of items set in the database.
+   */
+  size_t PatternDatabase::getNumItems() const
+  {
+    return this->numItems;
+  }
+
+  /**
+   * Returns true if every entry in the database has been added.
+   */
+  bool PatternDatabase::isFull() const
+  {
+    return this->numItems == this->size;
   }
 }
 
