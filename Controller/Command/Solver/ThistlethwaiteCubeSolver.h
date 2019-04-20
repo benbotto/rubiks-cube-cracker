@@ -47,6 +47,7 @@ namespace busybin
 
   protected:
     void solveCube();
+    void initialize();
 
   public:
     ThistlethwaiteCubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover);

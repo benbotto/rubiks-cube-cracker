@@ -12,8 +12,15 @@ namespace busybin
     WorldWindow* pWorldWnd, CubeMover* pMover) :
     CubeSolver(pWorld, pWorldWnd, pMover, GLFW_KEY_ESCAPE)
   {
+  }
+
+  /**
+   * Initialize the pattern databases for the third set of goals.
+   */
+  void ThistlethwaiteCubeSolver::initialize()
+  {
     // Get a copy of the underlying RC model.
-    RubiksCubeModel   cubeModel = this->pCube->getRawModel();
+    RubiksCubeModel cubeModel = this->pCube->getRawModel();
 
     // This twist store contains 180-degree twists only (L2, R2, etc.).
     ModelG3TwistStore mdlG3TwistStore(cubeModel);
@@ -21,9 +28,13 @@ namespace busybin
     // Generate all corner permutations that can be reached from the solved state
     // using only double twists.  These are stored in this->g3Perms, and used
     // by Group 2 goals.
+    cout << "Initializing pattern databases for ThistlethwaiteCubeSolver." << endl;
+
     this->setSolving(true);
     this->searcher.findGoal(this->g3Perms, cubeModel, mdlG3TwistStore);
     this->setSolving(false);
+
+    cout << "Done." << endl;
   }
 
   /**
