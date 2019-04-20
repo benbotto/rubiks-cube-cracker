@@ -42,7 +42,9 @@ namespace busybin
    */
   void CubeSolver::onKeypress(int key, int scancode, int action, int mods)
   {
-    if (action == GLFW_PRESS && key == this->solveKey && !this->solving)
+    // See the setSolving method, which disables cube movement during a solve.
+    // The mover could be disabled from any solver.
+    if (action == GLFW_PRESS && key == this->solveKey && this->pMover->isEnabled())
     {
       this->setSolving(true);
 
