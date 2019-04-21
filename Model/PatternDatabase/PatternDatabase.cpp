@@ -12,19 +12,24 @@ namespace busybin
 
   /**
    * Set the number of moves to get to a scrambled cube state using an index.
-   * The index should be calculated using the getDatabaseIndex method.  If
-   * the state is already set, then this method does nothing.
+   * The index should be calculated using the getDatabaseIndex method.  If the
+   * state is already set, then this method does nothing and returns false.  If
+   * the new state is indexed, then this method returns true.
    * @param ind The index in the database.
    * @param numMoves The number of moves to get to this state (must be fewer
    * than 15).
    */
-  void PatternDatabase::setNumMoves(const uint32_t ind, const uchar numMoves) 
+  bool PatternDatabase::setNumMoves(const uint32_t ind, const uchar numMoves) 
   {
     if (this->getNumMoves(ind) == 0xF)
     {
       this->database.set(ind, numMoves);
       ++this->numItems;
+
+      return true;
     }
+
+    return false;
   }
 
   /**
@@ -34,9 +39,9 @@ namespace busybin
    * @param numMoves The number of moves to get to this state (must be fewer
    * than 15).
    */
-  void PatternDatabase::setNumMoves(const RubiksCubeModel& cube, const uchar numMoves)
+  bool PatternDatabase::setNumMoves(const RubiksCubeModel& cube, const uchar numMoves)
   {
-    this->setNumMoves(this->getDatabaseIndex(cube), numMoves);
+    return this->setNumMoves(this->getDatabaseIndex(cube), numMoves);
   }
 
   /**

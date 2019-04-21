@@ -29,8 +29,8 @@ namespace busybin
   public:
     PatternDatabase(const size_t size);
     virtual uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const = 0;
-    void setNumMoves(const RubiksCubeModel& cube, const uchar numMoves);
-    void setNumMoves(const uint32_t ind, const uchar numMoves);
+    bool setNumMoves(const RubiksCubeModel& cube, const uchar numMoves);
+    bool setNumMoves(const uint32_t ind, const uchar numMoves);
     uchar getNumMoves(const RubiksCubeModel& cube) const;
     uchar getNumMoves(const uint32_t ind) const;
     size_t getSize() const;
