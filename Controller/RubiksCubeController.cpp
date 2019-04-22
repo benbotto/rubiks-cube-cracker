@@ -19,6 +19,9 @@ namespace busybin
       KorfCubeSolver           kCubeSolver(&world, &worldWnd, &cubeMover);
       CubeDumper               cubeDumper(&world, &worldWnd);
 
+      tCubeSolver.initialize();
+      kCubeSolver.initialize();
+
       // All wired up, run the main loop.
       worldWnd.run();
     }
