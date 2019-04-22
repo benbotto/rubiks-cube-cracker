@@ -18,12 +18,12 @@ namespace busybin
 
     while (!this->findGoal(goal, cube, moveStore, 0, maxDepth, moves))
     {
-      cout << "Finished depth " << maxDepth << ".  Elapsed time " 
+      cout << "IDDFS: Finished depth " << maxDepth << ".  Elapsed time "
            << timer.getElapsedSeconds() << "s." << endl;
 
       ++maxDepth;
     }
-    
+
     return moves;
   }
 
