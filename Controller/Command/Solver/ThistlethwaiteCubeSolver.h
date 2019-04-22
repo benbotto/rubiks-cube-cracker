@@ -45,12 +45,14 @@ namespace busybin
     GoalG3_Permute_Corners g3Perms;
     IDDFSCubeSearcher      searcher;
 
+    void indexDatabase();
+
   protected:
     void solveCube();
-    void initialize();
 
   public:
     ThistlethwaiteCubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover);
+    void initialize();
   };
 }
 

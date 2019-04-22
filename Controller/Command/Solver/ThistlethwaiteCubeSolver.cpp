@@ -15,9 +15,21 @@ namespace busybin
   }
 
   /**
-   * Initialize the pattern databases for the third set of goals.
+   * Launch a thread to initialize the pattern database.
    */
   void ThistlethwaiteCubeSolver::initialize()
+  {
+    CubeSolver::initialize();
+
+    // Launch an initialization thread.
+    this->setSolving(true);
+    this->threadPool.addJob(bind(&ThistlethwaiteCubeSolver::indexDatabase, this));
+  }
+
+  /**
+   * Initialize the pattern databases for the third set of goals.
+   */
+  void ThistlethwaiteCubeSolver::indexDatabase()
   {
     // Get a copy of the underlying RC model.
     RubiksCubeModel cubeModel = this->pCube->getRawModel();
@@ -33,7 +45,7 @@ namespace busybin
     this->searcher.findGoal(this->g3Perms, cubeModel, mdlG3TwistStore);
     this->setSolving(false);
 
-    cout << "Done." << endl;
+    cout << "Thistlethwaite initialization complete." << endl;
   }
 
   /**
