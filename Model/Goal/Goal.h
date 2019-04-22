@@ -19,6 +19,7 @@ namespace busybin
   public:
     virtual bool isSatisfied(RubiksCubeModel& cube) = 0;
     virtual string getDescription() const = 0;
+    virtual bool index(const RubiksCubeModel& cube, size_t numMoves);
   };
 }
 
