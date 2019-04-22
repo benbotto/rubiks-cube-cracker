@@ -12,28 +12,18 @@ namespace busybin
   CubeSolver::CubeSolver(World* pWorld, WorldWindow* pWorldWnd,
     CubeMover* pMover, int solveKey) :
     Command(pWorld, pWorldWnd),
-    threadPool(1),
+    cubeTwistStore(*this->pCube),
+    cubeRotStore(*this->pCube),
     solving(false),
     movesInQueue(false),
     moveTimer(false),
     solveKey(solveKey),
-    pCube(dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube"))),
-    cubeTwistStore(*this->pCube),
-    cubeRotStore(*this->pCube)
+    threadPool(1),
+    pCube(dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube")))
   {
     // Store the mover for enabling/disabling movement.  Movement of the cube
     // is disabled while the cube is being solved.
     this->pMover = pMover;
-
-    // Listen for keypress events and start the solve when solveKey is pressed.
-    pWorldWnd->onKeypress(bind(&CubeSolver::onKeypress, this, _1, _2, _3, _4));
-
-    // Listen for pulse events and apply solution moves.
-    pWorldWnd->onPulse(bind(&CubeSolver::onPulse, this, _1));
-
-    // Launch an initialization thread.
-    this->setSolving(true);
-    this->threadPool.addJob(bind(&CubeSolver::initialize, this));
   }
 
   /**
@@ -43,7 +33,11 @@ namespace busybin
    */
   void CubeSolver::initialize()
   {
-    this->setSolving(false);
+    // Listen for keypress events and start the solve when solveKey is pressed.
+    this->getWorldWindow()->onKeypress(bind(&CubeSolver::onKeypress, this, _1, _2, _3, _4));
+
+    // Listen for pulse events and apply solution moves.
+    this->getWorldWindow()->onPulse(bind(&CubeSolver::onPulse, this, _1));
   }
 
   /**

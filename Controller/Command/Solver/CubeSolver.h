@@ -44,14 +44,15 @@ namespace busybin
    */
   class CubeSolver : public Command
   {
-    ThreadPool      threadPool;
-    CubeMover*      pMover;
-    atomic_bool     solving;
-    atomic_bool     movesInQueue;
-    queue<string>   moveQueue;
-    mutex           moveMutex;
-    Timer           moveTimer;
-    int             solveKey;
+    CubeMover*        pMover;
+    CubeTwistStore    cubeTwistStore;
+    CubeRotationStore cubeRotStore;
+    atomic_bool       solving;
+    atomic_bool       movesInQueue;
+    queue<string>     moveQueue;
+    mutex             moveMutex;
+    Timer             moveTimer;
+    int               solveKey;
 
     void onKeypress(int key, int scancode, int action, int mods);
     void onPulse(double elapsed);
@@ -64,11 +65,9 @@ namespace busybin
       MoveStore*       pMoveStore;
     };
 
+    ThreadPool        threadPool;
     RubiksCube*       pCube;
-    CubeTwistStore    cubeTwistStore;
-    CubeRotationStore cubeRotStore;
 
-    virtual void initialize();
     virtual void solveCube() = 0;
     void setSolving(bool solving);
     void processGoalMoves(const Goal& goal, MoveStore& moveStore,
@@ -76,6 +75,7 @@ namespace busybin
 
   public:
     CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover, int solveKey);
+    virtual void initialize();
     vector<string> simplifyMoves(const vector<string>& moves) const;
   };
 }
