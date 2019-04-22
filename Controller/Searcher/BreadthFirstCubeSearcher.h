@@ -25,9 +25,9 @@ namespace busybin
   {
     struct node
     {
-      uint16_t moveInd;
-      node*    parent;
-      uint8_t  depth;
+      uint8_t moveInd;
+      node*   parent;
+      uint8_t depth;
     };
 
   public:

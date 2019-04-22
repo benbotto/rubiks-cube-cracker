@@ -12,7 +12,7 @@ namespace busybin
   vector<string> BreadthFirstCubeSearcher::findGoal(Goal& goal,
     RubiksCubeModel& cube, MoveStore& moveStore)
   {
-    int16_t        numMoves = moveStore.getNumMoves();
+    uint8_t        numMoves = moveStore.getNumMoves();
     uint8_t        depth    = 0;
     unsigned       visited  = 0;
     queue<node>    moveQueue;
@@ -24,7 +24,7 @@ namespace busybin
       return moves;
 
     // The search starts at the root node.  It takes no moves to get there.
-    moveQueue.push({0xFFFF, NULL, depth});
+    moveQueue.push({0xFF, NULL, depth});
     goal.index(cube, depth);
 
     while (!moveQueue.empty())
@@ -68,7 +68,7 @@ namespace busybin
         return moves;
       }
 
-      for (uint16_t moveInd = 0; moveInd < numMoves; ++moveInd)
+      for (uint8_t moveInd = 0; moveInd < numMoves; ++moveInd)
       {
         // Make the move and see if the cube state has been indexed at an
         // earlier depth.
