@@ -13,6 +13,7 @@ set(SRC
   "./Controller/GL/Program/RubiksCubeProgram.cpp"
   "./Controller/Searcher/CubeSearcher.cpp"
   "./Controller/Searcher/IDDFSCubeSearcher.cpp"
+  "./Controller/Searcher/BreadthFirstCubeSearcher.cpp"
   "./View/RubiksCubeView.cpp"
   "./Util/RubiksCubeException.cpp"
   "./Util/Random.cpp"
@@ -39,11 +40,14 @@ set(SRC
   "./Model/RubiksCubeModel.cpp"
   "./Model/Goal/OrientG0.cpp"
   "./Model/Goal/GoalG3_Solved.cpp"
+  "./Model/Goal/Goal.cpp"
+  "./Model/Goal/DatabaseGoal.cpp"
   "./Model/Goal/Thistlethwaite/GoalG0_G1.cpp"
   "./Model/Goal/Thistlethwaite/GoalG1_G2.cpp"
   "./Model/Goal/Thistlethwaite/GoalG2_G3_Corners.cpp"
   "./Model/Goal/Thistlethwaite/GoalG2_G3_Edges.cpp"
   "./Model/Goal/Thistlethwaite/GoalG3_Permute_Corners.cpp"
+  "./Model/Goal/Korf/GoalG1_CornerDatabase.cpp"
   "./Model/WorldObject/Cubie.cpp"
   "./Model/WorldObject/RubiksCube.cpp")
 
