@@ -14,19 +14,40 @@ namespace busybin
   }
 
   /**
-   * Initialize the pattern databases for corners and two edge groups.
+   * Launch a thread to initialize the pattern databases. 
    */
   void KorfCubeSolver::initialize()
+  {
+    CubeSolver::initialize();
+
+    // Launch an initialization thread.
+    this->setSolving(true);
+    this->threadPool.addJob(bind(&KorfCubeSolver::indexDatabases, this));
+  }
+
+  /**
+   * Initialize the pattern databases for corners and two edge groups.
+   */
+  void KorfCubeSolver::indexDatabases()
   {
     // Get a copy of the underlying RC model.
     RubiksCubeModel cubeModel = this->pCube->getRawModel();
 
+    // The pattern databases will be created using breadth first search.
+    BreadthFirstCubeSearcher bfSearcher;
+
+    // This MoveStore holds the 18 moves for the 6 sides.
+    ModelTwistStore modelTwistStore(cubeModel);
+
     cout << "Initializing pattern databases for KorfCubeSolver." << endl;
 
-    //this->searcher.findGoal(this->g3Perms, cubeModel, mdlG3TwistStore);
+    // First create the corner database.
+    GoalG1_CornerDatabase cornerGoal(&this->cornerDB);
+    bfSearcher.findGoal(cornerGoal, cubeModel, modelTwistStore);
+
     this->setSolving(false);
 
-    cout << "Done." << endl;
+    cout << "Korf initialization complete." << endl;
   }
 
   /**

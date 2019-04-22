@@ -6,8 +6,13 @@
 #include "../../../View/RubiksCubeView.h"
 #include "../../../Model/RubiksCubeModel.h"
 #include "../../../Model/Goal/Goal.h"
+#include "../../../Model/MoveStore/ModelTwistStore.h"
 #include "../../../OpenGLSeed/Model/World.h"
 #include "../../../OpenGLSeed/View/WorldWindow.h"
+#include "../../../Model/Goal/Korf/GoalG1_CornerDatabase.h"
+#include "../../../Model/PatternDatabase/PatternDatabase.h"
+#include "../../../Model/PatternDatabase/CornerPatternDatabase.h"
+#include "../../Searcher/BreadthFirstCubeSearcher.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -29,12 +34,16 @@ namespace busybin
    */
   class KorfCubeSolver : public CubeSolver
   {
+    CornerPatternDatabase cornerDB;
+
+    void indexDatabases();
+
   protected:
-    void initialize();
     void solveCube();
 
   public:
     KorfCubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover);
+    void initialize();
   };
 }
 
