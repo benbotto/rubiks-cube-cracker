@@ -8,10 +8,7 @@ using std::endl;
 #include <iomanip>
 using std::setw;
 using std::setfill;
-using std::left;
 using std::right;
-using std::hex;
-using std::dec;
 
 namespace busybin
 {
