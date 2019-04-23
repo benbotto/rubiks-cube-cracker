@@ -12,7 +12,7 @@ namespace busybin
    */
   bool Goal::index(const RubiksCubeModel& cube, size_t numMoves)
   {
-    return false;
+    return true;
   }
 }
 
