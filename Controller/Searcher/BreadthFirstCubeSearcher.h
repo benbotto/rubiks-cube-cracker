@@ -6,7 +6,7 @@
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/MoveStore/MoveStore.h"
 #include "../../Util/AutoTimer.h"
-#include "../../View/RubiksCubeView.h"
+#include "../../Util/RubiksCubeException.h"
 #include <vector>
 using std::vector;
 #include <queue>
@@ -36,7 +36,6 @@ namespace busybin
     {
       uint8_t   moveInd;
       nodePtr_t pParent;
-      uint8_t   depth;
     };
 
     void moveToNode(const Node* pNode, MoveStore& moveStore, vector<string>& moves) const;
