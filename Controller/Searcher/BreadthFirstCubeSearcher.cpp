@@ -3,6 +3,45 @@
 namespace busybin
 {
   /**
+   * Apply the moves needed to get to node by traversing from the root node
+   * down to node.
+   */
+  void BreadthFirstCubeSearcher::moveToNode(const Node* pNode,
+    MoveStore& moveStore, vector<string>& moves) const
+  {
+    stack<uint8_t> moveStack;
+
+    while (pNode->pParent)
+    {
+      moveStack.push(pNode->moveInd);
+      pNode = pNode->pParent.get();
+    }
+
+    while (!moveStack.empty())
+    {
+      string move = moveStore.getMove(moveStack.top());
+      moves.push_back(move);
+
+      moveStack.pop();
+      moveStore.getMoveFunc(move)();
+    }
+  }
+
+  /**
+   * Revert all moves starting with node's move until the root node.
+   */
+  void BreadthFirstCubeSearcher::revertMoves(const Node* pNode, MoveStore& moveStore) const
+  {
+    while (pNode->pParent)
+    {
+      string move = moveStore.getMove(pNode->moveInd);
+      string invMove = moveStore.getInverseMove(move);
+      moveStore.getInverseMoveFunc(move)();
+      pNode = pNode->pParent.get();
+    }
+  }
+
+  /**
    * Search the cube until goal is reached and return the moves required
    * to acieve goal.
    * @param goal The goal to achieve (isSatisfied is called on the goal).
@@ -12,28 +51,32 @@ namespace busybin
   vector<string> BreadthFirstCubeSearcher::findGoal(Goal& goal,
     RubiksCubeModel& cube, MoveStore& moveStore)
   {
-    uint8_t        numMoves = moveStore.getNumMoves();
-    uint8_t        depth    = 0;
-    unsigned       visited  = 0;
-    queue<node>    moveQueue;
-    AutoTimer      timer;
-    vector<string> moves;
+    uint8_t          numMoves     = moveStore.getNumMoves();
+    uint8_t          depth        = 0;
+    unsigned         visited      = 0;
+    unsigned         maxQueueSize = 0;
+    unsigned         maxIndDepth  = 0;
+    queue<nodePtr_t> moveQueue;
+    shared_ptr<Node> pCurNode;
+    AutoTimer        timer;
+    vector<string>   moves;
 
     // The corner database may be pre-populated from a file.
     if (goal.isSatisfied(cube))
       return moves;
 
     // The search starts at the root node.  It takes no moves to get there.
-    moveQueue.push({0xFF, NULL, depth});
+    //moveQueue.push({0xFF, nullptr, depth});
+    moveQueue.push(nodePtr_t(new Node({0xFF, nullptr, depth})));
     goal.index(cube, depth);
 
     while (!moveQueue.empty())
     {
       // Next node in the queue.
-      node curNode = moveQueue.front();
+      nodePtr_t pCurNode = moveQueue.front();
       moveQueue.pop();
 
-      if (depth < curNode.depth)
+      if (depth < pCurNode->depth)
       {
         cout << "BFS: Finished depth " << (unsigned)depth << ".  Elapsed time " 
              << timer.getElapsedSeconds() << "s." << endl;
@@ -41,54 +84,58 @@ namespace busybin
       }
 
       // Visit the node.
-      if (curNode.parent)
-      {
-        string move = moveStore.getMove(curNode.moveInd);
-        moveStore.getMoveFunc(move)();
-        ++visited;
-
-        if (visited % 1000 == 0)
-          cout << "Visited " << visited << " nodes." << endl;
-      }
+      moves.clear();
+      this->moveToNode(pCurNode.get(), moveStore, moves);
+      ++visited;
 
       if (goal.isSatisfied(cube))
       {
-        // Build the list of moves by traversing up to the root node.
-        node moveNode = curNode;
-        cout << "Goal was satisfied." << endl;
+        cout << "Goal was satisfied: ";
 
-        while (moveNode.parent)
-        {
-          moves.push_back(moveStore.getMove(moveNode.moveInd));
-          moveNode = *moveNode.parent;
-        }
+        for (const string& move: moves)
+          cout << move << ' ';
+        cout << endl;
 
-        // The moves are in reverse order.  Fix that.
-        reverse(moves.begin(), moves.end());
+        cout << "Visited " << visited << " nodes." << endl;
+        cout << "Max queue size " << maxQueueSize << endl;
+        cout << "Max num moves " << maxIndDepth << endl;
+
+        // Revert back to the original state.
+        this->revertMoves(pCurNode.get(), moveStore);
+
+        // Return the list of moves required to achieve the goal.
         return moves;
       }
 
       for (uint8_t moveInd = 0; moveInd < numMoves; ++moveInd)
       {
-        // Make the move and see if the cube state has been indexed at an
-        // earlier depth.
         string move = moveStore.getMove(moveInd);
-        moveStore.getMoveFunc(move)();
 
-        // If the goal is indexed, it means it's a new state and needs to be
-        // visited.
-        if (goal.index(cube, curNode.depth + 1))
-          moveQueue.push({moveInd, &curNode, (uint8_t)(curNode.depth + 1)});
+        if (!this->prune(move, moves))
+        {
+          // Make the move and see if the cube state has been indexed at an
+          // earlier depth.
+          moveStore.getMoveFunc(move)();
 
-        moveStore.getInverseMoveFunc(move)();
+          // If the goal is indexed, it means it's a new state and needs to be
+          // visited.
+          if (goal.index(cube, pCurNode->depth + 1))
+            moveQueue.push(nodePtr_t(new Node({moveInd, pCurNode, (uint8_t)(pCurNode->depth + 1)})));
+
+          moveStore.getInverseMoveFunc(move)();
+        }
       }
+
+      // Max queue size metric.
+      if (moveQueue.size() > maxQueueSize)
+        maxQueueSize = moveQueue.size();
+
+      // Max number of moves.
+      if ((unsigned)(pCurNode->depth + 1) > maxIndDepth)
+        maxIndDepth = pCurNode->depth + 1;
 
       // Undo the current node's move.
-      if (curNode.parent)
-      {
-        string move = moveStore.getMove(curNode.moveInd);
-        moveStore.getInverseMoveFunc(move)();
-      }
+      this->revertMoves(pCurNode.get(), moveStore);
     }
 
     cout << "Bad return." << endl;
