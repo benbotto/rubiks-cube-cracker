@@ -52,10 +52,9 @@ namespace busybin
     RubiksCubeModel& cube, MoveStore& moveStore)
   {
     uint8_t          numMoves     = moveStore.getNumMoves();
-    uint8_t          depth        = 0;
+    unsigned         maxDepth     = 0;
     unsigned         visited      = 0;
     unsigned         maxQueueSize = 0;
-    unsigned         maxIndDepth  = 0;
     queue<nodePtr_t> moveQueue;
     shared_ptr<Node> pCurNode;
     AutoTimer        timer;
@@ -66,9 +65,8 @@ namespace busybin
       return moves;
 
     // The search starts at the root node.  It takes no moves to get there.
-    //moveQueue.push({0xFF, nullptr, depth});
-    moveQueue.push(nodePtr_t(new Node({0xFF, nullptr, depth})));
-    goal.index(cube, depth);
+    moveQueue.push(nodePtr_t(new Node({0xFF, nullptr})));
+    goal.index(cube, 0);
 
     while (!moveQueue.empty())
     {
@@ -76,35 +74,17 @@ namespace busybin
       nodePtr_t pCurNode = moveQueue.front();
       moveQueue.pop();
 
-      if (depth < pCurNode->depth)
-      {
-        cout << "BFS: Finished depth " << (unsigned)depth << ".  Elapsed time " 
-             << timer.getElapsedSeconds() << "s." << endl;
-        ++depth;
-      }
-
       // Visit the node.
       moves.clear();
       this->moveToNode(pCurNode.get(), moveStore, moves);
       ++visited;
 
-      if (goal.isSatisfied(cube))
+      if (maxDepth < moves.size())
       {
-        cout << "Goal was satisfied: ";
-
-        for (const string& move: moves)
-          cout << move << ' ';
-        cout << endl;
-
-        cout << "Visited " << visited << " nodes." << endl;
-        cout << "Max queue size " << maxQueueSize << endl;
-        cout << "Max num moves " << maxIndDepth << endl;
-
-        // Revert back to the original state.
-        this->revertMoves(pCurNode.get(), moveStore);
-
-        // Return the list of moves required to achieve the goal.
-        return moves;
+        cout << "BFS: Finished depth " << maxDepth
+             << " (indexed depth " << maxDepth + 1 << ").  Elapsed time " 
+             << timer.getElapsedSeconds() << "s." << endl;
+        ++maxDepth;
       }
 
       for (uint8_t moveInd = 0; moveInd < numMoves; ++moveInd)
@@ -119,8 +99,28 @@ namespace busybin
 
           // If the goal is indexed, it means it's a new state and needs to be
           // visited.
-          if (goal.index(cube, pCurNode->depth + 1))
-            moveQueue.push(nodePtr_t(new Node({moveInd, pCurNode, (uint8_t)(pCurNode->depth + 1)})));
+          if (goal.index(cube, moves.size() + 1))
+          {
+            moveQueue.push(nodePtr_t(new Node({moveInd, pCurNode})));
+
+            if (goal.isSatisfied(cube))
+            {
+              moves.push_back(move);
+
+              cout << "BFS: Goal was satisfied in "
+                   << moves.size() << " moves.  "
+                   << "Visited " << visited << " nodes.  "
+                   << "Max queue size " << maxQueueSize
+                   << endl;
+
+              for (const string& move: moves)
+                cout << move << ' ';
+              cout << endl;
+
+              // Return the list of moves required to achieve the goal.
+              return moves;
+            }
+          }
 
           moveStore.getInverseMoveFunc(move)();
         }
@@ -130,17 +130,11 @@ namespace busybin
       if (moveQueue.size() > maxQueueSize)
         maxQueueSize = moveQueue.size();
 
-      // Max number of moves.
-      if ((unsigned)(pCurNode->depth + 1) > maxIndDepth)
-        maxIndDepth = pCurNode->depth + 1;
-
       // Undo the current node's move.
       this->revertMoves(pCurNode.get(), moveStore);
     }
 
-    cout << "Bad return." << endl;
-    cout << "Visited " << visited << " nodes." << endl;
-    return moves;
+    throw RubiksCubeException("BFS: Goal not found, but move queue is empty.");
   }
 }
 
