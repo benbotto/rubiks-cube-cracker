@@ -23,6 +23,9 @@ namespace busybin
     NibbleArray(const size_t size, const uchar val = 0xFF);
     uchar get(const size_t pos) const;
     void set(const size_t pos, const uchar val);
+    unsigned char* data();
+    const unsigned char* data() const;
+    size_t storageSize() const;
   };
 }
 

@@ -5,7 +5,7 @@ namespace busybin
   /**
    * Initialize the underlying vector.
    */
-  NibbleArray::NibbleArray(const size_t size, const uchar val) : arr(size / 2, val)
+  NibbleArray::NibbleArray(const size_t size, const uchar val) : arr(size / 2 + 1, val)
   {
   }
 
@@ -51,6 +51,30 @@ namespace busybin
       // Even: first 4 bits.
       this->arr.at(i) = (val << 4) | (curVal & 0x0F);
     }
+  }
+
+  /**
+   * Get a pointer to the underlying array.
+   */
+  unsigned char* NibbleArray::data()
+  {
+    return this->arr.data();
+  }
+
+  /**
+   * Get a pointer to the underlying array.
+   */
+  const unsigned char* NibbleArray::data() const
+  {
+    return this->arr.data();
+  }
+
+  /**
+   * Get the size of the data in the underlying array.
+   */
+  size_t NibbleArray::storageSize() const
+  {
+    return this->arr.size();
   }
 }
 
