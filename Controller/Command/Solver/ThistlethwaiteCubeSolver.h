@@ -21,6 +21,7 @@
 #include "../../../Model/Goal/SolveGoal.h"
 #include "../../../OpenGLSeed/Model/World.h"
 #include "../../../OpenGLSeed/View/WorldWindow.h"
+#include "../../../Util/ThreadPool.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -51,7 +52,8 @@ namespace busybin
     void solveCube();
 
   public:
-    ThistlethwaiteCubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover);
+    ThistlethwaiteCubeSolver(World* pWorld, WorldWindow* pWorldWnd,
+      CubeMover* pMover, ThreadPool* pThreadPool);
     void initialize();
   };
 }

@@ -7,13 +7,15 @@ namespace busybin
    * @param pWorld Pointer to the world (must remain in scope).
    * @param pWorldWnd The world window, used to bind key and pulse events.
    * @param pMover Pointer to the CubeMover command.
+   * @param pThreadPool A ThreadPool pointer for queueing jobs.
    * @param solveKey The GLFW key that triggers the solver to start.
    */
   CubeSolver::CubeSolver(World* pWorld, WorldWindow* pWorldWnd,
-    CubeMover* pMover, int solveKey) :
+    CubeMover* pMover, ThreadPool* pThreadPool, int solveKey) :
     Command(pWorld, pWorldWnd),
     pCube(dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube"))),
-    threadPool(1),
+    pThreadPool(pThreadPool),
+    pMover(pMover),
     cubeTwistStore(*this->pCube),
     cubeRotStore(*this->pCube),
     solving(false),
@@ -21,9 +23,6 @@ namespace busybin
     moveTimer(false),
     solveKey(solveKey)
   {
-    // Store the mover for enabling/disabling movement.  Movement of the cube
-    // is disabled while the cube is being solved.
-    this->pMover = pMover;
   }
 
   /**
@@ -57,7 +56,7 @@ namespace busybin
       this->setSolving(true);
 
       // Fire off a thread to solve the cube.
-      this->threadPool.addJob(bind(&CubeSolver::solveCube, this));
+      this->pThreadPool->addJob(bind(&CubeSolver::solveCube, this));
     }
   }
 

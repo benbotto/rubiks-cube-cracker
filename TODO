@@ -1,4 +1,6 @@
-Seems like the cube is movable during the Korf index phase.  Is it being enabled by the TSolver?
+Seems like the cube is movable during the Korf index phase.  Is it being
+enabled by the TSolver?  Maybe pass in the ThreadPool.  Then each solver can
+initialize in order.
 Add a comment about the use of shared ptr in BFS.
 There's a pattern database (GoalG3_Permate_Corners) that could be refactored to
 use the new CornerPatternDatabase class.

@@ -7,9 +7,11 @@ namespace busybin
    * @param pWorld Pointer to the world (must remain in scope).
    * @param pWorldWnd The world window, used to bind key and pulse events.
    * @param pMover Pointer to the CubeMover command.
+   * @param pThreadPool A ThreadPool pointer for queueing jobs.
    */
   KorfCubeSolver::KorfCubeSolver(World* pWorld, WorldWindow* pWorldWnd,
-    CubeMover* pMover) : CubeSolver(pWorld, pWorldWnd, pMover, GLFW_KEY_F2)
+    CubeMover* pMover, ThreadPool* pThreadPool) :
+    CubeSolver(pWorld, pWorldWnd, pMover, pThreadPool, GLFW_KEY_F2)
   {
   }
 
@@ -22,7 +24,7 @@ namespace busybin
 
     // Launch an initialization thread.
     this->setSolving(true);
-    this->threadPool.addJob(bind(&KorfCubeSolver::indexDatabases, this));
+    this->pThreadPool->addJob(bind(&KorfCubeSolver::indexDatabases, this));
   }
 
   /**

@@ -48,7 +48,7 @@ namespace busybin
     // Order is import.  The cube pointer has to be initialized before the
     // MoveStores.
     RubiksCube* pCube;
-    ThreadPool  threadPool;
+    ThreadPool* pThreadPool;
 
   private:
     CubeMover*        pMover;
@@ -78,7 +78,8 @@ namespace busybin
       unsigned goalNum, vector<string>& allMoves, vector<string>& goalMoves);
 
   public:
-    CubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover, int solveKey);
+    CubeSolver(World* pWorld, WorldWindow* pWorldWnd,
+      CubeMover* pMover, ThreadPool* pThreadPool, int solveKey);
     virtual void initialize();
     vector<string> simplifyMoves(const vector<string>& moves) const;
   };

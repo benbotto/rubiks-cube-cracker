@@ -12,6 +12,7 @@
 #include "../../../Model/Goal/Korf/CornerDatabaseGoal.h"
 #include "../../../Model/PatternDatabase/PatternDatabase.h"
 #include "../../../Model/PatternDatabase/CornerPatternDatabase.h"
+#include "../../../Util/ThreadPool.h"
 #include "../../Searcher/BreadthFirstCubeSearcher.h"
 #include <iostream>
 using std::cout;
@@ -42,7 +43,8 @@ namespace busybin
     void solveCube();
 
   public:
-    KorfCubeSolver(World* pWorld, WorldWindow* pWorldWnd, CubeMover* pMover);
+    KorfCubeSolver(World* pWorld, WorldWindow* pWorldWnd,
+      CubeMover* pMover, ThreadPool* pThreadPool);
     void initialize();
   };
 }

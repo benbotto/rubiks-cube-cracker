@@ -15,8 +15,9 @@ namespace busybin
       ViewManager              viewMan(&world,    &worldWnd);
       Renderer                 renderer(&world,   &worldWnd);
       CubeMover                cubeMover(&world,  &worldWnd);
-      ThistlethwaiteCubeSolver tCubeSolver(&world, &worldWnd, &cubeMover);
-      KorfCubeSolver           kCubeSolver(&world, &worldWnd, &cubeMover);
+      ThreadPool               threadPool(1);
+      ThistlethwaiteCubeSolver tCubeSolver(&world, &worldWnd, &cubeMover, &threadPool);
+      KorfCubeSolver           kCubeSolver(&world, &worldWnd, &cubeMover, &threadPool);
       CubeDumper               cubeDumper(&world, &worldWnd);
 
       tCubeSolver.initialize();

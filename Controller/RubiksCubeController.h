@@ -9,6 +9,7 @@
 #include "../OpenGLSeed/Controller/Command/ViewManager.h"
 #include "../OpenGLSeed/Controller/Command/Renderer.h"
 #include "../Model/RubiksCubeWorld.h"
+#include "../Util/ThreadPool.h"
 #include <iostream>
 using std::cout;
 using std::endl;
