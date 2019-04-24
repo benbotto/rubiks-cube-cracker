@@ -89,5 +89,51 @@ namespace busybin
   {
     return this->numItems == this->size;
   }
+
+  /**
+   * Write the database to a file.
+   */
+  void PatternDatabase::toFile(const string& filePath) const
+  {
+    ofstream writer(filePath, std::ios::out | std::ios::binary | std::ios::trunc);
+
+    if (!writer.is_open())
+      throw RubiksCubeException("Failed to open file for writing.");
+
+    writer.write(
+      reinterpret_cast<const char*>(this->database.data()),
+      this->database.storageSize());
+
+    writer.close();
+  }
+
+  /**
+   * Read the database from a file.  Returns true if the database file exists
+   * and is loaded, otherwise returns false.
+   */
+  bool PatternDatabase::fromFile(const string& filePath)
+  {
+    ifstream reader(filePath, std::ios::in | std::ios::ate);
+
+    if (!reader.is_open())
+      return false;
+
+    size_t fileSize = reader.tellg();
+
+    if (fileSize != this->database.storageSize())
+    {
+      reader.close();
+      throw RubiksCubeException("Database file appears to be corrupt.  Wrong size.");
+    }
+
+    reader.seekg(0, std::ios::beg);
+    reader.read(
+      reinterpret_cast<char*>(this->database.data()),
+      this->database.storageSize());
+    reader.close();
+    this->numItems = this->size;
+
+    return true;
+  }
 }
 

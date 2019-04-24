@@ -3,9 +3,15 @@
 
 #include "../RubiksCubeModel.h"
 #include "../../Util/NibbleArray.h"
+#include "../../Util/RubiksCubeException.h"
 #include <cstdint>
 #include <cstddef>
 using std::size_t;
+#include <fstream>
+using std::ofstream;
+using std::ifstream;
+#include <string>
+using std::string;
 
 namespace busybin
 {
@@ -36,6 +42,8 @@ namespace busybin
     size_t getSize() const;
     size_t getNumItems() const;
     bool isFull() const;
+    void toFile(const string& filePath) const;
+    bool fromFile(const string& filePath);
 
     /**
      * Given a permutation of cubies, return the Lehmer code.  This is used
