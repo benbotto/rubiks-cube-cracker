@@ -49,6 +49,7 @@ set(SRC
   "./Model/Goal/Thistlethwaite/GoalG2_G3_Edges.cpp"
   "./Model/Goal/Thistlethwaite/GoalG3_Permute_Corners.cpp"
   "./Model/Goal/Korf/CornerDatabaseGoal.cpp"
+  "./Model/Goal/Korf/EdgeDatabaseGoal.cpp"
   "./Model/WorldObject/Cubie.cpp"
   "./Model/WorldObject/RubiksCube.cpp")
 
