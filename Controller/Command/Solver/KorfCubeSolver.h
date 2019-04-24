@@ -9,7 +9,7 @@
 #include "../../../Model/MoveStore/ModelTwistStore.h"
 #include "../../../OpenGLSeed/Model/World.h"
 #include "../../../OpenGLSeed/View/WorldWindow.h"
-#include "../../../Model/Goal/Korf/GoalG1_CornerDatabase.h"
+#include "../../../Model/Goal/Korf/CornerDatabaseGoal.h"
 #include "../../../Model/PatternDatabase/PatternDatabase.h"
 #include "../../../Model/PatternDatabase/CornerPatternDatabase.h"
 #include "../../Searcher/BreadthFirstCubeSearcher.h"

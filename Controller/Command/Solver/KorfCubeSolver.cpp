@@ -42,7 +42,7 @@ namespace busybin
     cout << "Initializing pattern databases for KorfCubeSolver." << endl;
 
     // First create the corner database.
-    GoalG1_CornerDatabase cornerGoal(&this->cornerDB);
+    CornerDatabaseGoal cornerGoal(&this->cornerDB);
     bfSearcher.findGoal(cornerGoal, cubeModel, modelTwistStore);
 
     this->setSolving(false);

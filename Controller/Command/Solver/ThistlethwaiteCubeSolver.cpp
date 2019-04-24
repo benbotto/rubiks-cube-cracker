@@ -66,12 +66,12 @@ namespace busybin
     vector<GoalAndMoveStore> goals;
 
     // Create the goals.
-    goals.push_back({unique_ptr<Goal>(new OrientG0()),                       &mdlRotStore});
+    goals.push_back({unique_ptr<Goal>(new OrientGoal()),                     &mdlRotStore});
     goals.push_back({unique_ptr<Goal>(new GoalG0_G1()),                      &mdlTwistStore});
     goals.push_back({unique_ptr<Goal>(new GoalG1_G2()),                      &mdlG1TwistStore});
     goals.push_back({unique_ptr<Goal>(new GoalG2_G3_Corners(this->g3Perms)), &mdlG2TwistStore});
     goals.push_back({unique_ptr<Goal>(new GoalG2_G3_Edges(this->g3Perms)),   &mdlG2TwistStore});
-    goals.push_back({unique_ptr<Goal>(new GoalG3_Solved()),                  &mdlG3TwistStore});
+    goals.push_back({unique_ptr<Goal>(new SolveGoal()),                      &mdlG3TwistStore});
 
     // Display the intial cube model.
     cout << "Initial cube state." << endl;

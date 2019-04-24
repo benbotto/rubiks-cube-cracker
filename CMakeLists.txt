@@ -39,8 +39,8 @@ set(SRC
   "./Model/RubiksCubeWorld.cpp"
   "./Model/RubiksCubeModel.cpp"
   "./Model/Goal/Goal.cpp"
-  "./Model/Goal/OrientG0.cpp"
-  "./Model/Goal/GoalG3_Solved.cpp"
+  "./Model/Goal/OrientGoal.cpp"
+  "./Model/Goal/SolveGoal.cpp"
   "./Model/Goal/TestGoal.cpp"
   "./Model/Goal/DatabaseGoal.cpp"
   "./Model/Goal/Thistlethwaite/GoalG0_G1.cpp"
@@ -48,7 +48,7 @@ set(SRC
   "./Model/Goal/Thistlethwaite/GoalG2_G3_Corners.cpp"
   "./Model/Goal/Thistlethwaite/GoalG2_G3_Edges.cpp"
   "./Model/Goal/Thistlethwaite/GoalG3_Permute_Corners.cpp"
-  "./Model/Goal/Korf/GoalG1_CornerDatabase.cpp"
+  "./Model/Goal/Korf/CornerDatabaseGoal.cpp"
   "./Model/WorldObject/Cubie.cpp"
   "./Model/WorldObject/RubiksCube.cpp")
 
