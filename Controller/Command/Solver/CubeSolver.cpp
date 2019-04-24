@@ -12,14 +12,14 @@ namespace busybin
   CubeSolver::CubeSolver(World* pWorld, WorldWindow* pWorldWnd,
     CubeMover* pMover, int solveKey) :
     Command(pWorld, pWorldWnd),
+    pCube(dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube"))),
+    threadPool(1),
     cubeTwistStore(*this->pCube),
     cubeRotStore(*this->pCube),
     solving(false),
     movesInQueue(false),
     moveTimer(false),
-    solveKey(solveKey),
-    threadPool(1),
-    pCube(dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube")))
+    solveKey(solveKey)
   {
     // Store the mover for enabling/disabling movement.  Movement of the cube
     // is disabled while the cube is being solved.

@@ -44,6 +44,13 @@ namespace busybin
    */
   class CubeSolver : public Command
   {
+  protected:
+    // Order is import.  The cube pointer has to be initialized before the
+    // MoveStores.
+    RubiksCube* pCube;
+    ThreadPool  threadPool;
+
+  private:
     CubeMover*        pMover;
     CubeTwistStore    cubeTwistStore;
     CubeRotationStore cubeRotStore;
@@ -64,9 +71,6 @@ namespace busybin
       unique_ptr<Goal> pGoal;
       MoveStore*       pMoveStore;
     };
-
-    ThreadPool        threadPool;
-    RubiksCube*       pCube;
 
     virtual void solveCube() = 0;
     void setSolving(bool solving);
