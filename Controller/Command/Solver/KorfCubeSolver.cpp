@@ -23,7 +23,6 @@ namespace busybin
     CubeSolver::initialize();
 
     // Launch an initialization thread.
-    this->setSolving(true);
     this->pThreadPool->addJob(bind(&KorfCubeSolver::indexDatabases, this));
   }
 
@@ -40,6 +39,8 @@ namespace busybin
 
     // This MoveStore holds the 18 moves for the 6 sides.
     ModelTwistStore modelTwistStore(cubeModel);
+
+    this->setSolving(true);
 
     cout << "Initializing pattern databases for KorfCubeSolver." << endl;
 

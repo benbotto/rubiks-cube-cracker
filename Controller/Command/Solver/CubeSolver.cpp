@@ -84,17 +84,20 @@ namespace busybin
       // Flag whether or not there are more moves for the next run.
       this->movesInQueue = !this->moveQueue.empty();
 
+      // If there are no more moves in the queue, re-enable movement.
+      if (!this->movesInQueue)
+        this->pMover->enable();
+
       // Restart the timer.
       this->moveTimer.restart();
     }
-
-    // If solving is done and the queue is empty re-enable moves.
-    if (!solving && !this->movesInQueue)
-      this->pMover->enable();
   }
 
   /**
-   * Put the cube in a "solving" state, which disables cube movement.
+   * Put the cube in a "solving" state, which disables cube movement.  In the
+   * initialization phase (when pattern databases are being indexed) the cube
+   * is put in a solving state, as well as when the user triggers a solve by
+   * pressing the solve key (F1, F2, etc.).
    * @param solving Whether or not the cube is being solved.  When so, cube movement
    *        is disabled.
    */
@@ -102,8 +105,13 @@ namespace busybin
   {
     this->solving = solving;
 
+    // Toggling solving on always disables movement.
+    // Toggling solving off re-enables movement unless there are queued moves,
+    // in which case the onPulse function will re-enable movement.
     if (this->solving)
       this->pMover->disable();
+    else if (!this->movesInQueue)
+      this->pMover->enable();
   }
 
   /**

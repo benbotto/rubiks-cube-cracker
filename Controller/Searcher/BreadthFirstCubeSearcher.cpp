@@ -65,6 +65,10 @@ namespace busybin
       return moves;
 
     // The search starts at the root node.  It takes no moves to get there.
+    // Each node (state of the cube) in the queue is a shared_ptr.  When nodes
+    // are dequeued, they need to remain in scope memory because each node has
+    // a pointer to its parent.  Nodes can only be destructed if they have 0
+    // references (i.e. when all child states have been indexed).
     moveQueue.push(nodePtr_t(new Node({0xFF, nullptr})));
     goal.index(cube, 0);
 

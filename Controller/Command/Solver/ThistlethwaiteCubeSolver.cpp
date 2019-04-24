@@ -23,7 +23,6 @@ namespace busybin
     CubeSolver::initialize();
 
     // Launch an initialization thread.
-    this->setSolving(true);
     this->pThreadPool->addJob(bind(&ThistlethwaiteCubeSolver::indexDatabase, this));
   }
 
@@ -42,6 +41,8 @@ namespace busybin
     // using only double twists.  These are stored in this->g3Perms, and used
     // by Group 2 goals.
     cout << "Initializing pattern databases for ThistlethwaiteCubeSolver." << endl;
+
+    this->setSolving(true);
 
     this->searcher.findGoal(this->g3Perms, cubeModel, mdlG3TwistStore);
     this->setSolving(false);
