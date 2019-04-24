@@ -1,4 +1,5 @@
-Add a comment about the use of shared ptr in BFS.
 There's a pattern database (GoalG3_Permate_Corners) that could be refactored to
-use the new CornerPatternDatabase class.
+use the new CornerPatternDatabase class.  As part of that get rid of the
+corner_perms.txt file.
+
 Try to solve the cube outright, then bail at depth 10.
