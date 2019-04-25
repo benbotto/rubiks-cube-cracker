@@ -121,6 +121,9 @@ namespace busybin
                 cout << move << ' ';
               cout << endl;
 
+              // Revert the cube to factory defaults.
+              this->revertMoves(moveQueue.back().get(), moveStore);
+
               // Return the list of moves required to achieve the goal.
               return moves;
             }
