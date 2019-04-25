@@ -1,3 +1,6 @@
+Try solving the scramble with 1 move F.  The solution is F F2, and that should
+be simplified to F'.
+
 There's a pattern database (GoalG3_Permate_Corners) that could be refactored to
 use the new CornerPatternDatabase class.  As part of that get rid of the
 corner_perms.txt file.
