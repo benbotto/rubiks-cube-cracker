@@ -11,10 +11,9 @@
 #include "../../../OpenGLSeed/View/WorldWindow.h"
 #include "../../../Model/Goal/Korf/CornerDatabaseGoal.h"
 #include "../../../Model/Goal/Korf/EdgeDatabaseGoal.h"
-#include "../../../Model/PatternDatabase/PatternDatabase.h"
-#include "../../../Model/PatternDatabase/CornerPatternDatabase.h"
-#include "../../../Model/PatternDatabase/EdgeG1PatternDatabase.h"
-#include "../../../Model/PatternDatabase/EdgeG2PatternDatabase.h"
+#include "../../../Model/PatternDatabase/Korf/CornerPatternDatabase.h"
+#include "../../../Model/PatternDatabase/Korf/EdgeG1PatternDatabase.h"
+#include "../../../Model/PatternDatabase/Korf/EdgeG2PatternDatabase.h"
 #include "../../../Util/ThreadPool.h"
 #include "../../Searcher/BreadthFirstCubeSearcher.h"
 #include <iostream>

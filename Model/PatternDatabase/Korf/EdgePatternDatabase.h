@@ -1,8 +1,8 @@
 #ifndef _BUSYBIN_EDGE_PATTERN_DATABASE_
 #define _BUSYBIN_EDGE_PATTERN_DATABASE_
 
-#include "../RubiksCubeModel.h"
-#include "PatternDatabase.h"
+#include "../../RubiksCubeModel.h"
+#include "../PatternDatabase.h"
 #include <cstdint>
 
 namespace busybin
