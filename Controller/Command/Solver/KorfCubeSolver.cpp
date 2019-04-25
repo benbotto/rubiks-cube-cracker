@@ -34,6 +34,12 @@ namespace busybin
     // The pattern databases will be created using breadth first search.
     BreadthFirstCubeSearcher bfSearcher;
 
+    // A copy of the underlying cube model.
+    RubiksCubeModel cubeModel = this->pCube->getRawModel();
+
+    // The twist store has all 18 face twists.
+    ModelTwistStore modelTwistStore(cubeModel);
+
     this->setSolving(true);
 
     cout << "Initializing pattern databases for KorfCubeSolver." << endl;
@@ -42,17 +48,11 @@ namespace busybin
     // cube, and one for the other 6 edges.  The searcher takes a reference to
     // the cube model and finds a goal.
     //
-    // Note that when the goal is achieved, the cube is not restored to its
-    // original state, hence the new MoveStore in each block.
-    //
     // The seacher uses about 5GB of memory; the internal queue is quite large,
     // especially while indexing the corner database.
-
     if (!this->cornerDB.fromFile("./Data/corner.pdb"))
     {
       // First create the corner database.
-      RubiksCubeModel    cubeModel = this->pCube->getRawModel();
-      ModelTwistStore    modelTwistStore(cubeModel);
       CornerDatabaseGoal cornerGoal(&this->cornerDB);
 
       cout << "Goal 1: " << cornerGoal.getDescription() << endl;
@@ -64,8 +64,6 @@ namespace busybin
     if (!this->edgeG1DB.fromFile("./Data/edgeG1.pdb"))
     {
       // Create the first edge database.
-      RubiksCubeModel  cubeModel = this->pCube->getRawModel();
-      ModelTwistStore  modelTwistStore(cubeModel);
       EdgeDatabaseGoal edgeG1Goal(&this->edgeG1DB);
 
       cout << "Goal 2: " << edgeG1Goal.getDescription() << endl;
@@ -77,8 +75,6 @@ namespace busybin
     if (!this->edgeG2DB.fromFile("./Data/edgeG2.pdb"))
     {
       // Create the second edge database.
-      RubiksCubeModel  cubeModel = this->pCube->getRawModel();
-      ModelTwistStore  modelTwistStore(cubeModel);
       EdgeDatabaseGoal edgeG2Goal(&this->edgeG2DB);
 
       cout << "Goal 3: " << edgeG2Goal.getDescription() << endl;
