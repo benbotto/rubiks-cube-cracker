@@ -54,24 +54,31 @@ namespace busybin
   uint8_t IDACubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
     uint8_t bound, vector<string>& moves, bool& solved)
   {
+    typedef priority_queue<PrioritizedMove, vector<PrioritizedMove>,
+      greater<PrioritizedMove> > moveQueue_t;
+
     uint8_t numMoves = moveStore.getNumMoves();
 
+    // Estimated number of moves to the solved state from here.
+    uint8_t estMovesFromHere = this->pPatternDB->getNumMoves(cube);
+
     // Estimated number of moves from the root to the solved state through this scramble.
-    uint8_t estMoves = moves.size() + this->pPatternDB->getNumMoves(cube);
+    uint8_t estMovesFromRoot = moves.size() + estMovesFromHere;
 
     // This holds the next bound, which is the minimum cost that's greater than
     // the current bound.
     uint8_t min = 0xFF;
 
     // This is used to order the moves by priority.
-    priority_queue<PrioritizedMove, vector<PrioritizedMove>, greater<PrioritizedMove> > successors;
+    moveQueue_t successors;
 
-    if (estMoves > bound)
-      return estMoves;
+    if (estMovesFromRoot > bound)
+      return estMovesFromRoot;
 
-    if (goal.isSatisfied(cube)) {
+    // This assumes that the heuristic returns 0 cost when the cube is solved.
+    if (estMovesFromHere == 0 && goal.isSatisfied(cube)) {
       solved = true;
-      return estMoves;
+      return estMovesFromRoot;
     }
 
     // Set up the successor nodes in order.
