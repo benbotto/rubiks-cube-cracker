@@ -35,15 +35,15 @@ namespace busybin
   public:
     PatternDatabase(const size_t size);
     virtual uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const = 0;
-    bool setNumMoves(const RubiksCubeModel& cube, const uchar numMoves);
-    bool setNumMoves(const uint32_t ind, const uchar numMoves);
-    uchar getNumMoves(const RubiksCubeModel& cube) const;
-    uchar getNumMoves(const uint32_t ind) const;
-    size_t getSize() const;
-    size_t getNumItems() const;
-    bool isFull() const;
-    void toFile(const string& filePath) const;
-    bool fromFile(const string& filePath);
+    virtual bool setNumMoves(const RubiksCubeModel& cube, const uchar numMoves);
+    virtual bool setNumMoves(const uint32_t ind, const uchar numMoves);
+    virtual uchar getNumMoves(const RubiksCubeModel& cube) const;
+    virtual uchar getNumMoves(const uint32_t ind) const;
+    virtual size_t getSize() const;
+    virtual size_t getNumItems() const;
+    virtual bool isFull() const;
+    virtual void toFile(const string& filePath) const;
+    virtual bool fromFile(const string& filePath);
 
     /**
      * Given a permutation of cubies, return the Lehmer code.  This is used
