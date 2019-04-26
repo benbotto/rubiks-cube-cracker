@@ -11,7 +11,11 @@ namespace busybin
    */
   KorfCubeSolver::KorfCubeSolver(World* pWorld, WorldWindow* pWorldWnd,
     CubeMover* pMover, ThreadPool* pThreadPool) :
-    CubeSolver(pWorld, pWorldWnd, pMover, pThreadPool, GLFW_KEY_F2)
+    CubeSolver(pWorld, pWorldWnd, pMover, pThreadPool, GLFW_KEY_F2),
+    cornerDB(),
+    edgeG1DB(),
+    edgeG2DB(),
+    korfDB(&cornerDB, &edgeG1DB, &edgeG2DB)
   {
   }
 
@@ -93,7 +97,47 @@ namespace busybin
    */
   void KorfCubeSolver::solveCube()
   {
+    RubiksCubeView  cubeView;
+    RubiksCubeModel cubeModel = this->pCube->getRawModel();
+    vector<string>  allMoves;
+    vector<string>  goalMoves;
+
     cout << "Solving with Korf method." << endl;
+
+    cout << "Initial cube state." << endl;
+    cubeView.render(cubeModel);
+
+    // First goal: orient the cube with red up and white front.
+    BreadthFirstCubeSearcher bfsSearcher;
+    OrientGoal               orientGoal;
+    ModelRotationStore       modelRotStore(cubeModel);
+
+    goalMoves = bfsSearcher.findGoal(orientGoal, cubeModel, modelRotStore);
+
+    this->processGoalMoves(orientGoal, modelRotStore, 1, allMoves, goalMoves);
+
+    // Second goal: solve the cube.
+    IDACubeSearcher idaSearcher(&this->korfDB);
+    SolveGoal       solveGoal;
+    ModelTwistStore modelTwistStore(cubeModel);
+
+    goalMoves = idaSearcher.findGoal(solveGoal, cubeModel, modelTwistStore);
+    this->processGoalMoves(solveGoal, modelTwistStore, 2, allMoves, goalMoves);
+
+    // Print the moves.
+    cout << "\n\nSolved the cube in " << allMoves.size() << " moves.\n";
+
+    for (string move : allMoves)
+      cout << move << ' ';
+    cout << endl;
+
+    // Display the cube model.
+    cout << "Resulting cube.\n";
+    cubeView.render(cubeModel);
+
+    // Done solving - re-enable movement.  (Note that solving is set to true in
+    // the parent class on keypress.)
+    this->setSolving(false);
   }
 }
 
