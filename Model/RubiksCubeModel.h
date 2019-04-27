@@ -99,6 +99,9 @@ namespace busybin
 
     COLOR get(FACE face, unsigned row, unsigned col) const;
     uint64_t getFace(FACE face) const;
+
+    // Compare this cube to another.
+    bool operator<(const RubiksCubeModel& rhs) const;
     
     // Face moves.
     RubiksCubeModel& u();
