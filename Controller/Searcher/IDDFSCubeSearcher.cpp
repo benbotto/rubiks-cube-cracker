@@ -57,6 +57,9 @@ namespace busybin
         moves.push_back(move);
         moveStore.getMoveFunc(move)();
 
+        // Index the cube state (some goals store a database).
+        goal.index(cube, depth + 1);
+
         // If this move satisfies the goal break out of the loop.
         if (this->findGoal(goal, cube, moveStore, depth + 1, maxDepth, moves))
           solved = true;
