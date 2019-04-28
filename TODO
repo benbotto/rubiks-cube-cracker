@@ -1,3 +1,29 @@
+Try furu'r'f'.  Seems like the initial bound estimate was 7, but it should be 6.
+Now furu'r' edgeG2 shows 6, and furur shows 7.
+furur solves in 9 moves? edgeG2Moves shows 6, not 5?
+fururf doesn't solve by bound 14?  edgeG2Moves shows 0.
+moving the back (B), edgeG2Moves shows 0.  Should be 1.  (Check, but I think I was wrong.)
+fdf edgeG1 shows 5.
+If I stash the current changes, there's a different result, but the
+edgeG2Database at least seems to be returning the wrong number of moves.  There
+are some backup IDA searchers in ~/temp/ (I was making memory optimizations).
+
+In IDA*, keep a set of seen cube states and check it when making the successor queue.
+IDDFS could use this set, too.
+
+Comment edge databases with the new cube groups (header).
+
+Revert CMakeList (debug and -g).
+
+Git rid of depth in IDDFS searcher.  Use moves.size().
+
+IDDFS and IDA* should call index.
+
+
+Try Thistlethwaite with the IDA* searcher and the Korf databases.  To do so,
+though, the assumption that the heuristic will return 0 will have to be
+removed.
+
 There are some typos in the comments in the searchers (acieve and cust).
 
 Try solving the scramble with 1 move F.  The solution is F F2, and that should
