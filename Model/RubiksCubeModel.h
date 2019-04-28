@@ -11,6 +11,8 @@ using std::swap;
 #include <iterator>
 using std::advance;
 #include <cstdint>
+#include <cstring>
+using std::memcpy;
 
 namespace busybin
 {
@@ -96,6 +98,7 @@ namespace busybin
 
   public:
     RubiksCubeModel();
+    RubiksCubeModel(const RubiksCubeModel& cube);
 
     COLOR get(FACE face, unsigned row, unsigned col) const;
     uint64_t getFace(FACE face) const;
@@ -103,7 +106,10 @@ namespace busybin
     // Compare this cube to another.
     bool operator<(const RubiksCubeModel& rhs) const;
     bool operator==(const RubiksCubeModel& rhs) const;
-    
+
+    // Copy.
+    RubiksCubeModel& operator=(const RubiksCubeModel rhs);
+
     // Face moves.
     RubiksCubeModel& u();
     RubiksCubeModel& uPrime();

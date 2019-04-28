@@ -46,6 +46,30 @@ namespace busybin
   }
 
   /**
+   * Copy from another cube.
+   */
+  RubiksCubeModel::RubiksCubeModel(const RubiksCubeModel& cube)
+  {
+    memcpy(reinterpret_cast<void*>(&this->cube[0]),
+      reinterpret_cast<const void*>(&cube.cube[0]), 48);
+    memcpy(reinterpret_cast<void*>(&this->centers[0]),
+      reinterpret_cast<const void*>(&cube.centers[0]), 6);
+  }
+
+  /**
+   * Same as above, but using the equals operator.
+   */
+  RubiksCubeModel& RubiksCubeModel::operator=(const RubiksCubeModel rhs)
+  {
+    memcpy(reinterpret_cast<void*>(&this->cube[0]),
+      reinterpret_cast<const void*>(&rhs.cube[0]), 48);
+    memcpy(reinterpret_cast<void*>(&this->centers[0]),
+      reinterpret_cast<const void*>(&rhs.centers[0]), 6);
+
+    return *this;
+  }
+
+  /**
    * Roll an array right 2 places, and wrap around.  This is a 90-degree
    * rotation of a face.
    *
