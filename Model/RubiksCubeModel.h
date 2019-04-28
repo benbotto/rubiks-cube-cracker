@@ -102,6 +102,7 @@ namespace busybin
 
     // Compare this cube to another.
     bool operator<(const RubiksCubeModel& rhs) const;
+    bool operator==(const RubiksCubeModel& rhs) const;
     
     // Face moves.
     RubiksCubeModel& u();

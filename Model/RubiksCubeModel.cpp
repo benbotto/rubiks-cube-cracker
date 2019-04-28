@@ -265,6 +265,18 @@ namespace busybin
   }
 
   /**
+   * Compare two cubes (integer comparison of each side).
+   */
+  bool RubiksCubeModel::operator==(const RubiksCubeModel& rhs) const
+  {
+    for (uchar i = 0; i < 6; ++i)
+      if (this->getFace((FACE)i) != rhs.getFace((FACE)i))
+        return false;
+
+    return true;
+  }
+
+  /**
    * Move the up face clockwise.
    */
   RubiksCubeModel& RubiksCubeModel::u()
