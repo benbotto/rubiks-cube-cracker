@@ -1,7 +1,7 @@
 #ifndef _BUSYBIN_PATTERN_DATABASE_INDEXER_
 #define _BUSYBIN_PATTERN_DATABASE_INDEXER_
 
-#include "CubeSearcher.h"
+#include "MovePruner.h"
 #include "../../Model/RubiksCubeModel.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/MoveStore/MoveStore.h"
@@ -20,9 +20,9 @@ using std::endl;
 namespace busybin
 {
   /**
-   * A searcher that is specialized for indexing pattern databases.
+   * Used to search the cube and index a pattern database.
    */
-  class PatternDatabaseIndexer : public CubeSearcher
+  class PatternDatabaseIndexer
   {
     struct Node
     {
@@ -32,7 +32,7 @@ namespace busybin
     };
 
   public:
-    vector<string> findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore);
+    void findGoal(Goal& goal, RubiksCubeModel& cube);
   };
 }
 

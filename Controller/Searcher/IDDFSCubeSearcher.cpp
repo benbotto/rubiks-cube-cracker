@@ -43,6 +43,9 @@ namespace busybin
     bool     solved   = false;
     unsigned numMoves = moveStore.getNumMoves();
 
+    // Index the cube state (some goals store a database).
+    goal.index(cube, depth + 1);
+
     // Check if the goal is satisfied.
     if (depth == maxDepth)
       return goal.isSatisfied(cube);
@@ -51,14 +54,11 @@ namespace busybin
     {
       string move = moveStore.getMove(i);
 
-      if (!this->prune(move, moves))
+      if (!this->pruner.prune(move, moves))
       {
         // Apply the next move.
         moves.push_back(move);
         moveStore.getMoveFunc(move)();
-
-        // Index the cube state (some goals store a database).
-        goal.index(cube, depth + 1);
 
         // If this move satisfies the goal break out of the loop.
         if (this->findGoal(goal, cube, moveStore, depth + 1, maxDepth, moves))

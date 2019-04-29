@@ -7,14 +7,13 @@ namespace busybin
    * to acieve goal.  This is basically a non-recursive IDDFS search.
    * @param goal The goal to achieve (isSatisfied is called on the goal).
    * @param solvedCube A solved cube instance.
-   * @param ignored Ignored.
    */
-  vector<string> PatternDatabaseIndexer::findGoal(Goal& goal,
-    RubiksCubeModel& solvedCube, MoveStore& moveStore)
+  void PatternDatabaseIndexer::findGoal(Goal& goal, RubiksCubeModel& solvedCube)
   {
     typedef RubiksCubeModel::MOVE MOVE;
 
     AutoTimer   timer;
+    MovePruner  pruner;
     unsigned    curDepth = 0;
     unsigned    indCount = 1;
     stack<Node> nodeStack;
@@ -43,7 +42,7 @@ namespace busybin
 
       for (uint8_t i = 0; i < 18; ++i)
       {
-        if (curNode.depth == 0 || !this->prune((MOVE)i, (MOVE)curNode.moveInd))
+        if (curNode.depth == 0 || !pruner.prune((MOVE)i, (MOVE)curNode.moveInd))
         {
           RubiksCubeModel cubeCopy(curNode.cube);
           uint8_t         cubeCopyDepth = (uint8_t)(curNode.depth + 1);
@@ -62,10 +61,6 @@ namespace busybin
         }
       }
     }
-
-    // Return is nonsensical.
-    vector<string> moves;
-    return moves;
   }
 }
 

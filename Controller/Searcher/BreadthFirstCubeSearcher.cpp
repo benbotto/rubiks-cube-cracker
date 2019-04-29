@@ -95,7 +95,7 @@ namespace busybin
       {
         string move = moveStore.getMove(moveInd);
 
-        if (!this->prune(move, moves))
+        if (!this->pruner.prune(move, moves))
         {
           // Make the move and see if the cube state has been indexed at an
           // earlier depth.

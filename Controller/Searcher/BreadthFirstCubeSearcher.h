@@ -2,6 +2,7 @@
 #define _BUSYBIN_BREADTH_FIRST_CUBE_SEARCHER_H_
 
 #include "CubeSearcher.h"
+#include "MovePruner.h"
 #include "../../Model/RubiksCubeModel.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/MoveStore/MoveStore.h"

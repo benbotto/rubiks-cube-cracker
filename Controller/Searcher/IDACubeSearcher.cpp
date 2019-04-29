@@ -86,7 +86,7 @@ namespace busybin
     {
       string move = moveStore.getMove(i);
 
-      if (!this->prune(move, moves))
+      if (!this->pruner.prune(move, moves))
       {
         // Apply the next move.
         moveStore.getMoveFunc(move)();
