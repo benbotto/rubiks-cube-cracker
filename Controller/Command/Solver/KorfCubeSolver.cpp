@@ -36,13 +36,10 @@ namespace busybin
   void KorfCubeSolver::indexDatabases()
   {
     // The pattern databases will be created using breadth first search.
-    BreadthFirstCubeSearcher bfSearcher;
+    PatternDatabaseIndexer indexer;
 
     // A copy of the underlying cube model.
     RubiksCubeModel cubeModel = this->pCube->getRawModel();
-
-    // The twist store has all 18 face twists.
-    ModelTwistStore modelTwistStore(cubeModel);
 
     this->setSolving(true);
 
@@ -61,7 +58,7 @@ namespace busybin
 
       cout << "Goal 1: " << cornerGoal.getDescription() << endl;
 
-      bfSearcher.findGoal(cornerGoal, cubeModel, modelTwistStore);
+      indexer.findGoal(cornerGoal, cubeModel);
       this->cornerDB.toFile("./Data/corner.pdb");
     }
 
@@ -72,7 +69,7 @@ namespace busybin
 
       cout << "Goal 2: " << edgeG1Goal.getDescription() << endl;
 
-      bfSearcher.findGoal(edgeG1Goal, cubeModel, modelTwistStore);
+      indexer.findGoal(edgeG1Goal, cubeModel);
       this->edgeG1DB.toFile("./Data/edgeG1.pdb");
     }
 
@@ -83,7 +80,7 @@ namespace busybin
 
       cout << "Goal 3: " << edgeG2Goal.getDescription() << endl;
 
-      bfSearcher.findGoal(edgeG2Goal, cubeModel, modelTwistStore);
+      indexer.findGoal(edgeG2Goal, cubeModel);
       this->edgeG2DB.toFile("./Data/edgeG2.pdb");
     }
 

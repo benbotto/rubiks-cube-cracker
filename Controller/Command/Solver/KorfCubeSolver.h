@@ -20,6 +20,7 @@
 #include "../../../Model/PatternDatabase/Korf/KorfPatternDatabase.h"
 #include "../../../Util/ThreadPool.h"
 #include "../../Searcher/BreadthFirstCubeSearcher.h"
+#include "../../Searcher/PatternDatabaseIndexer.h"
 #include "../../Searcher/IDACubeSearcher.h"
 #include <iostream>
 using std::cout;
