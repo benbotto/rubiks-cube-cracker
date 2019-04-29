@@ -11,7 +11,7 @@ set(SRC
   "./Controller/Command/Solver/KorfCubeSolver.cpp"
   "./Controller/RubiksCubeController.cpp"
   "./Controller/GL/Program/RubiksCubeProgram.cpp"
-  "./Controller/Searcher/CubeSearcher.cpp"
+  "./Controller/Searcher/MovePruner.cpp"
   "./Controller/Searcher/IDDFSCubeSearcher.cpp"
   "./Controller/Searcher/IDACubeSearcher.cpp"
   "./Controller/Searcher/BreadthFirstCubeSearcher.cpp"

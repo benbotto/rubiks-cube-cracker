@@ -1,6 +1,7 @@
 #ifndef _BUSYBIN_CUBE_SEARCHER_H_
 #define _BUSYBIN_CUBE_SEARCHER_H_
 
+#include "./MovePruner.h"
 #include "../../Model/RubiksCubeModel.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/MoveStore/MoveStore.h"
@@ -17,6 +18,9 @@ namespace busybin
    */
   class CubeSearcher
   {
+  protected:
+    MovePruner pruner;
+
   public:
     // Find goal using moveStore and return the list of moves required to
     // achieve goal.
@@ -24,12 +28,6 @@ namespace busybin
       Goal& goal,
       RubiksCubeModel& cube,
       MoveStore& moveStore) = 0;
-
-    // Return true if move should be pruned (e.g. not performed and pruned
-    // from the search tree).
-    virtual bool prune(const string& move, const vector<string>& moves) const;
-    virtual bool prune(const string& move, const string& lastMove) const;
-    virtual bool prune(RubiksCubeModel::MOVE move, RubiksCubeModel::MOVE lastMove) const;
   };
 }
 
