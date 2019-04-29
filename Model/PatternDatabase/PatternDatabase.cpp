@@ -21,11 +21,14 @@ namespace busybin
    */
   bool PatternDatabase::setNumMoves(const uint32_t ind, const uchar numMoves) 
   {
+    uchar oldNumMoves = this->getNumMoves(ind);
+
     if (this->getNumMoves(ind) == 0xF)
-    {
-      this->database.set(ind, numMoves);
       ++this->numItems;
 
+    if (oldNumMoves > numMoves)
+    {
+      this->database.set(ind, numMoves);
       return true;
     }
 
