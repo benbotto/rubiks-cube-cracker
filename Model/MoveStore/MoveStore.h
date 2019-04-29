@@ -40,6 +40,9 @@ namespace busybin
     bool isValidMove(const string& move) const;
     moveFunc_t& getMoveFunc(const string& move);
     moveFunc_t& getInverseMoveFunc(const string& move);
+
+    virtual void move(uint8_t ind);
+    virtual void invert(uint8_t ind);
   };
 }
 

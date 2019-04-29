@@ -77,5 +77,23 @@ namespace busybin
   {
     return this->getMoveMap().count(move) == 1;
   }
+
+  /**
+   * Move using an index.
+   */
+  void MoveStore::move(uint8_t ind)
+  {
+    string move = this->getMove(ind);
+    this->getMoveFunc(move)();
+  }
+
+  /**
+   * Undo a move.
+   */
+  void MoveStore::invert(uint8_t ind)
+  {
+    string move = this->getMove(ind);
+    this->getInverseMoveFunc(move)();
+  }
 }
 
