@@ -33,16 +33,10 @@ namespace busybin
     if (move.at(0) == lastMove.at(0)) return true;
 
     // Commutative moves.  For example, F B is the same as B F.
-    if (move == "F"  && lastMove == "B")  return true;
-    if (move == "F2" && lastMove == "B2") return true;
-    if (move == "F'" && lastMove == "B'") return true;
-    if (move == "L"  && lastMove == "R")  return true;
-    if (move == "L2" && lastMove == "R2") return true;
-    if (move == "L'" && lastMove == "R'") return true;
-    if (move == "U"  && lastMove == "D")  return true;
-    if (move == "U2" && lastMove == "D2") return true;
-    if (move == "U'" && lastMove == "D'") return true;
-    
+    if (move.at(0) == 'F' && lastMove.at(0) == 'B') return true;
+    if (move.at(0) == 'L' && lastMove.at(0) == 'R') return true;
+    if (move.at(0) == 'U' && lastMove.at(0) == 'D') return true;
+
     return false;
   }
 
@@ -55,6 +49,7 @@ namespace busybin
   {
     typedef RubiksCubeModel::MOVE M;
 
+    // Two twists of the same face.
     if ((move == M::L || move == M::LPRIME || move == M::L2) &&
         (lastMove == M::L || lastMove == M::LPRIME || lastMove == M::L2))
       return true;
@@ -79,15 +74,18 @@ namespace busybin
         (lastMove == M::B || lastMove == M::BPRIME || lastMove == M::B2))
       return true;
 
-    if (move == M::F      && lastMove == M::B)      return true;
-    if (move == M::F2     && lastMove == M::B2)     return true;
-    if (move == M::FPRIME && lastMove == M::BPRIME) return true;
-    if (move == M::L      && lastMove == M::R)      return true;
-    if (move == M::L2     && lastMove == M::R2)     return true;
-    if (move == M::LPRIME && lastMove == M::RPRIME) return true;
-    if (move == M::U      && lastMove == M::D)      return true;
-    if (move == M::U2     && lastMove == M::D2)     return true;
-    if (move == M::UPRIME && lastMove == M::DPRIME) return true;
+    // Commutative moves.
+    if ((move == M::F || move == M::FPRIME || move == M::F2) &&
+        (lastMove == M::B || lastMove == M::BPRIME || lastMove == M::B2))
+      return true;
+
+    if ((move == M::L || move == M::LPRIME || move == M::L2) &&
+        (lastMove == M::R || lastMove == M::RPRIME || lastMove == M::R2))
+      return true;
+
+    if ((move == M::U || move == M::UPRIME || move == M::U2) &&
+        (lastMove == M::D || lastMove == M::DPRIME || lastMove == M::D2))
+      return true;
 
     return false;
   }
