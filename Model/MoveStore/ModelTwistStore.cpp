@@ -40,7 +40,7 @@ namespace busybin
    * to the corresponding move function in the cube passed
    * to the constructor.
    */
-  ModelTwistStore::moveFuncMap_t& ModelTwistStore::getMoveMap()
+  MoveStore::moveFuncMap_t& ModelTwistStore::getMoveMap()
   {
     return this->moveMap;
   }
@@ -48,7 +48,7 @@ namespace busybin
   /**
    * Constant version of the above.
    */
-  const ModelTwistStore::moveFuncMap_t& ModelTwistStore::getMoveMap() const
+  const MoveStore::moveFuncMap_t& ModelTwistStore::getMoveMap() const
   {
     return this->moveMap;
   }
