@@ -15,6 +15,7 @@ set(SRC
   "./Controller/Searcher/IDDFSCubeSearcher.cpp"
   "./Controller/Searcher/IDACubeSearcher.cpp"
   "./Controller/Searcher/BreadthFirstCubeSearcher.cpp"
+  "./Controller/Searcher/PatternDatabaseIndexer.cpp"
   "./View/RubiksCubeView.cpp"
   "./Util/RubiksCubeException.cpp"
   "./Util/Random.cpp"
