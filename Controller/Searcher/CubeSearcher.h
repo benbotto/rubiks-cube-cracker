@@ -28,6 +28,8 @@ namespace busybin
     // Return true if move should be pruned (e.g. not performed and pruned
     // from the search tree).
     virtual bool prune(const string& move, const vector<string>& moves) const;
+    virtual bool prune(const string& move, const string& lastMove) const;
+    virtual bool prune(RubiksCubeModel::MOVE move, RubiksCubeModel::MOVE lastMove) const;
   };
 }
 
