@@ -71,6 +71,18 @@ namespace busybin
   public:
     enum class FACE  : uchar {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
     enum class COLOR : uchar {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
+    enum class MOVE  : uchar
+    {
+      L, LPRIME, L2,
+      R, RPRIME, R2,
+      U, UPRIME, U2,
+      D, DPRIME, D2,
+      F, FPRIME, F2,
+      B, BPRIME, B2,
+      Y, YPRIME, Y2,
+      X, XPRIME, X2,
+      Z, ZPRIME, Z2
+    };
 
   private:
     array<COLOR, 48> cube;
@@ -109,6 +121,9 @@ namespace busybin
 
     // Copy.
     RubiksCubeModel& operator=(const RubiksCubeModel rhs);
+
+    RubiksCubeModel& move(MOVE ind);
+    RubiksCubeModel& invert(MOVE ind);
 
     // Face moves.
     RubiksCubeModel& u();
