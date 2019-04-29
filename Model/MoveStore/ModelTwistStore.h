@@ -12,6 +12,7 @@ namespace busybin
   class ModelTwistStore : public TwistStore
   {
     MoveStore::moveFuncMap_t moveMap;
+    RubiksCubeModel* pCube;
 
   protected:
     MoveStore::moveFuncMap_t& getMoveMap();
@@ -19,6 +20,8 @@ namespace busybin
   public:
     ModelTwistStore(RubiksCubeModel& cube);
     const MoveStore::moveFuncMap_t& getMoveMap() const;
+    void move(uint8_t ind);
+    void invert(uint8_t ind);
   };
 }
 

@@ -7,7 +7,7 @@ namespace busybin
    * @param cube A RubiksCubeModel reference for storing the move
    *        string->function map.
    */
-  ModelTwistStore::ModelTwistStore(RubiksCubeModel& cube)
+  ModelTwistStore::ModelTwistStore(RubiksCubeModel& cube): pCube(&cube)
   {
     // Set up the move map.
     this->moveMap["L"]  = bind(&RubiksCubeModel::l,      &cube);
@@ -40,7 +40,7 @@ namespace busybin
    * to the corresponding move function in the cube passed
    * to the constructor.
    */
-  MoveStore::moveFuncMap_t& ModelTwistStore::getMoveMap()
+  ModelTwistStore::moveFuncMap_t& ModelTwistStore::getMoveMap()
   {
     return this->moveMap;
   }
@@ -48,9 +48,26 @@ namespace busybin
   /**
    * Constant version of the above.
    */
-  const MoveStore::moveFuncMap_t& ModelTwistStore::getMoveMap() const
+  const ModelTwistStore::moveFuncMap_t& ModelTwistStore::getMoveMap() const
   {
     return this->moveMap;
+  }
+
+  /**
+   * Move using an index.
+   */
+  void ModelTwistStore::move(uint8_t ind)
+  {
+    this->pCube->move((RubiksCubeModel::MOVE)ind);
+  }
+
+  /**
+   * Undo a move.
+   */
+  void ModelTwistStore::invert(uint8_t ind)
+  {
+    string move = this->getMove(ind);
+    this->getInverseMoveFunc(move)();
   }
 }
 
