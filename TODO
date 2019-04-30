@@ -11,17 +11,9 @@ are some backup IDA searchers in ~/temp/ (I was making memory optimizations).
 In IDA*, keep a set of seen cube states and check it when making the successor queue.
 IDDFS could use this set, too.
 
-Comment edge databases with the new cube groups (header).
-
-Revert CMakeList (debug and -g).
-
 Git rid of depth in IDDFS searcher.  Use moves.size().
 
 IDDFS and IDA* should call index.
-
-Refactor all model twist stores to use move/inverse in cube.
-
-Remove depth from IDDFS searcher, and refactor to use move(ind).
 
 Try Thistlethwaite with the IDA* searcher and the Korf databases.  To do so,
 though, the assumption that the heuristic will return 0 will have to be
