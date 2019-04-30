@@ -66,8 +66,7 @@ namespace busybin
    */
   void ModelTwistStore::invert(uint8_t ind)
   {
-    string move = this->getMove(ind);
-    this->getInverseMoveFunc(move)();
+    this->pCube->invert((RubiksCubeModel::MOVE)ind);
   }
 }
 

@@ -8,16 +8,15 @@ namespace busybin
    *        string->function map.
    */
   ModelG1TwistStore::ModelG1TwistStore(RubiksCubeModel& cube) :
-    TwistStore(vector<string>({{"L", "R", "U2", "D2", "F", "B"}}))
+    TwistStore(vector<string>({{"L", "R", "U2", "D2", "F", "B"}})),
+    pCube(&cube)
   {
     // Set up the move map.
     this->moveMap["L"]  = bind(&RubiksCubeModel::l,      &cube);
     this->moveMap["L'"] = bind(&RubiksCubeModel::lPrime, &cube);
-    this->moveMap["L2"] = bind(&RubiksCubeModel::l2,     &cube);
 
     this->moveMap["R"]  = bind(&RubiksCubeModel::r,      &cube);
     this->moveMap["R'"] = bind(&RubiksCubeModel::rPrime, &cube);
-    this->moveMap["R2"] = bind(&RubiksCubeModel::r2,     &cube);
 
     this->moveMap["U2"] = bind(&RubiksCubeModel::u2,     &cube);
 
@@ -25,11 +24,16 @@ namespace busybin
 
     this->moveMap["F"]  = bind(&RubiksCubeModel::f,      &cube);
     this->moveMap["F'"] = bind(&RubiksCubeModel::fPrime, &cube);
-    this->moveMap["F2"] = bind(&RubiksCubeModel::f2,     &cube);
 
     this->moveMap["B"]  = bind(&RubiksCubeModel::b,      &cube);
     this->moveMap["B'"] = bind(&RubiksCubeModel::bPrime, &cube);
-    this->moveMap["B2"] = bind(&RubiksCubeModel::b2,     &cube);
+
+    this->moveInds[0] = RubiksCubeModel::MOVE::L;
+    this->moveInds[1] = RubiksCubeModel::MOVE::R;
+    this->moveInds[2] = RubiksCubeModel::MOVE::U2;
+    this->moveInds[3] = RubiksCubeModel::MOVE::D2;
+    this->moveInds[4] = RubiksCubeModel::MOVE::F;
+    this->moveInds[5] = RubiksCubeModel::MOVE::B;
   }
 
   /**
@@ -48,6 +52,22 @@ namespace busybin
   const MoveStore::moveFuncMap_t& ModelG1TwistStore::getMoveMap() const
   {
     return this->moveMap;
+  }
+
+  /**
+   * Move using an index.
+   */
+  void ModelG1TwistStore::move(uint8_t ind)
+  {
+    this->pCube->move(this->moveInds.at(ind));
+  }
+
+  /**
+   * Undo a move.
+   */
+  void ModelG1TwistStore::invert(uint8_t ind)
+  {
+    this->pCube->invert(this->moveInds.at(ind));
   }
 }
 

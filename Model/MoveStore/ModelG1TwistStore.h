@@ -3,6 +3,8 @@
 
 #include "TwistStore.h"
 #include "../RubiksCubeModel.h"
+#include <array>
+using std::array;
 
 namespace busybin
 {
@@ -13,6 +15,8 @@ namespace busybin
   class ModelG1TwistStore : public TwistStore
   {
     MoveStore::moveFuncMap_t moveMap;
+    RubiksCubeModel* pCube;
+    array<RubiksCubeModel::MOVE, 14> moveInds;
 
   protected:
     MoveStore::moveFuncMap_t& getMoveMap();
@@ -20,6 +24,9 @@ namespace busybin
   public:
     ModelG1TwistStore(RubiksCubeModel& cube);
     const MoveStore::moveFuncMap_t& getMoveMap() const;
+
+    void move(uint8_t ind);
+    void invert(uint8_t ind);
   };
 }
 

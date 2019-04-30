@@ -7,7 +7,7 @@ namespace busybin
    * @param cube A RubiksCubeModel reference for storing the move
    *        string->function map.
    */
-  ModelRotationStore::ModelRotationStore(RubiksCubeModel& cube)
+  ModelRotationStore::ModelRotationStore(RubiksCubeModel& cube) : pCube(&cube)
   {
     // Set up the rotation map.
     this->moveMap["X"]  = bind(&RubiksCubeModel::x,      &cube);
@@ -21,6 +21,16 @@ namespace busybin
     this->moveMap["Z"]  = bind(&RubiksCubeModel::z,      &cube);
     this->moveMap["Z'"] = bind(&RubiksCubeModel::zPrime, &cube);
     this->moveMap["Z2"] = bind(&RubiksCubeModel::z2,     &cube);
+
+    this->moveInds[0] = RubiksCubeModel::MOVE::X;
+    this->moveInds[1] = RubiksCubeModel::MOVE::XPRIME;
+    this->moveInds[2] = RubiksCubeModel::MOVE::X2;
+    this->moveInds[3] = RubiksCubeModel::MOVE::Y;
+    this->moveInds[4] = RubiksCubeModel::MOVE::YPRIME;
+    this->moveInds[5] = RubiksCubeModel::MOVE::Y2;
+    this->moveInds[6] = RubiksCubeModel::MOVE::Z;
+    this->moveInds[7] = RubiksCubeModel::MOVE::ZPRIME;
+    this->moveInds[8] = RubiksCubeModel::MOVE::Z2;
   }
 
   /**
@@ -39,6 +49,22 @@ namespace busybin
   const MoveStore::moveFuncMap_t& ModelRotationStore::getMoveMap() const
   {
     return this->moveMap;
+  }
+
+  /**
+   * Move using an index.
+   */
+  void ModelRotationStore::move(uint8_t ind)
+  {
+    this->pCube->move(this->moveInds.at(ind));
+  }
+
+  /**
+   * Undo a move.
+   */
+  void ModelRotationStore::invert(uint8_t ind)
+  {
+    this->pCube->invert(this->moveInds.at(ind));
   }
 }
 
