@@ -40,17 +40,19 @@ namespace busybin
   bool IDDFSCubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
     unsigned depth, unsigned maxDepth, vector<string>& moves)
   {
-    bool     solved   = false;
-    unsigned numMoves = moveStore.getNumMoves();
-
-    // Index the cube state (some goals store a database).
-    goal.index(cube, depth + 1);
+    bool    solved   = false;
+    uint8_t numMoves = moveStore.getNumMoves();
 
     // Check if the goal is satisfied.
     if (depth == maxDepth)
-      return goal.isSatisfied(cube);
+    {
+      // Index the cube state (some goals store a database).
+      goal.index(cube, depth);
 
-    for (unsigned i = 0; i < numMoves && !solved; ++i)
+      return goal.isSatisfied(cube);
+    }
+
+    for (uint8_t i = 0; i < numMoves && !solved; ++i)
     {
       string move = moveStore.getMove(i);
 
@@ -58,7 +60,7 @@ namespace busybin
       {
         // Apply the next move.
         moves.push_back(move);
-        moveStore.getMoveFunc(move)();
+        moveStore.move(i);
 
         // If this move satisfies the goal break out of the loop.
         if (this->findGoal(goal, cube, moveStore, depth + 1, maxDepth, moves))
@@ -67,7 +69,7 @@ namespace busybin
           moves.pop_back();
 
         // Revert the move.
-        moveStore.getInverseMoveFunc(move)();
+        moveStore.invert(i); // WTF?  Why doesn't this work?
       }
     }
 
