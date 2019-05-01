@@ -16,7 +16,7 @@ namespace busybin
   {
     MoveStore::moveFuncMap_t moveMap;
     RubiksCubeModel* pCube;
-    array<RubiksCubeModel::MOVE, 10> moveInds;
+    array<RubiksCubeModel::MOVE, 6> moveInds;
 
   protected:
     MoveStore::moveFuncMap_t& getMoveMap();
