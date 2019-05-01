@@ -7,9 +7,9 @@ namespace busybin
    * dbs.
    */
   KorfPatternDatabase::KorfPatternDatabase(
-    const CornerPatternDatabase* pCornerDB,
-    const EdgeG1PatternDatabase* pEdgeG1DB,
-    const EdgeG2PatternDatabase* pEdgeG2DB) :
+    CornerPatternDatabase* pCornerDB,
+    EdgeG1PatternDatabase* pEdgeG1DB,
+    EdgeG2PatternDatabase* pEdgeG2DB) :
     PatternDatabase(0),
     pCornerDB(pCornerDB),
     pEdgeG1DB(pEdgeG1DB),
@@ -34,14 +34,32 @@ namespace busybin
     return max({cornerMoves, edgeG1Moves, edgeG2Moves});
   }
 
+  /**
+   * Set the number of moves in all three databases.  Returns true if any is
+   * changed.
+   */
+  bool KorfPatternDatabase::setNumMoves(const RubiksCubeModel& cube, const uchar numMoves)
+  {
+    bool corner = this->pCornerDB->setNumMoves(cube, numMoves);
+    bool edgeG1 = this->pEdgeG1DB->setNumMoves(cube, numMoves);
+    bool edgeG2 = this->pEdgeG2DB->setNumMoves(cube, numMoves);
+
+    return corner || edgeG1 || edgeG2;
+  }
+
+  /**
+   * Returns true if all three databases are full.
+   */
+  bool KorfPatternDatabase::isFull() const
+  {
+    return this->pCornerDB->isFull() ||
+           this->pEdgeG1DB->isFull() ||
+           this->pEdgeG2DB->isFull();
+  }
+
   uint32_t KorfPatternDatabase::getDatabaseIndex(const RubiksCubeModel& cube) const
   {
     throw RubiksCubeException("KorfPatternDatabase::getDatabaseIndex not implemented.");
-  }
-
-  bool KorfPatternDatabase::setNumMoves(const RubiksCubeModel& cube, const uchar numMoves)
-  {
-    throw RubiksCubeException("KorfPatternDatabase::setNumMoves not implemented.");
   }
 
   bool KorfPatternDatabase::setNumMoves(const uint32_t ind, const uchar numMoves)
@@ -62,11 +80,6 @@ namespace busybin
   size_t KorfPatternDatabase::getNumItems() const
   {
     throw RubiksCubeException("KorfPatternDatabase::getNumItems not implemented.");
-  }
-
-  bool KorfPatternDatabase::isFull() const
-  {
-    throw RubiksCubeException("KorfPatternDatabase::isFull not implemented.");
   }
 
   void KorfPatternDatabase::toFile(const string& filePath) const

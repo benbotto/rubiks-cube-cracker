@@ -23,26 +23,26 @@ namespace busybin
   {
     typedef unsigned char uchar;
 
-    const CornerPatternDatabase* pCornerDB;
-    const EdgeG1PatternDatabase* pEdgeG1DB;
-    const EdgeG2PatternDatabase* pEdgeG2DB;
+    CornerPatternDatabase* pCornerDB;
+    EdgeG1PatternDatabase* pEdgeG1DB;
+    EdgeG2PatternDatabase* pEdgeG2DB;
 
   public:
     KorfPatternDatabase(
-      const CornerPatternDatabase* pCornerDB,
-      const EdgeG1PatternDatabase* pEdgeG1DB,
-      const EdgeG2PatternDatabase* pEdgeG2DB);
+      CornerPatternDatabase* pCornerDB,
+      EdgeG1PatternDatabase* pEdgeG1DB,
+      EdgeG2PatternDatabase* pEdgeG2DB);
 
     uchar getNumMoves(const RubiksCubeModel& cube) const;
+    bool setNumMoves(const RubiksCubeModel& cube, const uchar numMoves);
+    bool isFull() const;
 
     // All unimplemented.
     uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const;
-    bool setNumMoves(const RubiksCubeModel& cube, const uchar numMoves);
     bool setNumMoves(const uint32_t ind, const uchar numMoves);
     uchar getNumMoves(const uint32_t ind) const;
     size_t getSize() const;
     size_t getNumItems() const;
-    bool isFull() const;
     void toFile(const string& filePath) const;
     bool fromFile(const string& filePath);
   };
