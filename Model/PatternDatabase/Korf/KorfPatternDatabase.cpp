@@ -52,8 +52,8 @@ namespace busybin
    */
   bool KorfPatternDatabase::isFull() const
   {
-    return this->pCornerDB->isFull() ||
-           this->pEdgeG1DB->isFull() ||
+    return this->pCornerDB->isFull() &&
+           this->pEdgeG1DB->isFull() &&
            this->pEdgeG2DB->isFull();
   }
 
