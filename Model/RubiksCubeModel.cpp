@@ -242,7 +242,7 @@ namespace busybin
    * Get the color at FACE, row, col.
    * @param f The face of the cube.
    * @param row The 0-based row, unfolded as described in get(i).
-   * @param col The 0-based col, unfulded as described in get(i).
+   * @param col The 0-based col, unfolded as described in get(i).
    */
   RubiksCubeModel::COLOR RubiksCubeModel::get(
     FACE f, unsigned row, unsigned col) const
@@ -265,6 +265,16 @@ namespace busybin
 
       return (COLOR)this->cube[(unsigned)f * 8 + index];
     }
+  }
+
+  /**
+   * Get the color at an index.
+   * @param ind The index of the color.  See the diagram in the
+   * RubiksCubeModel.h file.
+   */
+  RubiksCubeModel::COLOR RubiksCubeModel::get(unsigned ind) const
+  {
+    return (COLOR)this->cube[ind];
   }
 
   /**

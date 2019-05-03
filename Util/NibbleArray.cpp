@@ -5,7 +5,8 @@ namespace busybin
   /**
    * Initialize the underlying vector.
    */
-  NibbleArray::NibbleArray(const size_t size, const uchar val) : arr(size / 2 + 1, val)
+  NibbleArray::NibbleArray(const size_t size, const uint8_t val) :
+    size(size), arr(size / 2 + 1, val)
   {
   }
 
@@ -13,10 +14,10 @@ namespace busybin
    * Access the element at index pos.
    * @param pos The 0-based index of the element.
    */
-  unsigned char NibbleArray::get(const size_t pos) const
+  uint8_t NibbleArray::get(const size_t pos) const
   {
     size_t i = pos / 2;
-    uchar val = this->arr.at(i);
+    uint8_t val = this->arr.at(i);
 
     if (pos % 2)
     {
@@ -36,10 +37,10 @@ namespace busybin
    * @param val The value to set, which can be at most 15 (other bits will be
    * zeroed).
    */
-  void NibbleArray::set(const size_t pos, const uchar val)
+  void NibbleArray::set(const size_t pos, const uint8_t val)
   {
     size_t i = pos / 2;
-    uchar curVal = this->arr.at(i);
+    uint8_t curVal = this->arr.at(i);
 
     if (pos % 2)
     {
@@ -56,7 +57,7 @@ namespace busybin
   /**
    * Get a pointer to the underlying array.
    */
-  unsigned char* NibbleArray::data()
+  uint8_t* NibbleArray::data()
   {
     return this->arr.data();
   }
@@ -64,7 +65,7 @@ namespace busybin
   /**
    * Get a pointer to the underlying array.
    */
-  const unsigned char* NibbleArray::data() const
+  const uint8_t* NibbleArray::data() const
   {
     return this->arr.data();
   }
@@ -75,6 +76,18 @@ namespace busybin
   size_t NibbleArray::storageSize() const
   {
     return this->arr.size();
+  }
+
+  /**
+   * Move all of the moves into a vector.  This doubles the size, but is
+   * faster to access since no bit-wise operations are needed.
+   */
+  void NibbleArray::inflate(vector<uint8_t>& dest) const
+  {
+    dest.reserve(this->size);
+
+    for (unsigned i = 0; i < this->size; ++i)
+      dest.push_back(this->get(i));
   }
 }
 
