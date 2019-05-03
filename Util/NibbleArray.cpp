@@ -87,7 +87,7 @@ namespace busybin
     dest.reserve(this->size);
 
     for (unsigned i = 0; i < this->size; ++i)
-      dest.push_back(this->arr.at(i));
+      dest.push_back(this->get(i));
   }
 }
 
