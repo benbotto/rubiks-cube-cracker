@@ -12,6 +12,8 @@ using std::ofstream;
 using std::ifstream;
 #include <string>
 using std::string;
+#include <vector>
+using std::vector;
 
 namespace busybin
 {
@@ -29,21 +31,19 @@ namespace busybin
     size_t size;
     size_t numItems;
 
-  protected:
-    typedef unsigned char uchar;
-
   public:
     PatternDatabase(const size_t size);
     virtual uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const = 0;
-    virtual bool setNumMoves(const RubiksCubeModel& cube, const uchar numMoves);
-    virtual bool setNumMoves(const uint32_t ind, const uchar numMoves);
-    virtual uchar getNumMoves(const RubiksCubeModel& cube) const;
-    virtual uchar getNumMoves(const uint32_t ind) const;
+    virtual bool setNumMoves(const RubiksCubeModel& cube, const uint8_t numMoves);
+    virtual bool setNumMoves(const uint32_t ind, const uint8_t numMoves);
+    virtual uint8_t getNumMoves(const RubiksCubeModel& cube) const;
+    virtual uint8_t getNumMoves(const uint32_t ind) const;
     virtual size_t getSize() const;
     virtual size_t getNumItems() const;
     virtual bool isFull() const;
     virtual void toFile(const string& filePath) const;
     virtual bool fromFile(const string& filePath);
+    virtual vector<uint8_t> inflate() const;
 
     /**
      * Given a permutation of cubies, return the Lehmer code.  This is used
@@ -52,8 +52,8 @@ namespace busybin
      * @param lehmer The Lehmer code for the index will be returned here.
      */
     template<size_t SIZE>
-    void getLehmerCode(const array<uchar, SIZE>& perm,
-      array<uchar, SIZE>& lehmer) const
+    void getLehmerCode(const array<uint8_t, SIZE>& perm,
+      array<uint8_t, SIZE>& lehmer) const
     {
       // From Korf's paper:
       // https://www.cs.princeton.edu/courses/archive/fall06/cos402/papers/korfrubik.pdf

@@ -72,7 +72,7 @@ namespace busybin
 
     // Now get the orientation of the corners.  7 corner orientations dictate
     // the orientation of the 8th, so only 7 need to be stored.
-    array<uchar, 7> cornerOrientations =
+    array<uint8_t, 7> cornerOrientations =
     {
       this->getCubieOrientation(urf),
       this->getCubieOrientation(ulf),

@@ -10,6 +10,8 @@
 #include <algorithm>
 using std::max;
 #include <cstdint>
+#include <vector>
+using std::vector;
 
 namespace busybin
 {
@@ -21,11 +23,15 @@ namespace busybin
    */
   class KorfPatternDatabase : public PatternDatabase
   {
-    typedef unsigned char uchar;
+    bool inflated;
 
     CornerPatternDatabase* pCornerDB;
     EdgeG1PatternDatabase* pEdgeG1DB;
     EdgeG2PatternDatabase* pEdgeG2DB;
+
+    vector<uint8_t> cornerDBInflated;
+    vector<uint8_t> edgeG1DBInflated;
+    vector<uint8_t> edgeG2DBInflated;
 
   public:
     KorfPatternDatabase(
@@ -33,18 +39,20 @@ namespace busybin
       EdgeG1PatternDatabase* pEdgeG1DB,
       EdgeG2PatternDatabase* pEdgeG2DB);
 
-    uchar getNumMoves(const RubiksCubeModel& cube) const;
-    bool setNumMoves(const RubiksCubeModel& cube, const uchar numMoves);
+    uint8_t getNumMoves(const RubiksCubeModel& cube) const;
+    bool setNumMoves(const RubiksCubeModel& cube, const uint8_t numMoves);
     bool isFull() const;
+    void inflate();
 
     // All unimplemented.
     uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const;
-    bool setNumMoves(const uint32_t ind, const uchar numMoves);
-    uchar getNumMoves(const uint32_t ind) const;
+    bool setNumMoves(const uint32_t ind, const uint8_t numMoves);
+    uint8_t getNumMoves(const uint32_t ind) const;
     size_t getSize() const;
     size_t getNumItems() const;
     void toFile(const string& filePath) const;
     bool fromFile(const string& filePath);
+    vector<uint8_t> inflate() const;
   };
 }
 

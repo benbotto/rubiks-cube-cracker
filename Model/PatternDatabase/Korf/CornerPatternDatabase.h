@@ -14,7 +14,7 @@ namespace busybin
   class CornerPatternDatabase : public PatternDatabase
   {
     typedef array<RubiksCubeModel::COLOR, 3> corner_t;
-    typedef array<uchar, 8> perm_t;
+    typedef array<uint8_t, 8> perm_t;
     typedef RubiksCubeModel::FACE F;
 
   public:
@@ -26,7 +26,7 @@ namespace busybin
      * index will be [0..7].
      * @param corner An array of three colors, in any order.
      */
-    inline unsigned char getCubieIndex(const corner_t& corner) const
+    inline uint8_t getCubieIndex(const corner_t& corner) const
     {
       // The colors range from 0 to 5, per RubiksCubeModel.h.
       // Shifting 1 left by 0...5 gives 1, 2, 4, 8, 16, 32.
@@ -39,10 +39,10 @@ namespace busybin
       // RBY = 4  + 8 + 32 = 44, index 5
       // OGY = 16 + 2 + 32 = 50, index 6
       // OBY = 16 + 8 + 32 = 56, index 7
-      uchar sideSum =
-        (1 << (uchar)corner[0]) +
-        (1 << (uchar)corner[1]) +
-        (1 << (uchar)corner[2]);
+      uint8_t sideSum =
+        (1 << (uint8_t)corner[0]) +
+        (1 << (uint8_t)corner[1]) +
+        (1 << (uint8_t)corner[2]);
 
       switch (sideSum)
       {
@@ -74,7 +74,7 @@ namespace busybin
      * Orientation 2: Blue or green is on the top or bottom.
      * @param corner An array of three colors, with the up or down facet first.
      */
-    inline unsigned char getCubieOrientation(const corner_t& corner) const
+    inline uint8_t getCubieOrientation(const corner_t& corner) const
     {
       switch (corner[0])
       {

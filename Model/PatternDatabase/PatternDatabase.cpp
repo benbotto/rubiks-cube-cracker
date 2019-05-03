@@ -19,9 +19,9 @@ namespace busybin
    * @param numMoves The number of moves to get to this state (must be fewer
    * than 15).
    */
-  bool PatternDatabase::setNumMoves(const uint32_t ind, const uchar numMoves) 
+  bool PatternDatabase::setNumMoves(const uint32_t ind, const uint8_t numMoves) 
   {
-    uchar oldNumMoves = this->getNumMoves(ind);
+    uint8_t oldNumMoves = this->getNumMoves(ind);
 
     if (this->getNumMoves(ind) == 0xF)
       ++this->numItems;
@@ -42,7 +42,7 @@ namespace busybin
    * @param numMoves The number of moves to get to this state (must be fewer
    * than 15).
    */
-  bool PatternDatabase::setNumMoves(const RubiksCubeModel& cube, const uchar numMoves)
+  bool PatternDatabase::setNumMoves(const RubiksCubeModel& cube, const uint8_t numMoves)
   {
     return this->setNumMoves(this->getDatabaseIndex(cube), numMoves);
   }
@@ -53,7 +53,7 @@ namespace busybin
    * method.  0xF (15) indicates that the state has not been set.
    * @param cube A cube instance.
    */
-  unsigned char PatternDatabase::getNumMoves(const uint32_t ind) const
+  uint8_t PatternDatabase::getNumMoves(const uint32_t ind) const
   {
     return this->database.get(ind);
   }
@@ -64,7 +64,7 @@ namespace busybin
    * state has not been set.
    * @param cube A cube instance.
    */
-  unsigned char PatternDatabase::getNumMoves(const RubiksCubeModel& cube) const
+  uint8_t PatternDatabase::getNumMoves(const RubiksCubeModel& cube) const
   {
     return this->getNumMoves(this->getDatabaseIndex(cube));
   }
@@ -137,6 +137,18 @@ namespace busybin
     this->numItems = this->size;
 
     return true;
+  }
+
+  /**
+   * Inflate the underlying array for faster access.
+   */
+  vector<uint8_t> PatternDatabase::inflate() const
+  {
+    vector<uint8_t> inflated;
+
+    this->database.inflate(inflated);
+
+    return inflated;
   }
 }
 

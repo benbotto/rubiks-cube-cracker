@@ -14,11 +14,11 @@ namespace busybin
   {
   protected:
     typedef array<RubiksCubeModel::COLOR, 2> edge_t;
-    typedef array<uchar, 6> perm_t;
+    typedef array<uint8_t, 6> perm_t;
     typedef RubiksCubeModel::FACE F;
 
     uint32_t getDatabaseIndex(const perm_t& edgePerm,
-      const array<uchar, 6>& edgeOrientations) const;
+      const array<uint8_t, 6>& edgeOrientations) const;
   public:
     EdgePatternDatabase();
     virtual uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const = 0;
@@ -28,7 +28,7 @@ namespace busybin
      * will be [0..11].
      * @param edge An array of two colors, in any order.
      */
-    inline unsigned char getCubieIndex(const edge_t& edge) const
+    inline uint8_t getCubieIndex(const edge_t& edge) const
     {
       // The colors range from 0 to 5, per RubiksCubeModel.h.
       // Shifting 1 left by 0...5 gives 1, 2, 4, 8, 16, 32.
@@ -47,9 +47,9 @@ namespace busybin
       // OB = 16 + 8  = 24, index 9.
       // OY = 16 + 32 = 48, index 10.
       // OG = 16 + 2  = 18, index 11.
-      uchar sideSum =
-        (1 << (uchar)edge[0]) +
-        (1 << (uchar)edge[1]);
+      uint8_t sideSum =
+        (1 << (uint8_t)edge[0]) +
+        (1 << (uint8_t)edge[1]);
 
       switch (sideSum)
       {
@@ -101,7 +101,7 @@ namespace busybin
      *
      * @param edge An array of two colors.
      */
-    inline unsigned char getCubieOrientation(const edge_t& edge) const
+    inline uint8_t getCubieOrientation(const edge_t& edge) const
     {
       // If the U or D sticker is the L or R color (blue or green), it's bad.
       if (edge[0] == RubiksCubeModel::COLOR::BLUE ||

@@ -36,7 +36,7 @@ namespace busybin
     };
 
     // Now get the orientation of each edge.
-    array<uchar, 6> edgeOrientations =
+    array<uint8_t, 6> edgeOrientations =
     {
       this->getCubieOrientation(bl),
       this->getCubieOrientation(br),

@@ -21,7 +21,7 @@ namespace busybin
    * edge can be in one of two orientations).
    */
   uint32_t EdgePatternDatabase::getDatabaseIndex(const perm_t& edgePerm,
-    const array<uchar, 6>& edgeOrientations) const
+    const array<uint8_t, 6>& edgeOrientations) const
   {
     // Get the Lehmer code, which is in a factoradic number system.
     perm_t lehmer;
