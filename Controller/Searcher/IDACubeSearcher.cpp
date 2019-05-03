@@ -89,13 +89,13 @@ namespace busybin
       if (!this->pruner.prune(move, moves))
       {
         // Apply the next move.
-        moveStore.getMoveFunc(move)();
+        moveStore.move(i);
 
         // Get the estimated moves to solved.
         uint8_t estSuccMoves = moves.size() + 1 + this->pPatternDB->getNumMoves(cube);
 
         // Revert the move.
-        moveStore.getInverseMoveFunc(move)();
+        moveStore.invert(i);
 
         // Queue the successor.
         successors.push({i, estSuccMoves});
@@ -111,7 +111,7 @@ namespace busybin
 
       // Apply the next move.
       moves.push_back(move);
-      moveStore.getMoveFunc(move)();
+      moveStore.move(moveInd);
 
       uint8_t succCost = this->findGoal(goal, cube, moveStore, bound, moves, solved);
 
@@ -124,7 +124,7 @@ namespace busybin
       }
 
       // Revert the move.
-      moveStore.getInverseMoveFunc(move)();
+      moveStore.invert(moveInd);
     }
 
     return min;
