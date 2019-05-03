@@ -8,46 +8,22 @@ namespace busybin
   uint32_t EdgeG2PatternDatabase::getDatabaseIndex(const RubiksCubeModel& cube) const
   {
     // BL YB 6.
-    edge_t bl =
-    {
-      cube.get(F::BACK, 1, 2),
-      cube.get(F::LEFT, 1, 0)
-    };
+    edge_t bl = {cube.get(35), cube.get(15)};
 
     // BR YG 7.
-    edge_t br =
-    {
-      cube.get(F::BACK,  1, 0),
-      cube.get(F::RIGHT, 1, 2)
-    };
+    edge_t br = {cube.get(39), cube.get(27)};
 
     // DF OW 8.
-    edge_t df =
-    {
-      cube.get(F::DOWN,  0, 1),
-      cube.get(F::FRONT, 2, 1)
-    };
+    edge_t df = {cube.get(41), cube.get(21)};
 
     // DL OB 9.
-    edge_t dl =
-    {
-      cube.get(F::DOWN, 1, 0),
-      cube.get(F::LEFT, 2, 1)
-    };
+    edge_t dl = {cube.get(47), cube.get(13)};
 
     // DB OY 10.
-    edge_t db =
-    {
-      cube.get(F::DOWN, 2, 1),
-      cube.get(F::BACK, 2, 1)
-    };
+    edge_t db = {cube.get(45), cube.get(37)};
 
     // DR OG 11.
-    edge_t dr =
-    {
-      cube.get(F::DOWN,  1, 2),
-      cube.get(F::RIGHT, 2, 1)
-    };
+    edge_t dr = {cube.get(43), cube.get(29)};
 
     perm_t edgePerm =
     {
