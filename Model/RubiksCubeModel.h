@@ -113,6 +113,7 @@ namespace busybin
     RubiksCubeModel(const RubiksCubeModel& cube);
 
     COLOR get(FACE face, unsigned row, unsigned col) const;
+    COLOR get(unsigned ind) const;
     uint64_t getFace(FACE face) const;
 
     // Compare this cube to another.
