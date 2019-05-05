@@ -61,14 +61,14 @@ namespace busybin
     // multiply each digit by it's corresponding factorial base.
     // E.g. the permutation 120 has a Lehmer code of 110, which is
     // 1 * 2! + 1 * 1! + 0 * 0! = 3.
-    array<unsigned, 6> factorials = {5040, 720, 120, 24, 6, 2};
-    uint32_t index = 0;
-
-    // Note that the last digit is always 0, and the second to last
-    // remains unchanged (1!).
-    for (unsigned i = 0; i < 6; ++i)
-      index += lehmer[i] * factorials[i];
-    index += lehmer[6];
+    uint32_t index =
+      lehmer[0] * 5040 +
+      lehmer[1] * 720 +
+      lehmer[2] * 120 +
+      lehmer[3] * 24 +
+      lehmer[4] * 6 +
+      lehmer[5] * 2 +
+      lehmer[6];
 
     // Now get the orientation of the corners.  7 corner orientations dictate
     // the orientation of the 8th, so only 7 need to be stored.
@@ -85,12 +85,14 @@ namespace busybin
 
     // Treat the orientations as a base-3 number, and convert it
     // to base-10.
-    array<unsigned, 6> b3Places = {729, 243, 81, 27, 9, 3};
-    uint32_t orientationNum = 0;
-
-    for (unsigned i = 0; i < 6; ++i)
-      orientationNum += cornerOrientations[i] * b3Places[i];
-    orientationNum += cornerOrientations[6];
+    uint32_t orientationNum =
+      cornerOrientations[0] * 729 +
+      cornerOrientations[1] * 243 +
+      cornerOrientations[2] * 81 +
+      cornerOrientations[3] * 27 +
+      cornerOrientations[4] * 9 +
+      cornerOrientations[5] * 3 +
+      cornerOrientations[6];
 
     // Combine the permutation and orientation into a single index.
     // p * 3^7 + o;
