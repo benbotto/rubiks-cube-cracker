@@ -42,8 +42,12 @@ namespace busybin
       edgeG2Moves = this->pEdgeG2DB->getNumMoves(cube);
     }
 
-    if (cornerMoves == 0xF || edgeG1Moves == 0xF || edgeG2Moves == 0xF)
-      throw RubiksCubeException("Fatal: Scramble not indexed in one of the databases.");
+    // This is for debugging, since a state should never return 15 moves.
+    // However, this database can be used for more than just the distance to
+    // the solved state, such as duplicate state detection, so this check can't
+    // be enabled in release mode.
+    //if (cornerMoves == 0xF || edgeG1Moves == 0xF || edgeG2Moves == 0xF)
+    //  throw RubiksCubeException("Fatal: Scramble not indexed in one of the databases.");
 
     return max({cornerMoves, edgeG1Moves, edgeG2Moves});
   }
