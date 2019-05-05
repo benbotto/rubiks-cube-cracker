@@ -15,6 +15,9 @@ using std::cout;
 using std::endl;
 #include <exception>
 using std::exception;
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 namespace busybin
 {

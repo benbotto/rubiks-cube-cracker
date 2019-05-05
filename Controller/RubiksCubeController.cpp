@@ -1,5 +1,10 @@
 #include "RubiksCubeController.h"
 
+void exitHandler(int s)
+{
+  exit(0); 
+}
+
 namespace busybin
 {
   /**
@@ -7,6 +12,16 @@ namespace busybin
    */
   void RubiksCubeController::run()
   {
+    // Handle CTRL-C by exiting with a 0 status code.  This is needed if
+    // running the GNU profiler, gprof, which writes at exit.
+    struct sigaction sigIntHandler;
+
+    sigIntHandler.sa_handler = exitHandler;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags   = 0;
+
+    sigaction(SIGINT, &sigIntHandler, NULL);
+
     try
     {
       // Pass width and height for windowed-mode.
