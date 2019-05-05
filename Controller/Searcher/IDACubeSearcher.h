@@ -11,8 +11,12 @@
 using std::string;
 #include <vector>
 using std::vector;
+#include <array>
+using std::array;
 #include <queue>
 using std::priority_queue;
+#include <stack>
+using std::stack;
 #include <functional>
 using std::greater;
 #include <cstdint>
@@ -26,19 +30,23 @@ namespace busybin
   {
     struct PrioritizedMove
     {
-      uint8_t moveInd;
-      uint8_t estMoves; // Priority.
+      RubiksCubeModel cube;
+      uint8_t         moveInd;
+      uint8_t         estMoves; // Priority.
       bool operator>(const PrioritizedMove& rhs) const
       {
         return this->estMoves > rhs.estMoves;
       }
     };
 
-    const PatternDatabase* pPatternDB;
+    struct Node
+    {
+      RubiksCubeModel cube;
+      uint8_t         moveInd;
+      uint8_t         depth;
+    };
 
-    uint8_t findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
-      uint8_t bound, vector<uint8_t>& moves, bool& solved,
-      uint8_t estMovesFromHere);
+    const PatternDatabase* pPatternDB;
 
   public:
     IDACubeSearcher(const PatternDatabase* pPatternDB);
@@ -47,3 +55,4 @@ namespace busybin
 }
 
 #endif
+

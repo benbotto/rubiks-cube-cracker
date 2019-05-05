@@ -22,117 +22,100 @@ namespace busybin
   vector<string> IDACubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube,
     MoveStore& moveStore)
   {
-    AutoTimer       timer;
-    vector<string>  moves;
-    vector<uint8_t> moveInds;
-    uint8_t         bound            = this->pPatternDB->getNumMoves(cube);
-    uint8_t         estMovesFromHere = bound;
-    bool            solved           = false;
-
-    while (!solved)
-    {
-      uint8_t newBound = this->findGoal(goal, cube, moveStore, bound, moveInds,
-        solved, estMovesFromHere);
-
-      cout << "IDA*: Finished bound " << (unsigned)bound << ".  Elapsed time "
-           << timer.getElapsedSeconds() << "s." << endl;
-
-      bound = newBound;
-    }
-
-    for (uint8_t moveInd: moveInds)
-      moves.push_back(moveStore.getMove(moveInd));
-
-    return moves;
-  }
-
-  /**
-   * Private helper method that recursively searches for a goal, and cuts off
-   * when bound is reached.
-   * @param goal The goal to achieve.
-   * @param cube The cube to search.
-   * @param moveStore A MoveStore instance for retrieving moves.
-   * @param bound The cut-off point, which is an maximum estimated distance from
-   * the root state to the solved state.
-   * @param moves A vector of moves that will be filled.
-   * @param solved A boolean that will be set to true when solved.
-   * @param estMovesFromHere The estimated moves from the cube state to the
-   * solved state.
-   */
-  uint8_t IDACubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
-    uint8_t bound, vector<uint8_t>& moves, bool& solved, uint8_t estMovesFromHere)
-  {
     typedef RubiksCubeModel::MOVE MOVE;
     typedef priority_queue<PrioritizedMove, vector<PrioritizedMove>,
       greater<PrioritizedMove> > moveQueue_t;
 
-    uint8_t numMoves = moveStore.getNumMoves();
+    AutoTimer          timer;
+    stack<Node>        nodeStack;
+    Node               curNode;
+    array<uint8_t, 50> moveInds  = {0xFF};
+    bool               solved    = false;
+    uint8_t            bound     = 0;
+    uint8_t            nextBound = this->pPatternDB->getNumMoves(cube);
+    moveQueue_t        successors;
 
-    // Estimated number of moves from the root to the solved state through this scramble.
-    uint8_t estMovesFromRoot = moves.size() + estMovesFromHere;
-
-    // This holds the next bound, which is the minimum cost that's greater than
-    // the current bound.
-    uint8_t min = 0xFF;
-
-    // This is used to order the moves by priority.
-    moveQueue_t successors;
-
-    if (estMovesFromRoot > bound)
-      return estMovesFromRoot;
-
-    // This assumes that the heuristic returns 0 cost when the cube is solved.
-    if (goal.isSatisfied(cube)) {
-      solved = true;
-      return estMovesFromRoot;
-    }
-
-    // Set up the successor nodes in order.
-    for (uint8_t i = 0; i < numMoves; ++i)
+    while (!solved)
     {
-      if (moves.size() == 0 || !this->pruner.prune(MOVE(i), (MOVE)moves.back()))
+      if (nodeStack.empty())
       {
-        // Apply the next move.
-        moveStore.move(i);
+        if (bound != 0)
+        {
+          cout << "IDA*: Finished bound " << (unsigned)bound
+               << ".  Elapsed time: " << timer.getElapsedSeconds() << "s."
+               << endl;
+        }
 
-        // Get the estimated moves to solved.
-        uint8_t estSuccMoves = this->pPatternDB->getNumMoves(cube);
+        // Start with the scrambled (root) node.  Depth 0, no move required.
+        nodeStack.push({cube, 0xFF, 0});
 
-        // Queue the successor.
-        successors.push({i, estSuccMoves});
+        bound     = nextBound;
+        nextBound = 0xFF;
+      }
 
-        // Revert the move.
-        moveStore.invert(i);
+      curNode = nodeStack.top();
+      nodeStack.pop();
+
+      // Keep the list of moves.  The moves end at 0xFF.
+      moveInds[curNode.depth] = 0xFF;
+
+      if (curNode.depth != 0)
+        moveInds[curNode.depth - 1] = curNode.moveInd;
+
+      if (curNode.depth == bound && goal.isSatisfied(curNode.cube))
+      {
+        solved = true;
+        break;
+      }
+
+      // This is used to sort the successors by estimated moves.
+      moveQueue_t successors;
+
+      for (uint8_t i = 0; i < 18; ++i)
+      {
+        if (curNode.depth == 0 || !this->pruner.prune((MOVE)i, (MOVE)curNode.moveInd))
+        {
+          RubiksCubeModel cubeCopy(curNode.cube);
+
+          cubeCopy.move((MOVE)i);
+
+          uint8_t estSuccMoves = curNode.depth + 1 + this->pPatternDB->getNumMoves(cubeCopy);
+
+          if (estSuccMoves <= bound)
+          {
+            // If the twisted cube is estimated to take fewer move than the
+            // current bound, push it, otherwise it's pruned.
+            successors.push({cubeCopy, i, estSuccMoves});
+          }
+          else if (estSuccMoves < nextBound)
+          {
+            // The next bound is the minimum of all successor node moves that's
+            // greater than the current bound.
+            nextBound = estSuccMoves;
+          }
+        }
+      }
+
+      while (!successors.empty())
+      {
+        // Push the nodes in sorted order.
+        nodeStack.push({
+          successors.top().cube,
+          successors.top().moveInd,
+          (uint8_t)(curNode.depth + 1)
+        });
+
+        successors.pop();
       }
     }
 
-    while (!successors.empty() && !solved)
-    {
-      uint8_t moveInd      = successors.top().moveInd;
-      uint8_t estSuccMoves = successors.top().estMoves;
+    // Convert the move indexes to strings.
+    vector<string> moves;
 
-      successors.pop();
+    for (unsigned i = 0; i < moveInds.size() && moveInds[i] != 0xFF; ++i)
+      moves.push_back(moveStore.getMove(moveInds[i]));
 
-      // Apply the next move.
-      moves.push_back(moveInd);
-      moveStore.move(moveInd);
-
-      uint8_t succCost = this->findGoal(goal, cube, moveStore, bound, moves,
-        solved, estSuccMoves);
-
-      if (!solved)
-      {
-        moves.pop_back();
-
-        if (succCost < min)
-          min = succCost;
-      }
-
-      // Revert the move.
-      moveStore.invert(moveInd);
-    }
-
-    return min;
+    return moves;
   }
 }
 
