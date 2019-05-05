@@ -84,6 +84,10 @@ namespace busybin
       this->edgeG2DB.toFile("./Data/edgeG2.pdb");
     }
 
+    // Inflate the DB for faster access (doubles the size, but no bit-wise
+    // operations are required when indexing).
+    this->korfDB.inflate();
+
     this->setSolving(false);
 
     cout << "Korf initialization complete." << endl;
