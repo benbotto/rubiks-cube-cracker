@@ -33,22 +33,23 @@ namespace busybin
     // which is 12!/(12-6)! = 665,280.  Each digit in the Lehmer code is thus multipled
     // by the number of partial permutations that preceed it:
     // l_0 * 11P5 + l_1 + 10P4 + l_2 * 9P3 + l_3 * 8P2 + l_4 * 7P1 + l_5 * 6P0.
-    array<unsigned, 5> factorials = {55440, 5040, 504, 56, 7};
-    uint32_t index = 0;
-
-    // Note that the last digit remains unchanged (6P0 == 1).
-    for (unsigned i = 0; i < 5; ++i)
-      index += lehmer[i] * factorials[i];
-    index += lehmer[5];
+    uint32_t index =
+      lehmer[0] * 55440 +
+      lehmer[1] * 5040 +
+      lehmer[2] * 504 +
+      lehmer[3] * 56 +
+      lehmer[4] * 7 +
+      lehmer[5];
 
     // Treat the orientations as a base-2 number, and convert it
     // to base-10.
-    array<unsigned, 5> b2Places = {32, 16, 8, 4, 2};
-    uint32_t orientationNum = 0;
-
-    for (unsigned i = 0; i < 5; ++i)
-      orientationNum += edgeOrientations[i] * b2Places[i];
-    orientationNum += edgeOrientations[5];
+    uint32_t orientationNum =
+      edgeOrientations[0] * 32 +
+      edgeOrientations[1] * 16 +
+      edgeOrientations[2] * 8 +
+      edgeOrientations[3] * 4 +
+      edgeOrientations[4] * 2 +
+      edgeOrientations[5];
 
     // Combine the permutation and orientation into a single index.
     // p * 2^6 + o;
