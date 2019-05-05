@@ -19,11 +19,13 @@ namespace busybin
 
     while (!moveStack.empty())
     {
-      string move = moveStore.getMove(moveStack.top());
-      moves.push_back(move);
+      uint8_t moveInd = moveStack.top();
+      string move = moveStore.getMove(moveInd);
 
       moveStack.pop();
-      moveStore.getMoveFunc(move)();
+      moves.push_back(move);
+
+      moveStore.move(moveInd);
     }
   }
 
@@ -34,9 +36,7 @@ namespace busybin
   {
     while (pNode->pParent)
     {
-      string move = moveStore.getMove(pNode->moveInd);
-      string invMove = moveStore.getInverseMove(move);
-      moveStore.getInverseMoveFunc(move)();
+      moveStore.invert(pNode->moveInd);
       pNode = pNode->pParent.get();
     }
   }
@@ -99,7 +99,7 @@ namespace busybin
         {
           // Make the move and see if the cube state has been indexed at an
           // earlier depth.
-          moveStore.getMoveFunc(move)();
+          moveStore.move(moveInd);
 
           // If the goal is indexed, it means it's a new state and needs to be
           // visited.
@@ -129,7 +129,7 @@ namespace busybin
             }
           }
 
-          moveStore.getInverseMoveFunc(move)();
+          moveStore.invert(moveInd);
         }
       }
 
