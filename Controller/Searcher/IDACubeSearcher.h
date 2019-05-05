@@ -37,7 +37,8 @@ namespace busybin
     const PatternDatabase* pPatternDB;
 
     uint8_t findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
-      uint8_t bound, vector<string>& moves, bool& solved);
+      uint8_t bound, vector<uint8_t>& moves, bool& solved,
+      uint8_t estMovesFromHere);
 
   public:
     IDACubeSearcher(const PatternDatabase* pPatternDB);

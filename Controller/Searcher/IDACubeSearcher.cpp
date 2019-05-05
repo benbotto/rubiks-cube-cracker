@@ -22,20 +22,26 @@ namespace busybin
   vector<string> IDACubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube,
     MoveStore& moveStore)
   {
-    AutoTimer      timer;
-    vector<string> moves;
-    uint8_t        bound  = this->pPatternDB->getNumMoves(cube);
-    bool           solved = false;
+    AutoTimer       timer;
+    vector<string>  moves;
+    vector<uint8_t> moveInds;
+    uint8_t         bound            = this->pPatternDB->getNumMoves(cube);
+    uint8_t         estMovesFromHere = bound;
+    bool            solved           = false;
 
     while (!solved)
     {
-      uint8_t newBound = this->findGoal(goal, cube, moveStore, bound, moves, solved);
+      uint8_t newBound = this->findGoal(goal, cube, moveStore, bound, moveInds,
+        solved, estMovesFromHere);
 
       cout << "IDA*: Finished bound " << (unsigned)bound << ".  Elapsed time "
            << timer.getElapsedSeconds() << "s." << endl;
 
       bound = newBound;
     }
+
+    for (uint8_t moveInd: moveInds)
+      moves.push_back(moveStore.getMove(moveInd));
 
     return moves;
   }
@@ -50,17 +56,17 @@ namespace busybin
    * the root state to the solved state.
    * @param moves A vector of moves that will be filled.
    * @param solved A boolean that will be set to true when solved.
+   * @param estMovesFromHere The estimated moves from the cube state to the
+   * solved state.
    */
   uint8_t IDACubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
-    uint8_t bound, vector<string>& moves, bool& solved)
+    uint8_t bound, vector<uint8_t>& moves, bool& solved, uint8_t estMovesFromHere)
   {
+    typedef RubiksCubeModel::MOVE MOVE;
     typedef priority_queue<PrioritizedMove, vector<PrioritizedMove>,
       greater<PrioritizedMove> > moveQueue_t;
 
     uint8_t numMoves = moveStore.getNumMoves();
-
-    // Estimated number of moves to the solved state from here.
-    uint8_t estMovesFromHere = this->pPatternDB->getNumMoves(cube);
 
     // Estimated number of moves from the root to the solved state through this scramble.
     uint8_t estMovesFromRoot = moves.size() + estMovesFromHere;
@@ -76,44 +82,43 @@ namespace busybin
       return estMovesFromRoot;
 
     // This assumes that the heuristic returns 0 cost when the cube is solved.
-    if (estMovesFromHere == 0 && goal.isSatisfied(cube)) {
+    if (goal.isSatisfied(cube)) {
       solved = true;
       return estMovesFromRoot;
     }
 
     // Set up the successor nodes in order.
-    for (uint8_t i = 0; i < numMoves && !solved; ++i)
+    for (uint8_t i = 0; i < numMoves; ++i)
     {
-      string move = moveStore.getMove(i);
-
-      if (!this->pruner.prune(move, moves))
+      if (moves.size() == 0 || !this->pruner.prune(MOVE(i), (MOVE)moves.back()))
       {
         // Apply the next move.
         moveStore.move(i);
 
         // Get the estimated moves to solved.
-        uint8_t estSuccMoves = moves.size() + 1 + this->pPatternDB->getNumMoves(cube);
-
-        // Revert the move.
-        moveStore.invert(i);
+        uint8_t estSuccMoves = this->pPatternDB->getNumMoves(cube);
 
         // Queue the successor.
         successors.push({i, estSuccMoves});
+
+        // Revert the move.
+        moveStore.invert(i);
       }
     }
 
     while (!successors.empty() && !solved)
     {
-      uint8_t moveInd = successors.top().moveInd;
-      string  move    = moveStore.getMove(moveInd);
+      uint8_t moveInd      = successors.top().moveInd;
+      uint8_t estSuccMoves = successors.top().estMoves;
 
       successors.pop();
 
       // Apply the next move.
-      moves.push_back(move);
+      moves.push_back(moveInd);
       moveStore.move(moveInd);
 
-      uint8_t succCost = this->findGoal(goal, cube, moveStore, bound, moves, solved);
+      uint8_t succCost = this->findGoal(goal, cube, moveStore, bound, moves,
+        solved, estSuccMoves);
 
       if (!solved)
       {
