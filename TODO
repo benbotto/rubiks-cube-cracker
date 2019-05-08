@@ -8,6 +8,10 @@ If I stash the current changes, there's a different result, but the
 edgeG2Database at least seems to be returning the wrong number of moves.  There
 are some backup IDA searchers in ~/temp/ (I was making memory optimizations).
 
+Get rid of the getMoveFunc.  It's confusing and slow.  If all the cube models
+shared an interface, then the move stores could be refactored and simplified
+quite a bit.
+
 In the new IDA searcher, there could be a better solution after the goal is
 satisfied.  Probably need to keep searching the current bound until complete.
 
