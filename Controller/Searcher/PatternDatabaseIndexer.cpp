@@ -10,7 +10,7 @@ namespace busybin
    */
   void PatternDatabaseIndexer::findGoal(Goal& goal, RubiksCubeModel& solvedCube)
   {
-    typedef RubiksCubeModel::MOVE MOVE;
+    typedef RubiksCube::MOVE MOVE;
 
     AutoTimer   timer;
     MovePruner  pruner;

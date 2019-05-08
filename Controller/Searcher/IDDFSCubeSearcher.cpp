@@ -9,14 +9,14 @@ namespace busybin
    * @param cube The cube to search.
    * @param moveStore A MoveStore instance for retrieving moves.
    */
-  vector<string> IDDFSCubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube,
+  vector<RubiksCube::MOVE> IDDFSCubeSearcher::findGoal(Goal& goal, RubiksCube& cube,
     MoveStore& moveStore)
   {
-    AutoTimer      timer;
-    unsigned       maxDepth = 0;
-    vector<string> moves;
+    AutoTimer       timer;
+    unsigned        maxDepth = 0;
+    vector<uint8_t> moveInds;
 
-    while (!this->findGoal(goal, cube, moveStore, 0, maxDepth, moves))
+    while (!this->findGoal(goal, cube, moveStore, 0, maxDepth, moveInds))
     {
       cout << "IDDFS: Finished depth " << maxDepth << ".  Elapsed time "
            << timer.getElapsedSeconds() << "s." << endl;
@@ -24,7 +24,7 @@ namespace busybin
       ++maxDepth;
     }
 
-    return moves;
+    return this->convertMoves(moveInds, moveStore);
   }
 
   /**
@@ -37,8 +37,8 @@ namespace busybin
    * @param maxDepth The maximum depth.
    * @param moves A vector of moves that will be filled.
    */
-  bool IDDFSCubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
-    unsigned depth, unsigned maxDepth, vector<string>& moves)
+  bool IDDFSCubeSearcher::findGoal(Goal& goal, RubiksCube& cube, MoveStore& moveStore,
+    unsigned depth, unsigned maxDepth, vector<uint8_t>& moveInds)
   {
     bool    solved   = false;
     uint8_t numMoves = moveStore.getNumMoves();
@@ -47,26 +47,25 @@ namespace busybin
     if (depth == maxDepth)
     {
       // Index the cube state (some goals store a database).
-      goal.index(cube, depth);
+      goal.index(static_cast<RubiksCubeModel&>(cube), depth);
 
-      return goal.isSatisfied(cube);
+      return goal.isSatisfied(static_cast<RubiksCubeModel&>(cube));
     }
 
     for (uint8_t i = 0; i < numMoves && !solved; ++i)
     {
-      string move = moveStore.getMove(i);
-
-      if (!this->pruner.prune(move, moves))
+      if (moveInds.size() == 0 ||
+        !this->pruner.prune(moveStore.getMove(i), moveStore.getMove(moveInds.back())))
       {
         // Apply the next move.
-        moves.push_back(move);
+        moveInds.push_back(i);
         moveStore.move(i);
 
         // If this move satisfies the goal break out of the loop.
-        if (this->findGoal(goal, cube, moveStore, depth + 1, maxDepth, moves))
+        if (this->findGoal(goal, cube, moveStore, depth + 1, maxDepth, moveInds))
           solved = true;
         else
-          moves.pop_back();
+          moveInds.pop_back();
 
         // Revert the move.
         moveStore.invert(i); // WTF?  Why doesn't this work?

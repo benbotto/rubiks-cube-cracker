@@ -1,19 +1,13 @@
-Try furu'r'f'.  Seems like the initial bound estimate was 7, but it should be 6.
-Now furu'r' edgeG2 shows 6, and furur shows 7.
-furur solves in 9 moves? edgeG2Moves shows 6, not 5?
-fururf doesn't solve by bound 14?  edgeG2Moves shows 0.
-moving the back (B), edgeG2Moves shows 0.  Should be 1.  (Check, but I think I was wrong.)
-fdf edgeG1 shows 5.
-If I stash the current changes, there's a different result, but the
-edgeG2Database at least seems to be returning the wrong number of moves.  There
-are some backup IDA searchers in ~/temp/ (I was making memory optimizations).
+Update CMakeList to release and remove -g.
 
-Get rid of the getMoveFunc.  It's confusing and slow.  If all the cube models
-shared an interface, then the move stores could be refactored and simplified
-quite a bit.
+IDDFS indexes goals, and the type is static casted to a RubiksCubeModel.  Same
+with goal.isSatisfied.  The goals need to be refactored to take RubiksCubes.
 
-Refactor RubiksCubeWorldObject and RubiksCubeModel to extend the new RubiksCube class.
+Search for static_cast<RubiksCube&> and get rid of it.
+
 Refactor MoveStores to move any type of RubikCube.
+Change RubiksCubeModel::MOVE to RubksCube::MOVE.
+Remove bounds checks in MoveStore.cpp#getMove.
 
 In the new IDA searcher, there could be a better solution after the goal is
 satisfied.  Probably need to keep searching the current bound until complete.

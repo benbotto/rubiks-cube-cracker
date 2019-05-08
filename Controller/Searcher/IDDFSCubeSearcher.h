@@ -2,7 +2,7 @@
 #define _BUSYBIN_IDDFS_CUBE_SEARCHER_H_
 
 #include "CubeSearcher.h"
-#include "../../Model/RubiksCubeModel.h"
+#include "../../Model/RubiksCube.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/MoveStore/MoveStore.h"
 #include "../../Util/AutoTimer.h"
@@ -10,6 +10,7 @@
 using std::vector;
 #include <string>
 using std::string;
+#include <cstdint>
 
 namespace busybin
 {
@@ -18,11 +19,12 @@ namespace busybin
    */
   class IDDFSCubeSearcher : public CubeSearcher
   {
-    bool findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore,
-      unsigned depth, unsigned maxDepth, vector<string>& moves);
+    bool findGoal(Goal& goal, RubiksCube& cube, MoveStore& moveStore,
+      unsigned depth, unsigned maxDepth, vector<uint8_t>& moveInds);
 
   public:
-    vector<string> findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore);
+    vector<RubiksCube::MOVE> findGoal(Goal& goal, RubiksCube& cube,
+      MoveStore& moveStore);
   };
 }
 

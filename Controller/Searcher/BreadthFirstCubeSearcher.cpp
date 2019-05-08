@@ -7,7 +7,7 @@ namespace busybin
    * down to node.
    */
   void BreadthFirstCubeSearcher::moveToNode(const Node* pNode,
-    MoveStore& moveStore, vector<string>& moves) const
+    MoveStore& moveStore, vector<uint8_t>& moveInds) const
   {
     stack<uint8_t> moveStack;
 
@@ -20,10 +20,9 @@ namespace busybin
     while (!moveStack.empty())
     {
       uint8_t moveInd = moveStack.top();
-      string move = moveStore.getMove(moveInd);
 
       moveStack.pop();
-      moves.push_back(move);
+      moveInds.push_back(moveInd);
 
       moveStore.move(moveInd);
     }
@@ -32,7 +31,8 @@ namespace busybin
   /**
    * Revert all moves starting with node's move until the root node.
    */
-  void BreadthFirstCubeSearcher::revertMoves(const Node* pNode, MoveStore& moveStore) const
+  void BreadthFirstCubeSearcher::revertMoves(const Node* pNode,
+    MoveStore& moveStore) const
   {
     while (pNode->pParent)
     {
@@ -48,8 +48,8 @@ namespace busybin
    * @param cube The cube to search.
    * @param moveStore A MoveStore instance for retrieving moves.
    */
-  vector<string> BreadthFirstCubeSearcher::findGoal(Goal& goal,
-    RubiksCubeModel& cube, MoveStore& moveStore)
+  vector<RubiksCube::MOVE> BreadthFirstCubeSearcher::findGoal(Goal& goal,
+    RubiksCube& cube, MoveStore& moveStore)
   {
     uint8_t          numMoves     = moveStore.getNumMoves();
     unsigned         maxDepth     = 0;
@@ -58,11 +58,11 @@ namespace busybin
     queue<nodePtr_t> moveQueue;
     shared_ptr<Node> pCurNode;
     AutoTimer        timer;
-    vector<string>   moves;
+    vector<uint8_t>  moveInds;
 
     // The corner database may be pre-populated from a file.
-    if (goal.isSatisfied(cube))
-      return moves;
+    if (goal.isSatisfied(static_cast<RubiksCubeModel&>(cube)))
+      return this->convertMoves(moveInds, moveStore);
 
     // The search starts at the root node.  It takes no moves to get there.
     // Each node (state of the cube) in the queue is a shared_ptr.  When nodes
@@ -70,7 +70,7 @@ namespace busybin
     // a pointer to its parent.  Nodes can only be destructed if they have 0
     // references (i.e. when all child states have been indexed).
     moveQueue.push(nodePtr_t(new Node({0xFF, nullptr})));
-    goal.index(cube, 0);
+    goal.index(static_cast<RubiksCubeModel&>(cube), 0);
 
     while (!moveQueue.empty())
     {
@@ -79,11 +79,11 @@ namespace busybin
       moveQueue.pop();
 
       // Visit the node.
-      moves.clear();
-      this->moveToNode(pCurNode.get(), moveStore, moves);
+      moveInds.clear();
+      this->moveToNode(pCurNode.get(), moveStore, moveInds);
       ++visited;
 
-      if (maxDepth < moves.size())
+      if (maxDepth < moveInds.size())
       {
         cout << "BFS: Finished depth " << maxDepth
              << " (indexed depth " << maxDepth + 1 << ").  Elapsed time " 
@@ -93,9 +93,8 @@ namespace busybin
 
       for (uint8_t moveInd = 0; moveInd < numMoves; ++moveInd)
       {
-        string move = moveStore.getMove(moveInd);
-
-        if (!this->pruner.prune(move, moves))
+        if (moveInds.size() == 0 ||
+          !this->pruner.prune(moveStore.getMove(moveInd), moveStore.getMove(moveInds.back())))
         {
           // Make the move and see if the cube state has been indexed at an
           // earlier depth.
@@ -103,29 +102,25 @@ namespace busybin
 
           // If the goal is indexed, it means it's a new state and needs to be
           // visited.
-          if (goal.index(cube, moves.size() + 1))
+          if (goal.index(static_cast<RubiksCubeModel&>(cube), moveInds.size() + 1))
           {
             moveQueue.push(nodePtr_t(new Node({moveInd, pCurNode})));
 
-            if (goal.isSatisfied(cube))
+            if (goal.isSatisfied(static_cast<RubiksCubeModel&>(cube)))
             {
-              moves.push_back(move);
+              moveInds.push_back(moveInd);
 
               cout << "BFS: Goal was satisfied in "
-                   << moves.size() << " moves.  "
+                   << moveInds.size() << " moves.  "
                    << "Visited " << visited << " nodes.  "
                    << "Max queue size " << maxQueueSize
                    << endl;
-
-              for (const string& move: moves)
-                cout << move << ' ';
-              cout << endl;
 
               // Revert the cube to factory defaults.
               this->revertMoves(moveQueue.back().get(), moveStore);
 
               // Return the list of moves required to achieve the goal.
-              return moves;
+              return this->convertMoves(moveInds, moveStore);
             }
           }
 

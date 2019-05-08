@@ -4,10 +4,9 @@
 #include "../CubeMover.h"
 #include "../../../Util/ThreadPool.h"
 #include "../../../Util/Timer.h"
+#include "../../../Model/RubiksCube.h"
 #include "../../../Model/WorldObject/RubiksCubeWorldObject.h"
 #include "../../../Model/MoveStore/MoveStore.h"
-#include "../../../Model/MoveStore/CubeTwistStore.h"
-#include "../../../Model/MoveStore/CubeRotationStore.h"
 #include "../../../Model/Goal/Goal.h"
 #include "../../../OpenGLSeed/Controller/Command/Command.h"
 #include "../../../OpenGLSeed/Model/World.h"
@@ -45,21 +44,21 @@ namespace busybin
   class CubeSolver : public Command
   {
   protected:
+    typedef RubiksCube::MOVE MOVE;
+
     // Order is import.  The cube pointer has to be initialized before the
     // MoveStores.
     RubiksCubeWorldObject* pCube;
     ThreadPool*            pThreadPool;
 
   private:
-    CubeMover*        pMover;
-    CubeTwistStore    cubeTwistStore;
-    CubeRotationStore cubeRotStore;
-    atomic_bool       solving;
-    atomic_bool       movesInQueue;
-    queue<string>     moveQueue;
-    mutex             moveMutex;
-    Timer             moveTimer;
-    int               solveKey;
+    CubeMover*  pMover;
+    atomic_bool solving;
+    atomic_bool movesInQueue;
+    queue<MOVE> moveQueue;
+    mutex       moveMutex;
+    Timer       moveTimer;
+    int         solveKey;
 
     void onKeypress(int key, int scancode, int action, int mods);
     void onPulse(double elapsed);
@@ -74,8 +73,8 @@ namespace busybin
 
     virtual void solveCube() = 0;
     void setSolving(bool solving);
-    void processGoalMoves(const Goal& goal, MoveStore& moveStore,
-      unsigned goalNum, vector<string>& allMoves, vector<string>& goalMoves);
+    void processGoalMoves(const Goal& goal, RubiksCube& cube,
+      unsigned goalNum, vector<MOVE>& allMoves, vector<MOVE>& goalMoves);
 
   public:
     CubeSolver(World* pWorld, WorldWindow* pWorldWnd,

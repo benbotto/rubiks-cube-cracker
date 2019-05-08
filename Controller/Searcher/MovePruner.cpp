@@ -45,9 +45,9 @@ namespace busybin
    * @param move The index of a twist move, not yet applied.
    * @param lastMove The last move index.
    */
-  bool MovePruner::prune(RubiksCubeModel::MOVE move, RubiksCubeModel::MOVE lastMove) const
+  bool MovePruner::prune(RubiksCube::MOVE move, RubiksCube::MOVE lastMove) const
   {
-    typedef RubiksCubeModel::MOVE M;
+    typedef RubiksCube::MOVE M;
 
     // Two twists of the same face.
     if ((move == M::L || move == M::LPRIME || move == M::L2) &&

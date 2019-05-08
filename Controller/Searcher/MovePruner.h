@@ -1,7 +1,7 @@
 #ifndef _BUSYBIN_MOVE_PRUNER_H_
 #define _BUSYBIN_MOVE_PRUNER_H_
 
-#include "../../Model/RubiksCubeModel.h"
+#include "../../Model/RubiksCube.h"
 #include <string>
 using std::string;
 #include <vector>
@@ -20,7 +20,7 @@ namespace busybin
     // from the search tree).
     bool prune(const string& move, const vector<string>& moves) const;
     bool prune(const string& move, const string& lastMove) const;
-    bool prune(RubiksCubeModel::MOVE move, RubiksCubeModel::MOVE lastMove) const;
+    bool prune(RubiksCube::MOVE move, RubiksCube::MOVE lastMove) const;
   };
 }
 

@@ -5,43 +5,16 @@ namespace busybin
   /**
    * Init.
    */
-  TwistStore::TwistStore() :
+  TwistStore::TwistStore(RubiksCube& cube) :
+    MoveStore(cube),
     moves
-    ({{
-      "L", "L'", "L2",
-      "R", "R'", "R2",
-      "U", "U'", "U2",
-      "D", "D'", "D2",
-      "F", "F'", "F2",
-      "B", "B'", "B2"
-    }}),
-    inverseMoves
     ({
-      {"L", "L'"}, {"L'", "L"}, {"L2", "L2"},
-      {"R", "R'"}, {"R'", "R"}, {"R2", "R2"},
-      {"U", "U'"}, {"U'", "U"}, {"U2", "U2"},
-      {"D", "D'"}, {"D'", "D"}, {"D2", "D2"},
-      {"F", "F'"}, {"F'", "F"}, {"F2", "F2"},
-      {"B", "B'"}, {"B'", "B"}, {"B2", "B2"}
-    })
-  {
-  }
-
-  /**
-   * Overloded ctor which allows for passing in a custom
-   * set of moves.
-   * @param moves A vector of moves.
-   */
-  TwistStore::TwistStore(const vector<string>& moves) :
-    moves(moves),
-    inverseMoves
-    ({
-      {"L", "L'"}, {"L'", "L"}, {"L2", "L2"},
-      {"R", "R'"}, {"R'", "R"}, {"R2", "R2"},
-      {"U", "U'"}, {"U'", "U"}, {"U2", "U2"},
-      {"D", "D'"}, {"D'", "D"}, {"D2", "D2"},
-      {"F", "F'"}, {"F'", "F"}, {"F2", "F2"},
-      {"B", "B'"}, {"B'", "B"}, {"B2", "B2"}
+      RubiksCube::MOVE::L, RubiksCube::MOVE::LPRIME, RubiksCube::MOVE::L2,
+      RubiksCube::MOVE::R, RubiksCube::MOVE::RPRIME, RubiksCube::MOVE::R2,
+      RubiksCube::MOVE::U, RubiksCube::MOVE::UPRIME, RubiksCube::MOVE::U2,
+      RubiksCube::MOVE::D, RubiksCube::MOVE::DPRIME, RubiksCube::MOVE::D2,
+      RubiksCube::MOVE::F, RubiksCube::MOVE::FPRIME, RubiksCube::MOVE::F2,
+      RubiksCube::MOVE::B, RubiksCube::MOVE::BPRIME, RubiksCube::MOVE::B2
     })
   {
   }
@@ -49,17 +22,25 @@ namespace busybin
   /**
    * Return the list of available moves.
    */
-  const vector<string>& TwistStore::getMoves() const
+  const vector<RubiksCube::MOVE>& TwistStore::getMoves() const
   {
     return this->moves;
   }
 
   /**
-   * Get the list of inverse moves.
+   * Move using an index.
    */
-  const MoveStore::invMove_t& TwistStore::getInverseMoves() const
+  void TwistStore::move(uint8_t ind)
   {
-    return this->inverseMoves;
+    this->pCube->move((RubiksCube::MOVE)ind);
+  }
+
+  /**
+   * Undo a move.
+   */
+  void TwistStore::invert(uint8_t ind)
+  {
+    this->pCube->invert((RubiksCube::MOVE)ind);
   }
 }
 

@@ -100,8 +100,8 @@ namespace busybin
   {
     RubiksCubeView  cubeView;
     RubiksCubeModel cubeModel = this->pCube->getRawModel();
-    vector<string>  allMoves;
-    vector<string>  goalMoves;
+    vector<MOVE>    allMoves;
+    vector<MOVE>    goalMoves;
 
     cout << "Solving with Korf method." << endl;
 
@@ -111,25 +111,25 @@ namespace busybin
     // First goal: orient the cube with red up and white front.
     BreadthFirstCubeSearcher bfsSearcher;
     OrientGoal               orientGoal;
-    ModelRotationStore       modelRotStore(cubeModel);
+    RotationStore            rotStore(cubeModel);
 
-    goalMoves = bfsSearcher.findGoal(orientGoal, cubeModel, modelRotStore);
+    goalMoves = bfsSearcher.findGoal(orientGoal, cubeModel, rotStore);
 
-    this->processGoalMoves(orientGoal, modelRotStore, 1, allMoves, goalMoves);
+    this->processGoalMoves(orientGoal, cubeModel, 1, allMoves, goalMoves);
 
     // Second goal: solve the cube.
     IDACubeSearcher idaSearcher(&this->korfDB);
     SolveGoal       solveGoal;
-    ModelTwistStore modelTwistStore(cubeModel);
+    TwistStore      twistStore(cubeModel);
 
-    goalMoves = idaSearcher.findGoal(solveGoal, cubeModel, modelTwistStore);
-    this->processGoalMoves(solveGoal, modelTwistStore, 2, allMoves, goalMoves);
+    goalMoves = idaSearcher.findGoal(solveGoal, cubeModel, twistStore);
+    this->processGoalMoves(solveGoal, cubeModel, 2, allMoves, goalMoves);
 
     // Print the moves.
     cout << "\n\nSolved the cube in " << allMoves.size() << " moves.\n";
 
-    for (string move : allMoves)
-      cout << move << ' ';
+    for (MOVE move : allMoves)
+      cout << this->pCube->getMove(move) << ' ';
     cout << endl;
 
     // Display the cube model.

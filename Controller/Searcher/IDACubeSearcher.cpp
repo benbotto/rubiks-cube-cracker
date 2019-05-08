@@ -19,10 +19,10 @@ namespace busybin
    * @param cube The cube to search.
    * @param moveStore A MoveStore instance for retrieving moves.
    */
-  vector<string> IDACubeSearcher::findGoal(Goal& goal, RubiksCubeModel& cube,
-    MoveStore& moveStore)
+  vector<RubiksCube::MOVE> IDACubeSearcher::findGoal(Goal& goal,
+    RubiksCube& cube, MoveStore& moveStore)
   {
-    typedef RubiksCubeModel::MOVE MOVE;
+    typedef RubiksCube::MOVE MOVE;
     typedef priority_queue<PrioritizedMove, vector<PrioritizedMove>,
       greater<PrioritizedMove> > moveQueue_t;
 
@@ -32,7 +32,7 @@ namespace busybin
     array<uint8_t, 50> moveInds  = {0xFF};
     bool               solved    = false;
     uint8_t            bound     = 0;
-    uint8_t            nextBound = this->pPatternDB->getNumMoves(cube);
+    uint8_t            nextBound = this->pPatternDB->getNumMoves(static_cast<RubiksCubeModel&>(cube));
     moveQueue_t        successors;
 
     while (!solved)
@@ -47,7 +47,7 @@ namespace busybin
         }
 
         // Start with the scrambled (root) node.  Depth 0, no move required.
-        nodeStack.push({cube, 0xFF, 0});
+        nodeStack.push({static_cast<RubiksCubeModel&>(cube), 0xFF, 0});
 
         bound     = nextBound;
         nextBound = 0xFF;
@@ -110,7 +110,7 @@ namespace busybin
     }
 
     // Convert the move indexes to strings.
-    vector<string> moves;
+    vector<RubiksCube::MOVE> moves;
 
     for (unsigned i = 0; i < moveInds.size() && moveInds[i] != 0xFF; ++i)
       moves.push_back(moveStore.getMove(moveInds[i]));

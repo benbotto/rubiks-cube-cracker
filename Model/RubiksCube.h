@@ -3,6 +3,8 @@
 
 #include "../Util/RubiksCubeException.h"
 #include <cstdint>
+#include <string>
+using std::string;
 
 namespace busybin
 {
@@ -26,10 +28,14 @@ namespace busybin
       B, BPRIME, B2,
       Y, YPRIME, Y2,
       X, XPRIME, X2,
-      Z, ZPRIME, Z2
+      Z, ZPRIME, Z2,
+      M, MPRIME, M2,
+      E, EPRIME, E2,
+      S, SPRIME, S2
     };
 
     virtual COLOR getColor(FACE face, unsigned row, unsigned col) const = 0;
+    string getMove(MOVE ind) const;
 
     // Face moves.
     RubiksCube& move(MOVE ind);

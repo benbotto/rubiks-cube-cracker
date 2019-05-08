@@ -16,8 +16,6 @@ namespace busybin
     pCube(dynamic_cast<RubiksCubeWorldObject*>(&this->getWorld()->at("RubiksCube"))),
     pThreadPool(pThreadPool),
     pMover(pMover),
-    cubeTwistStore(*this->pCube),
-    cubeRotStore(*this->pCube),
     solving(false),
     movesInQueue(false),
     moveTimer(false),
@@ -72,14 +70,11 @@ namespace busybin
       (!this->moveTimer.isStarted() || this->moveTimer.getElapsedSeconds() >= 1))
     {
       lock_guard<mutex> threadLock(this->moveMutex);
-      string move = this->moveQueue.front();
+      MOVE move = this->moveQueue.front();
       this->moveQueue.pop();
 
-      // Apply the next move.  It could be a twist or a rotation.
-      if (this->cubeTwistStore.isValidMove(move))
-        this->cubeTwistStore.getMoveFunc(move)();
-      else
-        this->cubeRotStore.getMoveFunc(move)();
+      // Apply the next move.
+      this->pCube->move(move);
 
       // Flag whether or not there are more moves for the next run.
       this->movesInQueue = !this->moveQueue.empty();
@@ -117,8 +112,7 @@ namespace busybin
   /**
    * Helper function to process moves after a goal is achived.
    * @param goal The goal for verbosity.
-   * @param moveStore The MoveStore for processing the moves
-   *        in the RC model copy.
+   * @param cube The RC model copy.  The goalMoves will be applied.
    * @param goalNum The goal number for verbosity.
    * @param allMoves This vector holds all the moves thus far.  The
    *        goalMoves vector will be appended to it.
@@ -126,23 +120,23 @@ namespace busybin
    *        the goal.  These moves will be queued for the GL cube to
    *        display, then the vector will be cleared.
    */
-  void CubeSolver::processGoalMoves(const Goal& goal, MoveStore& moveStore,
-    unsigned goalNum, vector<string>& allMoves, vector<string>& goalMoves)
+  void CubeSolver::processGoalMoves(const Goal& goal, RubiksCube& cube,
+    unsigned goalNum, vector<MOVE>& allMoves, vector<MOVE>& goalMoves)
   {
     cout << "Found goal " << goalNum << ": " << goal.getDescription() << '\n' << endl;
 
     // Add goalMoves to the end of allMoves.
     allMoves.insert(allMoves.end(), goalMoves.begin(), goalMoves.end());
 
-    for (string move : goalMoves)
+    for (MOVE move : goalMoves)
     {
       // Lock the move mutex so that onPulse doesn't simultaneously mangle
       // the move queue.
       lock_guard<mutex> threadLock(this->moveMutex);
 
-      // The RC model needs to be kept in sync as it is a copy
-      // of the actual RC model.
-      moveStore.getMoveFunc(move)();
+      // The RC model needs to be kept in sync as it is a copy of the actual RC
+      // model.
+      cube.move(move);
 
       // Queue this move for the GL cube to render.
       this->moveQueue.push(move);

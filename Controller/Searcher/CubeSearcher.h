@@ -2,7 +2,7 @@
 #define _BUSYBIN_CUBE_SEARCHER_H_
 
 #include "./MovePruner.h"
-#include "../../Model/RubiksCubeModel.h"
+#include "../../Model/RubiksCube.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/MoveStore/MoveStore.h"
 #include <vector>
@@ -21,12 +21,13 @@ namespace busybin
   protected:
     MovePruner pruner;
 
+    vector<RubiksCube::MOVE> convertMoves(vector<uint8_t>& moveInds,
+      MoveStore& moveStore) const;
+
   public:
     // Find goal using moveStore and return the list of moves required to
     // achieve goal.
-    virtual vector<string> findGoal(
-      Goal& goal,
-      RubiksCubeModel& cube,
+    virtual vector<RubiksCube::MOVE> findGoal(Goal& goal, RubiksCube& cube,
       MoveStore& moveStore) = 0;
   };
 }

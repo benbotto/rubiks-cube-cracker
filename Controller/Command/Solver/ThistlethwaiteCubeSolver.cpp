@@ -35,7 +35,7 @@ namespace busybin
     RubiksCubeModel cubeModel = this->pCube->getRawModel();
 
     // This twist store contains 180-degree twists only (L2, R2, etc.).
-    ModelG3TwistStore mdlG3TwistStore(cubeModel);
+    G3TwistStore g3TwistStore(cubeModel);
 
     // Generate all corner permutations that can be reached from the solved state
     // using only double twists.  These are stored in this->g3Perms, and used
@@ -44,7 +44,7 @@ namespace busybin
 
     this->setSolving(true);
 
-    this->searcher.findGoal(this->g3Perms, cubeModel, mdlG3TwistStore);
+    this->searcher.findGoal(this->g3Perms, cubeModel, g3TwistStore);
     this->setSolving(false);
 
     cout << "Thistlethwaite initialization complete." << endl;
@@ -56,24 +56,25 @@ namespace busybin
   void ThistlethwaiteCubeSolver::solveCube()
   {
     RubiksCubeView           cubeView;
-    vector<string>           allMoves;
-    vector<string>           goalMoves;
+    vector<MOVE>             allMoves;
+    vector<MOVE>             goalMoves;
+    vector<string>           allMoveStrings;
     vector<string>           simpMoves;
     RubiksCubeModel          cubeModel = this->pCube->getRawModel();
-    ModelTwistStore          mdlTwistStore(cubeModel);
-    ModelG1TwistStore        mdlG1TwistStore(cubeModel);
-    ModelG2TwistStore        mdlG2TwistStore(cubeModel);
-    ModelG3TwistStore        mdlG3TwistStore(cubeModel);
-    ModelRotationStore       mdlRotStore(cubeModel);
+    TwistStore               twistStore(cubeModel);
+    G1TwistStore             g1TwistStore(cubeModel);
+    G2TwistStore             g2TwistStore(cubeModel);
+    G3TwistStore             g3TwistStore(cubeModel);
+    RotationStore            rotStore(cubeModel);
     vector<GoalAndMoveStore> goals;
 
     // Create the goals.
-    goals.push_back({unique_ptr<Goal>(new OrientGoal()),                     &mdlRotStore});
-    goals.push_back({unique_ptr<Goal>(new GoalG0_G1()),                      &mdlTwistStore});
-    goals.push_back({unique_ptr<Goal>(new GoalG1_G2()),                      &mdlG1TwistStore});
-    goals.push_back({unique_ptr<Goal>(new GoalG2_G3_Corners(this->g3Perms)), &mdlG2TwistStore});
-    goals.push_back({unique_ptr<Goal>(new GoalG2_G3_Edges(this->g3Perms)),   &mdlG2TwistStore});
-    goals.push_back({unique_ptr<Goal>(new SolveGoal()),                      &mdlG3TwistStore});
+    goals.push_back({unique_ptr<Goal>(new OrientGoal()),                     &rotStore});
+    goals.push_back({unique_ptr<Goal>(new GoalG0_G1()),                      &twistStore});
+    goals.push_back({unique_ptr<Goal>(new GoalG1_G2()),                      &g1TwistStore});
+    goals.push_back({unique_ptr<Goal>(new GoalG2_G3_Corners(this->g3Perms)), &g2TwistStore});
+    goals.push_back({unique_ptr<Goal>(new GoalG2_G3_Edges(this->g3Perms)),   &g2TwistStore});
+    goals.push_back({unique_ptr<Goal>(new SolveGoal()),                      &g3TwistStore});
 
     // Display the intial cube model.
     cout << "Initial cube state." << endl;
@@ -84,18 +85,22 @@ namespace busybin
     {
       // Find the goal.
       goalMoves = this->searcher.findGoal(*goals[i].pGoal, cubeModel, *goals[i].pMoveStore);
-      this->processGoalMoves(*goals[i].pGoal, *goals[i].pMoveStore, i + 1, allMoves, goalMoves);
+      this->processGoalMoves(*goals[i].pGoal, cubeModel, i + 1, allMoves, goalMoves);
     }
 
     // Print the moves.
     cout << "\n\nSolved the cube in " << allMoves.size() << " moves.\n";
 
-    for (string move : allMoves)
+    // Convert the moves to strings.
+    for (MOVE move : allMoves)
+      allMoveStrings.push_back(this->pCube->getMove(move));
+
+    for (string move : allMoveStrings)
       cout << move << ' ';
     cout << endl;
 
     // Simplify the moves if posible.
-    simpMoves = this->simplifyMoves(allMoves);
+    simpMoves = this->simplifyMoves(allMoveStrings);
     cout << "Simplified to " << simpMoves.size() << " moves.\n";
     for (string move : simpMoves)
       cout << move << ' ';

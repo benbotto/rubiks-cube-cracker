@@ -3,7 +3,7 @@
 
 #include "CubeSearcher.h"
 #include "MovePruner.h"
-#include "../../Model/RubiksCubeModel.h"
+#include "../../Model/RubiksCube.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/MoveStore/MoveStore.h"
 #include "../../Util/AutoTimer.h"
@@ -39,11 +39,12 @@ namespace busybin
       nodePtr_t pParent;
     };
 
-    void moveToNode(const Node* pNode, MoveStore& moveStore, vector<string>& moves) const;
+    void moveToNode(const Node* pNode, MoveStore& moveStore,
+      vector<uint8_t>& moveInds) const;
     void revertMoves(const Node* pNode, MoveStore& moveStore) const;
 
   public:
-    vector<string> findGoal(Goal& goal, RubiksCubeModel& cube,
+    vector<RubiksCube::MOVE> findGoal(Goal& goal, RubiksCube& cube,
       MoveStore& moveStore);
   };
 }

@@ -50,7 +50,8 @@ namespace busybin
 
   public:
     IDACubeSearcher(const PatternDatabase* pPatternDB);
-    vector<string> findGoal(Goal& goal, RubiksCubeModel& cube, MoveStore& moveStore);
+    vector<RubiksCube::MOVE> findGoal(Goal& goal, RubiksCube& cube,
+      MoveStore& moveStore);
   };
 }
 
