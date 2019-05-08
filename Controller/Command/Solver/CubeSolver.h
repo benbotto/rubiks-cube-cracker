@@ -4,7 +4,7 @@
 #include "../CubeMover.h"
 #include "../../../Util/ThreadPool.h"
 #include "../../../Util/Timer.h"
-#include "../../../Model/WorldObject/RubiksCube.h"
+#include "../../../Model/WorldObject/RubiksCubeWorldObject.h"
 #include "../../../Model/MoveStore/MoveStore.h"
 #include "../../../Model/MoveStore/CubeTwistStore.h"
 #include "../../../Model/MoveStore/CubeRotationStore.h"
@@ -47,8 +47,8 @@ namespace busybin
   protected:
     // Order is import.  The cube pointer has to be initialized before the
     // MoveStores.
-    RubiksCube* pCube;
-    ThreadPool* pThreadPool;
+    RubiksCubeWorldObject* pCube;
+    ThreadPool*            pThreadPool;
 
   private:
     CubeMover*        pMover;

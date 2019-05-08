@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_RUBIKS_CUBE_H_
-#define _BUSYBIN_RUBIKS_CUBE_H_
+#ifndef _BUSYBIN_RUBIKS_CUBE_WORLD_OBJECT_H_
+#define _BUSYBIN_RUBIKS_CUBE_WORLD_OBJECT_H_
 
 #include "Cubie.h"
 #include "../../Controller/GL/Program/RubiksCubeProgram.h"
@@ -31,7 +31,7 @@ namespace busybin
   /**
    * An OpenGL RubiksCube.
    */
-  class RubiksCube : public WorldObject
+  class RubiksCubeWorldObject : public WorldObject
   {
     typedef unique_ptr<Cubie>              CubiePtr;
     typedef map<string, CubiePtr>          CubieMap;
@@ -60,7 +60,7 @@ namespace busybin
     void moveSlicePrime(const array<string, 8>& slice);
 
   public:
-    RubiksCube(Program* pProgram, MatrixStack* pMatrixStack);
+    RubiksCubeWorldObject(Program* pProgram, MatrixStack* pMatrixStack);
 
     void draw(double elapsed);
     RubiksCubeProgram* getProgram() const;

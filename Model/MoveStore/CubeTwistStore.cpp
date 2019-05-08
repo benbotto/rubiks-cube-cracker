@@ -7,32 +7,32 @@ namespace busybin
    * @param cube A RubiksCube reference for storing the move
    *        string->function map.
    */
-  CubeTwistStore::CubeTwistStore(RubiksCube& cube)
+  CubeTwistStore::CubeTwistStore(RubiksCubeWorldObject& cube)
   {
     // Set up the move map.
-    this->moveMap["L"]  = bind(&RubiksCube::l,      &cube);
-    this->moveMap["L'"] = bind(&RubiksCube::lPrime, &cube);
-    this->moveMap["L2"] = bind(&RubiksCube::l2,     &cube);
+    this->moveMap["L"]  = bind(&RubiksCubeWorldObject::l,      &cube);
+    this->moveMap["L'"] = bind(&RubiksCubeWorldObject::lPrime, &cube);
+    this->moveMap["L2"] = bind(&RubiksCubeWorldObject::l2,     &cube);
 
-    this->moveMap["R"]  = bind(&RubiksCube::r,      &cube);
-    this->moveMap["R'"] = bind(&RubiksCube::rPrime, &cube);
-    this->moveMap["R2"] = bind(&RubiksCube::r2,     &cube);
+    this->moveMap["R"]  = bind(&RubiksCubeWorldObject::r,      &cube);
+    this->moveMap["R'"] = bind(&RubiksCubeWorldObject::rPrime, &cube);
+    this->moveMap["R2"] = bind(&RubiksCubeWorldObject::r2,     &cube);
 
-    this->moveMap["U"]  = bind(&RubiksCube::u,      &cube);
-    this->moveMap["U'"] = bind(&RubiksCube::uPrime, &cube);
-    this->moveMap["U2"] = bind(&RubiksCube::u2,     &cube);
+    this->moveMap["U"]  = bind(&RubiksCubeWorldObject::u,      &cube);
+    this->moveMap["U'"] = bind(&RubiksCubeWorldObject::uPrime, &cube);
+    this->moveMap["U2"] = bind(&RubiksCubeWorldObject::u2,     &cube);
 
-    this->moveMap["D"]  = bind(&RubiksCube::d,      &cube);
-    this->moveMap["D'"] = bind(&RubiksCube::dPrime, &cube);
-    this->moveMap["D2"] = bind(&RubiksCube::d2,     &cube);
+    this->moveMap["D"]  = bind(&RubiksCubeWorldObject::d,      &cube);
+    this->moveMap["D'"] = bind(&RubiksCubeWorldObject::dPrime, &cube);
+    this->moveMap["D2"] = bind(&RubiksCubeWorldObject::d2,     &cube);
 
-    this->moveMap["F"]  = bind(&RubiksCube::f,      &cube);
-    this->moveMap["F'"] = bind(&RubiksCube::fPrime, &cube);
-    this->moveMap["F2"] = bind(&RubiksCube::f2,     &cube);
+    this->moveMap["F"]  = bind(&RubiksCubeWorldObject::f,      &cube);
+    this->moveMap["F'"] = bind(&RubiksCubeWorldObject::fPrime, &cube);
+    this->moveMap["F2"] = bind(&RubiksCubeWorldObject::f2,     &cube);
 
-    this->moveMap["B"]  = bind(&RubiksCube::b,      &cube);
-    this->moveMap["B'"] = bind(&RubiksCube::bPrime, &cube);
-    this->moveMap["B2"] = bind(&RubiksCube::b2,     &cube);
+    this->moveMap["B"]  = bind(&RubiksCubeWorldObject::b,      &cube);
+    this->moveMap["B'"] = bind(&RubiksCubeWorldObject::bPrime, &cube);
+    this->moveMap["B2"] = bind(&RubiksCubeWorldObject::b2,     &cube);
   }
 
   /**

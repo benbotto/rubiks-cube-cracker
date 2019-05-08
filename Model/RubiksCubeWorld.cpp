@@ -15,7 +15,7 @@ namespace busybin
   {
     this->getProgram().setUniform("ambient",   vec4(.8f, .8f, .8f, 1.0f));
     this->getProgram().setUniform("distLight", this->distLight);
-    this->addWorldObject(woPtr(new RubiksCube(&this->getProgram(), &this->getMatrixStack())));
+    this->addWorldObject(woPtr(new RubiksCubeWorldObject(&this->getProgram(), &this->getMatrixStack())));
   }
 
   /**

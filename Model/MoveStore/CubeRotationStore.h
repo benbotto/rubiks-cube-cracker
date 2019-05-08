@@ -2,7 +2,7 @@
 #define _BUSYBIN_CUBE_ROTATION_STORE_H_
 
 #include "RotationStore.h"
-#include "../WorldObject/RubiksCube.h"
+#include "../WorldObject/RubiksCubeWorldObject.h"
 
 namespace busybin
 {
@@ -17,7 +17,7 @@ namespace busybin
     MoveStore::moveFuncMap_t& getMoveMap();
 
   public:
-    CubeRotationStore(RubiksCube& cube);
+    CubeRotationStore(RubiksCubeWorldObject& cube);
     const MoveStore::moveFuncMap_t& getMoveMap() const;
   };
 }

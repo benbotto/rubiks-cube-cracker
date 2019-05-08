@@ -1,4 +1,4 @@
-#include "RubiksCube.h"
+#include "RubiksCubeWorldObject.h"
 
 namespace busybin
 {
@@ -7,7 +7,7 @@ namespace busybin
    * @param pProgram The currently installed shader program.
    * @param pMatrixStack The World's MatrixStack.
    */
-  RubiksCube::RubiksCube(Program* pProgram, MatrixStack* pMatrixStack) : 
+  RubiksCubeWorldObject::RubiksCubeWorldObject(Program* pProgram, MatrixStack* pMatrixStack) : 
     WorldObject("RubiksCube", pProgram, pMatrixStack)
   {
     // Short-hand.
@@ -80,7 +80,7 @@ namespace busybin
    * Draw the all the cubies.
    * @param elapsed The number of elapsed seconds since the last pulse.
    */
-  void RubiksCube::draw(double elapsed)
+  void RubiksCubeWorldObject::draw(double elapsed)
   {
     // Make the cube bob up and down like it's levitating.
     this->levitation.angle   += this->levitation.delta * elapsed;
@@ -98,7 +98,7 @@ namespace busybin
   /**
    * Return the program (downcast).
    */
-  RubiksCubeProgram* RubiksCube::getProgram() const
+  RubiksCubeProgram* RubiksCubeWorldObject::getProgram() const
   {
     return dynamic_cast<RubiksCubeProgram*>(WorldObject::getProgram());
   }
@@ -106,7 +106,7 @@ namespace busybin
   /**
    * Get a copy of the raw RubiksCube model.
    */
-  RubiksCubeModel RubiksCube::getRawModel() const
+  RubiksCubeModel RubiksCubeWorldObject::getRawModel() const
   {
     return this->rawCubeModel;
   }
@@ -116,7 +116,7 @@ namespace busybin
    * example, with an U rotation, LUF is moved to LUB.
    * @param face The face to rotate clockwise.
    */
-  void RubiksCube::moveFace(const array<string, 9>& face)
+  void RubiksCubeWorldObject::moveFace(const array<string, 9>& face)
   {
     array<CubiePtr, 9> hold;
 
@@ -144,7 +144,7 @@ namespace busybin
    * See moveFace.  Same thing but prime.
    * @param face The face to rotate counter-clockwise.
    */
-  void RubiksCube::moveFacePrime(const array<string, 9>& face)
+  void RubiksCubeWorldObject::moveFacePrime(const array<string, 9>& face)
   {
     array<CubiePtr, 9> hold;
 
@@ -172,7 +172,7 @@ namespace busybin
    * See moveFace.  Move a slice. 
    * @param slice The slice to rotate clockwise.
    */
-  void RubiksCube::moveSlice(const array<string, 8>& slice)
+  void RubiksCubeWorldObject::moveSlice(const array<string, 8>& slice)
   {
     array<CubiePtr, 8> hold;
 
@@ -197,7 +197,7 @@ namespace busybin
    * See moveFace.  Move a slice prime. 
    * @param slice The slice to rotate counter-clockwise.
    */
-  void RubiksCube::moveSlicePrime(const array<string, 8>& slice)
+  void RubiksCubeWorldObject::moveSlicePrime(const array<string, 8>& slice)
   {
     array<CubiePtr, 8> hold;
 
@@ -222,7 +222,7 @@ namespace busybin
    * Rotate the whole cube about the x axis (e.g. down) counter-clockwise 
    * as if looking at the R face.
    */
-  void RubiksCube::xPrime()
+  void RubiksCubeWorldObject::xPrime()
   {
     this->l();
     this->m();
@@ -232,7 +232,7 @@ namespace busybin
   /**
    * Rotate the whole cube about the x axis twice.
    */
-  void RubiksCube::x2()
+  void RubiksCubeWorldObject::x2()
   {
     this->x();
     this->x();
@@ -242,7 +242,7 @@ namespace busybin
    * Rotate the whole cube about the y axis (e.g. left) as if looking at
    * the U face.
    */
-  void RubiksCube::y()
+  void RubiksCubeWorldObject::y()
   {
     this->u();
     this->dPrime();
@@ -253,7 +253,7 @@ namespace busybin
    * Rotate the whole cube about the y axis (e.g. right) counter-clockwise
    * as if looking at the U face.
    */
-  void RubiksCube::yPrime()
+  void RubiksCubeWorldObject::yPrime()
   {
     this->uPrime();
     this->d();
@@ -263,7 +263,7 @@ namespace busybin
   /**
    * Rotate the whole cube about the y axis twice.
    */
-  void RubiksCube::y2()
+  void RubiksCubeWorldObject::y2()
   {
     this->y();
     this->y();
@@ -273,7 +273,7 @@ namespace busybin
    * Rotate the whole cube about the x axis (e.g. up) as if looking at the
    * R face.
    */
-  void RubiksCube::x()
+  void RubiksCubeWorldObject::x()
   {
     this->lPrime();
     this->mPrime();
@@ -284,7 +284,7 @@ namespace busybin
    * Rotate the whole cube about the z axis (e.g. sideways) as if looking at the
    * F face.
    */
-  void RubiksCube::z()
+  void RubiksCubeWorldObject::z()
   {
     this->f();
     this->s();
@@ -295,7 +295,7 @@ namespace busybin
    * Rotate the whole cube about the z axis (e.g. sideways) counter-clockwise 
    * as if looking at the F face.
    */
-  void RubiksCube::zPrime()
+  void RubiksCubeWorldObject::zPrime()
   {
     this->fPrime();
     this->sPrime();
@@ -305,7 +305,7 @@ namespace busybin
   /**
    * Rotate the whole cube about the z axis twice.
    */
-  void RubiksCube::z2()
+  void RubiksCubeWorldObject::z2()
   {
     this->z();
     this->z();
@@ -314,7 +314,7 @@ namespace busybin
   /**
    * Rotate the UP face.
    */
-  void RubiksCube::u()
+  void RubiksCubeWorldObject::u()
   {
     float rads = half_pi<float>();
     vec3  axis(0.0f, -1.0f, 0.0f);
@@ -329,7 +329,7 @@ namespace busybin
   /**
    * Rotate the UP face prime.
    */
-  void RubiksCube::uPrime()
+  void RubiksCubeWorldObject::uPrime()
   {
     float rads = half_pi<float>() * -1;
     vec3  axis(0.0f, -1.0f, 0.0f);
@@ -344,7 +344,7 @@ namespace busybin
   /**
    * Rotate the UP face twice.
    */
-  void RubiksCube::u2()
+  void RubiksCubeWorldObject::u2()
   {
     this->u();
     this->u();
@@ -353,7 +353,7 @@ namespace busybin
   /**
    * Rotate the LEFT face.
    */
-  void RubiksCube::l()
+  void RubiksCubeWorldObject::l()
   {
     float rads = half_pi<float>();
     vec3  axis(1.0f, 0.0f, 0.0f);
@@ -368,7 +368,7 @@ namespace busybin
   /**
    * Rotate the LEFT face prime.
    */
-  void RubiksCube::lPrime()
+  void RubiksCubeWorldObject::lPrime()
   {
     float rads = half_pi<float>() * -1;
     vec3  axis(1.0f, 0.0f, 0.0f);
@@ -383,7 +383,7 @@ namespace busybin
   /**
    * Rotate the LEFT face twice.
    */
-  void RubiksCube::l2()
+  void RubiksCubeWorldObject::l2()
   {
     this->l();
     this->l();
@@ -392,7 +392,7 @@ namespace busybin
   /**
    * Rotate the FRONT face.
    */
-  void RubiksCube::f()
+  void RubiksCubeWorldObject::f()
   {
     float rads = half_pi<float>();
     vec3  axis(0.0f, 0.0f, -1.0f);
@@ -407,7 +407,7 @@ namespace busybin
   /**
    * Rotate the FRONT face prime.
    */
-  void RubiksCube::fPrime()
+  void RubiksCubeWorldObject::fPrime()
   {
     float rads = half_pi<float>() * -1;
     vec3  axis(0.0f, 0.0f, -1.0f);
@@ -422,7 +422,7 @@ namespace busybin
   /**
    * Rotate the FRONT face twice.
    */
-  void RubiksCube::f2()
+  void RubiksCubeWorldObject::f2()
   {
     this->f();
     this->f();
@@ -431,7 +431,7 @@ namespace busybin
   /**
    * Rotate the RIGHT face.
    */
-  void RubiksCube::r()
+  void RubiksCubeWorldObject::r()
   {
     float rads = half_pi<float>();
     vec3  axis(-1.0f, 0.0f, 0.0f);
@@ -446,7 +446,7 @@ namespace busybin
   /**
    * Rotate the RIGHT face prime.
    */
-  void RubiksCube::rPrime()
+  void RubiksCubeWorldObject::rPrime()
   {
     float rads = half_pi<float>() * -1;
     vec3  axis(-1.0f, 0.0f, 0.0f);
@@ -461,7 +461,7 @@ namespace busybin
   /**
    * Rotate the RIGHT face twice.
    */
-  void RubiksCube::r2()
+  void RubiksCubeWorldObject::r2()
   {
     this->r();
     this->r();
@@ -470,7 +470,7 @@ namespace busybin
   /**
    * Rotate the BACK face.
    */
-  void RubiksCube::b()
+  void RubiksCubeWorldObject::b()
   {
     float rads = half_pi<float>();
     vec3  axis(0.0f, 0.0f, 1.0f);
@@ -485,7 +485,7 @@ namespace busybin
   /**
    * Rotate the BACK face prime.
    */
-  void RubiksCube::bPrime()
+  void RubiksCubeWorldObject::bPrime()
   {
     float rads = half_pi<float>() * -1;
     vec3  axis(0.0f, 0.0f, 1.0f);
@@ -500,7 +500,7 @@ namespace busybin
   /**
    * Rotate the BACK face twice.
    */
-  void RubiksCube::b2()
+  void RubiksCubeWorldObject::b2()
   {
     this->b();
     this->b();
@@ -509,7 +509,7 @@ namespace busybin
   /**
    * Rotate the DOWN face.
    */
-  void RubiksCube::d()
+  void RubiksCubeWorldObject::d()
   {
     float rads = half_pi<float>();
     vec3  axis(0.0f, 1.0f, 0.0f);
@@ -524,7 +524,7 @@ namespace busybin
   /**
    * Rotate the DOWN face prime.
    */
-  void RubiksCube::dPrime()
+  void RubiksCubeWorldObject::dPrime()
   {
     float rads = half_pi<float>() * -1;
     vec3  axis(0.0f, 1.0f, 0.0f);
@@ -539,7 +539,7 @@ namespace busybin
   /**
    * Rotate the DOWN face twice.
    */
-  void RubiksCube::d2()
+  void RubiksCubeWorldObject::d2()
   {
     this->d();
     this->d();
@@ -548,7 +548,7 @@ namespace busybin
   /**
    * Rotate the MIDDLE slice (between L and R, same way as L).
    */
-  void RubiksCube::m()
+  void RubiksCubeWorldObject::m()
   {
     float rads = half_pi<float>();
     vec3  axis(1.0f, 0.0f, 0.0f);
@@ -563,7 +563,7 @@ namespace busybin
   /**
    * Rotate the MIDDLE slice prime (between L and R, same way as L).
    */
-  void RubiksCube::mPrime()
+  void RubiksCubeWorldObject::mPrime()
   {
     float rads = half_pi<float>() * -1;
     vec3  axis(1.0f, 0.0f, 0.0f);
@@ -578,7 +578,7 @@ namespace busybin
   /**
    * Rotate the MIDDLE slice twice (between L and R, same way as L).
    */
-  void RubiksCube::m2()
+  void RubiksCubeWorldObject::m2()
   {
     this->m();
     this->m();
@@ -587,7 +587,7 @@ namespace busybin
   /**
    * Rotate the E slice (between U and D, same way as D).
    */
-  void RubiksCube::e()
+  void RubiksCubeWorldObject::e()
   {
     float rads = half_pi<float>();
     vec3  axis(0.0f, 1.0f, 0.0f);
@@ -602,7 +602,7 @@ namespace busybin
   /**
    * Rotate the E slice prime (between U and D, same way as D).
    */
-  void RubiksCube::ePrime()
+  void RubiksCubeWorldObject::ePrime()
   {
     float rads = half_pi<float>() * -1;
     vec3  axis(0.0f, 1.0f, 0.0f);
@@ -617,7 +617,7 @@ namespace busybin
   /**
    * Rotate the E slice twice (between U and D, same way as D).
    */
-  void RubiksCube::e2()
+  void RubiksCubeWorldObject::e2()
   {
     this->e();
     this->e();
@@ -626,7 +626,7 @@ namespace busybin
   /**
    * Rotate the S slice (between F and B, same way as F).
    */
-  void RubiksCube::s()
+  void RubiksCubeWorldObject::s()
   {
     float rads = half_pi<float>();
     vec3  axis(0.0f, 0.0f, -1.0f);
@@ -641,7 +641,7 @@ namespace busybin
   /**
    * Rotate the S slice prime (between F and B, same way as F).
    */
-  void RubiksCube::sPrime()
+  void RubiksCubeWorldObject::sPrime()
   {
     float rads = half_pi<float>() * -1;
     vec3  axis(0.0f, 0.0f, -1.0f);
@@ -656,7 +656,7 @@ namespace busybin
   /**
    * Rotate the S slice twice (between F and B, same way as F).
    */
-  void RubiksCube::s2()
+  void RubiksCubeWorldObject::s2()
   {
     this->s();
     this->s();

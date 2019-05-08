@@ -13,7 +13,7 @@ namespace busybin
   CubeSolver::CubeSolver(World* pWorld, WorldWindow* pWorldWnd,
     CubeMover* pMover, ThreadPool* pThreadPool, int solveKey) :
     Command(pWorld, pWorldWnd),
-    pCube(dynamic_cast<RubiksCube*>(&this->getWorld()->at("RubiksCube"))),
+    pCube(dynamic_cast<RubiksCubeWorldObject*>(&this->getWorld()->at("RubiksCube"))),
     pThreadPool(pThreadPool),
     pMover(pMover),
     cubeTwistStore(*this->pCube),

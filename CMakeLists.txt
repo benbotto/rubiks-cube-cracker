@@ -40,7 +40,9 @@ set(SRC
   "./Model/PatternDatabase/Korf/EdgeG2PatternDatabase.cpp"
   "./Model/PatternDatabase/Korf/KorfPatternDatabase.cpp"
   "./Model/RubiksCubeWorld.cpp"
+  "./Model/RubiksCube.cpp"
   "./Model/RubiksCubeModel.cpp"
+  "./Model/RubiksCubeIndexModel.cpp"
   "./Model/Goal/Goal.cpp"
   "./Model/Goal/OrientGoal.cpp"
   "./Model/Goal/SolveGoal.cpp"
@@ -54,9 +56,9 @@ set(SRC
   "./Model/Goal/Korf/CornerDatabaseGoal.cpp"
   "./Model/Goal/Korf/EdgeDatabaseGoal.cpp"
   "./Model/WorldObject/Cubie.cpp"
-  "./Model/WorldObject/RubiksCube.cpp")
+  "./Model/WorldObject/RubiksCubeWorldObject.cpp")
 
-# Build the RubiksCubee executable.
+# Build the RubiksCube executable.
 add_executable(rubiksCube ${SRC})
 
 # Release build by default.
