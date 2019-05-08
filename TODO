@@ -13,7 +13,6 @@ shared an interface, then the move stores could be refactored and simplified
 quite a bit.
 
 Refactor RubiksCubeWorldObject and RubiksCubeModel to extend the new RubiksCube class.
-Refactor RubiksCubeView to render any type of RubiksCube (no specialization needed).
 Refactor MoveStores to move any type of RubikCube.
 
 In the new IDA searcher, there could be a better solution after the goal is
