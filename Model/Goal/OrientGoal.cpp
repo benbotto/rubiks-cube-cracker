@@ -8,8 +8,8 @@ namespace busybin
    */
   bool OrientGoal::isSatisfied(RubiksCubeModel& cube)
   {
-    return cube.get(FACE::UP,    1, 1) == COLOR::RED &&
-           cube.get(FACE::FRONT, 1, 1) == COLOR::WHITE;
+    return cube.getColor(FACE::UP,    1, 1) == COLOR::RED &&
+           cube.getColor(FACE::FRONT, 1, 1) == COLOR::WHITE;
   }
 
   /**

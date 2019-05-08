@@ -8,22 +8,22 @@ namespace busybin
   uint32_t EdgeG1PatternDatabase::getDatabaseIndex(const RubiksCubeModel& cube) const
   {
     // UB RY 0.
-    edge_t ub = {cube.get(1), cube.get(33)};
+    edge_t ub = {cube.getColor(1), cube.getColor(33)};
 
     // UR RG 1.
-    edge_t ur = {cube.get(3), cube.get(25)};
+    edge_t ur = {cube.getColor(3), cube.getColor(25)};
 
     // UF RW 2.
-    edge_t uf = {cube.get(5), cube.get(17)};
+    edge_t uf = {cube.getColor(5), cube.getColor(17)};
 
     // UL RB 3.
-    edge_t ul = {cube.get(7), cube.get(9)};
+    edge_t ul = {cube.getColor(7), cube.getColor(9)};
 
     // FR WG 4.
-    edge_t fr = {cube.get(19), cube.get(31)};
+    edge_t fr = {cube.getColor(19), cube.getColor(31)};
 
     // FL WB 5.
-    edge_t fl = {cube.get(23), cube.get(11)};
+    edge_t fl = {cube.getColor(23), cube.getColor(11)};
 
     perm_t edgePerm =
     {

@@ -1,6 +1,7 @@
 #ifndef _BUSYBIN_CORNER_PATTERN_DATABASE_
 #define _BUSYBIN_CORNER_PATTERN_DATABASE_
 
+#include "../../RubiksCube.h"
 #include "../../RubiksCubeModel.h"
 #include "../PatternDatabase.h"
 #include <cstdint>
@@ -13,9 +14,9 @@ namespace busybin
    */
   class CornerPatternDatabase : public PatternDatabase
   {
-    typedef array<RubiksCubeModel::COLOR, 3> corner_t;
+    typedef array<RubiksCube::COLOR, 3> corner_t;
     typedef array<uint8_t, 8> perm_t;
-    typedef RubiksCubeModel::FACE F;
+    typedef RubiksCube::FACE F;
 
   public:
     CornerPatternDatabase();
@@ -78,12 +79,12 @@ namespace busybin
     {
       switch (corner[0])
       {
-        case RubiksCubeModel::COLOR::RED:
-        case RubiksCubeModel::COLOR::ORANGE:
+        case RubiksCube::COLOR::RED:
+        case RubiksCube::COLOR::ORANGE:
           return 0;
 
-        case RubiksCubeModel::COLOR::WHITE:
-        case RubiksCubeModel::COLOR::YELLOW:
+        case RubiksCube::COLOR::WHITE:
+        case RubiksCube::COLOR::YELLOW:
           return 1;
 
         default: // Blue or green.

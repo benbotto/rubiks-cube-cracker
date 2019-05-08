@@ -21,29 +21,29 @@ namespace busybin
   {
     // Edges.  Note that the edge pieces in the M slice were taken care
     // of in the G1->G2 goal.
-    COLOR UL = cube.get(FACE::UP,    1, 0);
-    COLOR LU = cube.get(FACE::LEFT,  0, 1);
+    COLOR UL = cube.getColor(FACE::UP,    1, 0);
+    COLOR LU = cube.getColor(FACE::LEFT,  0, 1);
 
-    COLOR UR = cube.get(FACE::UP,    1, 2);
-    COLOR RU = cube.get(FACE::RIGHT, 0, 1);
+    COLOR UR = cube.getColor(FACE::UP,    1, 2);
+    COLOR RU = cube.getColor(FACE::RIGHT, 0, 1);
 
-    COLOR DL = cube.get(FACE::DOWN,  1, 0);
-    COLOR LD = cube.get(FACE::LEFT,  2, 1);
+    COLOR DL = cube.getColor(FACE::DOWN,  1, 0);
+    COLOR LD = cube.getColor(FACE::LEFT,  2, 1);
 
-    COLOR DR = cube.get(FACE::DOWN,  1, 2);
-    COLOR RD = cube.get(FACE::RIGHT, 2, 1);
+    COLOR DR = cube.getColor(FACE::DOWN,  1, 2);
+    COLOR RD = cube.getColor(FACE::RIGHT, 2, 1);
 
-    COLOR LB = cube.get(FACE::LEFT,  1, 0);
-    COLOR BL = cube.get(FACE::BACK,  1, 2);
+    COLOR LB = cube.getColor(FACE::LEFT,  1, 0);
+    COLOR BL = cube.getColor(FACE::BACK,  1, 2);
 
-    COLOR LF = cube.get(FACE::LEFT,  1, 2);
-    COLOR FL = cube.get(FACE::FRONT, 1, 0);
+    COLOR LF = cube.getColor(FACE::LEFT,  1, 2);
+    COLOR FL = cube.getColor(FACE::FRONT, 1, 0);
 
-    COLOR RB = cube.get(FACE::RIGHT, 1, 2);
-    COLOR BR = cube.get(FACE::BACK,  1, 0);
+    COLOR RB = cube.getColor(FACE::RIGHT, 1, 2);
+    COLOR BR = cube.getColor(FACE::BACK,  1, 0);
 
-    COLOR RF = cube.get(FACE::RIGHT, 1, 0);
-    COLOR FR = cube.get(FACE::FRONT, 1, 2);
+    COLOR RF = cube.getColor(FACE::RIGHT, 1, 0);
+    COLOR FR = cube.getColor(FACE::FRONT, 1, 2);
 
 
     // After this goal, the cube will be solvable with only 180-degree turns.

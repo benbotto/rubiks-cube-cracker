@@ -13,9 +13,9 @@ namespace busybin
   class EdgePatternDatabase : public PatternDatabase
   {
   protected:
-    typedef array<RubiksCubeModel::COLOR, 2> edge_t;
+    typedef array<RubiksCube::COLOR, 2> edge_t;
     typedef array<uint8_t, 6> perm_t;
-    typedef RubiksCubeModel::FACE F;
+    typedef RubiksCube::FACE F;
 
     uint32_t getDatabaseIndex(const perm_t& edgePerm,
       const array<uint8_t, 6>& edgeOrientations) const;
@@ -104,8 +104,8 @@ namespace busybin
     inline uint8_t getCubieOrientation(const edge_t& edge) const
     {
       // If the U or D sticker is the L or R color (blue or green), it's bad.
-      if (edge[0] == RubiksCubeModel::COLOR::BLUE ||
-        edge[0] == RubiksCubeModel::COLOR::GREEN)
+      if (edge[0] == RubiksCube::COLOR::BLUE ||
+        edge[0] == RubiksCube::COLOR::GREEN)
       {
         return 0;
       }
@@ -113,11 +113,11 @@ namespace busybin
       // If the U or D sticker is the F or B color (white or yellow), then check
       // the other edge.  If the other edge is the U or D color (red or orange),
       // it's bad.
-      if (edge[0] == RubiksCubeModel::COLOR::WHITE ||
-        edge[0] == RubiksCubeModel::COLOR::YELLOW)
+      if (edge[0] == RubiksCube::COLOR::WHITE ||
+        edge[0] == RubiksCube::COLOR::YELLOW)
       {
-        if (edge[1] == RubiksCubeModel::COLOR::RED ||
-          edge[1] == RubiksCubeModel::COLOR::ORANGE)
+        if (edge[1] == RubiksCube::COLOR::RED ||
+          edge[1] == RubiksCube::COLOR::ORANGE)
         {
           return 0;
         }

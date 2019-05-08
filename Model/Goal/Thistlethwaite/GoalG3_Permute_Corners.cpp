@@ -18,29 +18,29 @@ namespace busybin
     // permutations: RYB, YBR, BRY, but never RBY.
     perm_t perm =
     {{
-      cube.get(FACE::UP,    0, 0),
-      cube.get(FACE::LEFT,  0, 0),
+      cube.getColor(FACE::UP,    0, 0),
+      cube.getColor(FACE::LEFT,  0, 0),
 
-      cube.get(FACE::UP,    2, 0),
-      cube.get(FACE::LEFT,  0, 2),
+      cube.getColor(FACE::UP,    2, 0),
+      cube.getColor(FACE::LEFT,  0, 2),
 
-      cube.get(FACE::UP,    0, 2),
-      cube.get(FACE::RIGHT, 0, 2),
+      cube.getColor(FACE::UP,    0, 2),
+      cube.getColor(FACE::RIGHT, 0, 2),
 
-      cube.get(FACE::UP,    2, 2),
-      cube.get(FACE::RIGHT, 0, 0),
+      cube.getColor(FACE::UP,    2, 2),
+      cube.getColor(FACE::RIGHT, 0, 0),
 
-      cube.get(FACE::DOWN,  2, 0),
-      cube.get(FACE::LEFT,  2, 0),
+      cube.getColor(FACE::DOWN,  2, 0),
+      cube.getColor(FACE::LEFT,  2, 0),
 
-      cube.get(FACE::DOWN,  0, 0),
-      cube.get(FACE::LEFT,  2, 2),
+      cube.getColor(FACE::DOWN,  0, 0),
+      cube.getColor(FACE::LEFT,  2, 2),
 
-      cube.get(FACE::DOWN,  2, 2),
-      cube.get(FACE::RIGHT, 2, 2),
+      cube.getColor(FACE::DOWN,  2, 2),
+      cube.getColor(FACE::RIGHT, 2, 2),
 
-      cube.get(FACE::DOWN,  0, 2),
-      cube.get(FACE::RIGHT, 2, 0),
+      cube.getColor(FACE::DOWN,  0, 2),
+      cube.getColor(FACE::RIGHT, 2, 0),
     }};
 
     return perm;

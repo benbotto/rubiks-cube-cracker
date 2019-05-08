@@ -9,29 +9,28 @@ namespace busybin
   bool GoalG1_G2::isSatisfied(RubiksCubeModel& cube)
   {
     // Corners, left and right facets.
-    COLOR LUB = cube.get(FACE::LEFT, 0, 0);
-    COLOR LUF = cube.get(FACE::LEFT, 0, 2);
-    COLOR LDB = cube.get(FACE::LEFT, 2, 0);
-    COLOR LDF = cube.get(FACE::LEFT, 2, 2);
+    COLOR LUB = cube.getColor(FACE::LEFT, 0, 0);
+    COLOR LUF = cube.getColor(FACE::LEFT, 0, 2);
+    COLOR LDB = cube.getColor(FACE::LEFT, 2, 0);
+    COLOR LDF = cube.getColor(FACE::LEFT, 2, 2);
 
-    COLOR RUB = cube.get(FACE::RIGHT, 0, 2);
-    COLOR RUF = cube.get(FACE::RIGHT, 0, 0);
-    COLOR RDB = cube.get(FACE::RIGHT, 2, 2);
-    COLOR RDF = cube.get(FACE::RIGHT, 2, 0);
+    COLOR RUB = cube.getColor(FACE::RIGHT, 0, 2);
+    COLOR RUF = cube.getColor(FACE::RIGHT, 0, 0);
+    COLOR RDB = cube.getColor(FACE::RIGHT, 2, 2);
+    COLOR RDF = cube.getColor(FACE::RIGHT, 2, 0);
 
     // Edges in the M slice (between R and L).
-    COLOR UF = cube.get(FACE::UP,    2, 1);
-    COLOR FU = cube.get(FACE::FRONT, 0, 1);
+    COLOR UF = cube.getColor(FACE::UP,    2, 1);
+    COLOR FU = cube.getColor(FACE::FRONT, 0, 1);
 
-    COLOR UB = cube.get(FACE::UP,    0, 1);
-    COLOR BU = cube.get(FACE::BACK,  0, 1);
+    COLOR UB = cube.getColor(FACE::UP,    0, 1);
+    COLOR BU = cube.getColor(FACE::BACK,  0, 1);
 
-    COLOR DF = cube.get(FACE::DOWN,  0, 1);
-    COLOR FD = cube.get(FACE::FRONT, 2, 1);
+    COLOR DF = cube.getColor(FACE::DOWN,  0, 1);
+    COLOR FD = cube.getColor(FACE::FRONT, 2, 1);
 
-    COLOR DB = cube.get(FACE::DOWN,  2, 1);
-    COLOR BD = cube.get(FACE::BACK,  2, 1);
-
+    COLOR DB = cube.getColor(FACE::DOWN,  2, 1);
+    COLOR BD = cube.getColor(FACE::BACK,  2, 1);
 
     return
       // All left/right corner facets either blue or green.

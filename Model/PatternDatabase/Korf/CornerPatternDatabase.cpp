@@ -17,28 +17,28 @@ namespace busybin
   uint32_t CornerPatternDatabase::getDatabaseIndex(const RubiksCubeModel& cube) const
   {
     // URF 0 RGW.
-    corner_t urf = {cube.get(4), cube.get(24), cube.get(18)};
+    corner_t urf = {cube.getColor(4), cube.getColor(24), cube.getColor(18)};
 
     // ULF 1 RBW.
-    corner_t ulf = {cube.get(6), cube.get(10), cube.get(16)};
+    corner_t ulf = {cube.getColor(6), cube.getColor(10), cube.getColor(16)};
 
     // DRF 2 OGW.
-    corner_t drf = {cube.get(42), cube.get(30), cube.get(20)};
+    corner_t drf = {cube.getColor(42), cube.getColor(30), cube.getColor(20)};
 
     // DLF 3 OBW.
-    corner_t dlf = {cube.get(40), cube.get(12), cube.get(22)};
+    corner_t dlf = {cube.getColor(40), cube.getColor(12), cube.getColor(22)};
 
     // URB 4 RGY.
-    corner_t urb = {cube.get(2), cube.get(26), cube.get(32)};
+    corner_t urb = {cube.getColor(2), cube.getColor(26), cube.getColor(32)};
 
     // ULB 5 RBY.
-    corner_t ulb = {cube.get(0), cube.get(8), cube.get(34)};
+    corner_t ulb = {cube.getColor(0), cube.getColor(8), cube.getColor(34)};
 
     // DRB 6 OGY.
-    corner_t drb = {cube.get(44), cube.get(28), cube.get(38)};
+    corner_t drb = {cube.getColor(44), cube.getColor(28), cube.getColor(38)};
 
     // DLB 7 OBY.
-    corner_t dlb = {cube.get(46), cube.get(14), cube.get(36)};
+    corner_t dlb = {cube.getColor(46), cube.getColor(14), cube.getColor(36)};
 
     // The permutation of the 8 corners.
     perm_t cornerPerm =

@@ -2,6 +2,7 @@
 #define _BUSYBIN_GOALG3_PERMUTE_CORNERS_H_
 
 #include "../Goal.h"
+#include "../../RubiksCube.h"
 #include "../../RubiksCubeModel.h"
 #include <string>
 using std::string;
@@ -19,7 +20,7 @@ namespace busybin
    */
   class GoalG3_Permute_Corners : public Goal
   {
-    typedef array<RubiksCubeModel::COLOR, 16> perm_t;
+    typedef array<RubiksCube::COLOR, 16> perm_t;
 
     // Fast comparator for a permutation.
     struct PermComp
