@@ -4,6 +4,7 @@
 #include "Cubie.h"
 #include "../../Controller/GL/Program/RubiksCubeProgram.h"
 #include "../../OpenGLSeed/Model/WorldObject/WorldObject.h"
+#include "../RubiksCube.h"
 #include "../RubiksCubeModel.h"
 #include <glm/glm.hpp>
 using glm::mat4;
@@ -31,7 +32,7 @@ namespace busybin
   /**
    * An OpenGL RubiksCube.
    */
-  class RubiksCubeWorldObject : public WorldObject
+  class RubiksCubeWorldObject : public WorldObject, public RubiksCube
   {
     typedef unique_ptr<Cubie>              CubiePtr;
     typedef map<string, CubiePtr>          CubieMap;
@@ -67,53 +68,55 @@ namespace busybin
 
     RubiksCubeModel getRawModel() const;
 
-    void x();
-    void xPrime();
-    void x2();
+    COLOR getColor(FACE face, unsigned row, unsigned col) const;
 
-    void y();
-    void yPrime();
-    void y2();
+    RubiksCube& x();
+    RubiksCube& xPrime();
+    RubiksCube& x2();
 
-    void z();
-    void zPrime();
-    void z2();
+    RubiksCube& y();
+    RubiksCube& yPrime();
+    RubiksCube& y2();
 
-    void u();
-    void uPrime();
-    void u2();
+    RubiksCube& z();
+    RubiksCube& zPrime();
+    RubiksCube& z2();
 
-    void l();
-    void lPrime();
-    void l2();
+    RubiksCube& u();
+    RubiksCube& uPrime();
+    RubiksCube& u2();
 
-    void f();
-    void fPrime();
-    void f2();
+    RubiksCube& l();
+    RubiksCube& lPrime();
+    RubiksCube& l2();
 
-    void r();
-    void rPrime();
-    void r2();
+    RubiksCube& f();
+    RubiksCube& fPrime();
+    RubiksCube& f2();
 
-    void b();
-    void bPrime();
-    void b2();
+    RubiksCube& r();
+    RubiksCube& rPrime();
+    RubiksCube& r2();
 
-    void d();
-    void dPrime();
-    void d2();
+    RubiksCube& b();
+    RubiksCube& bPrime();
+    RubiksCube& b2();
 
-    void m();
-    void mPrime();
-    void m2();
+    RubiksCube& d();
+    RubiksCube& dPrime();
+    RubiksCube& d2();
 
-    void e();
-    void ePrime();
-    void e2();
+    RubiksCube& m();
+    RubiksCube& mPrime();
+    RubiksCube& m2();
 
-    void s();
-    void sPrime();
-    void s2();
+    RubiksCube& e();
+    RubiksCube& ePrime();
+    RubiksCube& e2();
+
+    RubiksCube& s();
+    RubiksCube& sPrime();
+    RubiksCube& s2();
   };
 }
 
