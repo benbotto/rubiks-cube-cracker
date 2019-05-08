@@ -12,6 +12,8 @@ Get rid of the getMoveFunc.  It's confusing and slow.  If all the cube models
 shared an interface, then the move stores could be refactored and simplified
 quite a bit.
 
+Refactor RubiksCubeWorldObject and RubiksCubeModel to extend the new RubiksCube class.
+
 In the new IDA searcher, there could be a better solution after the goal is
 satisfied.  Probably need to keep searching the current bound until complete.
 
