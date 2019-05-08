@@ -247,7 +247,7 @@ namespace busybin
   RubiksCubeModel::COLOR RubiksCubeModel::get(
     FACE f, unsigned row, unsigned col) const
   {
-    if (row == 1 and col == 1)
+    if (row == 1 && col == 1)
       return (COLOR)this->centers[(unsigned)f];
     else
     {
