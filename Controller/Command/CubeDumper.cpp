@@ -22,7 +22,7 @@ namespace busybin
     // Listen for keypress events.
     pWorldWnd->onKeypress(bind(&CubeDumper::onKeypress, ref(*this), _1, _2, _3, _4));
 
-    this->pCube = dynamic_cast<RubiksCube*>(&pWorld->at("RubiksCube"));
+    this->pCube = dynamic_cast<RubiksCubeWorldObject*>(&pWorld->at("RubiksCube"));
   }
 
   /**
