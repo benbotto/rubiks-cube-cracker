@@ -5,25 +5,27 @@ namespace busybin
   /**
    * Given a cube, get an index into the pattern database.
    */
-  uint32_t EdgeG1PatternDatabase::getDatabaseIndex(const RubiksCubeModel& cube) const
+  uint32_t EdgeG1PatternDatabase::getDatabaseIndex(const RubiksCube& cube) const
   {
+    const RubiksCubeModel& cubeModel = static_cast<const RubiksCubeModel&>(cube);
+
     // UB RY 0.
-    edge_t ub = {cube.getColor(1), cube.getColor(33)};
+    edge_t ub = {cubeModel.getColor(1), cubeModel.getColor(33)};
 
     // UR RG 1.
-    edge_t ur = {cube.getColor(3), cube.getColor(25)};
+    edge_t ur = {cubeModel.getColor(3), cubeModel.getColor(25)};
 
     // UF RW 2.
-    edge_t uf = {cube.getColor(5), cube.getColor(17)};
+    edge_t uf = {cubeModel.getColor(5), cubeModel.getColor(17)};
 
     // UL RB 3.
-    edge_t ul = {cube.getColor(7), cube.getColor(9)};
+    edge_t ul = {cubeModel.getColor(7), cubeModel.getColor(9)};
 
     // FR WG 4.
-    edge_t fr = {cube.getColor(19), cube.getColor(31)};
+    edge_t fr = {cubeModel.getColor(19), cubeModel.getColor(31)};
 
     // FL WB 5.
-    edge_t fl = {cube.getColor(23), cube.getColor(11)};
+    edge_t fl = {cubeModel.getColor(23), cubeModel.getColor(11)};
 
     perm_t edgePerm =
     {

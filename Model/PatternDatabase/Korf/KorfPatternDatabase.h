@@ -4,7 +4,7 @@
 #include "CornerPatternDatabase.h"
 #include "EdgeG1PatternDatabase.h"
 #include "EdgeG2PatternDatabase.h"
-#include "../../RubiksCubeModel.h"
+#include "../../RubiksCube.h"
 #include "../PatternDatabase.h"
 #include "../../../Util/RubiksCubeException.h"
 #include <algorithm>
@@ -39,13 +39,13 @@ namespace busybin
       EdgeG1PatternDatabase* pEdgeG1DB,
       EdgeG2PatternDatabase* pEdgeG2DB);
 
-    uint8_t getNumMoves(const RubiksCubeModel& cube) const;
-    bool setNumMoves(const RubiksCubeModel& cube, const uint8_t numMoves);
+    uint8_t getNumMoves(const RubiksCube& cube) const;
+    bool setNumMoves(const RubiksCube& cube, const uint8_t numMoves);
     bool isFull() const;
     void inflate();
 
     // All unimplemented.
-    uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const;
+    uint32_t getDatabaseIndex(const RubiksCube& cube) const;
     bool setNumMoves(const uint32_t ind, const uint8_t numMoves);
     uint8_t getNumMoves(const uint32_t ind) const;
     size_t getSize() const;

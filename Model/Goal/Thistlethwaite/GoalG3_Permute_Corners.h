@@ -3,7 +3,6 @@
 
 #include "../Goal.h"
 #include "../../RubiksCube.h"
-#include "../../RubiksCubeModel.h"
 #include <string>
 using std::string;
 #include <set>
@@ -29,11 +28,11 @@ namespace busybin
     };
 
     set<perm_t, PermComp> perms;
-    perm_t permToArr(const RubiksCubeModel& cube) const;
+    perm_t permToArr(const RubiksCube& cube) const;
 
   public:
-    bool isSatisfied(RubiksCubeModel& cube);
-    bool permutationExists(const RubiksCubeModel& cube) const;
+    bool isSatisfied(RubiksCube& cube);
+    bool permutationExists(const RubiksCube& cube) const;
     string getDescription() const;
   };
 }

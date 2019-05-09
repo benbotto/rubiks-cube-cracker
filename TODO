@@ -1,13 +1,9 @@
-Update CMakeList to release and remove -g.
-
 IDDFS indexes goals, and the type is static casted to a RubiksCubeModel.  Same
 with goal.isSatisfied.  The goals need to be refactored to take RubiksCubes.
 
-Search for static_cast<RubiksCube&> and get rid of it.
+Search for static_cast<RubiksCubeModel&> and get rid of it.
 
-Refactor MoveStores to move any type of RubikCube.
-Change RubiksCubeModel::MOVE to RubksCube::MOVE.
-Remove bounds checks in MoveStore.cpp#getMove.
+Remove bounds checks in MoveStore.cpp#getMove for speed.
 
 In the new IDA searcher, there could be a better solution after the goal is
 satisfied.  Probably need to keep searching the current bound until complete.

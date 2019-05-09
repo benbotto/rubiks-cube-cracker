@@ -6,7 +6,7 @@ namespace busybin
    * Orient all corners, and place UF, UB, DF, DB in the correct slice.
    * @param cube The cube.
    */
-  bool GoalG1_G2::isSatisfied(RubiksCubeModel& cube)
+  bool GoalG1_G2::isSatisfied(RubiksCube& cube)
   {
     // Corners, left and right facets.
     COLOR LUB = cube.getColor(FACE::LEFT, 0, 0);
@@ -66,3 +66,4 @@ namespace busybin
     return "Orient all corners, and place FU, FD, BU, BD in the correct slice.";
   }
 }
+

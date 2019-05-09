@@ -20,7 +20,7 @@ namespace busybin
 
   public:
     CornerPatternDatabase();
-    uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const;
+    uint32_t getDatabaseIndex(const RubiksCube& cube) const;
 
     /**
      * Given three face colors, return a unique index for a corner cubie.  The
@@ -29,7 +29,7 @@ namespace busybin
      */
     inline uint8_t getCubieIndex(const corner_t& corner) const
     {
-      // The colors range from 0 to 5, per RubiksCubeModel.h.
+      // The colors range from 0 to 5, per RubiksCube.h.
       // Shifting 1 left by 0...5 gives 1, 2, 4, 8, 16, 32.
       // Adding these together gives a unique number for each corner cubie.
       // RWG = 4  + 1 + 2  = 7,  index 0

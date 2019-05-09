@@ -6,7 +6,7 @@ namespace busybin
    * Convert a permutation of the corners to a string.
    * @param cube The cube.
    */
-  GoalG3_Permute_Corners::perm_t GoalG3_Permute_Corners::permToArr(const RubiksCubeModel& cube) const
+  GoalG3_Permute_Corners::perm_t GoalG3_Permute_Corners::permToArr(const RubiksCube& cube) const
   {
     // Note that two facets of a corner dictate the orientation of a corner.
     // The third facet doesn't need to be stored, therefore.  For example,
@@ -52,7 +52,7 @@ namespace busybin
    * solved state using only 180-degree turns.
    * @param cube The cube.
    */
-  bool GoalG3_Permute_Corners::isSatisfied(RubiksCubeModel& cube)
+  bool GoalG3_Permute_Corners::isSatisfied(RubiksCube& cube)
   {
     perm_t perm = this->permToArr(cube);
 
@@ -69,11 +69,11 @@ namespace busybin
   }
 
   /**
-   * Check if the permutation of the cube's corners is one that can be achieved by only
-   * 180-degree twists.
+   * Check if the permutation of the cube's corners is one that can be achieved
+   * by only 180-degree twists.
    * @cube The cube.
    */
-  bool GoalG3_Permute_Corners::permutationExists(const RubiksCubeModel& cube) const
+  bool GoalG3_Permute_Corners::permutationExists(const RubiksCube& cube) const
   {
     perm_t perm = this->permToArr(cube);
     return this->perms.count(perm) == 1;

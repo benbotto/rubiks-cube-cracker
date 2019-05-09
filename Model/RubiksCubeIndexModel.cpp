@@ -409,6 +409,26 @@ namespace busybin
   }
 
   /**
+   * Check if the cube is in a solved state.
+   */
+  bool RubiksCubeIndexModel::isSolved() const
+  {
+    for (unsigned i = 0; i < this->corners.size(); ++i)
+    {
+      if (this->corners[i].index != i || this->corners[i].orientation != 0)
+        return false;
+    }
+
+    for (unsigned i = 0; i < this->edges.size(); ++i)
+    {
+      if (this->edges[i].index != i || this->edges[i].orientation != 0)
+        return false;
+    }
+
+    return true;
+  }
+
+  /**
    * Helper to update the orientation of corners on an L or R turn.
    */
   inline void RubiksCubeIndexModel::updateCornerOrientationX(CORNER ind)

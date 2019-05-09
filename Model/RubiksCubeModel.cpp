@@ -287,6 +287,21 @@ namespace busybin
   }
 
   /**
+   * Check if the cube is in a solved state.  This is used by the solvers, and
+   * the cube is expected to have red on top and white in the front.
+   */
+  bool RubiksCubeModel::isSolved() const
+  {
+    return
+      this->getFace(FACE::FRONT) == 0x0000000000000000 &&
+      this->getFace(FACE::RIGHT) == 0x0101010101010101 &&
+      this->getFace(FACE::UP)    == 0x0202020202020202 &&
+      this->getFace(FACE::LEFT)  == 0x0303030303030303 &&
+      this->getFace(FACE::DOWN)  == 0x0404040404040404 &&
+      this->getFace(FACE::BACK)  == 0x0505050505050505;
+  }
+
+  /**
    * Compare two cubes (integer comparison of each side).
    */
   bool RubiksCubeModel::operator<(const RubiksCubeModel& rhs) const

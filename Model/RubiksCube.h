@@ -35,6 +35,7 @@ namespace busybin
     };
 
     virtual COLOR getColor(FACE face, unsigned row, unsigned col) const = 0;
+    virtual bool isSolved() const = 0;
     string getMove(MOVE ind) const;
 
     // Face moves.

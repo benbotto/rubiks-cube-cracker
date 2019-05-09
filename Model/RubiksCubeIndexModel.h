@@ -67,6 +67,8 @@ namespace busybin
     array<COLOR, 3> getCornerColors(CORNER ind) const;
     COLOR getColor(FACE face, unsigned row, unsigned col) const;
 
+    bool isSolved() const;
+
     // Face moves.
     RubiksCube& u();
     RubiksCube& uPrime();

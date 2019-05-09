@@ -61,7 +61,7 @@ namespace busybin
     vector<uint8_t>  moveInds;
 
     // The corner database may be pre-populated from a file.
-    if (goal.isSatisfied(static_cast<RubiksCubeModel&>(cube)))
+    if (goal.isSatisfied(cube))
       return this->convertMoves(moveInds, moveStore);
 
     // The search starts at the root node.  It takes no moves to get there.
@@ -70,7 +70,7 @@ namespace busybin
     // a pointer to its parent.  Nodes can only be destructed if they have 0
     // references (i.e. when all child states have been indexed).
     moveQueue.push(nodePtr_t(new Node({0xFF, nullptr})));
-    goal.index(static_cast<RubiksCubeModel&>(cube), 0);
+    goal.index(cube, 0);
 
     while (!moveQueue.empty())
     {
@@ -102,11 +102,11 @@ namespace busybin
 
           // If the goal is indexed, it means it's a new state and needs to be
           // visited.
-          if (goal.index(static_cast<RubiksCubeModel&>(cube), moveInds.size() + 1))
+          if (goal.index(cube, moveInds.size() + 1))
           {
             moveQueue.push(nodePtr_t(new Node({moveInd, pCurNode})));
 
-            if (goal.isSatisfied(static_cast<RubiksCubeModel&>(cube)))
+            if (goal.isSatisfied(cube))
             {
               moveInds.push_back(moveInd);
 

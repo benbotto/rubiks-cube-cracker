@@ -3,7 +3,7 @@
 
 #include "../Goal.h"
 #include "GoalG3_Permute_Corners.h"
-#include "../../RubiksCubeModel.h"
+#include "../../RubiksCube.h"
 
 namespace busybin
 {
@@ -17,7 +17,7 @@ namespace busybin
 
   public:
     GoalG2_G3_Corners(GoalG3_Permute_Corners& perms);
-    bool isSatisfied(RubiksCubeModel& cube);
+    bool isSatisfied(RubiksCube& cube);
     string getDescription() const;
   };
 }

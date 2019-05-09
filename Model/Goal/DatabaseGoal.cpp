@@ -14,7 +14,7 @@ namespace busybin
   /**
    * Check if the goal is satisfied (the database is full).
    */
-  bool DatabaseGoal::isSatisfied(RubiksCubeModel& cube)
+  bool DatabaseGoal::isSatisfied(RubiksCube& cube)
   {
     return this->pDatabase->isFull();
   }
@@ -25,7 +25,7 @@ namespace busybin
    * @param cube
    * @param numMoves The number of moves required to get to this cube state.
    */
-  bool DatabaseGoal::index(const RubiksCubeModel& cube, size_t numMoves)
+  bool DatabaseGoal::index(const RubiksCube& cube, size_t numMoves)
   {
     return this->pDatabase->setNumMoves(cube, numMoves);
   }

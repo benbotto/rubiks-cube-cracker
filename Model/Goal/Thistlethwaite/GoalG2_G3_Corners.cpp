@@ -17,7 +17,7 @@ namespace busybin
    * only 180-degree turns.
    * @param cube The cube.
    */
-  bool GoalG2_G3_Corners::isSatisfied(RubiksCubeModel& cube)
+  bool GoalG2_G3_Corners::isSatisfied(RubiksCube& cube)
   {
     return
       // All corners in a permutation that is achievable from the solved

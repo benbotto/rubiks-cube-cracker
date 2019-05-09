@@ -2,7 +2,7 @@
 #define _BUSYBIN_GOALG0_G1_H_
 
 #include "../Goal.h"
-#include "../../RubiksCubeModel.h"
+#include "../../RubiksCube.h"
 
 namespace busybin
 {
@@ -13,7 +13,7 @@ namespace busybin
   class GoalG0_G1 : public Goal
   {
   public:
-    bool isSatisfied(RubiksCubeModel& cube);
+    bool isSatisfied(RubiksCube& cube);
     string getDescription() const;
   };
 }

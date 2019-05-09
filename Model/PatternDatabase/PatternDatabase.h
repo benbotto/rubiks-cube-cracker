@@ -1,7 +1,7 @@
 #ifndef _BUSYBIN_Pattern_PATTERN_DATABASE_
 #define _BUSYBIN_Pattern_PATTERN_DATABASE_
 
-#include "../RubiksCubeModel.h"
+#include "../RubiksCube.h"
 #include "../../Util/NibbleArray.h"
 #include "../../Util/RubiksCubeException.h"
 #include <cstdint>
@@ -14,6 +14,8 @@ using std::ifstream;
 using std::string;
 #include <vector>
 using std::vector;
+#include <array>
+using std::array;
 
 namespace busybin
 {
@@ -33,10 +35,10 @@ namespace busybin
 
   public:
     PatternDatabase(const size_t size);
-    virtual uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const = 0;
-    virtual bool setNumMoves(const RubiksCubeModel& cube, const uint8_t numMoves);
+    virtual uint32_t getDatabaseIndex(const RubiksCube& cube) const = 0;
+    virtual bool setNumMoves(const RubiksCube& cube, const uint8_t numMoves);
     virtual bool setNumMoves(const uint32_t ind, const uint8_t numMoves);
-    virtual uint8_t getNumMoves(const RubiksCubeModel& cube) const;
+    virtual uint8_t getNumMoves(const RubiksCube& cube) const;
     virtual uint8_t getNumMoves(const uint32_t ind) const;
     virtual size_t getSize() const;
     virtual size_t getNumItems() const;

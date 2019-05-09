@@ -2,7 +2,7 @@
 #define _BUSYBIN_ORIENT_GOAL_H_
 
 #include "Goal.h"
-#include "../RubiksCubeModel.h"
+#include "../RubiksCube.h"
 
 namespace busybin
 {
@@ -12,7 +12,7 @@ namespace busybin
   class OrientGoal : public Goal
   {
   public:
-    bool isSatisfied(RubiksCubeModel& cube);
+    bool isSatisfied(RubiksCube& cube);
     string getDescription() const;
   };
 }

@@ -102,6 +102,8 @@ namespace busybin
     COLOR getColor(unsigned ind) const;
     uint64_t getFace(FACE face) const;
 
+    bool isSolved() const;
+
     // Compare this cube to another.
     bool operator<(const RubiksCubeModel& rhs) const;
     bool operator==(const RubiksCubeModel& rhs) const;

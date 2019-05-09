@@ -7,7 +7,7 @@ namespace busybin
    * or D.
    * @param cube The cube.
    */
-  bool GoalG0_G1::isSatisfied(RubiksCubeModel& cube)
+  bool GoalG0_G1::isSatisfied(RubiksCube& cube)
   {
     COLOR UB = cube.getColor(FACE::UP, 0, 1);
     COLOR UL = cube.getColor(FACE::UP, 1, 0);

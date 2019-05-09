@@ -42,7 +42,7 @@ namespace busybin
    * @param numMoves The number of moves to get to this state (must be fewer
    * than 15).
    */
-  bool PatternDatabase::setNumMoves(const RubiksCubeModel& cube, const uint8_t numMoves)
+  bool PatternDatabase::setNumMoves(const RubiksCube& cube, const uint8_t numMoves)
   {
     return this->setNumMoves(this->getDatabaseIndex(cube), numMoves);
   }
@@ -64,7 +64,7 @@ namespace busybin
    * state has not been set.
    * @param cube A cube instance.
    */
-  uint8_t PatternDatabase::getNumMoves(const RubiksCubeModel& cube) const
+  uint8_t PatternDatabase::getNumMoves(const RubiksCube& cube) const
   {
     return this->getNumMoves(this->getDatabaseIndex(cube));
   }

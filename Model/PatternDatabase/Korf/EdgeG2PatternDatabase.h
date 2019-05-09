@@ -1,6 +1,7 @@
 #ifndef _BUSYBIN_EDGE_G2_PATTERN_DATABASE_
 #define _BUSYBIN_EDGE_G2_PATTERN_DATABASE_
 
+#include "../../RubiksCube.h"
 #include "../../RubiksCubeModel.h"
 #include "EdgePatternDatabase.h"
 #include <cstdint>
@@ -15,7 +16,7 @@ namespace busybin
   class EdgeG2PatternDatabase : public EdgePatternDatabase
   {
   public:
-    uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const;
+    uint32_t getDatabaseIndex(const RubiksCube& cube) const;
   };
 }
 

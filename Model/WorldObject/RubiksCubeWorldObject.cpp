@@ -111,10 +111,21 @@ namespace busybin
     return this->rawCubeModel;
   }
 
+  /**
+   * Get a facet color using face, row, column notation.
+   */
   RubiksCube::COLOR RubiksCubeWorldObject::getColor(
     RubiksCube::FACE face, unsigned row, unsigned col) const
   {
     return this->rawCubeModel.getColor(face, row, col);
+  }
+
+  /**
+   * Check if the cube is solved.
+   */
+  bool RubiksCubeWorldObject::isSolved() const
+  {
+    return this->rawCubeModel.isSolved();
   }
 
   /**

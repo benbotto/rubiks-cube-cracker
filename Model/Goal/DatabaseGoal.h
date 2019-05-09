@@ -14,8 +14,8 @@ namespace busybin
 
   public:
     DatabaseGoal(PatternDatabase* pDatabase);
-    bool isSatisfied(RubiksCubeModel& cube);
-    bool index(const RubiksCubeModel& cube, size_t numMoves);
+    bool isSatisfied(RubiksCube& cube);
+    bool index(const RubiksCube& cube, size_t numMoves);
   };
 }
 

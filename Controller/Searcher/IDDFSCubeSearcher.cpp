@@ -47,9 +47,9 @@ namespace busybin
     if (depth == maxDepth)
     {
       // Index the cube state (some goals store a database).
-      goal.index(static_cast<RubiksCubeModel&>(cube), depth);
+      goal.index(cube, depth);
 
-      return goal.isSatisfied(static_cast<RubiksCubeModel&>(cube));
+      return goal.isSatisfied(cube);
     }
 
     for (uint8_t i = 0; i < numMoves && !solved; ++i)

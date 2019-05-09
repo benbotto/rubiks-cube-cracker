@@ -70,6 +70,8 @@ namespace busybin
 
     COLOR getColor(FACE face, unsigned row, unsigned col) const;
 
+    bool isSolved() const;
+
     RubiksCube& x();
     RubiksCube& xPrime();
     RubiksCube& x2();

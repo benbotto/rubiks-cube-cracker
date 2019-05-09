@@ -2,7 +2,6 @@
 #define _BUSYBIN_GOAL_H_
 
 #include "../RubiksCube.h"
-#include "../RubiksCubeModel.h"
 #include <string>
 using std::string;
 
@@ -18,9 +17,9 @@ namespace busybin
     typedef RubiksCube::COLOR COLOR;
 
   public:
-    virtual bool isSatisfied(RubiksCubeModel& cube) = 0;
+    virtual bool isSatisfied(RubiksCube& cube) = 0;
     virtual string getDescription() const = 0;
-    virtual bool index(const RubiksCubeModel& cube, size_t numMoves);
+    virtual bool index(const RubiksCube& cube, size_t numMoves);
   };
 }
 

@@ -23,7 +23,7 @@ namespace busybin
    * to a scrambled state.  The estimate is the max of the corner and edge
    * databases' number of moves.
    */
-  uint8_t KorfPatternDatabase::getNumMoves(const RubiksCubeModel& cube) const
+  uint8_t KorfPatternDatabase::getNumMoves(const RubiksCube& cube) const
   {
     uint8_t cornerMoves;
     uint8_t edgeG1Moves;
@@ -56,7 +56,7 @@ namespace busybin
    * Set the number of moves in all three databases.  Returns true if any is
    * changed.
    */
-  bool KorfPatternDatabase::setNumMoves(const RubiksCubeModel& cube, const uint8_t numMoves)
+  bool KorfPatternDatabase::setNumMoves(const RubiksCube& cube, const uint8_t numMoves)
   {
     bool corner = this->pCornerDB->setNumMoves(cube, numMoves);
     bool edgeG1 = this->pEdgeG1DB->setNumMoves(cube, numMoves);
@@ -87,7 +87,7 @@ namespace busybin
     this->inflated = true;
   }
 
-  uint32_t KorfPatternDatabase::getDatabaseIndex(const RubiksCubeModel& cube) const
+  uint32_t KorfPatternDatabase::getDatabaseIndex(const RubiksCube& cube) const
   {
     throw RubiksCubeException("KorfPatternDatabase::getDatabaseIndex not implemented.");
   }

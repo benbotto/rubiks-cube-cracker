@@ -1,7 +1,7 @@
 #ifndef _BUSYBIN_EDGE_PATTERN_DATABASE_
 #define _BUSYBIN_EDGE_PATTERN_DATABASE_
 
-#include "../../RubiksCubeModel.h"
+#include "../../RubiksCube.h"
 #include "../PatternDatabase.h"
 #include <cstdint>
 
@@ -21,7 +21,7 @@ namespace busybin
       const array<uint8_t, 6>& edgeOrientations) const;
   public:
     EdgePatternDatabase();
-    virtual uint32_t getDatabaseIndex(const RubiksCubeModel& cube) const = 0;
+    virtual uint32_t getDatabaseIndex(const RubiksCube& cube) const = 0;
 
     /**
      * Given two face colors, return a unique index for an edge cubie.  The index
@@ -30,7 +30,7 @@ namespace busybin
      */
     inline uint8_t getCubieIndex(const edge_t& edge) const
     {
-      // The colors range from 0 to 5, per RubiksCubeModel.h.
+      // The colors range from 0 to 5, per RubiksCube.h.
       // Shifting 1 left by 0...5 gives 1, 2, 4, 8, 16, 32.
       // Adding these together gives a unique number for each edge cubie.
       // RY = 4  + 32 = 36, index 0.

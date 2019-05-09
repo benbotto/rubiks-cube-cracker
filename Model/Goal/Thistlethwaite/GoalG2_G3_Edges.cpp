@@ -17,7 +17,7 @@ namespace busybin
    * 180-degree turns.
    * @param cube The cube.
    */
-  bool GoalG2_G3_Edges::isSatisfied(RubiksCubeModel& cube)
+  bool GoalG2_G3_Edges::isSatisfied(RubiksCube& cube)
   {
     // Edges.  Note that the edge pieces in the M slice were taken care
     // of in the G1->G2 goal.
