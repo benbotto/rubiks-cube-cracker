@@ -2,7 +2,7 @@
 #define _BUSYBIN_IDA_CUBE_SEARCHER_H_
 
 #include "CubeSearcher.h"
-#include "../../Model/RubiksCubeModel.h"
+#include "../../Model/RubiksCubeIndexModel.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/MoveStore/MoveStore.h"
 #include "../../Util/AutoTimer.h"
@@ -30,9 +30,9 @@ namespace busybin
   {
     struct PrioritizedMove
     {
-      RubiksCubeModel cube;
-      uint8_t         moveInd;
-      uint8_t         estMoves; // Priority.
+      RubiksCubeIndexModel cube;
+      uint8_t moveInd;
+      uint8_t estMoves; // Priority.  Least number of moves to most.
       bool operator>(const PrioritizedMove& rhs) const
       {
         return this->estMoves > rhs.estMoves;
@@ -41,9 +41,9 @@ namespace busybin
 
     struct Node
     {
-      RubiksCubeModel cube;
-      uint8_t         moveInd;
-      uint8_t         depth;
+      RubiksCubeIndexModel cube;
+      uint8_t moveInd;
+      uint8_t depth;
     };
 
     const PatternDatabase* pPatternDB;

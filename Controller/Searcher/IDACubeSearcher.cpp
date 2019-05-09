@@ -26,14 +26,17 @@ namespace busybin
     typedef priority_queue<PrioritizedMove, vector<PrioritizedMove>,
       greater<PrioritizedMove> > moveQueue_t;
 
-    AutoTimer          timer;
-    stack<Node>        nodeStack;
-    Node               curNode;
-    array<uint8_t, 50> moveInds  = {0xFF};
-    bool               solved    = false;
-    uint8_t            bound     = 0;
-    uint8_t            nextBound = this->pPatternDB->getNumMoves(static_cast<RubiksCubeModel&>(cube));
-    moveQueue_t        successors;
+    // The IDA searcher uses pattern databases that were made using an index
+    // model, so this searcher only works with an index model.
+    RubiksCubeIndexModel& iCube     = static_cast<RubiksCubeIndexModel&>(cube);
+    AutoTimer             timer;
+    stack<Node>           nodeStack;
+    Node                  curNode;
+    array<uint8_t, 50>    moveInds  = {0xFF};
+    bool                  solved    = false;
+    uint8_t               bound     = 0;
+    uint8_t               nextBound = this->pPatternDB->getNumMoves(iCube);
+    moveQueue_t           successors;
 
     while (!solved)
     {
@@ -47,7 +50,7 @@ namespace busybin
         }
 
         // Start with the scrambled (root) node.  Depth 0, no move required.
-        nodeStack.push({static_cast<RubiksCubeModel&>(cube), 0xFF, 0});
+        nodeStack.push({iCube, 0xFF, 0});
 
         bound     = nextBound;
         nextBound = 0xFF;
@@ -75,7 +78,7 @@ namespace busybin
       {
         if (curNode.depth == 0 || !this->pruner.prune((MOVE)i, (MOVE)curNode.moveInd))
         {
-          RubiksCubeModel cubeCopy(curNode.cube);
+          RubiksCubeIndexModel cubeCopy(curNode.cube);
 
           cubeCopy.move((MOVE)i);
 
