@@ -69,6 +69,12 @@ namespace busybin
     array<COLOR, 3> getCornerColors(CORNER ind) const;
     COLOR getColor(FACE face, unsigned row, unsigned col) const;
 
+    // Indexing methods.
+    uint8_t getEdgeIndex(EDGE ind) const;
+    uint8_t getEdgeOrientation(EDGE ind) const;
+    uint8_t getCornerIndex(CORNER ind) const;
+    uint8_t getCornerOrientation(CORNER ind) const;
+
     bool isSolved() const;
 
     // Face moves.

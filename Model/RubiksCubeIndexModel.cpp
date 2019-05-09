@@ -516,6 +516,38 @@ namespace busybin
   }
 
   /**
+   * Get the cubie index of an edge cubie.
+   */
+  uint8_t RubiksCubeIndexModel::getEdgeIndex(EDGE ind) const
+  {
+    return this->edges[(unsigned)ind].index;
+  }
+
+  /**
+   * Get the orientation of an edge cubie.
+   */
+  uint8_t RubiksCubeIndexModel::getEdgeOrientation(EDGE ind) const
+  {
+    return this->edges[(unsigned)ind].orientation;
+  }
+
+  /**
+   * Get the cubie index of a corner cubie.
+   */
+  uint8_t RubiksCubeIndexModel::getCornerIndex(CORNER ind) const
+  {
+    return this->corners[(unsigned)ind].index;
+  }
+
+  /**
+   * Get the orientation of a corner cubie.
+   */
+  uint8_t RubiksCubeIndexModel::getCornerOrientation(CORNER ind) const
+  {
+    return this->corners[(unsigned)ind].orientation;
+  }
+
+  /**
    * Check if the cube is in a solved state.
    */
   bool RubiksCubeIndexModel::isSolved() const
