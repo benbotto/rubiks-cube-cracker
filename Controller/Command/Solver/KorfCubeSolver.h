@@ -5,6 +5,7 @@
 #include "../CubeMover.h"
 #include "../../../View/RubiksCubeView.h"
 #include "../../../Model/RubiksCubeModel.h"
+#include "../../../Model/RubiksCubeIndexModel.h"
 #include "../../../Model/Goal/Goal.h"
 #include "../../../Model/Goal/OrientGoal.h"
 #include "../../../Model/Goal/SolveGoal.h"

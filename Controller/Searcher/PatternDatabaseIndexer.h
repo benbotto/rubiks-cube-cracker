@@ -2,7 +2,7 @@
 #define _BUSYBIN_PATTERN_DATABASE_INDEXER_
 
 #include "MovePruner.h"
-#include "../../Model/RubiksCubeModel.h"
+#include "../../Model/RubiksCubeIndexModel.h"
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/MoveStore/MoveStore.h"
 #include "../../Util/AutoTimer.h"
@@ -26,13 +26,13 @@ namespace busybin
   {
     struct Node
     {
-      RubiksCubeModel cube;
-      uint8_t         moveInd;
-      uint8_t         depth;
+      RubiksCubeIndexModel cube;
+      uint8_t moveInd;
+      uint8_t depth;
     };
 
   public:
-    void findGoal(Goal& goal, RubiksCubeModel& cube);
+    void findGoal(Goal& goal, RubiksCubeIndexModel& cube);
   };
 }
 

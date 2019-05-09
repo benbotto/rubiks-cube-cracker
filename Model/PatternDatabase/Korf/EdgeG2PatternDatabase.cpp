@@ -7,47 +7,33 @@ namespace busybin
    */
   uint32_t EdgeG2PatternDatabase::getDatabaseIndex(const RubiksCube& cube) const
   {
-    const RubiksCubeModel& cubeModel = static_cast<const RubiksCubeModel&>(cube);
+    typedef RubiksCubeIndexModel::EDGE EDGE;
 
-    // BL YB 6.
-    edge_t bl = {cubeModel.getColor(35), cubeModel.getColor(15)};
+    const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);
 
-    // BR YG 7.
-    edge_t br = {cubeModel.getColor(39), cubeModel.getColor(27)};
-
-    // DF OW 8.
-    edge_t df = {cubeModel.getColor(41), cubeModel.getColor(21)};
-
-    // DL OB 9.
-    edge_t dl = {cubeModel.getColor(47), cubeModel.getColor(13)};
-
-    // DB OY 10.
-    edge_t db = {cubeModel.getColor(45), cubeModel.getColor(37)};
-
-    // DR OG 11.
-    edge_t dr = {cubeModel.getColor(43), cubeModel.getColor(29)};
-
+    // The permutation of 6 of the 12 edges.
     perm_t edgePerm =
     {
-      this->getCubieIndex(bl),
-      this->getCubieIndex(br),
-      this->getCubieIndex(df),
-      this->getCubieIndex(dl),
-      this->getCubieIndex(db),
-      this->getCubieIndex(dr)
+      iCube.getEdgeIndex(EDGE::BL),
+      iCube.getEdgeIndex(EDGE::BR),
+      iCube.getEdgeIndex(EDGE::DF),
+      iCube.getEdgeIndex(EDGE::DL),
+      iCube.getEdgeIndex(EDGE::DB),
+      iCube.getEdgeIndex(EDGE::DR)
     };
 
-    // Now get the orientation of each edge.
+    // And the orientation of each.
     array<uint8_t, 6> edgeOrientations =
     {
-      this->getCubieOrientation(bl),
-      this->getCubieOrientation(br),
-      this->getCubieOrientation(df),
-      this->getCubieOrientation(dl),
-      this->getCubieOrientation(db),
-      this->getCubieOrientation(dr)
+      iCube.getEdgeOrientation(EDGE::BL),
+      iCube.getEdgeOrientation(EDGE::BR),
+      iCube.getEdgeOrientation(EDGE::DF),
+      iCube.getEdgeOrientation(EDGE::DL),
+      iCube.getEdgeOrientation(EDGE::DB),
+      iCube.getEdgeOrientation(EDGE::DR)
     };
 
+    // Combined into a single 32-bit integer.
     return EdgePatternDatabase::getDatabaseIndex(edgePerm, edgeOrientations);
   }
 }

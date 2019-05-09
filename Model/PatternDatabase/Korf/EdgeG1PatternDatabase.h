@@ -2,7 +2,7 @@
 #define _BUSYBIN_EDGE_G1_PATTERN_DATABASE_
 
 #include "../../RubiksCube.h"
-#include "../../RubiksCubeModel.h"
+#include "../../RubiksCubeIndexModel.h"
 #include "EdgePatternDatabase.h"
 #include <cstdint>
 

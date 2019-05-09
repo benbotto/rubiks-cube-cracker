@@ -38,8 +38,8 @@ namespace busybin
     // The pattern databases will be created using breadth first search.
     PatternDatabaseIndexer indexer;
 
-    // A copy of the underlying cube model.
-    RubiksCubeModel cubeModel = this->pCube->getRawModel();
+    // An index model is used for building the pattern databases.
+    RubiksCubeIndexModel iCube;
 
     this->setSolving(true);
 
@@ -58,7 +58,7 @@ namespace busybin
 
       cout << "Goal 1: " << cornerGoal.getDescription() << endl;
 
-      indexer.findGoal(cornerGoal, cubeModel);
+      indexer.findGoal(cornerGoal, iCube);
       this->cornerDB.toFile("./Data/corner.pdb");
     }
 
@@ -69,7 +69,7 @@ namespace busybin
 
       cout << "Goal 2: " << edgeG1Goal.getDescription() << endl;
 
-      indexer.findGoal(edgeG1Goal, cubeModel);
+      indexer.findGoal(edgeG1Goal, iCube);
       this->edgeG1DB.toFile("./Data/edgeG1.pdb");
     }
 
@@ -80,7 +80,7 @@ namespace busybin
 
       cout << "Goal 3: " << edgeG2Goal.getDescription() << endl;
 
-      indexer.findGoal(edgeG2Goal, cubeModel);
+      indexer.findGoal(edgeG2Goal, iCube);
       this->edgeG2DB.toFile("./Data/edgeG2.pdb");
     }
 

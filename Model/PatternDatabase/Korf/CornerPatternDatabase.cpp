@@ -16,43 +16,21 @@ namespace busybin
    */
   uint32_t CornerPatternDatabase::getDatabaseIndex(const RubiksCube& cube) const
   {
-    const RubiksCubeModel& cubeModel = static_cast<const RubiksCubeModel&>(cube);
+    typedef RubiksCubeIndexModel::CORNER CORNER;
 
-    // URF 0 RGW.
-    corner_t urf = {cubeModel.getColor(4), cubeModel.getColor(24), cubeModel.getColor(18)};
-
-    // ULF 1 RBW.
-    corner_t ulf = {cubeModel.getColor(6), cubeModel.getColor(10), cubeModel.getColor(16)};
-
-    // DRF 2 OGW.
-    corner_t drf = {cubeModel.getColor(42), cubeModel.getColor(30), cubeModel.getColor(20)};
-
-    // DLF 3 OBW.
-    corner_t dlf = {cubeModel.getColor(40), cubeModel.getColor(12), cubeModel.getColor(22)};
-
-    // URB 4 RGY.
-    corner_t urb = {cubeModel.getColor(2), cubeModel.getColor(26), cubeModel.getColor(32)};
-
-    // ULB 5 RBY.
-    corner_t ulb = {cubeModel.getColor(0), cubeModel.getColor(8), cubeModel.getColor(34)};
-
-    // DRB 6 OGY.
-    corner_t drb = {cubeModel.getColor(44), cubeModel.getColor(28), cubeModel.getColor(38)};
-
-    // DLB 7 OBY.
-    corner_t dlb = {cubeModel.getColor(46), cubeModel.getColor(14), cubeModel.getColor(36)};
+    const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);
 
     // The permutation of the 8 corners.
     perm_t cornerPerm =
     {
-      this->getCubieIndex(urf),
-      this->getCubieIndex(ulf),
-      this->getCubieIndex(drf),
-      this->getCubieIndex(dlf),
-      this->getCubieIndex(urb),
-      this->getCubieIndex(ulb),
-      this->getCubieIndex(drb),
-      this->getCubieIndex(dlb)
+      iCube.getCornerIndex(CORNER::ULB),
+      iCube.getCornerIndex(CORNER::URB),
+      iCube.getCornerIndex(CORNER::URF),
+      iCube.getCornerIndex(CORNER::ULF),
+      iCube.getCornerIndex(CORNER::DLF),
+      iCube.getCornerIndex(CORNER::DLB),
+      iCube.getCornerIndex(CORNER::DRB),
+      iCube.getCornerIndex(CORNER::DRF)
     };
 
     // Get the Lehmer code, which is in a factoradic number system.
@@ -76,13 +54,13 @@ namespace busybin
     // the orientation of the 8th, so only 7 need to be stored.
     array<uint8_t, 7> cornerOrientations =
     {
-      this->getCubieOrientation(urf),
-      this->getCubieOrientation(ulf),
-      this->getCubieOrientation(drf),
-      this->getCubieOrientation(dlf),
-      this->getCubieOrientation(urb),
-      this->getCubieOrientation(ulb),
-      this->getCubieOrientation(drb)
+      iCube.getCornerOrientation(CORNER::ULB),
+      iCube.getCornerOrientation(CORNER::URB),
+      iCube.getCornerOrientation(CORNER::URF),
+      iCube.getCornerOrientation(CORNER::ULF),
+      iCube.getCornerOrientation(CORNER::DLF),
+      iCube.getCornerOrientation(CORNER::DLB),
+      iCube.getCornerOrientation(CORNER::DRB)
     };
 
     // Treat the orientations as a base-3 number, and convert it

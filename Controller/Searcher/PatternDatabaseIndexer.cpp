@@ -8,7 +8,8 @@ namespace busybin
    * @param goal The goal to achieve (isSatisfied is called on the goal).
    * @param solvedCube A solved cube instance.
    */
-  void PatternDatabaseIndexer::findGoal(Goal& goal, RubiksCubeModel& solvedCube)
+  void PatternDatabaseIndexer::findGoal(Goal& goal,
+    RubiksCubeIndexModel& solvedCube)
   {
     typedef RubiksCube::MOVE MOVE;
 
@@ -44,7 +45,7 @@ namespace busybin
       {
         if (curNode.depth == 0 || !pruner.prune((MOVE)i, (MOVE)curNode.moveInd))
         {
-          RubiksCubeModel cubeCopy(curNode.cube);
+          RubiksCubeIndexModel cubeCopy(curNode.cube);
           uint8_t         cubeCopyDepth = (uint8_t)(curNode.depth + 1);
 
           cubeCopy.move((MOVE)i);
