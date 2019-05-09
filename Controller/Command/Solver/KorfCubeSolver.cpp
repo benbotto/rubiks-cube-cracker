@@ -35,8 +35,10 @@ namespace busybin
    */
   void KorfCubeSolver::indexDatabases()
   {
-    // The pattern databases will be created using breadth first search.
-    PatternDatabaseIndexer indexer;
+    // The pattern databases will be created using breadth first search for the
+    // corners, and a specialized IDDFS for the edges.
+    BreadthFirstCubeSearcher bfsSearcher;
+    PatternDatabaseIndexer   indexer;
 
     // An index model is used for building the pattern databases.
     RubiksCubeIndexModel iCube;
@@ -49,16 +51,17 @@ namespace busybin
     // cube, and one for the other 6 edges.  The searcher takes a reference to
     // the cube model and finds a goal.
     //
-    // The seacher uses about 5GB of memory; the internal queue is quite large,
-    // especially while indexing the corner database.
+    // The seacher uses about 5GB of memory; the internal queue is quite large
+    // while indexing the corner database.
     if (!this->cornerDB.fromFile("./Data/corner.pdb"))
     {
       // First create the corner database.
       CornerDatabaseGoal cornerGoal(&this->cornerDB);
+      TwistStore         twistStore(iCube);
 
       cout << "Goal 1: " << cornerGoal.getDescription() << endl;
 
-      indexer.findGoal(cornerGoal, iCube);
+      indexer.findGoal(cornerGoal, iCube, twistStore);
       this->cornerDB.toFile("./Data/corner.pdb");
     }
 
