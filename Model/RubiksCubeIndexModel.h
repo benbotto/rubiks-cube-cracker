@@ -2,6 +2,7 @@
 #define _BUSYBIN_RUBIKS_CUBE_INDEX_MODEL_H_
 
 #include "RubiksCube.h"
+#include "RubiksCubeModel.h"
 #include "../Util/RubiksCubeException.h"
 #include <array>
 using std::array;
@@ -62,6 +63,7 @@ namespace busybin
   public:
     RubiksCubeIndexModel();
     RubiksCubeIndexModel(const RubiksCubeIndexModel& cube);
+    RubiksCubeIndexModel(const RubiksCubeModel& cube);
 
     array<COLOR, 2> getEdgeColors(EDGE ind) const;
     array<COLOR, 3> getCornerColors(CORNER ind) const;

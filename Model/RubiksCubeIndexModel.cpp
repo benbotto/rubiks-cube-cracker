@@ -53,6 +53,113 @@ namespace busybin
   }
 
   /**
+   * Construct from a RubiksCubeModel.
+   */
+  RubiksCubeIndexModel::RubiksCubeIndexModel(const RubiksCubeModel& cube)
+  {
+    if (cube.getColor(FACE::UP, 1, 1) != COLOR::RED ||
+      cube.getColor(FACE::FRONT, 1, 1) != COLOR::WHITE)
+    {
+      throw RubiksCubeException(
+        "RubiksCubeIndexModel can only be initialized from a model if it's oriented with red on top and white up front.");
+    }
+
+    // Corners.
+    typedef RubiksCubeModel::corner_t corner_t;
+
+    corner_t ulb = {cube.getColor(0), cube.getColor(8), cube.getColor(34)};
+    this->corners[(unsigned)CORNER::ULB].index       = cube.getCornerIndex(ulb);
+    this->corners[(unsigned)CORNER::ULB].orientation = cube.getCornerOrientation(ulb);
+
+    corner_t urb = {cube.getColor(2), cube.getColor(26), cube.getColor(32)};
+    this->corners[(unsigned)CORNER::URB].index       = cube.getCornerIndex(urb);
+    this->corners[(unsigned)CORNER::URB].orientation = cube.getCornerOrientation(urb);
+
+    corner_t urf = {cube.getColor(4), cube.getColor(24), cube.getColor(18)};
+    this->corners[(unsigned)CORNER::URF].index       = cube.getCornerIndex(urf);
+    this->corners[(unsigned)CORNER::URF].orientation = cube.getCornerOrientation(urf);
+
+    corner_t ulf = {cube.getColor(6), cube.getColor(10), cube.getColor(16)};
+    this->corners[(unsigned)CORNER::ULF].index       = cube.getCornerIndex(ulf);
+    this->corners[(unsigned)CORNER::ULF].orientation = cube.getCornerOrientation(ulf);
+
+    corner_t dlf = {cube.getColor(40), cube.getColor(12), cube.getColor(22)};
+    this->corners[(unsigned)CORNER::DLF].index       = cube.getCornerIndex(dlf);
+    this->corners[(unsigned)CORNER::DLF].orientation = cube.getCornerOrientation(dlf);
+
+    corner_t dlb = {cube.getColor(46), cube.getColor(14), cube.getColor(36)};
+    this->corners[(unsigned)CORNER::DLB].index       = cube.getCornerIndex(dlb);
+    this->corners[(unsigned)CORNER::DLB].orientation = cube.getCornerOrientation(dlb);
+
+    corner_t drb = {cube.getColor(44), cube.getColor(28), cube.getColor(38)};
+    this->corners[(unsigned)CORNER::DRB].index       = cube.getCornerIndex(drb);
+    this->corners[(unsigned)CORNER::DRB].orientation = cube.getCornerOrientation(drb);
+
+    corner_t drf = {cube.getColor(42), cube.getColor(30), cube.getColor(20)};
+    this->corners[(unsigned)CORNER::DRF].index       = cube.getCornerIndex(drf);
+    this->corners[(unsigned)CORNER::DRF].orientation = cube.getCornerOrientation(drf);
+
+    // Edges.
+    typedef RubiksCubeModel::edge_t edge_t;
+
+    edge_t ub = {cube.getColor(1), cube.getColor(33)};
+    this->edges[(unsigned)EDGE::UB].index       = cube.getEdgeIndex(ub);
+    this->edges[(unsigned)EDGE::UB].orientation = cube.getEdgeOrientation(ub);
+
+    edge_t ur = {cube.getColor(3), cube.getColor(25)};
+    this->edges[(unsigned)EDGE::UR].index       = cube.getEdgeIndex(ur);
+    this->edges[(unsigned)EDGE::UR].orientation = cube.getEdgeOrientation(ur);
+
+    edge_t uf = {cube.getColor(5), cube.getColor(17)};
+    this->edges[(unsigned)EDGE::UF].index       = cube.getEdgeIndex(uf);
+    this->edges[(unsigned)EDGE::UF].orientation = cube.getEdgeOrientation(uf);
+
+    edge_t ul = {cube.getColor(7), cube.getColor(9)};
+    this->edges[(unsigned)EDGE::UL].index       = cube.getEdgeIndex(ul);
+    this->edges[(unsigned)EDGE::UL].orientation = cube.getEdgeOrientation(ul);
+
+    edge_t fr = {cube.getColor(19), cube.getColor(31)};
+    this->edges[(unsigned)EDGE::FR].index       = cube.getEdgeIndex(fr);
+    this->edges[(unsigned)EDGE::FR].orientation = cube.getEdgeOrientation(fr);
+
+    edge_t fl = {cube.getColor(23), cube.getColor(11)};
+    this->edges[(unsigned)EDGE::FL].index       = cube.getEdgeIndex(fl);
+    this->edges[(unsigned)EDGE::FL].orientation = cube.getEdgeOrientation(fl);
+
+    edge_t bl = {cube.getColor(35), cube.getColor(15)};
+    this->edges[(unsigned)EDGE::BL].index       = cube.getEdgeIndex(bl);
+    this->edges[(unsigned)EDGE::BL].orientation = cube.getEdgeOrientation(bl);
+
+    edge_t br = {cube.getColor(39), cube.getColor(27)};
+    this->edges[(unsigned)EDGE::BR].index       = cube.getEdgeIndex(br);
+    this->edges[(unsigned)EDGE::BR].orientation = cube.getEdgeOrientation(br);
+
+    edge_t df = {cube.getColor(41), cube.getColor(21)};
+    this->edges[(unsigned)EDGE::DF].index       = cube.getEdgeIndex(df);
+    this->edges[(unsigned)EDGE::DF].orientation = cube.getEdgeOrientation(df);
+
+    edge_t dl = {cube.getColor(47), cube.getColor(13)};
+    this->edges[(unsigned)EDGE::DL].index       = cube.getEdgeIndex(dl);
+    this->edges[(unsigned)EDGE::DL].orientation = cube.getEdgeOrientation(dl);
+
+    edge_t db = {cube.getColor(45), cube.getColor(37)};
+    this->edges[(unsigned)EDGE::DB].index       = cube.getEdgeIndex(db);
+    this->edges[(unsigned)EDGE::DB].orientation = cube.getEdgeOrientation(db);
+
+    edge_t dr = {cube.getColor(43), cube.getColor(29)};
+    this->edges[(unsigned)EDGE::DR].index       = cube.getEdgeIndex(dr);
+    this->edges[(unsigned)EDGE::DR].orientation = cube.getEdgeOrientation(dr);
+
+    // Centers.
+    this->centers[0] = COLOR::RED;
+    this->centers[1] = COLOR::BLUE;
+    this->centers[2] = COLOR::WHITE;
+    this->centers[3] = COLOR::GREEN;
+    this->centers[4] = COLOR::YELLOW;
+    this->centers[5] = COLOR::ORANGE;
+  }
+
+  /**
    * Get the edge colors at an index.
    */
   array<RubiksCubeIndexModel::COLOR, 2> RubiksCubeIndexModel::getEdgeColors(
