@@ -101,32 +101,33 @@ namespace busybin
    */
   void KorfCubeSolver::solveCube()
   {
-    RubiksCubeView  cubeView;
-    RubiksCubeModel cubeModel = this->pCube->getRawModel();
-    vector<MOVE>    allMoves;
-    vector<MOVE>    goalMoves;
+    RubiksCubeView cubeView;
+    vector<MOVE>   allMoves;
+    vector<MOVE>   goalMoves;
 
     cout << "Solving with Korf method." << endl;
 
     cout << "Initial cube state." << endl;
-    cubeView.render(cubeModel);
+    cubeView.render(*this->pCube);
 
     // First goal: orient the cube with red up and white front.
+    RubiksCubeModel          stdCube = this->pCube->getRawModel();
     BreadthFirstCubeSearcher bfsSearcher;
     OrientGoal               orientGoal;
-    RotationStore            rotStore(cubeModel);
+    RotationStore            rotStore(stdCube);
 
-    goalMoves = bfsSearcher.findGoal(orientGoal, cubeModel, rotStore);
+    goalMoves = bfsSearcher.findGoal(orientGoal, stdCube, rotStore);
 
-    this->processGoalMoves(orientGoal, cubeModel, 1, allMoves, goalMoves);
+    this->processGoalMoves(orientGoal, stdCube, 1, allMoves, goalMoves);
 
     // Second goal: solve the cube.
-    IDACubeSearcher idaSearcher(&this->korfDB);
-    SolveGoal       solveGoal;
-    TwistStore      twistStore(cubeModel);
+    RubiksCubeIndexModel iCube(stdCube);
+    IDACubeSearcher      idaSearcher(&this->korfDB);
+    SolveGoal            solveGoal;
+    TwistStore           twistStore(iCube);
 
-    goalMoves = idaSearcher.findGoal(solveGoal, cubeModel, twistStore);
-    this->processGoalMoves(solveGoal, cubeModel, 2, allMoves, goalMoves);
+    goalMoves = idaSearcher.findGoal(solveGoal, iCube, twistStore);
+    this->processGoalMoves(solveGoal, iCube, 2, allMoves, goalMoves);
 
     // Print the moves.
     cout << "\n\nSolved the cube in " << allMoves.size() << " moves.\n";
@@ -137,7 +138,7 @@ namespace busybin
 
     // Display the cube model.
     cout << "Resulting cube.\n";
-    cubeView.render(cubeModel);
+    cubeView.render(iCube);
 
     // Done solving - re-enable movement.  (Note that solving is set to true in
     // the parent class on keypress.)
