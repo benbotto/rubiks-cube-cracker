@@ -61,7 +61,7 @@ namespace busybin
 
       cout << "Goal 1: " << cornerGoal.getDescription() << endl;
 
-      indexer.findGoal(cornerGoal, iCube, twistStore);
+      bfsSearcher.findGoal(cornerGoal, iCube, twistStore);
       this->cornerDB.toFile("./Data/corner.pdb");
     }
 
