@@ -311,14 +311,14 @@ namespace busybin
     // The colors range from 0 to 5, per RubiksCube.h.
     // Shifting 1 left by 0...5 gives 1, 2, 4, 8, 16, 32.
     // Adding these together gives a unique number for each corner cubie.
-    // RWG = 4  + 1 + 2  = 7,  index 0
-    // RBW = 4  + 8 + 1  = 13, index 1
-    // OGW = 16 + 2 + 1  = 19, index 2
-    // OWB = 16 + 1 + 8  = 25, index 3
-    // RGY = 4  + 2 + 32 = 38, index 4
-    // RBY = 4  + 8 + 32 = 44, index 5
+    // RBY = 4  + 8 + 32 = 44, index 0
+    // RGY = 4  + 2 + 32 = 38, index 1
+    // RGW = 4  + 1 + 2  = 7,  index 2
+    // RBW = 4  + 8 + 1  = 13, index 3
+    // OBW = 16 + 1 + 8  = 25, index 4
+    // OBY = 16 + 8 + 32 = 56, index 5
     // OGY = 16 + 2 + 32 = 50, index 6
-    // OBY = 16 + 8 + 32 = 56, index 7
+    // OGW = 16 + 2 + 1  = 19, index 7
     uint8_t sideSum =
       (1 << (uint8_t)corner[0]) +
       (1 << (uint8_t)corner[1]) +
@@ -326,21 +326,21 @@ namespace busybin
 
     switch (sideSum)
     {
-      case 7:
-        return 0;
-      case 13:
-        return 1;
-      case 19:
-        return 2;
-      case 25:
-        return 3;
-      case 38:
-        return 4;
       case 44:
+        return 0;
+      case 38:
+        return 1;
+      case 7:
+        return 2;
+      case 13:
+        return 3;
+      case 25:
+        return 4;
+      case 56:
         return 5;
       case 50:
         return 6;
-      default: // 56
+      default: //case 19:
         return 7;
     }
   }
@@ -441,8 +441,8 @@ namespace busybin
    * Note that edges cannot be flipped (disoriented) without F or B turns, so
    * U, D, L, and R keep the edges oriented.
    *
-   * Orientation 0: Bad (disoriented).
-   * Orientation 1: Good.
+   * Orientation 0: Good.
+   * Orientation 1: Bad (disoriented).
    *
    * See: https://stackoverflow.com/questions/17305071/how-can-i-determine-optimally-if-an-edge-is-correctly-oriented-on-the-rubiks-cu
    * See: http://cube.crider.co.uk/zz.php?p=eoline#eo_detection
@@ -455,7 +455,7 @@ namespace busybin
     if (edge[0] == RubiksCube::COLOR::BLUE ||
       edge[0] == RubiksCube::COLOR::GREEN)
     {
-      return 0;
+      return 1;
     }
 
     // If the U or D sticker is the F or B color (white or yellow), then check
@@ -467,12 +467,12 @@ namespace busybin
       if (edge[1] == RubiksCube::COLOR::RED ||
         edge[1] == RubiksCube::COLOR::ORANGE)
       {
-        return 0;
+        return 1;
       }
     }
 
     // Otherwise it's good.
-    return 1;
+    return 0;
   }
 
   /**
