@@ -1,3 +1,7 @@
+The index and orientation methods in EdgePatternDatabase and
+CornerPatternDatabase were copied wholesale to RubiksCubeModel.  Those classes
+need to be refactored to use the RubiksCubeIndexModel.
+
 IDDFS indexes goals, and the type is static casted to a RubiksCubeModel.  Same
 with goal.isSatisfied.  The goals need to be refactored to take RubiksCubes.
 

@@ -95,6 +95,9 @@ namespace busybin
       unsigned c_ci0, unsigned c_ci1, unsigned c_ci2, unsigned c_ci3);
 
   public:
+    typedef array<RubiksCube::COLOR, 3> corner_t;
+    typedef array<RubiksCube::COLOR, 2> edge_t;
+
     RubiksCubeModel();
     RubiksCubeModel(const RubiksCubeModel& cube);
 
@@ -103,6 +106,12 @@ namespace busybin
     uint64_t getFace(FACE face) const;
 
     bool isSolved() const;
+
+    // Indexing methods.
+    uint8_t getCornerIndex(const corner_t& corner) const;
+    uint8_t getCornerOrientation(const corner_t& corner) const;
+    uint8_t getEdgeIndex(const edge_t& edge) const;
+    uint8_t getEdgeOrientation(const edge_t& edge) const;
 
     // Compare this cube to another.
     bool operator<(const RubiksCubeModel& rhs) const;
