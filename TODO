@@ -1,12 +1,3 @@
-The index and orientation methods in EdgePatternDatabase and
-CornerPatternDatabase were copied wholesale to RubiksCubeModel.  Those classes
-need to be refactored to use the RubiksCubeIndexModel.
-
-IDDFS indexes goals, and the type is static casted to a RubiksCubeModel.  Same
-with goal.isSatisfied.  The goals need to be refactored to take RubiksCubes.
-
-Search for static_cast<RubiksCubeModel&> and get rid of it.
-
 Remove bounds checks in MoveStore.cpp#getMove for speed.
 
 In the new IDA searcher, there could be a better solution after the goal is
