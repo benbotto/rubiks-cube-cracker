@@ -46,7 +46,7 @@ namespace busybin
         if (curNode.depth == 0 || !pruner.prune((MOVE)i, (MOVE)curNode.moveInd))
         {
           RubiksCubeIndexModel cubeCopy(curNode.cube);
-          uint8_t         cubeCopyDepth = (uint8_t)(curNode.depth + 1);
+          uint8_t              cubeCopyDepth = (uint8_t)(curNode.depth + 1);
 
           cubeCopy.move((MOVE)i);
 
