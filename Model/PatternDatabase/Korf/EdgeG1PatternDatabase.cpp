@@ -18,13 +18,17 @@ namespace busybin
     array<uint8_t, 6> edgeOrientations;
     unsigned          edgeInd = 0;
 
-    for (uint8_t i = 0; i < 12 && edgeInd != 6; ++i)
+    while (edgeInd != 6)
     {
-      if (iCube.getEdgeIndex((EDGE)i) < 6)
+      for (uint8_t i = 0; i < 12; ++i)
       {
-        edgePerm[edgeInd]         = i;
-        edgeOrientations[edgeInd] = iCube.getEdgeOrientation((EDGE)i);
-        ++edgeInd;
+        if (iCube.getEdgeIndex((EDGE)i) == edgeInd)
+        {
+          edgePerm[edgeInd]         = i;
+          edgeOrientations[edgeInd] = iCube.getEdgeOrientation((EDGE)i);
+          ++edgeInd;
+          break;
+        }
       }
     }
 
