@@ -4,6 +4,7 @@
 #include "../RubiksCube.h"
 #include <string>
 using std::string;
+#include <cstdint>
 
 namespace busybin
 {
@@ -19,7 +20,7 @@ namespace busybin
   public:
     virtual bool isSatisfied(RubiksCube& cube) = 0;
     virtual string getDescription() const = 0;
-    virtual bool index(const RubiksCube& cube, size_t numMoves);
+    virtual bool index(const RubiksCube& cube, uint8_t numMoves);
   };
 }
 

@@ -10,7 +10,7 @@ namespace busybin
    * @param numMoves The number of moves to get from this cube state back to
    * the solved state.
    */
-  bool Goal::index(const RubiksCube& cube, size_t numMoves)
+  bool Goal::index(const RubiksCube& cube, uint8_t numMoves)
   {
     return true;
   }
