@@ -25,7 +25,7 @@ namespace busybin
    * @param cube
    * @param numMoves The number of moves required to get to this cube state.
    */
-  bool DatabaseGoal::index(const RubiksCube& cube, size_t numMoves)
+  bool DatabaseGoal::index(const RubiksCube& cube, uint8_t numMoves)
   {
     return this->pDatabase->setNumMoves(cube, numMoves);
   }

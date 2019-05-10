@@ -3,8 +3,7 @@
 
 #include "Goal.h"
 #include "../PatternDatabase/PatternDatabase.h"
-#include <cstddef>
-using std::size_t;
+#include <cstdint>
 
 namespace busybin
 {
@@ -15,7 +14,7 @@ namespace busybin
   public:
     DatabaseGoal(PatternDatabase* pDatabase);
     bool isSatisfied(RubiksCube& cube);
-    bool index(const RubiksCube& cube, size_t numMoves);
+    bool index(const RubiksCube& cube, uint8_t numMoves);
   };
 }
 
