@@ -23,7 +23,7 @@ namespace busybin
   {
     uint8_t oldNumMoves = this->getNumMoves(ind);
 
-    if (this->getNumMoves(ind) == 0xF)
+    if (oldNumMoves == 0xF)
       ++this->numItems;
 
     if (oldNumMoves > numMoves)
