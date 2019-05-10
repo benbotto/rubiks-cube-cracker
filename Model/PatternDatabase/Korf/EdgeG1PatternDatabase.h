@@ -9,9 +9,9 @@
 namespace busybin
 {
   /**
-   * A database for 6 of the 12 edge positions that indexes edge positions and
+   * A database for 6 of the 12 edges that indexes edge positions and
    * the number of moves required to get the edges to the solved state.  The 6
-   * edges are the 4 in the top layer, and the front 2 of the middle layer.
+   * edges are UB, UR, UF, UL, FR, and FL.
    */
   class EdgeG1PatternDatabase : public EdgePatternDatabase
   {

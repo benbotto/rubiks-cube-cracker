@@ -11,29 +11,24 @@ namespace busybin
 
     const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);
 
-    // The permutation of 6 of the 12 edges.
-    perm_t edgePerm =
-    {
-      iCube.getEdgeIndex(EDGE::UB),
-      iCube.getEdgeIndex(EDGE::UR),
-      iCube.getEdgeIndex(EDGE::UF),
-      iCube.getEdgeIndex(EDGE::UL),
-      iCube.getEdgeIndex(EDGE::FR),
-      iCube.getEdgeIndex(EDGE::FL)
-    };
+    // Create a permutation array consisting of 6 of the 12 edges by looping
+    // over all edge piece until the first 6 are found.  The permutation is
+    // made up of the edges' positions, 0-11.
+    array<uint8_t, 6> edgePerm;
+    array<uint8_t, 6> edgeOrientations;
+    unsigned          edgeInd = 0;
 
-    // And the orientation of each.
-    array<uint8_t, 6> edgeOrientations =
+    for (uint8_t i = 0; i < 12 && edgeInd != 6; ++i)
     {
-      iCube.getEdgeOrientation(EDGE::UB),
-      iCube.getEdgeOrientation(EDGE::UR),
-      iCube.getEdgeOrientation(EDGE::UF),
-      iCube.getEdgeOrientation(EDGE::UL),
-      iCube.getEdgeOrientation(EDGE::FR),
-      iCube.getEdgeOrientation(EDGE::FL)
-    };
+      if (iCube.getEdgeIndex((EDGE)i) < 6)
+      {
+        edgePerm[edgeInd]         = i;
+        edgeOrientations[edgeInd] = iCube.getEdgeOrientation((EDGE)i);
+        ++edgeInd;
+      }
+    }
 
-    // Combined into a single 32-bit integer.
+    // Combine the edge permutation and orientation array into a single int.
     return EdgePatternDatabase::getDatabaseIndex(edgePerm, edgeOrientations);
   }
 }

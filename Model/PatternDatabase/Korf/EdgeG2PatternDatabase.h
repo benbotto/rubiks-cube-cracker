@@ -9,9 +9,8 @@
 namespace busybin
 {
   /**
-   * A database for 6 of the 12 edge positions that indexes edge positions and
-   * the number of moves required to get the edges to the solved state.  The 6
-   * edges are the back 2 in the middle layer, and the bottom 4.
+   * See EdgeG1PatternDatabase.h.  This indexes the other 6 edges: BL, BR, DF,
+   * DL, DB, and DR.
    */
   class EdgeG2PatternDatabase : public EdgePatternDatabase
   {
