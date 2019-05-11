@@ -6,6 +6,8 @@ using std::size_t;
 #include <vector>
 using std::vector;
 #include <cstdint>
+#include <algorithm>
+using std::fill;
 
 namespace busybin
 {
@@ -29,6 +31,7 @@ namespace busybin
     const unsigned char* data() const;
     size_t storageSize() const;
     void inflate(vector<uint8_t>& dest) const;
+    void reset(const uint8_t val = 0xFF);
   };
 }
 

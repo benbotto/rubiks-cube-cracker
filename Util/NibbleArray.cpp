@@ -89,5 +89,13 @@ namespace busybin
     for (unsigned i = 0; i < this->size; ++i)
       dest.push_back(this->get(i));
   }
+
+  /**
+   * Reset the array, filling the underlying buffer with val.
+   */
+  void NibbleArray::reset(const uint8_t val)
+  {
+    fill(this->arr.begin(), this->arr.end(), val);
+  }
 }
 
