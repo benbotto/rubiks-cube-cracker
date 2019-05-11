@@ -15,19 +15,17 @@ namespace busybin
     // with indexes greater than 5.
     array<uint8_t, 6> edgePerm;
     array<uint8_t, 6> edgeOrientations;
-    unsigned          edgeInd = 6;
+    unsigned          numIndexed = 0;
 
-    while (edgeInd != 12)
+    for (uint8_t i = 0; i < 12 && numIndexed != 6; ++i)
     {
-      for (uint8_t i = 0; i < 12; ++i)
+      uint8_t edgeInd = iCube.getEdgeIndex((EDGE)i);
+
+      if (edgeInd > 5)
       {
-        if (iCube.getEdgeIndex((EDGE)i) == edgeInd)
-        {
-          edgePerm[edgeInd - 6]         = i;
-          edgeOrientations[edgeInd - 6] = iCube.getEdgeOrientation((EDGE)i);
-          ++edgeInd;
-          break;
-        }
+        edgePerm[edgeInd - 6]         = i;
+        edgeOrientations[edgeInd - 6] = iCube.getEdgeOrientation((EDGE)i);
+        ++numIndexed;
       }
     }
 
