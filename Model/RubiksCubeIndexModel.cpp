@@ -32,30 +32,6 @@ namespace busybin
   }
 
   /**
-   * Copy from another cube.
-   */
-  RubiksCubeIndexModel::RubiksCubeIndexModel(const RubiksCubeIndexModel& cube)
-  {
-    // Edges.
-    memcpy(
-      reinterpret_cast<void*>(&this->edges[0]),
-      reinterpret_cast<const void*>(&cube.edges[0]),
-      sizeof(Cubie) * 12);
-
-    // Corners.
-    memcpy(
-      reinterpret_cast<void*>(&this->corners[0]),
-      reinterpret_cast<const void*>(&cube.corners[0]),
-      sizeof(Cubie) * 8);
-
-    // Centers.
-    memcpy(
-      reinterpret_cast<void*>(&this->centers[0]),
-      reinterpret_cast<const void*>(&cube.centers[0]),
-      6);
-  }
-
-  /**
    * Construct from a RubiksCubeModel.
    */
   RubiksCubeIndexModel::RubiksCubeIndexModel(const RubiksCubeModel& cube)

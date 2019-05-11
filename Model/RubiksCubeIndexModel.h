@@ -6,8 +6,6 @@
 #include "../Util/RubiksCubeException.h"
 #include <array>
 using std::array;
-#include <cstring>
-using std::memcpy;
 #include <algorithm>
 using std::swap;
 #include <cstdint>
@@ -62,7 +60,6 @@ namespace busybin
 
   public:
     RubiksCubeIndexModel();
-    RubiksCubeIndexModel(const RubiksCubeIndexModel& cube);
     RubiksCubeIndexModel(const RubiksCubeModel& cube);
 
     array<COLOR, 2> getEdgeColors(EDGE ind) const;
