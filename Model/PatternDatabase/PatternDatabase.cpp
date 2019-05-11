@@ -150,5 +150,14 @@ namespace busybin
 
     return inflated;
   }
+
+  /**
+   * Reset the pattern database, clearing all cube states.
+   */
+  void PatternDatabase::reset()
+  {
+    this->database.reset(0xFF);
+    this->numItems = 0;
+  }
 }
 

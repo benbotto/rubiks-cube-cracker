@@ -46,6 +46,7 @@ namespace busybin
     virtual void toFile(const string& filePath) const;
     virtual bool fromFile(const string& filePath);
     virtual vector<uint8_t> inflate() const;
+    virtual void reset();
 
     /**
      * Given a permutation of cubies, return the Lehmer code.  This is used
