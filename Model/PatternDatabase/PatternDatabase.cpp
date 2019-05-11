@@ -156,8 +156,11 @@ namespace busybin
    */
   void PatternDatabase::reset()
   {
-    this->database.reset(0xFF);
-    this->numItems = 0;
+    if (this->numItems != 0)
+    {
+      this->database.reset(0xFF);
+      this->numItems = 0;
+    }
   }
 }
 
