@@ -43,6 +43,7 @@ namespace busybin
     bool setNumMoves(const RubiksCube& cube, const uint8_t numMoves);
     bool isFull() const;
     void inflate();
+    void reset();
 
     // All unimplemented.
     uint32_t getDatabaseIndex(const RubiksCube& cube) const;

@@ -87,6 +87,18 @@ namespace busybin
     this->inflated = true;
   }
 
+  /**
+   * Reset all three databases.
+   */
+  void KorfPatternDatabase::reset()
+  {
+    this->inflated = false;
+
+    this->pCornerDB->reset();
+    this->pEdgeG1DB->reset();
+    this->pEdgeG2DB->reset();
+  }
+
   uint32_t KorfPatternDatabase::getDatabaseIndex(const RubiksCube& cube) const
   {
     throw RubiksCubeException("KorfPatternDatabase::getDatabaseIndex not implemented.");
