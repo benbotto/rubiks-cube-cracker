@@ -1,5 +1,3 @@
-Remove bounds checks in MoveStore.cpp#getMove for speed.
-
 In the new IDA searcher, there could be a better solution after the goal is
 satisfied.  Probably need to keep searching the current bound until complete.
 

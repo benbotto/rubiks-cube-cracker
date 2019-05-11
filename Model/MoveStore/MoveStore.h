@@ -2,7 +2,6 @@
 #define _BUSYBIN_MOVE_STORE_H_
 
 #include "../RubiksCube.h"
-#include "../../Util/RubiksCubeException.h"
 #include <vector>
 using std::vector;
 #include <string>

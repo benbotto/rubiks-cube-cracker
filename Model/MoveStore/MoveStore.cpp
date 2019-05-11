@@ -15,9 +15,6 @@ namespace busybin
    */
   RubiksCube::MOVE MoveStore::getMove(unsigned ind) const
   {
-    if (ind >= this->getNumMoves())
-      throw RubiksCubeException("Index out of bounds in MoveStore::getMove.");
-
     return this->getMoves()[ind];
   }
 
@@ -27,9 +24,6 @@ namespace busybin
    */
   string MoveStore::getMoveString(unsigned ind) const
   {
-    if (ind >= this->getNumMoves())
-      throw RubiksCubeException("Index out of bounds in MoveStore::getMoveString.");
-
     return this->pCube->getMove(this->getMoves()[ind]);
   }
 
