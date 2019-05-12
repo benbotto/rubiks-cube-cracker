@@ -65,50 +65,52 @@ namespace busybin
       if (curNode.depth != 0)
         moveInds[curNode.depth - 1] = curNode.moveInd;
 
-      if (curNode.depth == bound && goal.isSatisfied(curNode.cube))
+      if (curNode.depth == bound)
       {
-        solved = true;
-        break;
+        if (goal.isSatisfied(curNode.cube))
+          solved = true;
       }
-
-      // This is used to sort the successors by estimated moves.
-      moveQueue_t successors;
-
-      for (uint8_t i = 0; i < 18; ++i)
+      else
       {
-        if (curNode.depth == 0 || !this->pruner.prune((MOVE)i, (MOVE)curNode.moveInd))
+        // This is used to sort the successors by estimated moves.
+        moveQueue_t successors;
+
+        for (uint8_t i = 0; i < 18; ++i)
         {
-          RubiksCubeIndexModel cubeCopy(curNode.cube);
-
-          cubeCopy.move((MOVE)i);
-
-          uint8_t estSuccMoves = curNode.depth + 1 + this->pPatternDB->getNumMoves(cubeCopy);
-
-          if (estSuccMoves <= bound)
+          if (curNode.depth == 0 || !this->pruner.prune((MOVE)i, (MOVE)curNode.moveInd))
           {
-            // If the twisted cube is estimated to take fewer move than the
-            // current bound, push it, otherwise it's pruned.
-            successors.push({cubeCopy, i, estSuccMoves});
-          }
-          else if (estSuccMoves < nextBound)
-          {
-            // The next bound is the minimum of all successor node moves that's
-            // greater than the current bound.
-            nextBound = estSuccMoves;
+            RubiksCubeIndexModel cubeCopy(curNode.cube);
+
+            cubeCopy.move((MOVE)i);
+
+            uint8_t estSuccMoves = curNode.depth + 1 + this->pPatternDB->getNumMoves(cubeCopy);
+
+            if (estSuccMoves <= bound)
+            {
+              // If the twisted cube is estimated to take fewer move than the
+              // current bound, push it, otherwise it's pruned.
+              successors.push({cubeCopy, i, estSuccMoves});
+            }
+            else if (estSuccMoves < nextBound)
+            {
+              // The next bound is the minimum of all successor node moves that's
+              // greater than the current bound.
+              nextBound = estSuccMoves;
+            }
           }
         }
-      }
 
-      while (!successors.empty())
-      {
-        // Push the nodes in sorted order.
-        nodeStack.push({
-          successors.top().cube,
-          successors.top().moveInd,
-          (uint8_t)(curNode.depth + 1)
-        });
+        while (!successors.empty())
+        {
+          // Push the nodes in sorted order.
+          nodeStack.push({
+            successors.top().cube,
+            successors.top().moveInd,
+            (uint8_t)(curNode.depth + 1)
+          });
 
-        successors.pop();
+          successors.pop();
+        }
       }
     }
 
