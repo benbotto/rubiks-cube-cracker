@@ -9,6 +9,17 @@ namespace busybin
    */
   CornerPatternDatabase::CornerPatternDatabase() : PatternDatabase(88179840)
   {
+    // The onesCountLookup array is used when calculating a Lehmer code for a
+    // permutation, which is done using Korf's linear algorithm.  It's
+    // described in his paper, Large-Scale Parallel Breadth-First Search
+    // (https://www.aaai.org/Papers/AAAI/2005/AAAI05-219.pdf).  Each element in
+    // the array holds a count of the number of ones in the associated index.
+    // I.e. element 10 (1010b) is 2.
+    for (unsigned i = 0; i < 256; ++i)
+    {
+      bitset<8> bits(i);
+      this->onesCountLookup[i] = bits.count();
+    }
   }
 
   /**
@@ -33,9 +44,39 @@ namespace busybin
       iCube.getCornerIndex(CORNER::DRF)
     };
 
-    // Get the Lehmer code, which is in a factoradic number system.
+    // Compute the Lehmer code using Korf's linear algorithm.  It's discussed
+    // in his paper, Large-Scale Parallel Breadth-First Search
+    // (https://www.aaai.org/Papers/AAAI/2005/AAAI05-219.pdf).
+    //
+    // "We scan the permutation from left to right, constructing a bit string
+    // of length n, indicating which elements of the permutation we've seen
+    // so far. Initially the string is all zeros.  As each element of the
+    // permutation is encountered, we use it as an index into the bit string
+    // and set the corresponding bit to one. When we encounter element k in
+    // the permutation, to determine the number of elements less than k to
+    // its left, we need to know the number of ones in the first k bits of
+    // our bit string. We extract the first k bits by right shifting the
+    // string by n − k. This reduces the problem to: given a bit string,
+    // count the number of one bits in it.
+    // We solve this problem in constant time by using the bit string as an
+    // index into a precomputed table, containing the number of ones in the
+    // binary representation of each index."
     perm_t lehmer;
-    this->getLehmerCode(cornerPerm, lehmer);
+    bitset<8> seen;
+
+    lehmer[0] = cornerPerm[0];
+    seen[7 - cornerPerm[0]] = 1;
+    lehmer[7] = 0;
+
+    for (unsigned i = 1; i < 7; ++i)
+    {
+      // std::bitset indexes right-to-left.
+      seen[7 - cornerPerm[i]] = 1;
+
+      uint8_t numOnes = this->onesCountLookup[seen.to_ulong() >> (8 - cornerPerm[i])];
+
+      lehmer[i] = cornerPerm[i] - numOnes;
+    }
 
     // Now convert the Lehmer code to a base-10 number.  To do so,
     // multiply each digit by it's corresponding factorial base.
