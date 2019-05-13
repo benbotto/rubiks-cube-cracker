@@ -2,6 +2,8 @@
 
 namespace busybin
 {
+  array<uint8_t, 4096> EdgePatternDatabase::onesCountLookup;
+
   /**
    * Initialize the database storage.  There are 12P6 * 2^6 possible scrambles.
    * (12 cubies occupying 6 positions in a group, and each cubie can be in 1 of
@@ -10,6 +12,13 @@ namespace busybin
    */
   EdgePatternDatabase::EdgePatternDatabase() : PatternDatabase(42577920)
   {
+    // See CornerPatternDatabase.cpp.  Lookup for fast Lehmer codes, but
+    // for a permutation of size 12 (2^12).
+    for (unsigned i = 0; i < 4096; ++i)
+    {
+      bitset<12> bits(i);
+      this->onesCountLookup[i] = bits.count();
+    }
   }
 
   /**
@@ -23,9 +32,22 @@ namespace busybin
   uint32_t EdgePatternDatabase::getDatabaseIndex(const perm_t& edgePerm,
     const array<uint8_t, 6>& edgeOrientations) const
   {
-    // Get the Lehmer code, which is in a factoradic number system.
+    // See CornerPatternDatabase.cpp for an explanation.  Get the Lehmer code
+    // using Korf's linear algorithm.
     perm_t lehmer;
-    this->getLehmerCode(edgePerm, lehmer);
+    bitset<12> seen;
+
+    lehmer[0] = edgePerm[0];
+    seen[11 - edgePerm[0]] = 1;
+
+    for (unsigned i = 0; i < 6; ++i)
+    {
+      seen[11 - edgePerm[i]] = 1;
+
+      uint8_t numOnes = this->onesCountLookup[seen.to_ulong() >> (12 - edgePerm[i])];
+
+      lehmer[i] = edgePerm[i] - numOnes;
+    }
 
     // Now convert the Lehmer code to a base-10 number.  This differs from the
     // corner conversion, because there are 12 edges that could occupy the 6
