@@ -1,11 +1,6 @@
 In the new IDA searcher, there could be a better solution after the goal is
 satisfied.  Probably need to keep searching the current bound until complete.
 
-In the IDA searcher a copy of the cube could be avoided (from successors to the
-node stack) by using a buffer area or dynamic memory of some sort.
-
-If KorfSolver is reverted, remember to inflate!
-
 In IDA*, keep a set of seen cube states and check it when making the successor queue.
 IDDFS could use this set, too.
 
