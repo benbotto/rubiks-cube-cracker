@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_Pattern_PATTERN_DATABASE_
-#define _BUSYBIN_Pattern_PATTERN_DATABASE_
+#ifndef _BUSYBIN_PATTERN_DATABASE_
+#define _BUSYBIN_PATTERN_DATABASE_
 
 #include "../RubiksCube.h"
 #include "../../Util/NibbleArray.h"
