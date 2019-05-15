@@ -38,6 +38,8 @@ using std::istringstream;
 using std::istream_iterator;
 #include <memory>
 using std::unique_ptr;
+#include <atomic>
+using std::atomic_bool;
 
 namespace busybin
 {
@@ -51,7 +53,14 @@ namespace busybin
     EdgeG2PatternDatabase edgeG2DB;
     KorfPatternDatabase   korfDB;
 
-    void indexDatabases();
+    atomic_bool cornerDBIndexed;
+    atomic_bool edgeG1DBIndexed;
+    atomic_bool edgeG2DBIndexed;
+
+    void indexCornerDatabase();
+    void indexEdgeG1Database();
+    void indexEdgeG2Database();
+    void onIndexComplete();
 
   protected:
     void solveCube();
