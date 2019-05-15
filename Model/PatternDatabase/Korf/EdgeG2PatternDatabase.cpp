@@ -11,20 +11,20 @@ namespace busybin
 
     const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);
 
-    // See EdgeG1PatternDatabase.cpp.  This is for the other 6 edges, those
-    // with indexes greater than 5.
-    array<uint8_t, 6> edgePerm;
-    array<uint8_t, 6> edgeOrientations;
+    // See EdgeG1PatternDatabase.cpp.  This is for the other 7 edges, those
+    // with indexes greater than 4.
+    array<uint8_t, 7> edgePerm;
+    array<uint8_t, 7> edgeOrientations;
     unsigned          numIndexed = 0;
 
-    for (uint8_t i = 0; i < 12 && numIndexed != 6; ++i)
+    for (uint8_t i = 0; i < 12 && numIndexed != 7; ++i)
     {
       uint8_t edgeInd = iCube.getEdgeIndex((EDGE)i);
 
-      if (edgeInd > 5)
+      if (edgeInd > 4)
       {
-        edgePerm[edgeInd - 6]         = i;
-        edgeOrientations[edgeInd - 6] = iCube.getEdgeOrientation((EDGE)i);
+        edgePerm[edgeInd - 5]         = i;
+        edgeOrientations[edgeInd - 5] = iCube.getEdgeOrientation((EDGE)i);
         ++numIndexed;
       }
     }

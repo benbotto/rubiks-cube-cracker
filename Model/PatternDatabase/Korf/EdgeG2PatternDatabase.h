@@ -9,7 +9,7 @@
 namespace busybin
 {
   /**
-   * See EdgeG1PatternDatabase.h.  This indexes the other 6 edges: BL, BR, DF,
+   * See EdgeG1PatternDatabase.h.  This indexes the other 7 edges: FL, BL, BR, DF,
    * DL, DB, and DR.
    */
   class EdgeG2PatternDatabase : public EdgePatternDatabase
