@@ -15,7 +15,10 @@ namespace busybin
     cornerDB(),
     edgeG1DB(),
     edgeG2DB(),
-    korfDB(&cornerDB, &edgeG1DB, &edgeG2DB)
+    korfDB(&cornerDB, &edgeG1DB, &edgeG2DB),
+    cornerDBIndexed(false),
+    edgeG1DBIndexed(false),
+    edgeG2DBIndexed(false)
   {
   }
 
@@ -26,31 +29,29 @@ namespace busybin
   {
     CubeSolver::initialize();
 
-    // Launch an initialization thread.
-    this->pThreadPool->addJob(bind(&KorfCubeSolver::indexDatabases, this));
+    cout << "Initializing pattern databases for KorfCubeSolver in three threads." << endl;
+
+    // Launch initialization threads to index the databases.  There are three
+    // goals, one for the corner states, one for 7 edges of the cube, and one
+    // for the other 7 edges (2 edges overlap).
+    this->setSolving(true);
+    this->pThreadPool->addJob(bind(&KorfCubeSolver::indexCornerDatabase, this));
+    this->pThreadPool->addJob(bind(&KorfCubeSolver::indexEdgeG1Database, this));
+    this->pThreadPool->addJob(bind(&KorfCubeSolver::indexEdgeG2Database, this));
   }
 
   /**
-   * Initialize the pattern databases for corners and two edge groups.
+   * Index the corner database.
    */
-  void KorfCubeSolver::indexDatabases()
+  void KorfCubeSolver::indexCornerDatabase()
   {
-    // The pattern databases will be created using breadth first search for the
-    // corners, and a specialized IDDFS for the edges.
+    // The corner pattern database will be created using a breadth-first
+    // search.
     BreadthFirstCubeSearcher bfsSearcher;
-    PatternDatabaseIndexer   indexer;
 
-    // An index model is used for building the pattern databases.
+    // An index model is used for building pattern databases.
     RubiksCubeIndexModel iCube;
 
-    this->setSolving(true);
-
-    cout << "Initializing pattern databases for KorfCubeSolver." << endl;
-
-    // There are three goals, one for the corner states, one for 6 edges of the
-    // cube, and one for the other 6 edges.  The searcher takes a reference to
-    // the cube model and finds a goal.
-    //
     // The seacher uses about 5GB of memory; the internal queue is quite large
     // while indexing the corner database.
     if (!this->cornerDB.fromFile("./Data/corner.pdb"))
@@ -65,6 +66,19 @@ namespace busybin
       this->cornerDB.toFile("./Data/corner.pdb");
     }
 
+    this->cornerDBIndexed = true;
+    this->onIndexComplete();
+  }
+
+  /**
+   * Index the first edge database.
+   */
+  void KorfCubeSolver::indexEdgeG1Database()
+  {
+    // The corner databases are indexed using a specialized IDDFS search.
+    PatternDatabaseIndexer indexer;
+    RubiksCubeIndexModel   iCube;
+
     if (!this->edgeG1DB.fromFile("./Data/edgeG1.pdb"))
     {
       // Create the first edge database.
@@ -75,6 +89,18 @@ namespace busybin
       indexer.findGoal(edgeG1Goal, iCube);
       this->edgeG1DB.toFile("./Data/edgeG1.pdb");
     }
+
+    this->edgeG1DBIndexed = true;
+    this->onIndexComplete();
+  }
+
+  /**
+   * Index the second edge database.
+   */
+  void KorfCubeSolver::indexEdgeG2Database()
+  {
+    PatternDatabaseIndexer indexer;
+    RubiksCubeIndexModel   iCube;
 
     if (!this->edgeG2DB.fromFile("./Data/edgeG2.pdb"))
     {
@@ -87,13 +113,26 @@ namespace busybin
       this->edgeG2DB.toFile("./Data/edgeG2.pdb");
     }
 
-    // Inflate the DB for faster access (doubles the size, but no bit-wise
-    // operations are required when indexing).
-    this->korfDB.inflate();
+    this->edgeG2DBIndexed = true;
+    this->onIndexComplete();
+  }
 
-    this->setSolving(false);
+  /**
+   * Each index thread calls this when it's complete.  When all are done,
+   * the Korf database is inflated and the solving flag is toggled off.
+   */
+  void KorfCubeSolver::onIndexComplete()
+  {
+    if (this->cornerDBIndexed && this->edgeG1DBIndexed && this->edgeG2DBIndexed)
+    {
+      // Inflate the DB for faster access (doubles the size, but no bit-wise
+      // operations are required when indexing).
+      this->korfDB.inflate();
 
-    cout << "Korf initialization complete." << endl;
+      this->setSolving(false);
+
+      cout << "Korf initialization complete." << endl;
+    }
   }
 
   /**
