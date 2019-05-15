@@ -82,11 +82,12 @@ namespace busybin
     if (!this->edgeG1DB.fromFile("./Data/edgeG1.pdb"))
     {
       // Create the first edge database.
-      EdgeDatabaseGoal edgeG1Goal(&this->edgeG1DB);
+      EdgeDatabaseGoal      edgeG1Goal(&this->edgeG1DB);
+      EdgeG1PatternDatabase seenDB;
 
       cout << "Goal 2: " << edgeG1Goal.getDescription() << endl;
 
-      indexer.findGoal(edgeG1Goal, iCube);
+      indexer.findGoal(edgeG1Goal, iCube, seenDB);
       this->edgeG1DB.toFile("./Data/edgeG1.pdb");
     }
 
@@ -105,11 +106,12 @@ namespace busybin
     if (!this->edgeG2DB.fromFile("./Data/edgeG2.pdb"))
     {
       // Create the second edge database.
-      EdgeDatabaseGoal edgeG2Goal(&this->edgeG2DB);
+      EdgeDatabaseGoal      edgeG2Goal(&this->edgeG2DB);
+      EdgeG2PatternDatabase seenDB;
 
       cout << "Goal 3: " << edgeG2Goal.getDescription() << endl;
 
-      indexer.findGoal(edgeG2Goal, iCube);
+      indexer.findGoal(edgeG2Goal, iCube, seenDB);
       this->edgeG2DB.toFile("./Data/edgeG2.pdb");
     }
 
