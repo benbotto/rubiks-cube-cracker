@@ -7,21 +7,24 @@ namespace busybin
    * to acieve goal.  This is basically a non-recursive IDDFS search.
    * @param goal The goal to achieve (isSatisfied is called on the goal).
    * @param solvedCube A solved cube instance.
+   * @param seenDB A PatternDatabase instance that's used to keep track of
+   * states that have been seen.
    */
   void PatternDatabaseIndexer::findGoal(Goal& goal,
-    RubiksCubeIndexModel& solvedCube)
+    RubiksCubeIndexModel& solvedCube, PatternDatabase& seenDB)
   {
     typedef RubiksCube::MOVE MOVE;
 
     AutoTimer   timer;
     MovePruner  pruner;
     unsigned    curDepth = 0;
-    unsigned    indCount = 1;
+    unsigned    indCount = 0;
     stack<Node> nodeStack;
     Node        curNode;
 
     // Index the root node in the database.
     goal.index(solvedCube, 0);
+    ++indCount;
 
     while (!goal.isSatisfied(solvedCube))
     {
@@ -32,10 +35,14 @@ namespace busybin
              << timer.getElapsedSeconds() << "s.  Indexed " << indCount
              << " states." << endl;
 
+        ++curDepth;
+
         // Push on the root node.
         nodeStack.push({solvedCube, 0xFF, 0});
 
-        ++curDepth;
+        // Reset the database of seen cube states.
+        seenDB.reset();
+        seenDB.setNumMoves(solvedCube, 0);
       }
 
       curNode = nodeStack.top();
@@ -50,15 +57,23 @@ namespace busybin
 
           cubeCopy.move((MOVE)i);
 
-          // Index at the leaf level.
-          if ((unsigned)(cubeCopyDepth) == curDepth)
+          // This cube state may have been encountered at an earlier depth, at
+          // which case it can be skipped.
+          uint32_t dbInd = seenDB.getDatabaseIndex(cubeCopy);
+
+          if (seenDB.getNumMoves(dbInd) >= cubeCopyDepth)
           {
-            // Index the new state.
-            if (goal.index(cubeCopy, cubeCopyDepth))
-              ++indCount;
+            seenDB.setNumMoves(dbInd, cubeCopyDepth);
+
+            // Index at the leaf level.
+            if ((unsigned)(cubeCopyDepth) == curDepth)
+            {
+              if (goal.index(cubeCopy, cubeCopyDepth))
+                ++indCount;
+            }
+            else
+              nodeStack.push({cubeCopy, i, (uint8_t)(cubeCopyDepth)});
           }
-          else
-            nodeStack.push({cubeCopy, i, (uint8_t)(cubeCopyDepth)});
         }
       }
     }

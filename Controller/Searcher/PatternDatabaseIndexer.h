@@ -6,6 +6,7 @@
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/MoveStore/MoveStore.h"
 #include "../../Util/AutoTimer.h"
+#include "../../Model/PatternDatabase/PatternDatabase.h"
 #include <vector>
 using std::vector;
 #include <string>
@@ -32,7 +33,7 @@ namespace busybin
     };
 
   public:
-    void findGoal(Goal& goal, RubiksCubeIndexModel& cube);
+    void findGoal(Goal& goal, RubiksCubeIndexModel& cube, PatternDatabase& seenDB);
   };
 }
 
