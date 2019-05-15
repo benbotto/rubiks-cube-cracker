@@ -16,7 +16,7 @@ namespace busybin
    */
   string EdgeDatabaseGoal::getDescription() const
   {
-    return "Create a database of 6 of the 12 edge states.";
+    return "Create a database of 7 of the 12 edge states.";
   }
 }
 
