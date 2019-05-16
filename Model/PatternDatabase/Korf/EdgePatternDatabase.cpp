@@ -7,7 +7,7 @@ namespace busybin
   /**
    * Initialize the database storage.  There are 12P7 * 2^7 possible scrambles.
    * (7 cubies occupying 12 positions in a group, and each cubie can be in 1 of
-   * 2 states). Each scramble is reachable in 10 moves or fewer, so each move
+   * 2 states). Each scramble is reachable in 11 moves or fewer, so each move
    * can be stored in 4 bits.  That gives 12P7 * 2^7 / 2 / 1024 / 1024 (~244MB).
    */
   EdgePatternDatabase::EdgePatternDatabase() : PatternDatabase(510935040)
