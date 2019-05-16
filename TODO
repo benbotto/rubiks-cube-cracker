@@ -1,3 +1,10 @@
+Could add a prune method to the pattern databases.  Then, in the
+KorfPatternDatabase, sometimes all three internal databases wouldn't need to be
+checked (e.g. if the first takes more moves).
+
+With the multi-threaded initialization, the mover is enabled by the first init
+method to finish (Thistlethwaite).
+
 In the new IDA searcher, there could be a better solution after the goal is
 satisfied.  Probably need to keep searching the current bound until complete.
 
