@@ -4,6 +4,7 @@
 #include "CornerPatternDatabase.h"
 #include "EdgeG1PatternDatabase.h"
 #include "EdgeG2PatternDatabase.h"
+#include "OrientationPatternDatabase.h"
 #include "../../RubiksCube.h"
 #include "../PatternDatabase.h"
 #include "../../../Util/RubiksCubeException.h"
@@ -16,28 +17,31 @@ using std::vector;
 namespace busybin
 {
   /**
-   * This is an aggregate class that combines the corner and two edge databases
-   * needed for Korf's algorithm.  It's used as a heuristic in the IDA*
-   * searcher.  Getting an item from this database returns the max number of
-   * moves from the three databases.
+   * This is an aggregate class that combines all the pattern databases needed
+   * for Korf's algorithm.  It's used as a heuristic in the IDA* searcher.
+   * Getting an item from this database returns the max number of moves from
+   * the databases.
    */
   class KorfPatternDatabase : public PatternDatabase
   {
     bool inflated;
 
-    CornerPatternDatabase* pCornerDB;
-    EdgeG1PatternDatabase* pEdgeG1DB;
-    EdgeG2PatternDatabase* pEdgeG2DB;
+    CornerPatternDatabase*      pCornerDB;
+    EdgeG1PatternDatabase*      pEdgeG1DB;
+    EdgeG2PatternDatabase*      pEdgeG2DB;
+    OrientationPatternDatabase* pOrientationDB;
 
     vector<uint8_t> cornerDBInflated;
     vector<uint8_t> edgeG1DBInflated;
     vector<uint8_t> edgeG2DBInflated;
+    vector<uint8_t> orientationDBInflated;
 
   public:
     KorfPatternDatabase(
       CornerPatternDatabase* pCornerDB,
       EdgeG1PatternDatabase* pEdgeG1DB,
-      EdgeG2PatternDatabase* pEdgeG2DB);
+      EdgeG2PatternDatabase* pEdgeG2DB,
+      OrientationPatternDatabase* pOrientationDB);
 
     uint8_t getNumMoves(const RubiksCube& cube) const;
     bool setNumMoves(const RubiksCube& cube, const uint8_t numMoves);
