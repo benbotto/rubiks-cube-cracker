@@ -35,6 +35,7 @@ set(SRC
   "./Model/PatternDatabase/Korf/EdgePatternDatabase.cpp"
   "./Model/PatternDatabase/Korf/EdgeG1PatternDatabase.cpp"
   "./Model/PatternDatabase/Korf/EdgeG2PatternDatabase.cpp"
+  "./Model/PatternDatabase/Korf/OrientationPatternDatabase.cpp"
   "./Model/PatternDatabase/Korf/KorfPatternDatabase.cpp"
   "./Model/RubiksCubeWorld.cpp"
   "./Model/RubiksCube.cpp"
@@ -52,6 +53,7 @@ set(SRC
   "./Model/Goal/Thistlethwaite/GoalG3_Permute_Corners.cpp"
   "./Model/Goal/Korf/CornerDatabaseGoal.cpp"
   "./Model/Goal/Korf/EdgeDatabaseGoal.cpp"
+  "./Model/Goal/Korf/OrientationDatabaseGoal.cpp"
   "./Model/WorldObject/Cubie.cpp"
   "./Model/WorldObject/RubiksCubeWorldObject.cpp")
 
