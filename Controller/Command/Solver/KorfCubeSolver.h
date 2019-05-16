@@ -9,15 +9,17 @@
 #include "../../../Model/Goal/Goal.h"
 #include "../../../Model/Goal/OrientGoal.h"
 #include "../../../Model/Goal/SolveGoal.h"
+#include "../../../Model/Goal/Korf/CornerDatabaseGoal.h"
+#include "../../../Model/Goal/Korf/EdgeDatabaseGoal.h"
+#include "../../../Model/Goal/Korf/OrientationDatabaseGoal.h"
 #include "../../../Model/MoveStore/TwistStore.h"
 #include "../../../Model/MoveStore/RotationStore.h"
 #include "../../../OpenGLSeed/Model/World.h"
 #include "../../../OpenGLSeed/View/WorldWindow.h"
-#include "../../../Model/Goal/Korf/CornerDatabaseGoal.h"
-#include "../../../Model/Goal/Korf/EdgeDatabaseGoal.h"
 #include "../../../Model/PatternDatabase/Korf/CornerPatternDatabase.h"
 #include "../../../Model/PatternDatabase/Korf/EdgeG1PatternDatabase.h"
 #include "../../../Model/PatternDatabase/Korf/EdgeG2PatternDatabase.h"
+#include "../../../Model/PatternDatabase/Korf/OrientationPatternDatabase.h"
 #include "../../../Model/PatternDatabase/Korf/KorfPatternDatabase.h"
 #include "../../../Util/ThreadPool.h"
 #include "../../Searcher/BreadthFirstCubeSearcher.h"
@@ -48,18 +50,21 @@ namespace busybin
    */
   class KorfCubeSolver : public CubeSolver
   {
-    CornerPatternDatabase cornerDB;
-    EdgeG1PatternDatabase edgeG1DB;
-    EdgeG2PatternDatabase edgeG2DB;
-    KorfPatternDatabase   korfDB;
+    CornerPatternDatabase      cornerDB;
+    EdgeG1PatternDatabase      edgeG1DB;
+    EdgeG2PatternDatabase      edgeG2DB;
+    OrientationPatternDatabase orientationDB;
+    KorfPatternDatabase        korfDB;
 
     atomic_bool cornerDBIndexed;
     atomic_bool edgeG1DBIndexed;
     atomic_bool edgeG2DBIndexed;
+    atomic_bool orientationDBIndexed;
 
     void indexCornerDatabase();
     void indexEdgeG1Database();
     void indexEdgeG2Database();
+    void indexOrientationDatabase();
     void onIndexComplete();
 
   protected:

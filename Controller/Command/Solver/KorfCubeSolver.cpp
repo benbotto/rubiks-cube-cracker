@@ -15,10 +15,12 @@ namespace busybin
     cornerDB(),
     edgeG1DB(),
     edgeG2DB(),
-    korfDB(&cornerDB, &edgeG1DB, &edgeG2DB),
+    orientationDB(),
+    korfDB(&cornerDB, &edgeG1DB, &edgeG2DB, &orientationDB),
     cornerDBIndexed(false),
     edgeG1DBIndexed(false),
-    edgeG2DBIndexed(false)
+    edgeG2DBIndexed(false),
+    orientationDBIndexed(false)
   {
   }
 
@@ -31,13 +33,12 @@ namespace busybin
 
     cout << "Initializing pattern databases for KorfCubeSolver in three threads." << endl;
 
-    // Launch initialization threads to index the databases.  There are three
-    // goals, one for the corner states, one for 7 edges of the cube, and one
-    // for the other 7 edges (2 edges overlap).
+    // Index each pattern database.
     this->setSolving(true);
     this->pThreadPool->addJob(bind(&KorfCubeSolver::indexCornerDatabase, this));
     this->pThreadPool->addJob(bind(&KorfCubeSolver::indexEdgeG1Database, this));
     this->pThreadPool->addJob(bind(&KorfCubeSolver::indexEdgeG2Database, this));
+    this->pThreadPool->addJob(bind(&KorfCubeSolver::indexOrientationDatabase, this));
   }
 
   /**
@@ -120,12 +121,36 @@ namespace busybin
   }
 
   /**
+   * Index the orientation database.
+   */
+  void KorfCubeSolver::indexOrientationDatabase()
+  {
+    PatternDatabaseIndexer indexer;
+    RubiksCubeIndexModel   iCube;
+
+    if (!this->orientationDB.fromFile("./Data/orientation.pdb"))
+    {
+      // Create the orientation database.
+      OrientationDatabaseGoal    orientationGoal(&this->orientationDB);
+      OrientationPatternDatabase seenDB;
+
+      cout << "Goal 4: " << orientationGoal.getDescription() << endl;
+
+      indexer.findGoal(orientationGoal, iCube, seenDB);
+      this->orientationDB.toFile("./Data/orientation.pdb");
+    }
+
+    this->orientationDBIndexed = true;
+    this->onIndexComplete();
+  }
+
+  /**
    * Each index thread calls this when it's complete.  When all are done,
    * the Korf database is inflated and the solving flag is toggled off.
    */
   void KorfCubeSolver::onIndexComplete()
   {
-    if (this->cornerDBIndexed && this->edgeG1DBIndexed && this->edgeG2DBIndexed)
+    if (this->cornerDBIndexed && this->edgeG1DBIndexed && this->edgeG2DBIndexed && this->orientationDBIndexed)
     {
       // Inflate the DB for faster access (doubles the size, but no bit-wise
       // operations are required when indexing).
