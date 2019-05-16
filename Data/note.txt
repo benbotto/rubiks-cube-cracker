@@ -1,0 +1,1 @@
+Pattern databases get written to this folder.
