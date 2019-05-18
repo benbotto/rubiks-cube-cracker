@@ -2,6 +2,8 @@
 
 namespace busybin
 {
+  array<uint8_t, 4096> OrientationPatternDatabase::onesCountLookup;
+
   /**
    * Initialize the database storage.  There are 8 corners in three possible
    * orientations each, and 12 corners in 2 possible orientations each.  For
@@ -9,8 +11,13 @@ namespace busybin
    * the others, so there are 2^11 * 3^7 = 4,478,976 possible orientations
    * (4,478,976/2/1024^2 = 2.13MB of storage).
    */
-  OrientationPatternDatabase::OrientationPatternDatabase() : PatternDatabase(4478976)
+  OrientationPatternDatabase::OrientationPatternDatabase() : PatternDatabase(479001600)
   {
+    for (unsigned i = 0; i < 4096; ++i)
+    {
+      bitset<12> bits(i);
+      this->onesCountLookup[i] = bits.count();
+    }
   }
 
   /**
@@ -18,38 +25,45 @@ namespace busybin
    */
   uint32_t OrientationPatternDatabase::getDatabaseIndex(const RubiksCube& cube) const
   {
-    typedef RubiksCubeIndexModel::CORNER CORNER;
-    typedef RubiksCubeIndexModel::EDGE   EDGE;
+    typedef RubiksCubeIndexModel::EDGE EDGE;
 
     const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);
 
-    // Convert the corner orientations to an int (treat the orientations as a
-    // base-3 number).
-    uint32_t cornerInd =
-      iCube.getCornerOrientation(CORNER::ULB) * 729 +
-      iCube.getCornerOrientation(CORNER::URB) * 243 +
-      iCube.getCornerOrientation(CORNER::URF) * 81 +
-      iCube.getCornerOrientation(CORNER::ULF) * 27 +
-      iCube.getCornerOrientation(CORNER::DLF) * 9 +
-      iCube.getCornerOrientation(CORNER::DLB) * 3 +
-      iCube.getCornerOrientation(CORNER::DRB);
+    // The permutation of the 12 edges.
+    perm_t edgePerm;
 
-    // Likewise for the edges, but treat the orientations as base-2.
-    uint32_t edgeInd =
-      iCube.getEdgeOrientation(EDGE::UB) * 1024 +
-      iCube.getEdgeOrientation(EDGE::UR) * 512 +
-      iCube.getEdgeOrientation(EDGE::UF) * 256 +
-      iCube.getEdgeOrientation(EDGE::UL) * 128 +
-      iCube.getEdgeOrientation(EDGE::FR) * 64 +
-      iCube.getEdgeOrientation(EDGE::FL) * 32 +
-      iCube.getEdgeOrientation(EDGE::BL) * 16 +
-      iCube.getEdgeOrientation(EDGE::BR) * 8 +
-      iCube.getEdgeOrientation(EDGE::DF) * 4 +
-      iCube.getEdgeOrientation(EDGE::DL) * 2 +
-      iCube.getEdgeOrientation(EDGE::DB);
+    for (unsigned i = 0; i < 12; ++i)
+      edgePerm[i] = iCube.getEdgeIndex((EDGE)i);
 
-    // Combine the indexes into a single int: e * 3^7 + c;
-    return edgeInd * 2187 + cornerInd;
+    perm_t lehmer;
+    bitset<12> seen;
+
+    lehmer[0] = edgePerm[0];
+    seen[11 - edgePerm[0]] = 1;
+    lehmer[11] = 0;
+
+    for (unsigned i = 1; i < 11; ++i)
+    {
+      // std::bitset indexes right-to-left.
+      seen[11 - edgePerm[i]] = 1;
+
+      uint8_t numOnes = this->onesCountLookup[seen.to_ulong() >> (12 - edgePerm[i])];
+
+      lehmer[i] = edgePerm[i] - numOnes;
+    }
+
+    return
+      lehmer[0] * 39916800 +
+      lehmer[1] * 3628800 +
+      lehmer[2] * 362880 +
+      lehmer[3] * 40320 +
+      lehmer[4] * 5040 +
+      lehmer[5] * 720 +
+      lehmer[6] * 120 +
+      lehmer[7] * 24 +
+      lehmer[8] * 6 +
+      lehmer[9] * 2 +
+      lehmer[10];
   }
 }
 
