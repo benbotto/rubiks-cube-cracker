@@ -8,4 +8,4 @@ OpenGL is used to render the Rubik's Cube.  The renderer was written from scratc
 
 Shading is also custom, with procedurally-generated cubie stickers.  The stickers intentionally have some imperfections, which is supposed to look like smudges (in my opinion, a Rubik's Cube aught to be used!).
 
-The cube also has a levitation effect, which is modeled after levitating characters in the original Everquest game.  Sorry if that makes you nauseous.
+The cube also has a levitation effect, which is modeled after levitating characters in the original EverQuest game.  Sorry if that makes you nauseous.
