@@ -34,7 +34,6 @@ namespace busybin
     cout << "Initializing pattern databases for KorfCubeSolver." << endl;
 
     // Index each pattern database.
-    this->setSolving(true);
     this->pThreadPool->addJob(bind(&KorfCubeSolver::indexCornerDatabase, this));
     this->pThreadPool->addJob(bind(&KorfCubeSolver::indexEdgeG1Database, this));
     this->pThreadPool->addJob(bind(&KorfCubeSolver::indexEdgeG2Database, this));
@@ -52,6 +51,8 @@ namespace busybin
 
     // An index model is used for building pattern databases.
     RubiksCubeIndexModel iCube;
+
+    this->setSolving(true);
 
     // The seacher uses about 5GB of memory; the internal queue is quite large
     // while indexing the corner database.
@@ -80,6 +81,8 @@ namespace busybin
     PatternDatabaseIndexer indexer;
     RubiksCubeIndexModel   iCube;
 
+    this->setSolving(true);
+
     if (!this->edgeG1DB.fromFile("./Data/edgeG1.pdb"))
     {
       // Create the first edge database.
@@ -104,6 +107,8 @@ namespace busybin
     PatternDatabaseIndexer indexer;
     RubiksCubeIndexModel   iCube;
 
+    this->setSolving(true);
+
     if (!this->edgeG2DB.fromFile("./Data/edgeG2.pdb"))
     {
       // Create the second edge database.
@@ -127,6 +132,8 @@ namespace busybin
   {
     PatternDatabaseIndexer indexer;
     RubiksCubeIndexModel   iCube;
+
+    this->setSolving(true);
 
     if (!this->edgePermDB.fromFile("./Data/edge_perm.pdb"))
     {
