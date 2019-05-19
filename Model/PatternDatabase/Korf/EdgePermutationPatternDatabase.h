@@ -1,5 +1,5 @@
-#ifndef _BUSYBIN_ORIENTATION_PATTERN_DATABASE_H_
-#define _BUSYBIN_ORIENTATION_PATTERN_DATABASE_H_
+#ifndef _BUSYBIN_EDGE_PERMUTATION_PATTERN_DATABASE_H_
+#define _BUSYBIN_EDGE_PERMUTATION_PATTERN_DATABASE_H_
 
 #include "../PatternDatabase.h"
 #include "../../RubiksCube.h"
@@ -14,16 +14,16 @@ using std::array;
 namespace busybin
 {
   /**
-   * A pattern database that holds the orientations of all 20 cubes.
+   * A pattern database that holds the permutations of the 12 edges.
    */
-  class OrientationPatternDatabase : public PatternDatabase
+  class EdgePermutationPatternDatabase : public PatternDatabase
   {
     typedef array<uint8_t, 12> perm_t;
 
     static array<uint8_t, 4096> onesCountLookup;
 
   public:
-    OrientationPatternDatabase();
+    EdgePermutationPatternDatabase();
     uint32_t getDatabaseIndex(const RubiksCube& cube) const;
   };
 }

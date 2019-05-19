@@ -15,12 +15,12 @@ namespace busybin
     cornerDB(),
     edgeG1DB(),
     edgeG2DB(),
-    orientationDB(),
-    korfDB(&cornerDB, &edgeG1DB, &edgeG2DB, &orientationDB),
+    edgePermDB(),
+    korfDB(&cornerDB, &edgeG1DB, &edgeG2DB, &edgePermDB),
     cornerDBIndexed(false),
     edgeG1DBIndexed(false),
     edgeG2DBIndexed(false),
-    orientationDBIndexed(false)
+    edgePermDBIndexed(false)
   {
   }
 
@@ -38,7 +38,7 @@ namespace busybin
     this->pThreadPool->addJob(bind(&KorfCubeSolver::indexCornerDatabase, this));
     this->pThreadPool->addJob(bind(&KorfCubeSolver::indexEdgeG1Database, this));
     this->pThreadPool->addJob(bind(&KorfCubeSolver::indexEdgeG2Database, this));
-    this->pThreadPool->addJob(bind(&KorfCubeSolver::indexOrientationDatabase, this));
+    this->pThreadPool->addJob(bind(&KorfCubeSolver::indexEdgePermDatabase, this));
   }
 
   /**
@@ -121,26 +121,26 @@ namespace busybin
   }
 
   /**
-   * Index the orientation database.
+   * Index the edge permutation database.
    */
-  void KorfCubeSolver::indexOrientationDatabase()
+  void KorfCubeSolver::indexEdgePermDatabase()
   {
     PatternDatabaseIndexer indexer;
     RubiksCubeIndexModel   iCube;
 
-    if (!this->orientationDB.fromFile("./Data/orientation.pdb"))
+    if (!this->edgePermDB.fromFile("./Data/edge_perm.pdb"))
     {
-      // Create the orientation database.
-      OrientationDatabaseGoal    orientationGoal(&this->orientationDB);
-      OrientationPatternDatabase seenDB;
+      // Create the edge permutation database.
+      EdgePermutationDatabaseGoal    edgePermGoal(&this->edgePermDB);
+      EdgePermutationPatternDatabase seenDB;
 
-      cout << "Goal 4: " << orientationGoal.getDescription() << endl;
+      cout << "Goal 4: " << edgePermGoal.getDescription() << endl;
 
-      indexer.findGoal(orientationGoal, iCube, seenDB);
-      this->orientationDB.toFile("./Data/orientation.pdb");
+      indexer.findGoal(edgePermGoal, iCube, seenDB);
+      this->edgePermDB.toFile("./Data/edge_perm.pdb");
     }
 
-    this->orientationDBIndexed = true;
+    this->edgePermDBIndexed = true;
     this->onIndexComplete();
   }
 
@@ -150,7 +150,7 @@ namespace busybin
    */
   void KorfCubeSolver::onIndexComplete()
   {
-    if (this->cornerDBIndexed && this->edgeG1DBIndexed && this->edgeG2DBIndexed && this->orientationDBIndexed)
+    if (this->cornerDBIndexed && this->edgeG1DBIndexed && this->edgeG2DBIndexed && this->edgePermDBIndexed)
     {
       // Inflate the DB for faster access (doubles the size, but no bit-wise
       // operations are required when indexing).

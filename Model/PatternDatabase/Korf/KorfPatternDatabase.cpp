@@ -10,51 +10,50 @@ namespace busybin
     CornerPatternDatabase* pCornerDB,
     EdgeG1PatternDatabase* pEdgeG1DB,
     EdgeG2PatternDatabase* pEdgeG2DB,
-    OrientationPatternDatabase* pOrientationDB) :
+    EdgePermutationPatternDatabase* pEdgePermDB) :
     PatternDatabase(0),
     inflated(false),
     pCornerDB(pCornerDB),
     pEdgeG1DB(pEdgeG1DB),
     pEdgeG2DB(pEdgeG2DB),
-    pOrientationDB(pOrientationDB)
+    pEdgePermDB(pEdgePermDB)
   {
   }
 
   /**
    * Get the estimated number of moves it would take to get from a cube state
-   * to a scrambled state.  The estimate is the max of the corner and edge
-   * databases' number of moves.
+   * to a scrambled state.  The estimate is the max of all the databases.
    */
   uint8_t KorfPatternDatabase::getNumMoves(const RubiksCube& cube) const
   {
     uint8_t cornerMoves;
     uint8_t edgeG1Moves;
     uint8_t edgeG2Moves;
-    uint8_t orientationMoves;
+    uint8_t edgePermMoves;
 
     if (this->inflated)
     {
-      cornerMoves      = this->cornerDBInflated[this->pCornerDB->getDatabaseIndex(cube)];
-      edgeG1Moves      = this->edgeG1DBInflated[this->pEdgeG1DB->getDatabaseIndex(cube)];
-      edgeG2Moves      = this->edgeG2DBInflated[this->pEdgeG2DB->getDatabaseIndex(cube)];
-      orientationMoves = this->orientationDBInflated[this->pOrientationDB->getDatabaseIndex(cube)];
+      cornerMoves   = this->cornerDBInflated[this->pCornerDB->getDatabaseIndex(cube)];
+      edgeG1Moves   = this->edgeG1DBInflated[this->pEdgeG1DB->getDatabaseIndex(cube)];
+      edgeG2Moves   = this->edgeG2DBInflated[this->pEdgeG2DB->getDatabaseIndex(cube)];
+      edgePermMoves = this->edgePermDBInflated[this->pEdgePermDB->getDatabaseIndex(cube)];
     }
     else
     {
-      cornerMoves      = this->pCornerDB->getNumMoves(cube);
-      edgeG1Moves      = this->pEdgeG1DB->getNumMoves(cube);
-      edgeG2Moves      = this->pEdgeG2DB->getNumMoves(cube);
-      orientationMoves = this->pOrientationDB->getNumMoves(cube);
+      cornerMoves   = this->pCornerDB->getNumMoves(cube);
+      edgeG1Moves   = this->pEdgeG1DB->getNumMoves(cube);
+      edgeG2Moves   = this->pEdgeG2DB->getNumMoves(cube);
+      edgePermMoves = this->pEdgePermDB->getNumMoves(cube);
     }
 
     // This is for debugging, since a state should never return 15 moves.
     // However, this database can be used for more than just the distance to
     // the solved state, such as duplicate state detection, so this check can't
     // be enabled in release mode.
-    //if (cornerMoves == 0xF || edgeG1Moves == 0xF || edgeG2Moves == 0xF)
+    //if (cornerMoves == 0xF || edgeG1Moves == 0xF || edgeG2Moves == 0xF || edgePermMoves == 0xF)
     //  throw RubiksCubeException("Fatal: Scramble not indexed in one of the databases.");
 
-    return max({cornerMoves, edgeG1Moves, edgeG2Moves, orientationMoves});
+    return max({cornerMoves, edgeG1Moves, edgeG2Moves, edgePermMoves});
   }
 
   /**
@@ -62,12 +61,12 @@ namespace busybin
    */
   bool KorfPatternDatabase::setNumMoves(const RubiksCube& cube, const uint8_t numMoves)
   {
-    bool corner      = this->pCornerDB->setNumMoves(cube, numMoves);
-    bool edgeG1      = this->pEdgeG1DB->setNumMoves(cube, numMoves);
-    bool edgeG2      = this->pEdgeG2DB->setNumMoves(cube, numMoves);
-    bool orientation = this->pOrientationDB->setNumMoves(cube, numMoves);
+    bool corner   = this->pCornerDB->setNumMoves(cube,   numMoves);
+    bool edgeG1   = this->pEdgeG1DB->setNumMoves(cube,   numMoves);
+    bool edgeG2   = this->pEdgeG2DB->setNumMoves(cube,   numMoves);
+    bool edgePerm = this->pEdgePermDB->setNumMoves(cube, numMoves);
 
-    return corner || edgeG1 || edgeG2 || orientation;
+    return corner || edgeG1 || edgeG2 || edgePerm;
   }
 
   /**
@@ -78,7 +77,7 @@ namespace busybin
     return this->pCornerDB->isFull() &&
            this->pEdgeG1DB->isFull() &&
            this->pEdgeG2DB->isFull() &&
-           this->pOrientationDB->isFull();
+           this->pEdgePermDB->isFull();
   }
 
   /**
@@ -86,10 +85,10 @@ namespace busybin
    */
   void KorfPatternDatabase::inflate()
   {
-    this->cornerDBInflated      = this->pCornerDB->inflate();
-    this->edgeG1DBInflated      = this->pEdgeG1DB->inflate();
-    this->edgeG2DBInflated      = this->pEdgeG2DB->inflate();
-    this->orientationDBInflated = this->pOrientationDB->inflate();
+    this->cornerDBInflated   = this->pCornerDB->inflate();
+    this->edgeG1DBInflated   = this->pEdgeG1DB->inflate();
+    this->edgeG2DBInflated   = this->pEdgeG2DB->inflate();
+    this->edgePermDBInflated = this->pEdgePermDB->inflate();
 
     this->inflated = true;
   }
@@ -104,7 +103,7 @@ namespace busybin
     this->pCornerDB->reset();
     this->pEdgeG1DB->reset();
     this->pEdgeG2DB->reset();
-    this->pOrientationDB->reset();
+    this->pEdgePermDB->reset();
   }
 
   uint32_t KorfPatternDatabase::getDatabaseIndex(const RubiksCube& cube) const
