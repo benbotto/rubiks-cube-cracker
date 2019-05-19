@@ -31,7 +31,7 @@ namespace busybin
   {
     CubeSolver::initialize();
 
-    cout << "Initializing pattern databases for KorfCubeSolver in three threads." << endl;
+    cout << "Initializing pattern databases for KorfCubeSolver." << endl;
 
     // Index each pattern database.
     this->setSolving(true);

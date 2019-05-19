@@ -30,7 +30,7 @@ namespace busybin
       ViewManager              viewMan(&world,    &worldWnd);
       Renderer                 renderer(&world,   &worldWnd);
       CubeMover                cubeMover(&world,  &worldWnd);
-      ThreadPool               threadPool(3);
+      ThreadPool               threadPool(1);
       ThistlethwaiteCubeSolver tCubeSolver(&world, &worldWnd, &cubeMover, &threadPool);
       KorfCubeSolver           kCubeSolver(&world, &worldWnd, &cubeMover, &threadPool);
       CubeDumper               cubeDumper(&world, &worldWnd);
