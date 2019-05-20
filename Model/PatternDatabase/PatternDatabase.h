@@ -40,6 +40,10 @@ namespace busybin
     virtual bool setNumMoves(const uint32_t ind, const uint8_t numMoves);
     virtual uint8_t getNumMoves(const RubiksCube& cube) const;
     virtual uint8_t getNumMoves(const uint32_t ind) const;
+    virtual uint8_t getNumMovesEx(const RubiksCube& cube,
+      const uint8_t boundHint, const uint8_t depthHint) const;
+    virtual uint8_t getNumMovesEx(const uint32_t ind,
+      const uint8_t boundHint, const uint8_t depthHint) const;
     virtual size_t getSize() const;
     virtual size_t getNumItems() const;
     virtual bool isFull() const;

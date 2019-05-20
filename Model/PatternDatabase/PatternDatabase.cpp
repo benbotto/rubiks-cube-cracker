@@ -70,6 +70,28 @@ namespace busybin
   }
 
   /**
+   * Get the number of moves it takes to get to a scrambled cube state.  A
+   * depth and bound hint is passed to allow for an early out in aggregate
+   * pattern databases.  For non-aggregate databases this is the same as
+   * getNumMoves.
+   */
+  uint8_t PatternDatabase::getNumMovesEx(const uint32_t ind,
+    const uint8_t boundHint, const uint8_t depthHint) const
+  {
+    return this->database.get(ind);
+  }
+
+  /**
+   * Get the number of moves it takes to get to a scrambled cube state using a
+   * cube instance.
+   */
+  uint8_t PatternDatabase::getNumMovesEx(const RubiksCube& cube,
+    const uint8_t boundHint, const uint8_t depthHint) const
+  {
+    return this->getNumMoves(this->getDatabaseIndex(cube));
+  }
+
+  /**
    * Get the size of the database.
    */
   size_t PatternDatabase::getSize() const
