@@ -44,6 +44,8 @@ namespace busybin
       EdgePermutationPatternDatabase* pEdgePermDB);
 
     uint8_t getNumMoves(const RubiksCube& cube) const;
+    uint8_t getNumMovesEx(const RubiksCube& cube,
+      const uint8_t boundHint, const uint8_t depthHint) const;
     bool setNumMoves(const RubiksCube& cube, const uint8_t numMoves);
     bool isFull() const;
     void inflate();

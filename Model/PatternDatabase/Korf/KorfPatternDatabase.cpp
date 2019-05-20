@@ -57,6 +57,60 @@ namespace busybin
   }
 
   /**
+   * Get the estimated number of moves it would take to get from a cube state
+   * to a scrambled state.  This is faster than getNumMoves because as soon as
+   * one of the databases' estimates exceeds the boundHint this method returns.
+   * Use this method with an inflated database or else it's the same as
+   * getNumMoves.
+   */
+  uint8_t KorfPatternDatabase::getNumMovesEx(const RubiksCube& cube,
+    const uint8_t boundHint, const uint8_t depthHint) const
+  {
+    uint8_t max, estMoves;
+
+    if (this->inflated)
+    {
+      // Check the estimated moves from each database, and return it as soon
+      // as one exceeds the bound.
+      max = estMoves = this->cornerDBInflated[this->pCornerDB->getDatabaseIndex(cube)];
+
+      if (estMoves + depthHint > boundHint)
+        return estMoves;
+
+      estMoves = this->edgeG1DBInflated[this->pEdgeG1DB->getDatabaseIndex(cube)];
+
+      if (estMoves + depthHint > boundHint)
+        return estMoves;
+
+      if (estMoves > max)
+        max = estMoves;
+
+      estMoves = this->edgeG2DBInflated[this->pEdgeG2DB->getDatabaseIndex(cube)];
+
+      if (estMoves + depthHint > boundHint)
+        return estMoves;
+
+      if (estMoves > max)
+        max = estMoves;
+
+      estMoves = this->edgePermDBInflated[this->pEdgePermDB->getDatabaseIndex(cube)];
+
+      if (estMoves + depthHint > boundHint)
+        return estMoves;
+
+      if (estMoves > max)
+        max = estMoves;
+
+      // Return the max estimate if none exceeds the bound.
+      return max;
+    }
+    else
+    {
+      return this->getNumMoves(cube);
+    }
+  }
+
+  /**
    * Set the number of moves in all databases.  Returns true if any is changed.
    */
   bool KorfPatternDatabase::setNumMoves(const RubiksCube& cube, const uint8_t numMoves)
