@@ -83,7 +83,8 @@ namespace busybin
 
             cubeCopy.move((MOVE)i);
 
-            uint8_t estSuccMoves = curNode.depth + 1 + this->pPatternDB->getNumMoves(cubeCopy);
+            uint8_t estSuccMoves = curNode.depth + 1 + this->pPatternDB->getNumMovesEx(
+              cubeCopy, bound, curNode.depth + 1);
 
             if (estSuccMoves <= bound)
             {
