@@ -85,7 +85,7 @@ same face twice is redundant: F F is the same as F2; F F' is the same as no
 move; F F2 is the same as F'; and so on.  Also, some moves are commutative: F B
 is the same as B F; U2 D is the same as D U2; etc.  But even after pruning the
 branching factor is over 13, so searching for a solution with raw IDDFS would
-take thousands of years on a modern computer!
+take thousands of years on a modern computer!  Here's where A\* comes in.
 
 A\* is a graph-traversal algorithm that's used to find the optimal path from
 one node of a graph to another, and, given that a tree is just a graph, it can
