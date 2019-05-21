@@ -46,10 +46,11 @@ characters in the original EverQuest game.  Sorry if that makes you nauseous.
 
 ### Optimal Solver
 
-The optimal solver is an implementation of Richard Korf's algorithm, with minor
-variations, and can solve any cube in 20 moves or fewer.  It works by searching
-for solutions using an iterative-deepening depth-first search combined with A\*
-(IDA\*).
+The optimal solver is an implementation of [Richard Korf's
+algorithm](https://www.cs.princeton.edu/courses/archive/fall06/cos402/papers/korfrubik.pdf),
+with minor variations, and can solve any cube in 20 moves or fewer.  It works
+by searching for solutions using an iterative-deepening depth-first search
+combined with A\* (IDA\*).
 
 Iterative-deepening depth-first search (IDDFS) is a tree-traversal algorithm.
 Like a breadth-first search (BFS), IDDFS is guaranteed to find an optimal path
@@ -122,7 +123,8 @@ how to create a perfect hash of the corner or edge permutations.  To that end,
 this program converts permutations to a factorial number system.  [There's an
 algorithm on
 Wikipedia](https://en.wikipedia.org/wiki/Factorial_number_system#Permutations)
-that's pretty simple, but it has quadratic complexity.  In another of Korf's
+that's pretty simple, but it has quadratic complexity.  In
+[another](https://www.aaai.org/Papers/AAAI/2005/AAAI05-219.pdf) of Korf's
 papers, he describes a linear algorithm, and this program uses the linear
 version.  This program was compared against another optimal solver written in
 C, and this program is significantly faster.  The main reason for the improved
