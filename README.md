@@ -3,11 +3,11 @@
 An OpenGL Rubik's Cube program with a built-in optimal solver written in C++.
 The optimal solver can solve any scrambled cube in 20 moves or fewer using
 Korf's algorithm.  Although the program is quite fast--faster than other
-optimial solvers I tested--it takes awhile to generate optimal solutions for
+optimal solvers I tested--it takes awhile to generate optimal solutions for
 some scrambles.  So for the impatient, there's also a Thistlethwaite solver
 that rapidly solves any scramble.
 
-### Bulding and Running the Application
+### Building and Running the Application
 
 Reference the [BUILDING.md](BUILDING.md) document.  The program was developed
 under Linux and compiles with g++, but has also been tested and compiled under
@@ -52,15 +52,15 @@ for solutions using an iterative-deepening depth-first search combined with A\*
 (IDA\*).
 
 Iterative-deepening depth-first search (IDDFS) is a tree-traversal algorithm.
-Like a breadth-first search (BFS), IDDFS is guarnateed to find an optimal path
+Like a breadth-first search (BFS), IDDFS is guaranteed to find an optimal path
 from the root node of a tree to a goal node, but it uses much less memory than
 a BFS.  Consider a cube as the root of a tree, i.e. depth 0.  Applying each
 possible twist of the cube (left, front, right, etc.) brings the cube to a new
 node at depth 1, any of which may be the solved state.  If not, applying each
-combiniation of two moves (left-up, left-down, etc.) may solve the cube.  That
+combination of two moves (left-up, left-down, etc.) may solve the cube.  That
 continues until a solution is found.
 
-IDDFS alone would take far too much time to solve most scrabled cubes.  There
+IDDFS alone would take far too much time to solve most scrambled cubes.  There
 are 18 possible face twists of the cube, a large branching factor.  After the
 first set of twists, some of the moves can be pruned.  For example, turning the
 same face twice is redundant: F F is the same as F2; F F' is the same as no
@@ -119,13 +119,13 @@ the size of each database to roughly 2.4GB.
 An implementation detail that Korf glazes over in his algorithm is how to
 create indexes into these pattern databases.  That is, given a scrambled cube,
 how to create a perfect hash of the corner or edge permutations.  To that end,
-this program convers permutations to a factoradic number system.  There's an
+this program converts permutations to a factorial number system.  There's an
 algorithm on Wikipedia that's pretty simple, but it has quadratic complexity.
 In another of Korf's papers, he describes a linear algorithm, and this program
 uses the linear version.  This program was compared against another optimal
 solver written in C, and this program is significantly faster.  The main reason
 for the improved performance is the linear algorithm that's used to convert
-permutations to numbers in a factoradic base (a.k.a. generating Lehmer
+permutations to numbers in a factorial base (a.k.a. generating Lehmer
 codes).
 
 ### The Quick Solver
@@ -169,7 +169,7 @@ This describes Korf's algorithm for solving the cube.
 Korf, Richard E. et. al.  [Large-Scale Parallel Breadth-First
 Search](https://www.aaai.org/Papers/AAAI/2005/AAAI05-219.pdf).  A linear
 algorithm for generating sequential indexes into a pattern database using a
-factoradic number system.
+factorial number system.
 
 Brown, Andrew.  [Rubik's Cube
 Solver](https://github.com/brownan/Rubiks-Cube-Solver).  Used for speed
