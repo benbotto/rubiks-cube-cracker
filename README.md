@@ -2,9 +2,9 @@
 
 An OpenGL Rubik's Cube program with a built-in optimal solver written in C++.
 The optimal solver can solve any scrambled cube in 20 moves or fewer using
-Korf's algorithm.  Although the program is quite fast--faster than other
-optimal solvers I tested--it takes awhile to generate optimal solutions for
-some scrambles.  So for the impatient, there's also a Thistlethwaite solver
+Korf's algorithm.  Although the program is quite performant--more so than other
+optimal solvers that were tested--it takes awhile to generate optimal solutions
+for some scrambles.  So for the impatient, there's also a Thistlethwaite solver
 that rapidly solves any scramble.
 
 ### Rubik's Cube Notation
@@ -157,8 +157,10 @@ Thistlethwaite's algorithm which can solve any scrambed cube quickly in 52 or
 fewer moves.
 
 Like Korf's, Thistlethwaite's algorithm uses IDDFS, but no heuristic pattern
-databases are used.  It works by moving the cube from one "group" to another,
-and each successive "group" is computationally easier to solve than the last.
+databases are used.  (Pattern database _could_ be used to boost performance,
+but this implementation doesn't use them.)  It works by moving the cube from
+one "group" to another, and each successive "group" is computationally easier
+to solve than the last.
 
 The initial group--group 0--is any scrambled cube.  Above it was mentioned that
 each edge cubie can be in one of two orientations.  Well, it turns out that
