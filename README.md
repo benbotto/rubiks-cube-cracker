@@ -160,3 +160,27 @@ can be solved with only 180-degree twists.
 Moving from group 3 to the solved state has a branching factor of only 6,
 comprised of U2, F2, L2, R2, B2, and D2.
 
+### References
+
+Korf, Richard E.  [Finding Optimal Solutions to Rubik's Cube Using Pattern
+Databases](https://www.cs.princeton.edu/courses/archive/fall06/cos402/papers/korfrubik.pdf).
+This describes Korf's algorithm for solving the cube.
+
+Korf, Richard E. et. al.  [Large-Scale Parallel Breadth-First
+Search](https://www.aaai.org/Papers/AAAI/2005/AAAI05-219.pdf).  A linear
+algorithm for generating sequential indexes into a pattern database using a
+factoradic number system.
+
+Brown, Andrew.  [Rubik's Cube
+Solver](https://github.com/brownan/Rubiks-Cube-Solver).  Used for speed
+comparison.  Also used to compare optimal solutions.
+
+Scherphuis, Jaap.  Thistlethwaite, Morwen. [Thistlethwaite's 52-move
+algorithm](https://www.jaapsch.net/puzzles/thistle.htm).  Jaap has an overview
+of the algorithm, as well as scans of a letter from Thistlethwaite.
+
+Taylor, Peter.  [Indexing Edge Permutations for the Rubik's
+Cube](https://cs.stackexchange.com/questions/107111/indexing-edge-permutations-for-the-rubiks-cube).
+Peter was kind enough to help me with creating indexes for the 7-edge pattern
+databases, which is a variation of the Lehmer code using partial permutations.
+
