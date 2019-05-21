@@ -119,14 +119,16 @@ the size of each database to roughly 2.4GB.
 An implementation detail that Korf glazes over in his algorithm is how to
 create indexes into these pattern databases.  That is, given a scrambled cube,
 how to create a perfect hash of the corner or edge permutations.  To that end,
-this program converts permutations to a factorial number system.  There's an
-algorithm on Wikipedia that's pretty simple, but it has quadratic complexity.
-In another of Korf's papers, he describes a linear algorithm, and this program
-uses the linear version.  This program was compared against another optimal
-solver written in C, and this program is significantly faster.  The main reason
-for the improved performance is the linear algorithm that's used to convert
-permutations to numbers in a factorial base (a.k.a. generating Lehmer
-codes).
+this program converts permutations to a factorial number system.  [There's an
+algorithm on
+Wikipedia](https://en.wikipedia.org/wiki/Factorial_number_system#Permutations)
+that's pretty simple, but it has quadratic complexity.  In another of Korf's
+papers, he describes a linear algorithm, and this program uses the linear
+version.  This program was compared against another optimal solver written in
+C, and this program is significantly faster.  The main reason for the improved
+performance is the linear algorithm that's used to convert permutations to
+numbers in a factorial base (a.k.a. generating [Lehmer
+codes](https://en.wikipedia.org/wiki/Lehmer_code_)).
 
 ### The Quick Solver
 
