@@ -137,10 +137,9 @@ the size of each database to roughly 2.4GB.
 An implementation detail that Korf glazes over in his algorithm is how to
 create indexes into these pattern databases.  That is, given a scrambled cube,
 how to create a perfect hash of the corner or edge permutations.  To that end,
-this program converts permutations to a factorial number system.  [There's an
-algorithm on
-Wikipedia](https://en.wikipedia.org/wiki/Factorial_number_system#Permutations)
-that's pretty simple, but it has quadratic complexity.  In
+this program converts permutations to a factorial number system.  There's an
+[algorithm](https://en.wikipedia.org/wiki/Factorial_number_system#Permutations)
+on Wikipedia that's pretty simple, but it has quadratic complexity.  In
 [another](https://www.aaai.org/Papers/AAAI/2005/AAAI05-219.pdf) of Korf's
 papers, he describes a linear algorithm, and this program uses the linear
 version.  This program was compared against another optimal solver written in
