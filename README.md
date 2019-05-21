@@ -184,3 +184,6 @@ Cube](https://cs.stackexchange.com/questions/107111/indexing-edge-permutations-f
 Peter was kind enough to help me with creating indexes for the 7-edge pattern
 databases, which is a variation of the Lehmer code using partial permutations.
 
+Rider, Conrad. [Edge Orientation
+Detection](http://cube.crider.co.uk/zz.php?p=eoline#eo_detection).  This page
+presents a simple algorithm for detecting the orientation of the edge pieces.
