@@ -123,7 +123,7 @@ positions, so there are 12P7 (12! / (12-7)!) permutations.  Each corner can
 be oriented in 2 ways, so there are 2^7 possible orientations of 7 edges.
 Again, this is a small enough number of cube states to iterate over, and all
 states can be reached in 10 moves or fewer.  Storing each entry in a nibble,
-each of the 7-edge databases occupies about 244MB (12P7 * 2^7 / 2 bytes).
+each of the 7-edge databases occupies about 244MB (12P7 \* 2^7 / 2 bytes).
 
 This program uses one additional database that holds the permutations of the 12
 edges.  It takes about 228MB (12! / 2 bytes).
