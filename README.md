@@ -110,7 +110,7 @@ stickers can face up, for example--but the orientations of 7 of the cubies
 dictate the orientation of the 8th (by the [laws of the
 cube](https://www.ryanheise.com/cube/cube_laws.html)).  Therefore, there are
 3^7 possible ways the corners can be orientated.  Altogether then, there are 8!
-* 3^7 possible ways for the corners of the cube to be scrambled, and these
+\* 3^7 possible ways for the corners of the cube to be scrambled, and these
 88,179,840 states can be iterated in a reasonable amount of time (30 minutes or
 so).  All corner states can be reached in 11 moves or fewer, so each entry in
 the corner pattern database can be stored in a nibble (4 bits).  On disk, the
