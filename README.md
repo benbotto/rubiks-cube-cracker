@@ -142,7 +142,7 @@ performance is the linear algorithm that's used to convert permutations to
 numbers in a factorial base (a.k.a. generating [Lehmer
 codes](https://en.wikipedia.org/wiki/Lehmer_code_)).
 
-### The Quick Solver
+### Quick Solver
 
 The optimal solver can take a long time, especially for scrambles that take 18+
 moves to solve.  As such, this program also includes an implementation of
