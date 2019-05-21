@@ -1,2 +1,24 @@
-Try to solve the cube outright, then bail at depth 10.
+In the new IDA searcher, there could be a better solution after the goal is
+satisfied.  Probably need to keep searching the current bound until complete.
 
+In IDA*, keep a set of seen cube states and check it when making the successor queue.
+IDDFS could use this set, too.
+
+Git rid of depth in IDDFS searcher.  Use moves.size().
+
+IDDFS and IDA* should call index.
+
+Try Thistlethwaite with the IDA* searcher and the Korf databases.  To do so,
+though, the assumption that the heuristic will return 0 will have to be
+removed.
+
+There are some typos in the comments in the searchers (acieve and cust).
+
+Try solving the scramble with 1 move F.  The solution is F F2, and that should
+be simplified to F'.
+
+There's a pattern database (GoalG3_Permate_Corners) that could be refactored to
+use the new CornerPatternDatabase class.  As part of that get rid of the
+corner_perms.txt file.
+
+Try to solve the cube outright, then bail at depth 10.

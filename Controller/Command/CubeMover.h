@@ -1,7 +1,7 @@
 #ifndef _BUSYBIN_CUBE_MOVER_H_
 #define _BUSYBIN_CUBE_MOVER_H_
 
-#include "../../Model/WorldObject/RubiksCube.h"
+#include "../../Model/WorldObject/RubiksCubeWorldObject.h"
 #include "../../OpenGLSeed/Controller/Command/Command.h"
 #include "../../OpenGLSeed/Model/World.h"
 #include "../../OpenGLSeed/View/WorldWindow.h"
@@ -22,7 +22,7 @@ namespace busybin
    */
   class CubeMover : public Command
   {
-    RubiksCube* pCube;
+    RubiksCubeWorldObject* pCube;
     atomic_bool moveEnabled;
 
   public:
@@ -30,6 +30,7 @@ namespace busybin
     void onKeypress(int key, int scancode, int action, int mods);
     void disable();
     void enable();
+    bool isEnabled() const;
   };
 }
 

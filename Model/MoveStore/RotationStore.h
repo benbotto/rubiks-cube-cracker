@@ -2,6 +2,7 @@
 #define _BUSYBIN_ROTATION_STORE_H_
 
 #include "MoveStore.h"
+#include "../RubiksCube.h"
 
 namespace busybin
 {
@@ -10,21 +11,13 @@ namespace busybin
    */
   class RotationStore : public MoveStore
   {
-  private:
-    const vector<string> moves;
-    const invMove_t      inverseMoves;
+    const vector<RubiksCube::MOVE> moves;
 
   protected:
-    virtual moveFuncMap_t& getMoveMap() = 0;
+    const vector<RubiksCube::MOVE>& getMoves() const;
 
   public:
-    RotationStore();
-
-    const vector<string>& getMoves() const;
-    const MoveStore::invMove_t& getInverseMoves() const;
-    unsigned getNumMoves() const;
-
-    virtual const moveFuncMap_t& getMoveMap() const = 0;
+    RotationStore(RubiksCube& cube);
   };
 }
 

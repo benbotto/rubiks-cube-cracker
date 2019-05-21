@@ -2,7 +2,7 @@
 #define _BUSYBIN_CUBE_DUMPER_H_
 
 #include "../../OpenGLSeed/Controller/Command/Command.h"
-#include "../../Model/WorldObject/RubiksCube.h"
+#include "../../Model/WorldObject/RubiksCubeWorldObject.h"
 #include "../../View/RubiksCubeView.h"
 
 namespace busybin
@@ -12,8 +12,8 @@ namespace busybin
    */
   class CubeDumper : public Command
   {
-    RubiksCube*    pCube;
-    RubiksCubeView view;
+    RubiksCubeWorldObject* pCube;
+    RubiksCubeView         view;
 
   public:
     CubeDumper(World* pWorld, WorldWindow* pWorldWnd);

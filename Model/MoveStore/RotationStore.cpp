@@ -5,18 +5,13 @@ namespace busybin
   /**
    * Init.
    */
-  RotationStore::RotationStore() :
+  RotationStore::RotationStore(RubiksCube& cube) :
+    MoveStore(cube),
     moves
-    ({{
-      "X", "X'", "X2",
-      "Y", "Y'", "Y2",
-      "Z", "Z'", "Z2",
-    }}),
-    inverseMoves
     ({
-      {"X",  "X'"}, {"X'", "X"}, {"X2", "X2"},
-      {"Y",  "Y'"}, {"Y'", "Y"}, {"Y2", "Y2"},
-      {"Z",  "Z'"}, {"Z'", "Z"}, {"Z2", "Z2"}
+      RubiksCube::MOVE::X, RubiksCube::MOVE::XPRIME, RubiksCube::MOVE::X2,
+      RubiksCube::MOVE::Y, RubiksCube::MOVE::YPRIME, RubiksCube::MOVE::Y2,
+      RubiksCube::MOVE::Z, RubiksCube::MOVE::ZPRIME, RubiksCube::MOVE::Z2
     })
   {
   }
@@ -24,25 +19,9 @@ namespace busybin
   /**
    * Return the list of available moves.
    */
-  const vector<string>& RotationStore::getMoves() const
+  const vector<RubiksCube::MOVE>& RotationStore::getMoves() const
   {
     return this->moves;
-  }
-
-  /**
-   * Get the list of inverse moves.
-   */
-  const MoveStore::invMove_t& RotationStore::getInverseMoves() const
-  {
-    return this->inverseMoves;
-  }
-
-  /**
-   * Return the number of available moves.
-   */
-  unsigned RotationStore::getNumMoves() const
-  {
-    return 9;
   }
 }
 

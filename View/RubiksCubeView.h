@@ -1,19 +1,14 @@
 #ifndef _BUSYBIN_RUBIKS_CUBE_VIEW_H_
 #define _BUSYBIN_RUBIKS_CUBE_VIEW_H_
 
-#include "../Model/RubiksCubeModel.h"
+#include "../Model/RubiksCube.h"
 #include <iostream>
 using std::cout;
 using std::endl;
 #include <iomanip>
 using std::setw;
 using std::setfill;
-using std::left;
 using std::right;
-using std::hex;
-using std::dec;
-#include <bitset>
-using std::bitset;
 
 namespace busybin
 {
@@ -23,7 +18,7 @@ namespace busybin
   class RubiksCubeView
   {
   public:
-    void render(const RubiksCubeModel& cube) const;
+    void render(const RubiksCube& cube) const;
   };
 }
 

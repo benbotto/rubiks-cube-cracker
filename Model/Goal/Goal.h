@@ -1,9 +1,10 @@
 #ifndef _BUSYBIN_GOAL_H_
 #define _BUSYBIN_GOAL_H_
 
-#include "../RubiksCubeModel.h"
+#include "../RubiksCube.h"
 #include <string>
 using std::string;
+#include <cstdint>
 
 namespace busybin
 {
@@ -13,12 +14,13 @@ namespace busybin
   class Goal
   {
   protected:
-    typedef RubiksCubeModel::FACE  FACE;
-    typedef RubiksCubeModel::COLOR COLOR;
+    typedef RubiksCube::FACE  FACE;
+    typedef RubiksCube::COLOR COLOR;
 
   public:
-    virtual bool isSatisfied(RubiksCubeModel& cube) = 0;
+    virtual bool isSatisfied(RubiksCube& cube) = 0;
     virtual string getDescription() const = 0;
+    virtual bool index(const RubiksCube& cube, uint8_t numMoves);
   };
 }
 

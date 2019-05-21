@@ -1,7 +1,7 @@
 #ifndef _BUSYBIN_RUBIKS_CUBE_WORLD_H_
 #define _BUSYBIN_RUBIKS_CUBE_WORLD_H_
 
-#include "WorldObject/RubiksCube.h"
+#include "WorldObject/RubiksCubeWorldObject.h"
 #include "../OpenGLSeed/Model/World.h"
 #include "../OpenGLSeed/Model/Light/DistanceLight.h"
 #include "../Controller/GL/Program/RubiksCubeProgram.h"

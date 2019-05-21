@@ -1,6 +1,7 @@
 #ifndef _BUSYBIN_RUBIKS_CUBE_MODEL_H_
 #define _BUSYBIN_RUBIKS_CUBE_MODEL_H_
 
+#include "RubiksCube.h"
 #include "../Util/RubiksCubeException.h"
 #include <array>
 using std::array;
@@ -11,6 +12,8 @@ using std::swap;
 #include <iterator>
 using std::advance;
 #include <cstdint>
+#include <cstring>
+using std::memcpy;
 
 namespace busybin
 {
@@ -62,13 +65,10 @@ namespace busybin
    *  1 2 3 4
    *    5
    */
-  class RubiksCubeModel
+  class RubiksCubeModel : public RubiksCube
   {
-    typedef char uchar;
-
-  public:
-    enum class FACE  : uchar {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
-    enum class COLOR : uchar {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
+    typedef RubiksCube::FACE FACE;
+    typedef RubiksCube::COLOR COLOR;
 
   private:
     array<COLOR, 48> cube;
@@ -95,62 +95,82 @@ namespace busybin
       unsigned c_ci0, unsigned c_ci1, unsigned c_ci2, unsigned c_ci3);
 
   public:
+    typedef array<RubiksCube::COLOR, 3> corner_t;
+    typedef array<RubiksCube::COLOR, 2> edge_t;
+
     RubiksCubeModel();
+    RubiksCubeModel(const RubiksCubeModel& cube);
 
-    COLOR get(FACE face, unsigned row, unsigned col) const;
+    COLOR getColor(FACE face, unsigned row, unsigned col) const;
+    COLOR getColor(unsigned ind) const;
     uint64_t getFace(FACE face) const;
-    
+
+    bool isSolved() const;
+
+    // Indexing methods.
+    uint8_t getCornerIndex(const corner_t& corner) const;
+    uint8_t getCornerOrientation(const corner_t& corner) const;
+    uint8_t getEdgeIndex(const edge_t& edge) const;
+    uint8_t getEdgeOrientation(const edge_t& edge) const;
+
+    // Compare this cube to another.
+    bool operator<(const RubiksCubeModel& rhs) const;
+    bool operator==(const RubiksCubeModel& rhs) const;
+
+    // Copy.
+    RubiksCubeModel& operator=(const RubiksCubeModel rhs);
+
     // Face moves.
-    RubiksCubeModel& u();
-    RubiksCubeModel& uPrime();
-    RubiksCubeModel& u2();
+    RubiksCube& u();
+    RubiksCube& uPrime();
+    RubiksCube& u2();
 
-    RubiksCubeModel& l();
-    RubiksCubeModel& lPrime();
-    RubiksCubeModel& l2();
+    RubiksCube& l();
+    RubiksCube& lPrime();
+    RubiksCube& l2();
 
-    RubiksCubeModel& f();
-    RubiksCubeModel& fPrime();
-    RubiksCubeModel& f2();
+    RubiksCube& f();
+    RubiksCube& fPrime();
+    RubiksCube& f2();
 
-    RubiksCubeModel& r();
-    RubiksCubeModel& rPrime();
-    RubiksCubeModel& r2();
+    RubiksCube& r();
+    RubiksCube& rPrime();
+    RubiksCube& r2();
 
-    RubiksCubeModel& b();
-    RubiksCubeModel& bPrime();
-    RubiksCubeModel& b2();
+    RubiksCube& b();
+    RubiksCube& bPrime();
+    RubiksCube& b2();
 
-    RubiksCubeModel& d();
-    RubiksCubeModel& dPrime();
-    RubiksCubeModel& d2();
+    RubiksCube& d();
+    RubiksCube& dPrime();
+    RubiksCube& d2();
 
     // Slice moves.
-    RubiksCubeModel& m();
-    RubiksCubeModel& mPrime();
-    RubiksCubeModel& m2();
+    RubiksCube& m();
+    RubiksCube& mPrime();
+    RubiksCube& m2();
 
-    RubiksCubeModel& e();
-    RubiksCubeModel& ePrime();
-    RubiksCubeModel& e2();
+    RubiksCube& e();
+    RubiksCube& ePrime();
+    RubiksCube& e2();
 
-    RubiksCubeModel& s();
-    RubiksCubeModel& sPrime();
-    RubiksCubeModel& s2();
+    RubiksCube& s();
+    RubiksCube& sPrime();
+    RubiksCube& s2();
 
     // Move the entire cube.  These moves are implemented in terms of
     // the moves above, and are therefore slower.
-    RubiksCubeModel& y();
-    RubiksCubeModel& y2();
-    RubiksCubeModel& yPrime();
+    RubiksCube& y();
+    RubiksCube& y2();
+    RubiksCube& yPrime();
 
-    RubiksCubeModel& x();
-    RubiksCubeModel& xPrime();
-    RubiksCubeModel& x2();
+    RubiksCube& x();
+    RubiksCube& xPrime();
+    RubiksCube& x2();
 
-    RubiksCubeModel& z();
-    RubiksCubeModel& zPrime();
-    RubiksCubeModel& z2();
+    RubiksCube& z();
+    RubiksCube& zPrime();
+    RubiksCube& z2();
   };
 }
 
