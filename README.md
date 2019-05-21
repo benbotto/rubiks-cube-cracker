@@ -7,6 +7,16 @@ optimal solvers I tested--it takes awhile to generate optimal solutions for
 some scrambles.  So for the impatient, there's also a Thistlethwaite solver
 that rapidly solves any scramble.
 
+### Rubik's Cube Notation
+
+The documentation below describes the program and the various algorithms that
+are implemented.  Standard twist notation is used: U, L, F, R, B and D desribe
+90-degree clockwise twists of the up, left, front, right, back, and down faces,
+respectively.  Adding an apostrophe indicates a counter-clockwise twist, so U'
+means twist the up face 90-degrees counter-clockwise.  Adding a 2 to a move
+indicates a 180-degree twist; F2 means to twist the front face twice.  There's
+more information, [here](https://ruwix.com/the-rubiks-cube/notation/).
+
 ### Building and Running the Application
 
 Reference the [BUILDING.md](BUILDING.md) document.  The program was developed
