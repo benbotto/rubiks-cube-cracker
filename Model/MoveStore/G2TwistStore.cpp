@@ -11,7 +11,11 @@ namespace busybin
     moves
     ({
       RubiksCube::MOVE::L,
+      RubiksCube::MOVE::LPRIME,
+      RubiksCube::MOVE::L2,
       RubiksCube::MOVE::R,
+      RubiksCube::MOVE::RPRIME,
+      RubiksCube::MOVE::R2,
       RubiksCube::MOVE::U2,
       RubiksCube::MOVE::D2,
       RubiksCube::MOVE::F2,
