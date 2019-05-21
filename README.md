@@ -142,10 +142,11 @@ this program converts permutations to a factorial number system.  There's an
 on Wikipedia that's pretty simple, but it has quadratic complexity.  In
 [another](https://www.aaai.org/Papers/AAAI/2005/AAAI05-219.pdf) of Korf's
 papers, he describes a linear algorithm, and this program uses the linear
-version.  This program was compared against another optimal solver written in
-C, and this program is significantly faster.  The main reason for the improved
-performance is the linear algorithm that's used to convert permutations to
-numbers in a factorial base (a.k.a. generating [Lehmer
+version.  This program was compared against
+[another](https://github.com/brownan/Rubiks-Cube-Solver) optimal solver written
+in C, and this program is significantly faster.  The main reason for the
+improved performance is the linear algorithm that's used to convert
+permutations to numbers in a factorial base (a.k.a. generating [Lehmer
 codes](https://en.wikipedia.org/wiki/Lehmer_code_)).
 
 ### Quick Solver
