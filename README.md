@@ -128,3 +128,35 @@ for the improved performance is the linear algorithm that's used to convert
 permutations to numbers in a factoradic base (a.k.a. generating Lehmer
 codes).
 
+### The Quick Solver
+
+The optimal solver can take a long time, especially for scrambles that take 18+
+moves to solve.  As such, this program also includes an implementation of
+Thistlethwaite's algorithm which can solve any scrambed cube quickly in 52 or
+fewer moves.
+
+Like Korf's, Thistlethwaite's algorithm uses IDDFS, but no heuristic pattern
+databases are used.  It works by moving the cube from one "group" to another,
+and each successive "group" is computationally easier to solve than the last.
+
+The initial group--group 0--is any scrambled cube.  Above it was mentioned that
+each edge cubie can be in one of two orientations.  Well, it turns out that
+edge pieces cannot be flipped if quarter turns of the front and back faces are
+not used.  So, by moving the cube to a state wherein all 12 edge pieces are
+correctly oriented--group 1--the cube can be solved _without_ using quarter
+turns of the front or back faces.
+
+Next, the cube is moved to a state such that all corners are correctly
+oriented.  Also, four of the edges are moved to the correct slice: the
+front-up, front-down, back-up, and back-down edges are placed in the M slice.
+This is group 2.  The branching factor is smaller when moving from group 1 to
+group 2 because four of the moves (F, F', B, and B') are excluded.
+
+For group 3, all corners are moved to the correct oribit.  (A corner is in the
+correct orbit if it can be moved to its home position with only 180-degree
+twists.)  Also, each edge is moved to its home slice.  At that point, the cube
+can be solved with only 180-degree twists.
+
+Moving from group 3 to the solved state has a branching factor of only 6,
+comprised of U2, F2, L2, R2, B2, and D2.
+
