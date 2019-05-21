@@ -14,8 +14,15 @@ are implemented.  Standard twist notation is used: U, L, F, R, B and D desribe
 90-degree clockwise twists of the up, left, front, right, back, and down faces,
 respectively.  Adding an apostrophe indicates a counter-clockwise twist, so U'
 means twist the up face 90-degrees counter-clockwise.  Adding a 2 to a move
-indicates a 180-degree twist; F2 means to twist the front face twice.  There's
-more information, [here](https://ruwix.com/the-rubiks-cube/notation/).
+indicates a 180-degree twist; F2 means to twist the front face twice.  With 6
+faces and three types of moves per face, there are a total of 18 face twists.
+There's more information, [here](https://ruwix.com/the-rubiks-cube/notation/).
+
+A Rubik's Cube is made up of cubies (the cubies are the small cubes with
+stickers on them).  There are corner cubies, which are the cubies with three
+stickers.  Edge cubies are the cubies with two stickers.  And there are center
+cubies, which are stationary and cannot be moved with the 18 twists described
+above.
 
 ### Building and Running the Application
 
@@ -201,3 +208,8 @@ databases, which is a variation of the Lehmer code using partial permutations.
 Rider, Conrad. [Edge Orientation
 Detection](http://cube.crider.co.uk/zz.php?p=eoline#eo_detection).  This page
 presents a simple algorithm for detecting the orientation of the edge pieces.
+
+Heise, Ryan.  [Rubik's Cube
+Theory](https://www.ryanheise.com/cube/cube_laws.html).  This has some advanced
+discussion about reachable permutations and orienations of the cubies.
+
