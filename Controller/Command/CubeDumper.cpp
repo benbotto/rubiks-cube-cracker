@@ -12,9 +12,7 @@ namespace busybin
   /**
    * Init - store references to the cube and view.
    * @param pWorld Pointer to the world (must remain in scope).
-   * @param pWorldWnd The world window, used to get the current width/heigth.
-   * @param pCube Pointer to the RubiksCubeModel.
-   * @param pView Pointer to the RubiksViewModel.
+   * @param pWorldWnd The world window, for binding keypress events.
    */
   CubeDumper::CubeDumper(World* pWorld, WorldWindow* pWorldWnd) : 
     Command(pWorld, pWorldWnd)
@@ -26,8 +24,7 @@ namespace busybin
   }
 
   /**
-   * Fires when a key is pressed
-   * @param window The window (same as this->pWindow).
+   * Fires when a key is pressed and dumps the cube to the console.
    * @param key The key code.
    * @param scancode The platform-dependent scan code of the key.
    * @param action GLFW_PRESS, GLFW_RELEASE, GLFW_REPEAT.

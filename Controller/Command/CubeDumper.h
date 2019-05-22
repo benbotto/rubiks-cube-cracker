@@ -17,7 +17,7 @@ namespace busybin
 
   public:
     CubeDumper(World* pWorld, WorldWindow* pWorldWnd);
-      void onKeypress(int key, int scancode, int action, int mods);
+    void onKeypress(int key, int scancode, int action, int mods);
   };
 }
 
