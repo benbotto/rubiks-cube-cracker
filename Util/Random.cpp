@@ -3,7 +3,7 @@
 namespace busybin
 {
   /**
-   * Init.
+   * Initialize an instance for geterating numbers in the range [min, max] (both inclusive).
    * @param min The minimum random number.
    * @param max The maximum random number.
    */
