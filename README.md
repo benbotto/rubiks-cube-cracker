@@ -46,6 +46,8 @@ To solve a scrambled cube optimally using the Korf algorithm, press `F2`.
 Rapidly solve a scrambled cube using Thistlethwaite's algorithm by pressing
 `F1`.
 
+Apply a 100-move scramble by pressing `F5`.
+
 ### The Display
 
 OpenGL is used to render the Rubik's Cube.  The renderer was written from
