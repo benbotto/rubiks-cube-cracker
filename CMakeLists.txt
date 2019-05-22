@@ -6,6 +6,7 @@ set(SRC
   "./rubiksCube.cpp"
   "./Controller/Command/CubeMover.cpp"
   "./Controller/Command/CubeDumper.cpp"
+  "./Controller/Command/CubeScrambler.cpp"
   "./Controller/Command/Solver/CubeSolver.cpp"
   "./Controller/Command/Solver/ThistlethwaiteCubeSolver.cpp"
   "./Controller/Command/Solver/KorfCubeSolver.cpp"
