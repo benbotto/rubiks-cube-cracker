@@ -80,7 +80,7 @@ namespace busybin
       this->movesInQueue = !this->moveQueue.empty();
 
       // If there are no more moves in the queue, re-enable movement.
-      if (!this->movesInQueue)
+      if (!this->movesInQueue && !this->solving)
         this->pMover->enable();
 
       // Restart the timer.
