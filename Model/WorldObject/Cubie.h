@@ -13,7 +13,7 @@ using glm::mat4;
 using glm::translate;
 #include <glm/gtc/quaternion.hpp>
 using glm::quat;
-using glm::slerp;
+using glm::mix;
 using glm::mat4_cast;
 using glm::normalize;
 using glm::dot;

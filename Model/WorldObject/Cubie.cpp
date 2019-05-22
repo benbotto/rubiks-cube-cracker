@@ -76,20 +76,29 @@ namespace busybin
    */
   mat4 Cubie::animateCubeRotation(double elapsed)
   {
-    float cosTheta;
+    float cosTheta = dot(this->cubeRot.orientation, this->cubeRot.desired);
 
-    // Spherical linear interpolation (SLERP) between the current and desired
-    // orientations.  The orientation needs to be normalized or precision
-    // will be lost over time, causing constantly animated cubes.
-    this->cubeRot.orientation = normalize(slerp(this->cubeRot.orientation,
-      this->cubeRot.desired, this->cubeRot.speed * (float)elapsed));
-
-    // The cosine between the orientation and desired.
-    cosTheta = dot(this->cubeRot.orientation, this->cubeRot.desired);
-
-    //if (cosTheta > .999 && cosTheta < 1.001 || cosTheta)
-    if (fabs(1 - fabs(cosTheta)) < .00001)
+    if (fabs(1 - fabs(cosTheta)) < .000001)
+    {
+      // When the orientation and desired orientation are close, snap the cubie
+      // into place.  This provides a nice effect, and avoids division-by-zero.
+      // (When cosTheta is 1, the angle is 0, and the angle is used as a
+      // denominator in a SLERP operation.)
       this->cubeRot.orientation = this->cubeRot.desired;
+    }
+    else
+    {
+      // Spherical linear interpolation (SLERP) between the current and desired
+      // orientations.  The orientation needs to be normalized or precision
+      // will be lost over time, causing constantly animated cubes.  Also, the
+      // mix operation is used instead of slerp: the two are essentially the
+      // same, except that slerp takes the shortest path and does some error
+      // handling.  The shortest path can be problematic when rapidly applying
+      // multiple 180-degree turns.  The error handling is done manually (the
+      // divide-by-zero case).
+      this->cubeRot.orientation = normalize(mix(this->cubeRot.orientation,
+        this->cubeRot.desired, this->cubeRot.speed * (float)elapsed));
+    }
 
     return mat4_cast(this->cubeRot.orientation);
   }
