@@ -5,6 +5,7 @@
 #include "Command/Solver/ThistlethwaiteCubeSolver.h"
 #include "Command/Solver/KorfCubeSolver.h"
 #include "Command/CubeDumper.h"
+#include "Command/CubeScrambler.h"
 #include "../OpenGLSeed/View/WorldWindow.h"
 #include "../OpenGLSeed/Controller/Command/ViewManager.h"
 #include "../OpenGLSeed/Controller/Command/Renderer.h"

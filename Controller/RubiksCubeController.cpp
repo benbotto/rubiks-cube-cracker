@@ -34,6 +34,7 @@ namespace busybin
       ThistlethwaiteCubeSolver tCubeSolver(&world, &worldWnd, &cubeMover, &threadPool);
       KorfCubeSolver           kCubeSolver(&world, &worldWnd, &cubeMover, &threadPool);
       CubeDumper               cubeDumper(&world, &worldWnd);
+      CubeScrambler            cubeScrambler(&world, &worldWnd, &cubeMover);
 
       tCubeSolver.initialize();
       kCubeSolver.initialize();
