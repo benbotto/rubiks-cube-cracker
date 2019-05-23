@@ -67,7 +67,7 @@ namespace busybin
    */
   void Cubie::rotate(float rads, const vec3& axis)
   {
-    this->cubeRot.desired = normalize(glm::rotate(quat(), rads, axis) * this->cubeRot.desired);
+    this->cubeRot.desired = normalize(angleAxis(rads, axis) * this->cubeRot.desired);
   }
 
   /**
@@ -78,11 +78,11 @@ namespace busybin
   {
     float cosTheta = dot(this->cubeRot.orientation, this->cubeRot.desired);
 
-    if (fabs(1 - fabs(cosTheta)) < .000001)
+    if (cosTheta > 1.0f - epsilon<float>() || cosTheta < -1.0f + epsilon<float>())
     {
-      // When the orientation and desired orientation are close, snap the cubie
-      // into place.  This provides a nice effect, and avoids division-by-zero.
-      // (When cosTheta is 1, the angle is 0, and the angle is used as a
+      // When the orientation and desired orientation are close (the angle is 0
+      // or 360) snap the cubie into place.  This avoids a division-by-zero.
+      // (When |cosTheta| is 1, the angle is 0, and the angle is used as a
       // denominator in a SLERP operation.)
       this->cubeRot.orientation = this->cubeRot.desired;
     }

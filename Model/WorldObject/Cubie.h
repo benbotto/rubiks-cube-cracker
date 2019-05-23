@@ -6,6 +6,7 @@
 #include "../../Controller/GL/Program/RubiksCubeProgram.h"
 #include <glm/gtc/constants.hpp>
 using glm::half_pi;
+using glm::epsilon;
 #include <glm/glm.hpp>
 using glm::vec4;
 using glm::mat4;
@@ -17,8 +18,7 @@ using glm::mix;
 using glm::mat4_cast;
 using glm::normalize;
 using glm::dot;
-#include <cmath>
-using std::fabs;
+using glm::angleAxis;
 
 namespace busybin
 {
