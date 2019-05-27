@@ -1,11 +1,14 @@
 # rubiks-cube-cracker
 
-An OpenGL Rubik's Cube program with a built-in optimal solver written in C++.
-The optimal solver can solve any scrambled cube in 20 moves or fewer using
-Korf's algorithm.  Although the program is quite performant--more so than other
-optimal solvers that were tested--it takes awhile to generate optimal solutions
-for some scrambles.  So for the impatient, there's also a Thistlethwaite solver
-that rapidly solves any scramble.
+A virtual Rubik's Cube with a built-in optimal solver written in C++ and
+rendered with OpenGL.  The optimal solver can solve any scrambled cube in 20
+moves or fewer using Korf's algorithm.  Although the program is quite
+performant--more so than other optimal solvers that were tested--it takes
+awhile to generate optimal solutions for some scrambles.  So for the impatient,
+there's also a Thistlethwaite solver that rapidly solves any scramble.
+
+[A video demonstration is available on
+YouTube.](https://www.youtube.com/watch?v=ZtlMkzix7Bw&feature=youtu.be)
 
 ### Rubik's Cube Notation
 
@@ -187,7 +190,9 @@ comprised of U2, F2, L2, R2, B2, and D2.
 
 ### Optimal Solver Stats
 
-Below is a table of 10 100-move scrambles, along with the time and number of moves required to solve each.  The scrambles are naive--random moves _excluding_ prunable moves (two moves of the same face, etc.).
+Below is a table of 10 100-move scrambles, along with the time and number of
+moves required to solve each.  The scrambles are naive--random moves
+_excluding_ prunable moves (two moves of the same face, etc.).
 
 | Scramble                                                                                                                                                                                                                                                                                                    | Solution                                           | Solution Length (Twists) | Solution Time (Seconds) | Solution Time (Hours) |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|--------------------------|-------------------------|-----------------------|
