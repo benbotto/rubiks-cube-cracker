@@ -48,7 +48,7 @@ Use an out-of-tree build.
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
-make
+make -j4
 cd ..
 ```
 
@@ -57,5 +57,21 @@ databases and shaders) are loaded relatively.
 
 ```
 ./build/rubiksCube
+```
+
+### Debug Build
+
+```
+mkdir debug
+cd debug
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make -j4
+cd ..
+```
+
+Run with gdb:
+
+```
+gdb ./debug/rubiksCube
 ```
 
