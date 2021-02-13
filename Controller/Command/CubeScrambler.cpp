@@ -41,14 +41,18 @@ namespace busybin
     {
       typedef RubiksCube::MOVE MOVE;
 
-      Random       rand(0, 17);
-      MovePruner   pruner;
-      vector<MOVE> moves;
+      const unsigned SCRAMBLE_SIZE = 100;
 
-      moves.reserve(100);
+      MovePruner      pruner;
+      vector<MOVE>    moves;
+      RubiksCubeModel cube = this->pCube->getRawModel();
+      TwistStore      twistStore(cube);
+      Random          rand(0, twistStore.getNumMoves());
+
+      moves.reserve(SCRAMBLE_SIZE);
       moves.push_back((MOVE)rand.next());
 
-      while (moves.size() < 100)
+      while (moves.size() < SCRAMBLE_SIZE)
       {
         MOVE move = (MOVE)rand.next();
 

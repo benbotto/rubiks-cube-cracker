@@ -4,7 +4,9 @@
 #include "CubeMover.h"
 #include "../../OpenGLSeed/Controller/Command/Command.h"
 #include "../../Model/RubiksCube.h"
+#include "../../Model/RubiksCubeModel.h"
 #include "../../Model/WorldObject/RubiksCubeWorldObject.h"
+#include "../../Model/MoveStore/TwistStore.h"
 #include "../Searcher/MovePruner.h"
 #include "../../Util/Random.h"
 #include <vector>
