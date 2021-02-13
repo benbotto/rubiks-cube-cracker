@@ -6,8 +6,6 @@
 #include "../../RubiksCubeIndexModel.h"
 #include "../PatternDatabase.h"
 #include <cstdint>
-#include <array>
-using std::array;
 
 namespace busybin
 {
