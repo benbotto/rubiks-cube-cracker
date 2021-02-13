@@ -9,17 +9,6 @@ namespace busybin
    */
   CornerPatternDatabase::CornerPatternDatabase() : PatternDatabase(88179840)
   {
-    // The onesCountLookup array is used when calculating a Lehmer code for a
-    // permutation, which is done using Korf's linear algorithm.  It's
-    // described in his paper, Large-Scale Parallel Breadth-First Search
-    // (https://www.aaai.org/Papers/AAAI/2005/AAAI05-219.pdf).  Each element in
-    // the array holds a count of the number of ones in the associated index.
-    // I.e. element 10 (1010b) is 2.
-    for (unsigned i = 0; i < 256; ++i)
-    {
-      bitset<8> bits(i);
-      this->onesCountLookup[i] = bits.count();
-    }
   }
 
   /**
@@ -61,35 +50,7 @@ namespace busybin
     // We solve this problem in constant time by using the bit string as an
     // index into a precomputed table, containing the number of ones in the
     // binary representation of each index."
-    perm_t lehmer;
-    bitset<8> seen;
-
-    lehmer[0] = cornerPerm[0];
-    seen[7 - cornerPerm[0]] = 1;
-    lehmer[7] = 0;
-
-    for (unsigned i = 1; i < 7; ++i)
-    {
-      // std::bitset indexes right-to-left.
-      seen[7 - cornerPerm[i]] = 1;
-
-      uint8_t numOnes = this->onesCountLookup[seen.to_ulong() >> (8 - cornerPerm[i])];
-
-      lehmer[i] = cornerPerm[i] - numOnes;
-    }
-
-    // Now convert the Lehmer code to a base-10 number.  To do so,
-    // multiply each digit by it's corresponding factorial base.
-    // E.g. the permutation 120 has a Lehmer code of 110, which is
-    // 1 * 2! + 1 * 1! + 0 * 0! = 3.
-    uint32_t index =
-      lehmer[0] * 5040 +
-      lehmer[1] * 720 +
-      lehmer[2] * 120 +
-      lehmer[3] * 24 +
-      lehmer[4] * 6 +
-      lehmer[5] * 2 +
-      lehmer[6];
+    uint32_t rank = this->permIndexer.rank(cornerPerm);
 
     // Now get the orientation of the corners.  7 corner orientations dictate
     // the orientation of the 8th, so only 7 need to be stored.
@@ -117,7 +78,7 @@ namespace busybin
 
     // Combine the permutation and orientation into a single index.
     // p * 3^7 + o;
-    return index * 2187 + orientationNum;
+    return rank * 2187 + orientationNum;
   }
 }
 

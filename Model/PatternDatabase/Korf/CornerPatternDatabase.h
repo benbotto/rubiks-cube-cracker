@@ -4,9 +4,8 @@
 #include "../../RubiksCube.h"
 #include "../../RubiksCubeIndexModel.h"
 #include "../PatternDatabase.h"
+#include "../PermutationIndexer.h"
 #include <cstdint>
-#include <bitset>
-using std::bitset;
 
 namespace busybin
 {
@@ -19,7 +18,7 @@ namespace busybin
     typedef array<uint8_t, 8> perm_t;
     typedef RubiksCube::FACE F;
 
-    array<uint8_t, 256> onesCountLookup;
+    PermutationIndexer<8> permIndexer;
 
   public:
     CornerPatternDatabase();
