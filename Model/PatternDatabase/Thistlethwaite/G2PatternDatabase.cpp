@@ -28,25 +28,29 @@ namespace busybin
 
     const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);
 
+    const uint8_t numEdges = 12;
+    const array<EDGE, 4> edges = {EDGE::UB, EDGE::UF, EDGE::DF, EDGE::DB};
+
     // Create a permutation array consisting of 4 of the 12 edges by looping
     // over all edge piece until the 4 in the M slice are found.  The
     // permutation is made up of the edges' positions, 0-11.
     array<uint8_t, 4> edgePerm;
     unsigned          numIndexed = 0;
 
-    for (uint8_t i = 0; i < 12 && numIndexed != 4; ++i)
+    for (uint8_t i = 0; i < numEdges && numIndexed != 4; ++i)
     {
       uint8_t edgeInd = iCube.getEdgeIndex((EDGE)i);
 
-      if (
-        edgeInd == (uint8_t)EDGE::UB ||
-        edgeInd == (uint8_t)EDGE::UF ||
-        edgeInd == (uint8_t)EDGE::DF ||
-        edgeInd == (uint8_t)EDGE::DB
-      )
+      for (uint8_t j = 0; j < 4; ++j)
       {
-        edgePerm[edgeInd] = i;
-        ++numIndexed;
+        if (edgeInd == (uint8_t)edges[j])
+        {
+          // E.g. edge UB (edgePerm[0]) is in the DR (11) position.
+          // E.g. edge UF (edgePerm[1]) is in the UR (1) position.
+          edgePerm[j] = i;
+          ++numIndexed;
+          break;
+        }
       }
     }
 
