@@ -3,9 +3,8 @@
 
 #include "../../RubiksCube.h"
 #include "../PatternDatabase.h"
+#include "../PermutationIndexer.h"
 #include <cstdint>
-#include <bitset>
-using std::bitset;
 
 namespace busybin
 {
@@ -14,11 +13,11 @@ namespace busybin
    */
   class EdgePatternDatabase : public PatternDatabase
   {
+    PermutationIndexer<12, 7> permIndexer;
+
   protected:
     typedef array<uint8_t, 7> perm_t;
     typedef RubiksCube::FACE F;
-
-    static array<uint8_t, 4096> onesCountLookup;
 
     uint32_t getDatabaseIndex(const perm_t& edgePerm,
       const array<uint8_t, 7>& edgeOrientations) const;
