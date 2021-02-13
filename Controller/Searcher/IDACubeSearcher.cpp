@@ -32,11 +32,13 @@ namespace busybin
     AutoTimer             timer;
     stack<Node>           nodeStack;
     Node                  curNode;
-    array<uint8_t, 50>    moveInds  = {0xFF};
+    array<MOVE, 50>       moves     = {(MOVE)0xFF};
     bool                  solved    = false;
     uint8_t               bound     = 0;
     uint8_t               nextBound = this->pPatternDB->getNumMoves(iCube);
-    moveQueue_t           successors;
+    const uint8_t         numMoves = moveStore.getNumMoves();
+
+    cout << "IDA*: starting and depth " << (unsigned)nextBound << '.' << endl;
 
     while (!solved)
     {
@@ -50,7 +52,7 @@ namespace busybin
         }
 
         // Start with the scrambled (root) node.  Depth 0, no move required.
-        nodeStack.push({iCube, 0xFF, 0});
+        nodeStack.push({iCube, (MOVE)0xFF, 0});
 
         bound     = nextBound;
         nextBound = 0xFF;
@@ -60,10 +62,10 @@ namespace busybin
       nodeStack.pop();
 
       // Keep the list of moves.  The moves end at 0xFF.
-      moveInds[curNode.depth] = 0xFF;
+      moves[curNode.depth] = (MOVE)0xFF;
 
       if (curNode.depth != 0)
-        moveInds[curNode.depth - 1] = curNode.moveInd;
+        moves[curNode.depth - 1] = curNode.move;
 
       if (curNode.depth == bound)
       {
@@ -75,13 +77,15 @@ namespace busybin
         // This is used to sort the successors by estimated moves.
         moveQueue_t successors;
 
-        for (uint8_t i = 0; i < 18; ++i)
+        for (uint8_t i = 0; i < numMoves; ++i)
         {
-          if (curNode.depth == 0 || !this->pruner.prune((MOVE)i, (MOVE)curNode.moveInd))
+          MOVE move = moveStore.getMove(i);
+
+          if (curNode.depth == 0 || !this->pruner.prune(move, curNode.move))
           {
             RubiksCubeIndexModel cubeCopy(curNode.cube);
 
-            cubeCopy.move((MOVE)i);
+            cubeCopy.move(move);
 
             uint8_t estSuccMoves = curNode.depth + 1 + this->pPatternDB->getNumMovesEx(
               cubeCopy, bound, curNode.depth + 1);
@@ -90,7 +94,7 @@ namespace busybin
             {
               // If the twisted cube is estimated to take fewer move than the
               // current bound, push it, otherwise it's pruned.
-              successors.push({cubeCopy, i, estSuccMoves});
+              successors.push({cubeCopy, move, estSuccMoves});
             }
             else if (estSuccMoves < nextBound)
             {
@@ -106,7 +110,7 @@ namespace busybin
           // Push the nodes in sorted order.
           nodeStack.push({
             successors.top().cube,
-            successors.top().moveInd,
+            successors.top().move,
             (uint8_t)(curNode.depth + 1)
           });
 
@@ -115,13 +119,16 @@ namespace busybin
       }
     }
 
-    // Convert the move indexes to strings.
-    vector<RubiksCube::MOVE> moves;
+    cout << "IDA*: Goal reached in " << timer.getElapsedSeconds() << "s."
+         << endl;
 
-    for (unsigned i = 0; i < moveInds.size() && moveInds[i] != 0xFF; ++i)
-      moves.push_back(moveStore.getMove(moveInds[i]));
+    // Convert the move to a vector.
+    vector<MOVE> moveVec;
 
-    return moves;
+    for (unsigned i = 0; i < moves.size() && (uint8_t)moves[i] != 0xFF; ++i)
+      moveVec.push_back(moves[i]);
+
+    return moveVec;
   }
 }
 

@@ -31,7 +31,7 @@ namespace busybin
     struct PrioritizedMove
     {
       RubiksCubeIndexModel cube;
-      uint8_t moveInd;
+      RubiksCube::MOVE move;
       uint8_t estMoves; // Priority.  Least number of moves to most.
       bool operator>(const PrioritizedMove& rhs) const
       {
@@ -42,7 +42,7 @@ namespace busybin
     struct Node
     {
       RubiksCubeIndexModel cube;
-      uint8_t moveInd;
+      RubiksCube::MOVE move;
       uint8_t depth;
     };
 
