@@ -11,7 +11,9 @@ namespace busybin
    */
   ThistlethwaiteCubeSolver::ThistlethwaiteCubeSolver(World* pWorld,
     WorldWindow* pWorldWnd, CubeMover* pMover, ThreadPool* pThreadPool) :
-    CubeSolver(pWorld, pWorldWnd, pMover, pThreadPool, GLFW_KEY_F1)
+    CubeSolver(pWorld, pWorldWnd, pMover, pThreadPool, GLFW_KEY_F1),
+    g1DB(),
+    g2DB()
   {
   }
 
@@ -27,6 +29,7 @@ namespace busybin
 
     // Index each pattern database.
     this->pThreadPool->addJob(bind(&ThistlethwaiteCubeSolver::indexG1Database, this));
+    this->pThreadPool->addJob(bind(&ThistlethwaiteCubeSolver::indexG2Database, this));
   }
 
   /**
@@ -65,6 +68,39 @@ namespace busybin
       indexer.findGoal(goal, groupGoal, iCube, seenDB, twistStore);
 
       this->g1DB.toFile("./Data/thistlethwiateEdgeG1.pdb");
+
+      this->setSolving(false);
+    }
+  }
+
+  /**
+   * Initialize the pattern database for G1->G2.
+   */
+  void ThistlethwaiteCubeSolver::indexG2Database()
+  {
+    if (!this->g2DB.fromFile("./Data/thistlethwiateEdgeG2.pdb")) {
+      // See indexG1Database for notes.
+      RubiksCubeIndexModel iCube;
+      GroupPatternDatabaseIndexer indexer;
+      G2DatabaseGoal goal(&this->g2DB);
+      G2PatternDatabase seenDB;
+
+      // The group goal is G2: all corners oriented, and all M-slice edges in
+      // the M slice (UF, UB, DF, DB).
+      GoalG1_G2 groupGoal;
+
+      // Quarter turns of U and D are excluded (16 moves).
+      G1TwistStore g1TwistStore(iCube);
+
+      this->setSolving(true);
+
+      cout << "Goal 2:\n"
+           << "  " << goal.getDescription() << '\n'
+           << "  Group goal: " << groupGoal.getDescription() << endl;
+
+      indexer.findGoal(goal, groupGoal, iCube, seenDB, g1TwistStore);
+
+      this->g2DB.toFile("./Data/thistlethwiateEdgeG2.pdb");
 
       this->setSolving(false);
     }

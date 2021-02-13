@@ -16,12 +16,14 @@
 #include "../../../Model/Goal/Goal.h"
 #include "../../../Model/Goal/OrientGoal.h"
 #include "../../../Model/Goal/Thistlethwaite/G1DatabaseGoal.h"
+#include "../../../Model/Goal/Thistlethwaite/G2DatabaseGoal.h"
 #include "../../../Model/Goal/Thistlethwaite/GoalG0_G1.h"
 #include "../../../Model/Goal/Thistlethwaite/GoalG1_G2.h"
 #include "../../../Model/Goal/Thistlethwaite/GoalG2_G3_Corners.h"
 #include "../../../Model/Goal/Thistlethwaite/GoalG2_G3_Edges.h"
 #include "../../../Model/Goal/SolveGoal.h"
 #include "../../../Model/PatternDatabase/Thistlethwaite/G1PatternDatabase.h"
+#include "../../../Model/PatternDatabase/Thistlethwaite/G2PatternDatabase.h"
 #include "../../../OpenGLSeed/Model/World.h"
 #include "../../../OpenGLSeed/View/WorldWindow.h"
 #include "../../../Util/ThreadPool.h"
@@ -45,8 +47,10 @@ namespace busybin
   class ThistlethwaiteCubeSolver : public CubeSolver
   {
     G1PatternDatabase g1DB;
+    G2PatternDatabase g2DB;
 
     void indexG1Database();
+    void indexG2Database();
 
   protected:
     void solveCube();
