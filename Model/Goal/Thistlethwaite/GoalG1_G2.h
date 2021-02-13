@@ -3,11 +3,15 @@
 
 #include "../Goal.h"
 #include "../../RubiksCube.h"
+#include "../../RubiksCubeIndexModel.h"
+#include <cstdint>
+#include <array>
+using std::array;
 
 namespace busybin
 {
   /**
-   * Orient all corners, and place FU, FD, BU, BD in the correct slice.
+   * Orient all corners, and place FU, FD, BU, BD in the correct slice (M).
    */
   class GoalG1_G2 : public Goal
   {
