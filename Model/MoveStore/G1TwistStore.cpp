@@ -16,13 +16,13 @@ namespace busybin
       RubiksCube::MOVE::R,
       RubiksCube::MOVE::RPRIME,
       RubiksCube::MOVE::R2,
+      RubiksCube::MOVE::U,
+      RubiksCube::MOVE::UPRIME,
       RubiksCube::MOVE::U2,
+      RubiksCube::MOVE::D,
+      RubiksCube::MOVE::DPRIME,
       RubiksCube::MOVE::D2,
-      RubiksCube::MOVE::F,
-      RubiksCube::MOVE::FPRIME,
       RubiksCube::MOVE::F2,
-      RubiksCube::MOVE::B,
-      RubiksCube::MOVE::BPRIME,
       RubiksCube::MOVE::B2
     })
   {

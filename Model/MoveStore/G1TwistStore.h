@@ -8,7 +8,7 @@ namespace busybin
 {
   /**
    * Class for storing the available Rubik's Cube's twists in the G1 group.
-   * This group excludes quarter turns of U and D.
+   * This group excludes quarter turns of F and B.
    */
   class G1TwistStore : public MoveStore
   {
