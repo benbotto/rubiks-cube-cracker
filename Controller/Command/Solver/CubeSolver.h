@@ -65,12 +65,6 @@ namespace busybin
     void replace(const string& needle, string& haystack, const string& with) const;
 
   protected:
-    struct GoalAndMoveStore
-    {
-      unique_ptr<Goal> pGoal;
-      MoveStore*       pMoveStore;
-    };
-
     virtual void solveCube() = 0;
     void setSolving(bool solving);
     void processGoalMoves(const Goal& goal, RubiksCube& cube,
