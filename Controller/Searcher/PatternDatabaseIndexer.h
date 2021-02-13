@@ -4,13 +4,8 @@
 #include "MovePruner.h"
 #include "../../Model/RubiksCubeIndexModel.h"
 #include "../../Model/Goal/Goal.h"
-#include "../../Model/MoveStore/MoveStore.h"
 #include "../../Util/AutoTimer.h"
 #include "../../Model/PatternDatabase/PatternDatabase.h"
-#include <vector>
-using std::vector;
-#include <string>
-using std::string;
 #include <stack>
 using std::stack;
 #include <iostream>
