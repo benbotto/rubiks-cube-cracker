@@ -47,14 +47,14 @@ namespace busybin
       vector<MOVE>    moves;
       RubiksCubeModel cube = this->pCube->getRawModel();
       TwistStore      twistStore(cube);
-      Random          rand(0, twistStore.getNumMoves());
+      Random          rand(0, twistStore.getNumMoves() - 1);
 
       moves.reserve(SCRAMBLE_SIZE);
-      moves.push_back((MOVE)rand.next());
+      moves.push_back(twistStore.getMove(rand.next()));
 
       while (moves.size() < SCRAMBLE_SIZE)
       {
-        MOVE move = (MOVE)rand.next();
+        MOVE move = twistStore.getMove(rand.next());
 
         if (!pruner.prune(moves.back(), move))
           moves.push_back(move);
