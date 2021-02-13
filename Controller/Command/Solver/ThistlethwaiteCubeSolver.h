@@ -3,7 +3,9 @@
 
 #include "CubeSolver.h"
 #include "../CubeMover.h"
-#include "../../Searcher/IDDFSCubeSearcher.h"
+#include "../../Searcher/GroupPatternDatabaseIndexer.h"
+#include "../../Searcher/IDACubeSearcher.h"
+#include "../../Searcher/BreadthFirstCubeSearcher.h"
 #include "../../../View/RubiksCubeView.h"
 #include "../../../Model/RubiksCubeModel.h"
 #include "../../../Model/MoveStore/TwistStore.h"
@@ -13,12 +15,13 @@
 #include "../../../Model/MoveStore/RotationStore.h"
 #include "../../../Model/Goal/Goal.h"
 #include "../../../Model/Goal/OrientGoal.h"
+#include "../../../Model/Goal/Thistlethwaite/G1DatabaseGoal.h"
 #include "../../../Model/Goal/Thistlethwaite/GoalG0_G1.h"
 #include "../../../Model/Goal/Thistlethwaite/GoalG1_G2.h"
 #include "../../../Model/Goal/Thistlethwaite/GoalG2_G3_Corners.h"
 #include "../../../Model/Goal/Thistlethwaite/GoalG2_G3_Edges.h"
-#include "../../../Model/Goal/Thistlethwaite/GoalG3_Permute_Corners.h"
 #include "../../../Model/Goal/SolveGoal.h"
+#include "../../../Model/PatternDatabase/Thistlethwaite/G1PatternDatabase.h"
 #include "../../../OpenGLSeed/Model/World.h"
 #include "../../../OpenGLSeed/View/WorldWindow.h"
 #include "../../../Util/ThreadPool.h"
@@ -33,8 +36,6 @@ using std::unique_ptr;
 using std::string;
 #include <sstream>
 using std::istringstream;
-#include <iterator>
-using std::istream_iterator;
 
 namespace busybin
 {
@@ -43,10 +44,9 @@ namespace busybin
    */
   class ThistlethwaiteCubeSolver : public CubeSolver
   {
-    GoalG3_Permute_Corners g3Perms;
-    IDDFSCubeSearcher      searcher;
+    G1PatternDatabase g1DB;
 
-    void indexDatabase();
+    void indexG1Database();
 
   protected:
     void solveCube();
