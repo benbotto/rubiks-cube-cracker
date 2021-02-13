@@ -20,6 +20,7 @@ set(SRC
   "./Controller/Searcher/PatternDatabaseIndexer.cpp"
   "./Controller/Searcher/GroupPatternDatabaseIndexer.cpp"
   "./View/RubiksCubeView.cpp"
+  "./Util/math.cpp"
   "./Util/RubiksCubeException.cpp"
   "./Util/Random.cpp"
   "./Util/Timer.cpp"
