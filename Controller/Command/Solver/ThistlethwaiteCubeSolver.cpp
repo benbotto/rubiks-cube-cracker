@@ -80,16 +80,16 @@ namespace busybin
   {
     if (!this->g2DB.fromFile("./Data/thistlethwiateEdgeG2.pdb")) {
       // See indexG1Database for notes.
-      RubiksCubeIndexModel iCube;
+      RubiksCubeIndexModel        iCube;
       GroupPatternDatabaseIndexer indexer;
-      G2DatabaseGoal goal(&this->g2DB);
-      G2PatternDatabase seenDB;
+      G2DatabaseGoal              goal(&this->g2DB);
+      G2PatternDatabase           seenDB;
 
       // The group goal is G2: all corners oriented, and all M-slice edges in
       // the M slice (UF, UB, DF, DB).
       GoalG1_G2 groupGoal;
 
-      // Quarter turns of U and D are excluded (16 moves).
+      // Quarter turns of F and B are excluded (16 moves).
       G1TwistStore g1TwistStore(iCube);
 
       this->setSolving(true);
@@ -111,11 +111,10 @@ namespace busybin
    */
   void ThistlethwaiteCubeSolver::solveCube()
   {
-    RubiksCubeView cubeView;
-    vector<MOVE>   allMoves;
-    vector<string> allMoveStrings;
-    vector<string> simpMoves;
-    vector<MOVE>   goalMoves;
+    RubiksCubeModel stdCube = this->pCube->getRawModel();
+    RubiksCubeView  cubeView;
+    vector<MOVE>    allMoves;
+    vector<MOVE>    goalMoves;
 
     cout << "Solving with Thistlethwaite method." << endl;
 
@@ -123,28 +122,46 @@ namespace busybin
     cubeView.render(*this->pCube);
 
     // First goal: orient the cube with red up and white front.
-    RubiksCubeModel          stdCube = this->pCube->getRawModel();
-    BreadthFirstCubeSearcher bfsSearcher;
-    OrientGoal               orientGoal;
-    RotationStore            rotStore(stdCube);
+    {
+      BreadthFirstCubeSearcher bfsSearcher;
+      OrientGoal               orientGoal;
+      RotationStore            rotStore(stdCube);
 
-    goalMoves = bfsSearcher.findGoal(orientGoal, stdCube, rotStore);
+      goalMoves = bfsSearcher.findGoal(orientGoal, stdCube, rotStore);
 
-    this->processGoalMoves(orientGoal, stdCube, 1, allMoves, goalMoves);
+      this->processGoalMoves(orientGoal, stdCube, 1, allMoves, goalMoves);
+    }
 
-    // Second goal: solve the cube.
+    // The reamining goals use the index model.  (The cube most be oriented
+    // correctly to be converted to an index model.)
     RubiksCubeIndexModel iCube(stdCube);
-    IDACubeSearcher      idaSearcher(&this->g1DB);
-    GoalG0_G1            g1Goal;
-    TwistStore           twistStore(iCube);
 
-    goalMoves = idaSearcher.findGoal(g1Goal, iCube, twistStore);
-    this->processGoalMoves(g1Goal, iCube, 2, allMoves, goalMoves);
+    // Second goal: Orient all edges (G1).
+    {
+      IDACubeSearcher idaSearcher(&this->g1DB);
+      GoalG0_G1       g1Goal;
+      TwistStore      twistStore(iCube);
 
-    // Print the moves.
+      goalMoves = idaSearcher.findGoal(g1Goal, iCube, twistStore);
+      this->processGoalMoves(g1Goal, iCube, 2, allMoves, goalMoves);
+    }
+
+    // Third goal: Orient all corners and position M slice edges.
+    // Excludes quarter turns of F and B.
+    {
+      IDACubeSearcher idaSearcher(&this->g2DB);
+      GoalG1_G2       g2Goal;
+      G1TwistStore    g1TwistStore(iCube);
+
+      goalMoves = idaSearcher.findGoal(g2Goal, iCube, g1TwistStore);
+      this->processGoalMoves(g2Goal, iCube, 3, allMoves, goalMoves);
+    }
+
     cout << "\n\nSolved the cube in " << allMoves.size() << " moves.\n";
 
-    // Convert the moves to strings.
+    // Convert the moves to strings and print them.
+    vector<string> allMoveStrings;
+
     for (MOVE move : allMoves)
       allMoveStrings.push_back(this->pCube->getMove(move));
 
@@ -153,7 +170,8 @@ namespace busybin
     cout << endl;
 
     // Simplify the moves if posible.
-    simpMoves = this->simplifyMoves(allMoveStrings);
+    vector<string> simpMoves = this->simplifyMoves(allMoveStrings);
+
     cout << "Simplified to " << simpMoves.size() << " moves.\n";
     for (string move : simpMoves)
       cout << move << ' ';
@@ -162,6 +180,16 @@ namespace busybin
     // Display the cube model.
     cout << "Resulting cube.\n";
     cubeView.render(iCube);
+
+    cout << "Edge orientations.\n";
+    for (uint8_t i = 0; i < 12; ++i)
+      cout << (unsigned)iCube.getEdgeOrientation((RubiksCubeIndexModel::EDGE)i) << ' ';
+    cout << endl;
+
+    cout << "Corner orientations.\n";
+    for (uint8_t i = 0; i < 8; ++i)
+      cout << (unsigned)iCube.getCornerOrientation((RubiksCubeIndexModel::CORNER)i) << ' ';
+    cout << endl;
 
     // Done solving - re-enable movement.  (Note that solving is set to true in
     // the parent class on keypress.)
