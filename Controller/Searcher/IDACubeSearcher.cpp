@@ -38,7 +38,7 @@ namespace busybin
     uint8_t               nextBound = this->pPatternDB->getNumMoves(iCube);
     const uint8_t         numMoves = moveStore.getNumMoves();
 
-    cout << "IDA*: starting and depth " << (unsigned)nextBound << '.' << endl;
+    cout << "IDA*: Starting at depth " << (unsigned)nextBound << '.' << endl;
 
     while (!solved)
     {
