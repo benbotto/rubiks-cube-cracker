@@ -48,6 +48,7 @@ set(SRC
   "./Model/Goal/SolveGoal.cpp"
   "./Model/Goal/TestGoal.cpp"
   "./Model/Goal/DatabaseGoal.cpp"
+  "./Model/Goal/Thistlethwaite/G1DatabaseGoal.cpp"
   "./Model/Goal/Thistlethwaite/GoalG0_G1.cpp"
   "./Model/Goal/Thistlethwaite/GoalG1_G2.cpp"
   "./Model/Goal/Thistlethwaite/GoalG2_G3_Corners.cpp"
