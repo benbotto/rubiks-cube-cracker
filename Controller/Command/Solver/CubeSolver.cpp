@@ -213,7 +213,7 @@ namespace busybin
     while ((pos = haystack.find(needle)) != string::npos)
     {
       cout << "Found " << needle << " in " << haystack << " at position " << pos
-           << ".  Replacing with " << with << '.' << endl;
+           << ".  Replacing with \"" << with << "\"." << endl;
       haystack.replace(pos, needle.length(), with);
     }
   }
