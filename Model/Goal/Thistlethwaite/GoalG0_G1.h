@@ -3,6 +3,8 @@
 
 #include "../Goal.h"
 #include "../../RubiksCube.h"
+#include "../../RubiksCubeIndexModel.h"
+#include <cstdint>
 
 namespace busybin
 {
