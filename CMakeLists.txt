@@ -38,6 +38,7 @@ set(SRC
   "./Model/PatternDatabase/Korf/EdgeG2PatternDatabase.cpp"
   "./Model/PatternDatabase/Korf/EdgePermutationPatternDatabase.cpp"
   "./Model/PatternDatabase/Korf/KorfPatternDatabase.cpp"
+  "./Model/PatternDatabase/Thistlethwaite/G1PatternDatabase.cpp"
   "./Model/RubiksCubeWorld.cpp"
   "./Model/RubiksCube.cpp"
   "./Model/RubiksCubeModel.cpp"
