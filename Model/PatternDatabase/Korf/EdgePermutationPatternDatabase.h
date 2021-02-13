@@ -5,9 +5,8 @@
 #include "../../RubiksCube.h"
 #include "../../RubiksCubeIndexModel.h"
 #include "../PatternDatabase.h"
+#include "../PermutationIndexer.h"
 #include <cstdint>
-#include <bitset>
-using std::bitset;
 #include <array>
 using std::array;
 
@@ -20,7 +19,7 @@ namespace busybin
   {
     typedef array<uint8_t, 12> perm_t;
 
-    static array<uint8_t, 4096> onesCountLookup;
+    PermutationIndexer<12> permIndexer;
 
   public:
     EdgePermutationPatternDatabase();
