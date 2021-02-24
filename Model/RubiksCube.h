@@ -18,6 +18,8 @@ namespace busybin
   public:
     enum class FACE   : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
     enum class COLOR  : uint8_t {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
+    enum class EDGE   : uint8_t {UB, UR, UF, UL, FR, FL, BL, BR, DF, DL, DB, DR};
+    enum class CORNER : uint8_t {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF};
     enum class MOVE   : uint8_t
     {
       L, LPRIME, L2,
