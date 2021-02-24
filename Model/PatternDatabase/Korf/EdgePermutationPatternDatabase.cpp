@@ -16,7 +16,7 @@ namespace busybin
    */
   uint32_t EdgePermutationPatternDatabase::getDatabaseIndex(const RubiksCube& cube) const
   {
-    typedef RubiksCubeIndexModel::EDGE EDGE;
+    typedef RubiksCube::EDGE EDGE;
 
     const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);
 
