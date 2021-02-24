@@ -38,9 +38,6 @@ namespace busybin
     typedef RubiksCube::COLOR COLOR;
 
   public:
-    enum class EDGE   : uint8_t {UB, UR, UF, UL, FR, FL, BL, BR, DF, DL, DB, DR};
-    enum class CORNER : uint8_t {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF};
-
     struct Cubie
     {
       // 0 - 11 for edges, 0 - 7 for corners.
@@ -54,8 +51,7 @@ namespace busybin
     array<Cubie, 8>  corners;
     array<COLOR, 6>  centers;
 
-    inline void updateCornerOrientationX(CORNER ind);
-    inline void updateCornerOrientationZ(CORNER ind);
+    inline void updateCornerOrientation(RubiksCube::CORNER ind, uint8_t amount);
     inline void updateEdgeOrientationZ(EDGE ind);
 
   public:

@@ -44,90 +44,18 @@ namespace busybin
     }
 
     // Corners.
-    typedef RubiksCubeModel::corner_t corner_t;
-
-    corner_t ulb = {cube.getColor(0), cube.getColor(8), cube.getColor(34)};
-    this->corners[(unsigned)CORNER::ULB].index       = cube.getCornerIndex(ulb);
-    this->corners[(unsigned)CORNER::ULB].orientation = cube.getCornerOrientation(ulb);
-
-    corner_t urb = {cube.getColor(2), cube.getColor(26), cube.getColor(32)};
-    this->corners[(unsigned)CORNER::URB].index       = cube.getCornerIndex(urb);
-    this->corners[(unsigned)CORNER::URB].orientation = cube.getCornerOrientation(urb);
-
-    corner_t urf = {cube.getColor(4), cube.getColor(24), cube.getColor(18)};
-    this->corners[(unsigned)CORNER::URF].index       = cube.getCornerIndex(urf);
-    this->corners[(unsigned)CORNER::URF].orientation = cube.getCornerOrientation(urf);
-
-    corner_t ulf = {cube.getColor(6), cube.getColor(10), cube.getColor(16)};
-    this->corners[(unsigned)CORNER::ULF].index       = cube.getCornerIndex(ulf);
-    this->corners[(unsigned)CORNER::ULF].orientation = cube.getCornerOrientation(ulf);
-
-    corner_t dlf = {cube.getColor(40), cube.getColor(12), cube.getColor(22)};
-    this->corners[(unsigned)CORNER::DLF].index       = cube.getCornerIndex(dlf);
-    this->corners[(unsigned)CORNER::DLF].orientation = cube.getCornerOrientation(dlf);
-
-    corner_t dlb = {cube.getColor(46), cube.getColor(14), cube.getColor(36)};
-    this->corners[(unsigned)CORNER::DLB].index       = cube.getCornerIndex(dlb);
-    this->corners[(unsigned)CORNER::DLB].orientation = cube.getCornerOrientation(dlb);
-
-    corner_t drb = {cube.getColor(44), cube.getColor(28), cube.getColor(38)};
-    this->corners[(unsigned)CORNER::DRB].index       = cube.getCornerIndex(drb);
-    this->corners[(unsigned)CORNER::DRB].orientation = cube.getCornerOrientation(drb);
-
-    corner_t drf = {cube.getColor(42), cube.getColor(30), cube.getColor(20)};
-    this->corners[(unsigned)CORNER::DRF].index       = cube.getCornerIndex(drf);
-    this->corners[(unsigned)CORNER::DRF].orientation = cube.getCornerOrientation(drf);
+    for (uint8_t i = 0; i < 8; ++i)
+    {
+      this->corners[i].index       = cube.getCornerIndex((RubiksCube::CORNER)i);
+      this->corners[i].orientation = cube.getCornerOrientation((RubiksCube::CORNER)i);
+    }
 
     // Edges.
-    typedef RubiksCubeModel::edge_t edge_t;
-
-    edge_t ub = {cube.getColor(1), cube.getColor(33)};
-    this->edges[(unsigned)EDGE::UB].index       = cube.getEdgeIndex(ub);
-    this->edges[(unsigned)EDGE::UB].orientation = cube.getEdgeOrientation(ub);
-
-    edge_t ur = {cube.getColor(3), cube.getColor(25)};
-    this->edges[(unsigned)EDGE::UR].index       = cube.getEdgeIndex(ur);
-    this->edges[(unsigned)EDGE::UR].orientation = cube.getEdgeOrientation(ur);
-
-    edge_t uf = {cube.getColor(5), cube.getColor(17)};
-    this->edges[(unsigned)EDGE::UF].index       = cube.getEdgeIndex(uf);
-    this->edges[(unsigned)EDGE::UF].orientation = cube.getEdgeOrientation(uf);
-
-    edge_t ul = {cube.getColor(7), cube.getColor(9)};
-    this->edges[(unsigned)EDGE::UL].index       = cube.getEdgeIndex(ul);
-    this->edges[(unsigned)EDGE::UL].orientation = cube.getEdgeOrientation(ul);
-
-    edge_t fr = {cube.getColor(19), cube.getColor(31)};
-    this->edges[(unsigned)EDGE::FR].index       = cube.getEdgeIndex(fr);
-    this->edges[(unsigned)EDGE::FR].orientation = cube.getEdgeOrientation(fr);
-
-    edge_t fl = {cube.getColor(23), cube.getColor(11)};
-    this->edges[(unsigned)EDGE::FL].index       = cube.getEdgeIndex(fl);
-    this->edges[(unsigned)EDGE::FL].orientation = cube.getEdgeOrientation(fl);
-
-    edge_t bl = {cube.getColor(35), cube.getColor(15)};
-    this->edges[(unsigned)EDGE::BL].index       = cube.getEdgeIndex(bl);
-    this->edges[(unsigned)EDGE::BL].orientation = cube.getEdgeOrientation(bl);
-
-    edge_t br = {cube.getColor(39), cube.getColor(27)};
-    this->edges[(unsigned)EDGE::BR].index       = cube.getEdgeIndex(br);
-    this->edges[(unsigned)EDGE::BR].orientation = cube.getEdgeOrientation(br);
-
-    edge_t df = {cube.getColor(41), cube.getColor(21)};
-    this->edges[(unsigned)EDGE::DF].index       = cube.getEdgeIndex(df);
-    this->edges[(unsigned)EDGE::DF].orientation = cube.getEdgeOrientation(df);
-
-    edge_t dl = {cube.getColor(47), cube.getColor(13)};
-    this->edges[(unsigned)EDGE::DL].index       = cube.getEdgeIndex(dl);
-    this->edges[(unsigned)EDGE::DL].orientation = cube.getEdgeOrientation(dl);
-
-    edge_t db = {cube.getColor(45), cube.getColor(37)};
-    this->edges[(unsigned)EDGE::DB].index       = cube.getEdgeIndex(db);
-    this->edges[(unsigned)EDGE::DB].orientation = cube.getEdgeOrientation(db);
-
-    edge_t dr = {cube.getColor(43), cube.getColor(29)};
-    this->edges[(unsigned)EDGE::DR].index       = cube.getEdgeIndex(dr);
-    this->edges[(unsigned)EDGE::DR].orientation = cube.getEdgeOrientation(dr);
+    for (uint8_t i = 0; i < 12; ++i)
+    {
+      this->edges[i].index       = cube.getEdgeIndex((RubiksCube::EDGE)i);
+      this->edges[i].orientation = cube.getEdgeOrientation((RubiksCube::EDGE)i);
+    }
 
     // Centers.
     this->centers[0] = COLOR::RED;
@@ -142,7 +70,7 @@ namespace busybin
    * Get the edge colors at an index.
    */
   array<RubiksCubeIndexModel::COLOR, 2> RubiksCubeIndexModel::getEdgeColors(
-    RubiksCubeIndexModel::EDGE ind) const
+    RubiksCube::EDGE ind) const
   {
     array<COLOR, 2> colors;
 
@@ -222,7 +150,7 @@ namespace busybin
    * R, F or B (YXZ).
    */
   array<RubiksCubeIndexModel::COLOR, 3> RubiksCubeIndexModel::getCornerColors(
-    RubiksCubeIndexModel::CORNER ind) const
+    RubiksCube::CORNER ind) const
   {
     array<COLOR, 3> colors;
 
@@ -547,46 +475,30 @@ namespace busybin
   }
 
   /**
-   * Helper to update the orientation of corners on an L or R turn.
+   * Helper to update the orientation of corners on 90-degree CW twist.
+   * @param ind The corner index to update.
+   * @param amount The amount to update the orientation by: 1, or 2.
    */
-  inline void RubiksCubeIndexModel::updateCornerOrientationX(CORNER ind)
+  inline void RubiksCubeIndexModel::updateCornerOrientation(
+    CORNER ind, uint8_t amount)
   {
     Cubie& corner = this->corners[(unsigned)ind];
 
-    // The new orientation differs based on its distance from home.  E.g.
-    // moving corner 0 (RBY) left moves it from ULB (0) to ULF (3).  That's an
-    // odd distance (0+3), so the orientation is 1 (Y on top).  Moving corner 0
-    // (RBY) left prime from ULF (3) to ULB (0) is even (0+0), so the
-    // orientation is 2.
-    bool evenDist = ((uint8_t)ind + corner.index) % 2 == 0;
+    // For 90-degree twists that change the orientation of corners, half of the
+    // corners change orientation by 1 (0->1, 1->2, 2->0) and the other half
+    // change by 2 (0->2, 1->0, 2->1 [mod 3]).
+    // Orientation 0: Red or orange on top or bottom.
+    // Orientation 1: Red or orange is twisted clockwise from its nearest up or
+    // down face.
+    // Orientation 2: Red or orange is twisted counterclockwise from its
+    // nearest up or down face.
+    corner.orientation += amount;
 
-    if (corner.orientation == 0)
-      corner.orientation = evenDist ? 2 : 1;
-    else if (corner.orientation == 1)
-      corner.orientation = evenDist ? 0 : 2;
-    else // if (corner.orientation == 2)
-      corner.orientation = evenDist ? 1 : 0;
-  }
-
-  /**
-   * Helper to update the orientation of corners on an F or B turn.
-   */
-  inline void RubiksCubeIndexModel::updateCornerOrientationZ(CORNER ind)
-  {
-    Cubie& corner = this->corners[(unsigned)ind];
-
-    // Moving corner 3 (RBW) front moves it from ULF (3) to URF (2).  That's an
-    // odd distance (3+2), so the orientation is 2 (B on top).  Moving corner 3
-    // (RBW) front prime from URF (2) to ULF (3) is even (3+3), so the
-    // orientation is 1.
-    bool evenDist = ((uint8_t)ind + corner.index) % 2 == 0;
-
-    if (corner.orientation == 0)
-      corner.orientation = evenDist ? 1 : 2;
-    else if (corner.orientation == 1)
-      corner.orientation = evenDist ? 2 : 0;
-    else // if (corner.orientation == 2)
-      corner.orientation = evenDist ? 0 : 1;
+    // % 3, but a bit faster.
+    if (corner.orientation == 3)
+      corner.orientation = 0;
+    else if (corner.orientation == 4)
+      corner.orientation = 1;
   }
 
   /**
@@ -669,10 +581,10 @@ namespace busybin
     this->edges[(unsigned)EDGE::FL]      = this->edges[(unsigned)EDGE::UL];
     this->edges[(unsigned)EDGE::UL]      = hold;
 
-    this->updateCornerOrientationX(CORNER::DLB);
-    this->updateCornerOrientationX(CORNER::DLF);
-    this->updateCornerOrientationX(CORNER::ULF);
-    this->updateCornerOrientationX(CORNER::ULB);
+    this->updateCornerOrientation(CORNER::DLB, 1);
+    this->updateCornerOrientation(CORNER::DLF, 2);
+    this->updateCornerOrientation(CORNER::ULF, 1);
+    this->updateCornerOrientation(CORNER::ULB, 2);
 
     return *this;
   }
@@ -694,10 +606,10 @@ namespace busybin
     this->edges[(unsigned)EDGE::FL]      = this->edges[(unsigned)EDGE::DL];
     this->edges[(unsigned)EDGE::DL]      = hold;
 
-    this->updateCornerOrientationX(CORNER::DLB);
-    this->updateCornerOrientationX(CORNER::DLF);
-    this->updateCornerOrientationX(CORNER::ULF);
-    this->updateCornerOrientationX(CORNER::ULB);
+    this->updateCornerOrientation(CORNER::DLB, 1);
+    this->updateCornerOrientation(CORNER::DLF, 2);
+    this->updateCornerOrientation(CORNER::ULF, 1);
+    this->updateCornerOrientation(CORNER::ULB, 2);
 
     return *this;
   }
@@ -733,10 +645,10 @@ namespace busybin
     this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::FR];
     this->edges[(unsigned)EDGE::FR]      = hold;
 
-    this->updateCornerOrientationZ(CORNER::ULF);
-    this->updateCornerOrientationZ(CORNER::URF);
-    this->updateCornerOrientationZ(CORNER::DRF);
-    this->updateCornerOrientationZ(CORNER::DLF);
+    this->updateCornerOrientation(CORNER::ULF, 2);
+    this->updateCornerOrientation(CORNER::URF, 1);
+    this->updateCornerOrientation(CORNER::DRF, 2);
+    this->updateCornerOrientation(CORNER::DLF, 1);
 
     this->updateEdgeOrientationZ(EDGE::UF);
     this->updateEdgeOrientationZ(EDGE::FL);
@@ -763,10 +675,10 @@ namespace busybin
     this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::FL];
     this->edges[(unsigned)EDGE::FL]      = hold;
 
-    this->updateCornerOrientationZ(CORNER::ULF);
-    this->updateCornerOrientationZ(CORNER::URF);
-    this->updateCornerOrientationZ(CORNER::DRF);
-    this->updateCornerOrientationZ(CORNER::DLF);
+    this->updateCornerOrientation(CORNER::ULF, 2);
+    this->updateCornerOrientation(CORNER::URF, 1);
+    this->updateCornerOrientation(CORNER::DRF, 2);
+    this->updateCornerOrientation(CORNER::DLF, 1);
 
     this->updateEdgeOrientationZ(EDGE::UF);
     this->updateEdgeOrientationZ(EDGE::FL);
@@ -807,10 +719,10 @@ namespace busybin
     this->edges[(unsigned)EDGE::FR]      = this->edges[(unsigned)EDGE::DR];
     this->edges[(unsigned)EDGE::DR]      = hold;
 
-    this->updateCornerOrientationX(CORNER::DRB);
-    this->updateCornerOrientationX(CORNER::DRF);
-    this->updateCornerOrientationX(CORNER::URF);
-    this->updateCornerOrientationX(CORNER::URB);
+    this->updateCornerOrientation(CORNER::DRB, 2);
+    this->updateCornerOrientation(CORNER::DRF, 1);
+    this->updateCornerOrientation(CORNER::URF, 2);
+    this->updateCornerOrientation(CORNER::URB, 1);
 
     return *this;
   }
@@ -832,10 +744,10 @@ namespace busybin
     this->edges[(unsigned)EDGE::FR]      = this->edges[(unsigned)EDGE::UR];
     this->edges[(unsigned)EDGE::UR]      = hold;
 
-    this->updateCornerOrientationX(CORNER::DRB);
-    this->updateCornerOrientationX(CORNER::DRF);
-    this->updateCornerOrientationX(CORNER::URF);
-    this->updateCornerOrientationX(CORNER::URB);
+    this->updateCornerOrientation(CORNER::DRB, 2);
+    this->updateCornerOrientation(CORNER::DRF, 1);
+    this->updateCornerOrientation(CORNER::URF, 2);
+    this->updateCornerOrientation(CORNER::URB, 1);
 
     return *this;
   }
@@ -871,10 +783,10 @@ namespace busybin
     this->edges[(unsigned)EDGE::DB]      = this->edges[(unsigned)EDGE::BL];
     this->edges[(unsigned)EDGE::BL]      = hold;
 
-    this->updateCornerOrientationZ(CORNER::ULB);
-    this->updateCornerOrientationZ(CORNER::URB);
-    this->updateCornerOrientationZ(CORNER::DRB);
-    this->updateCornerOrientationZ(CORNER::DLB);
+    this->updateCornerOrientation(CORNER::ULB, 1);
+    this->updateCornerOrientation(CORNER::URB, 2);
+    this->updateCornerOrientation(CORNER::DRB, 1);
+    this->updateCornerOrientation(CORNER::DLB, 2);
 
     this->updateEdgeOrientationZ(EDGE::UB);
     this->updateEdgeOrientationZ(EDGE::BL);
@@ -901,10 +813,10 @@ namespace busybin
     this->edges[(unsigned)EDGE::DB]      = this->edges[(unsigned)EDGE::BR];
     this->edges[(unsigned)EDGE::BR]      = hold;
 
-    this->updateCornerOrientationZ(CORNER::ULB);
-    this->updateCornerOrientationZ(CORNER::URB);
-    this->updateCornerOrientationZ(CORNER::DRB);
-    this->updateCornerOrientationZ(CORNER::DLB);
+    this->updateCornerOrientation(CORNER::ULB, 1);
+    this->updateCornerOrientation(CORNER::URB, 2);
+    this->updateCornerOrientation(CORNER::DRB, 1);
+    this->updateCornerOrientation(CORNER::DLB, 2);
 
     this->updateEdgeOrientationZ(EDGE::UB);
     this->updateEdgeOrientationZ(EDGE::BL);
