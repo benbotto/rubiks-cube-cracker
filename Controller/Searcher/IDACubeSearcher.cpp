@@ -33,10 +33,10 @@ namespace busybin
     stack<Node>           nodeStack;
     Node                  curNode;
     array<MOVE, 50>       moves     = {(MOVE)0xFF};
-    bool                  solved    = false;
+    bool                  solved    = goal.isSatisfied(iCube);
     uint8_t               bound     = 0;
+    const uint8_t         numMoves  = moveStore.getNumMoves();
     uint8_t               nextBound = this->pPatternDB->getNumMoves(iCube);
-    const uint8_t         numMoves = moveStore.getNumMoves();
 
     cout << "IDA*: Starting at depth " << (unsigned)nextBound << '.' << endl;
 
@@ -54,6 +54,16 @@ namespace busybin
         // Start with the scrambled (root) node.  Depth 0, no move required.
         nodeStack.push({iCube, (MOVE)0xFF, 0});
 
+        // If nextBound is initialized to 0 above but the cube is not solved,
+        // the DB is bad.
+        if (nextBound == 0)
+          throw RubiksCubeException("IDA: nextBound set to 0.");
+
+        // If the next bound is not updated then all branches were pruned.
+        // This also indicates a bad DB.
+        if (nextBound == 0xFF)
+          throw RubiksCubeException("IDA: nextBound set to 0xFF.");
+
         bound     = nextBound;
         nextBound = 0xFF;
       }
@@ -62,7 +72,7 @@ namespace busybin
       nodeStack.pop();
 
       // Keep the list of moves.  The moves end at 0xFF.
-      moves[curNode.depth] = (MOVE)0xFF;
+      moves.at(curNode.depth) = (MOVE)0xFF;
 
       if (curNode.depth != 0)
         moves[curNode.depth - 1] = curNode.move;
@@ -125,8 +135,8 @@ namespace busybin
     // Convert the move to a vector.
     vector<MOVE> moveVec;
 
-    for (unsigned i = 0; i < moves.size() && (uint8_t)moves[i] != 0xFF; ++i)
-      moveVec.push_back(moves[i]);
+    for (unsigned i = 0; i < moves.size() && (uint8_t)moves.at(i) != 0xFF; ++i)
+      moveVec.push_back(moves.at(i));
 
     return moveVec;
   }

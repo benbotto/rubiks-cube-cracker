@@ -6,6 +6,7 @@
 #include "../../Model/Goal/Goal.h"
 #include "../../Model/MoveStore/MoveStore.h"
 #include "../../Util/AutoTimer.h"
+#include "../../Util/RubiksCubeException.h"
 #include "../../Model/PatternDatabase/PatternDatabase.h"
 #include <string>
 using std::string;
