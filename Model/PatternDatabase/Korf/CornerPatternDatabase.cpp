@@ -27,7 +27,7 @@ namespace busybin
    */
   uint32_t CornerPatternDatabase::getDatabaseIndex(const RubiksCube& cube) const
   {
-    typedef RubiksCubeIndexModel::CORNER CORNER;
+    typedef RubiksCube::CORNER CORNER;
 
     const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);
 
