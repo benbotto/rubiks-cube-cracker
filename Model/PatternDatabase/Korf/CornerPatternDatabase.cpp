@@ -4,8 +4,9 @@ namespace busybin
 {
   /**
    * Initialize the database storage.  There are 8!*3^7 possible scrambles of
-   * the edges.  Each scramble is reachable in 11 moves or fewer, so each move
-   * can be stored in 4 bits.  That gives 8!*3^7 / 2 / 1024 / 1024 (~42MB).
+   * the corners.  Each scramble is reachable in 11 moves or fewer, so each
+   * move can be stored in 4 bits.  That gives 8!*3^7 / 2 / 1024 / 1024
+   * (~42MB).
    */
   CornerPatternDatabase::CornerPatternDatabase() : PatternDatabase(88179840)
   {
