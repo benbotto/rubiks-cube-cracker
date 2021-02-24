@@ -103,15 +103,17 @@ namespace busybin
 
     COLOR getColor(FACE face, unsigned row, unsigned col) const;
     COLOR getColor(unsigned ind) const;
+    edge_t getEdgeColors(RubiksCube::EDGE ind) const;
+    corner_t getCornerColors(RubiksCube::CORNER ind) const;
     uint64_t getFace(FACE face) const;
 
     bool isSolved() const;
 
     // Indexing methods.
-    uint8_t getCornerIndex(const corner_t& corner) const;
-    uint8_t getCornerOrientation(const corner_t& corner) const;
-    uint8_t getEdgeIndex(const edge_t& edge) const;
-    uint8_t getEdgeOrientation(const edge_t& edge) const;
+    uint8_t getCornerIndex(RubiksCube::CORNER ind) const;
+    uint8_t getCornerOrientation(RubiksCube::CORNER ind) const;
+    uint8_t getEdgeIndex(RubiksCube::EDGE ind) const;
+    uint8_t getEdgeOrientation(RubiksCube::EDGE ind) const;
 
     // Compare this cube to another.
     bool operator<(const RubiksCubeModel& rhs) const;

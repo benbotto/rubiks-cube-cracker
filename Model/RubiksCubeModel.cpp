@@ -278,6 +278,93 @@ namespace busybin
   }
 
   /**
+   * Get the colors at an edge.  For the M and S slice, the Y (U/D)
+   * color is first.  For the E slice the Z (F/B) color is first.
+   * @param ind The edge index.
+   */
+  RubiksCubeModel::edge_t RubiksCubeModel::getEdgeColors(RubiksCube::EDGE ind) const
+  {
+    switch (ind)
+    {
+      case EDGE::UB:
+        return {this->getColor(1), this->getColor(33)};
+
+      case EDGE::UR:
+        return {this->getColor(3), this->getColor(25)};
+
+      case EDGE::UF:
+        return {this->getColor(5), this->getColor(17)};
+
+      case EDGE::UL:
+        return {this->getColor(7), this->getColor(9)};
+
+      case EDGE::FR:
+        return {this->getColor(19), this->getColor(31)};
+
+      case EDGE::FL:
+        return {this->getColor(23), this->getColor(11)};
+
+      case EDGE::BL:
+        return {this->getColor(35), this->getColor(15)};
+
+      case EDGE::BR:
+        return {this->getColor(39), this->getColor(27)};
+
+      case EDGE::DF:
+        return {this->getColor(41), this->getColor(21)};
+
+      case EDGE::DL:
+        return {this->getColor(47), this->getColor(13)};
+
+      case EDGE::DB:
+        return {this->getColor(45), this->getColor(37)};
+
+      case EDGE::DR:
+        return {this->getColor(43), this->getColor(29)};
+
+      default:
+        throw RubiksCubeException("RubiksCubeModel::getEdgeColors Bad edge index.");
+    }
+  }
+
+  /**
+   * Get the colors at a corner in Y, X, Z order (e.g. up-left-back).
+   * @param ind The corner index.
+   */
+  RubiksCubeModel::corner_t RubiksCubeModel::getCornerColors(RubiksCube::CORNER ind) const
+  {
+    switch (ind)
+    {
+      case CORNER::ULB:
+        return {this->getColor(0), this->getColor(8), this->getColor(34)};
+
+      case CORNER::URB:
+        return {this->getColor(2), this->getColor(26), this->getColor(32)};
+
+      case CORNER::URF:
+        return {this->getColor(4), this->getColor(24), this->getColor(18)};
+
+      case CORNER::ULF:
+        return {this->getColor(6), this->getColor(10), this->getColor(16)};
+
+      case CORNER::DLF:
+        return {this->getColor(40), this->getColor(12), this->getColor(22)};
+
+      case CORNER::DLB:
+        return {this->getColor(46), this->getColor(14), this->getColor(36)};
+
+      case CORNER::DRB:
+        return {this->getColor(44), this->getColor(28), this->getColor(38)};
+
+      case CORNER::DRF:
+        return {this->getColor(42), this->getColor(30), this->getColor(20)};
+
+      default:
+        throw RubiksCubeException("RubiksCubeModel::getCornerColors Bad corner index.");
+    }
+  }
+
+  /**
    * Get an entire face of the cube as a 64-bit int.
    * @param face The face to get.
    */
@@ -304,10 +391,12 @@ namespace busybin
   /**
    * Given three face colors, return a unique index for a corner cubie.  The
    * index will be [0..7].
-   * @param corner An array of three colors, in any order.
+   * @param ind A corner index.
    */
-  uint8_t RubiksCubeModel::getCornerIndex(const corner_t& corner) const
+  uint8_t RubiksCubeModel::getCornerIndex(RubiksCube::CORNER ind) const
   {
+    corner_t corner = this->getCornerColors(ind);
+
     // The colors range from 0 to 5, per RubiksCube.h.
     // Shifting 1 left by 0...5 gives 1, 2, 4, 8, 16, 32.
     // Adding these together gives a unique number for each corner cubie.
@@ -346,38 +435,52 @@ namespace busybin
   }
 
   /**
-   * Given three face colors, return the orientation of the corner cubie, 0, 1,
-   * or 2.  The up or down facet must be the first in the corner array.  The
-   * cube must have red on top, white in front.
+   * Given a corner index, get the orientation of the piece currently occupying
+   * the corner position.
+   *
+   * The cube must have red on top, white in front.
+   *
    * Orientation 0: Red or orange is on the top or bottom.
-   * Orientation 1: White or yellow is on the top or bottom.
-   * Orientation 2: Blue or green is on the top or bottom.
-   * @param corner An array of three colors, with the up or down facet first.
+   * Orientation 1: The piece is rotated clockwise from its nearest up or down
+   * face.
+   * Orientation 2: The piece is rotated counterclockwise form its nearest up
+   * or down face.
    */
-  uint8_t RubiksCubeModel::getCornerOrientation(const corner_t& corner) const
+  uint8_t RubiksCubeModel::getCornerOrientation(RubiksCube::CORNER ind) const
   {
-    switch (corner[0])
+    corner_t corner = this->getCornerColors(ind);
+
+    if (corner[0] == COLOR::RED || corner[0] == COLOR::ORANGE)
+      return 0;
+
+    switch (ind)
     {
-      case RubiksCube::COLOR::RED:
-      case RubiksCube::COLOR::ORANGE:
-        return 0;
+      case CORNER::ULB:
+      case CORNER::URF:
+      case CORNER::DLF:
+      case CORNER::DRB:
+        return (corner[1] == COLOR::RED || corner[1] == COLOR::ORANGE) ? 1 : 2;
 
-      case RubiksCube::COLOR::WHITE:
-      case RubiksCube::COLOR::YELLOW:
-        return 1;
+      case CORNER::URB:
+      case CORNER::ULF:
+      case CORNER::DLB:
+      case CORNER::DRF:
+        return (corner[2] == COLOR::RED || corner[2] == COLOR::ORANGE) ? 1 : 2;
 
-      default: // Blue or green.
-        return 2;
+      default:
+        throw RubiksCubeException("RubiksCubeIndexModel::getCornerOrientation Bad corner index.");
     }
   }
 
   /**
    * Given two face colors, return a unique index for an edge cubie.  The index
    * will be [0..11].
-   * @param edge An array of two colors, in any order.
+   * @param ind An edge index.
    */
-  uint8_t RubiksCubeModel::getEdgeIndex(const edge_t& edge) const
+  uint8_t RubiksCubeModel::getEdgeIndex(RubiksCube::EDGE ind) const
   {
+    edge_t edge = this->getEdgeColors(ind);
+
     // The colors range from 0 to 5, per RubiksCube.h.
     // Shifting 1 left by 0...5 gives 1, 2, 4, 8, 16, 32.
     // Adding these together gives a unique number for each edge cubie.
@@ -431,10 +534,7 @@ namespace busybin
   }
 
   /**
-   * Given two face colors, return the orientation of the edge cubie, 0, or 1.
-   * The up or down facet must be the first in the edge array for the top and
-   * bottom layers, and the front or back facet must be the first edge in the
-   * array for the middle layer..
+   * Given an edge index, return the orientation of the edge cubie, 0, or 1.
    *
    * The cube is expected to be have red on top, white up front.
    *
@@ -447,10 +547,15 @@ namespace busybin
    * See: https://stackoverflow.com/questions/17305071/how-can-i-determine-optimally-if-an-edge-is-correctly-oriented-on-the-rubiks-cu
    * See: http://cube.crider.co.uk/zz.php?p=eoline#eo_detection
    *
-   * @param edge An array of two colors.
+   * @param nd An EDGE index.
    */
-  uint8_t RubiksCubeModel::getEdgeOrientation(const edge_t& edge) const
+  uint8_t RubiksCubeModel::getEdgeOrientation(RubiksCube::EDGE ind) const
   {
+    // The first index in this corner_t is the up or down color for edges in
+    // the up or down layer (M or S slice), or the front or back color for
+    // edges in the middle layer (E slice).
+    edge_t edge = this->getEdgeColors(ind);
+
     // If the U or D sticker is the L or R color (blue or green), it's bad.
     if (edge[0] == RubiksCube::COLOR::BLUE ||
       edge[0] == RubiksCube::COLOR::GREEN)
