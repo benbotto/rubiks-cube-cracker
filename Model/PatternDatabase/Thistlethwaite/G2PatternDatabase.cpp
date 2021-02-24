@@ -28,36 +28,27 @@ namespace busybin
 
     const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);
 
+    // Indexes of all edges.  The array indexes are the natural (solved-state) indexes,
+    // so if the cubie that's in the UB (0/RY) position when solved is in the FR (4)
+    // position, edgeIndexes[0] == 4.
     const uint8_t numEdges = 12;
-    const array<EDGE, 4> edges = {EDGE::UB, EDGE::UF, EDGE::DF, EDGE::DB};
+    array<uint8_t, numEdges> edgeIndexes;
 
-    // Create a permutation array consisting of 4 of the 12 edges by looping
-    // over all edge piece until the 4 in the M slice are found.  The
-    // permutation is made up of the edges' positions, 0-11.
-    array<uint8_t, 4> edgePerm;
-    unsigned          numIndexed = 0;
+    for (uint8_t i = 0; i < numEdges; ++i)
+      edgeIndexes[iCube.getEdgeIndex((EDGE)i)] = i;
 
-    for (uint8_t i = 0; i < numEdges && numIndexed != 4; ++i)
+    // Permutation of the 4 M-slice edges.
+    array<uint8_t, 4> edgePerm =
     {
-      uint8_t edgeInd = iCube.getEdgeIndex((EDGE)i);
-
-      for (uint8_t j = 0; j < 4; ++j)
-      {
-        if (edgeInd == (uint8_t)edges[j])
-        {
-          // E.g. edge UB (edgePerm[0]) is in the DR (11) position.
-          // E.g. edge UF (edgePerm[1]) is in the UR (1) position.
-          edgePerm[j] = i;
-          ++numIndexed;
-          break;
-        }
-      }
-    }
+      edgeIndexes[(unsigned)EDGE::UB],
+      edgeIndexes[(unsigned)EDGE::UF],
+      edgeIndexes[(unsigned)EDGE::DF],
+      edgeIndexes[(unsigned)EDGE::DB]
+    };
 
     uint32_t rank = this->permIndexer.rank(edgePerm);
 
-    // Now get the orientation of the corners.  7 corner orientations dictate
-    // the orientation of the 8th, so only 7 need to be stored.
+    // Now get the orientation of the corners.
     array<uint8_t, 7> cornerOrientations =
     {
       iCube.getCornerOrientation(CORNER::ULB),
@@ -69,8 +60,9 @@ namespace busybin
       iCube.getCornerOrientation(CORNER::DRB)
     };
 
-    // Treat the orientations as a base-3 number, and convert it
-    // to base-10.
+    // Treat the orientations as a base-3 number, and convert it to base-10.  7
+    // corner orientations dictate the orientation of the 8th, so only 7 need
+    // to be stored.
     uint32_t orientationNum =
       cornerOrientations[0] * 729 +
       cornerOrientations[1] * 243 +
