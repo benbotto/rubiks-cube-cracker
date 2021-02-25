@@ -29,5 +29,16 @@ namespace busybin
   {
     return this->pDatabase->setNumMoves(cube, numMoves);
   }
+
+  /**
+   * Index the cube.  Returns true if the state is indexed, false if the
+   * state has been reached before (and therefore in fewer moves).
+   * @param ind An index into the database.
+   * @param numMoves The number of moves required to get to this cube state.
+   */
+  bool DatabaseGoal::index(const uint32_t ind, uint8_t numMoves)
+  {
+    return this->pDatabase->setNumMoves(ind, numMoves);
+  }
 }
 

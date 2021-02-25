@@ -15,6 +15,7 @@ namespace busybin
     DatabaseGoal(PatternDatabase* pDatabase);
     bool isSatisfied(RubiksCube& cube);
     bool index(const RubiksCube& cube, uint8_t numMoves);
+    bool index(const uint32_t ind,  uint8_t numMoves);
   };
 }
 
