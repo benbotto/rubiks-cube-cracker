@@ -4,6 +4,7 @@
 #include "MovePruner.h"
 #include "../../Model/RubiksCubeIndexModel.h"
 #include "../../Model/Goal/Goal.h"
+#include "../../Model/Goal/DatabaseGoal.h"
 #include "../../Model/MoveStore/MoveStore.h"
 #include "../../Util/AutoTimer.h"
 #include "../../Model/PatternDatabase/PatternDatabase.h"
@@ -26,7 +27,7 @@ namespace busybin
     typedef RubiksCube::MOVE MOVE;
 
     unsigned findGoal(
-      Goal& goal,
+      DatabaseGoal& goal,
       Goal& groupGoal,
       RubiksCubeIndexModel& cube,
       PatternDatabase& seenDB,
@@ -40,7 +41,7 @@ namespace busybin
 
   public:
     void findGoal(
-      Goal& goal,
+      DatabaseGoal& goal,
       Goal& groupGoal,
       RubiksCubeIndexModel& cube,
       PatternDatabase& seenDB,

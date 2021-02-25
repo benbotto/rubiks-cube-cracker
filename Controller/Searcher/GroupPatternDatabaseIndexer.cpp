@@ -20,7 +20,7 @@ namespace busybin
    * @param solved Set to true when the last state is indexed.
    */
   unsigned GroupPatternDatabaseIndexer::findGoal(
-    Goal& goal,
+    DatabaseGoal& goal,
     Goal& groupGoal,
     RubiksCubeIndexModel& cube,
     PatternDatabase& seenDB,
@@ -57,7 +57,7 @@ namespace busybin
     // node has been seen at an earlier depth (but not an equal depth, due to 
     // re-indexing).
     seenDB.setNumMoves(dbInd, dist);
-    goal.index(cube, dist);
+    goal.index(dbInd, dist);
 
     // Check for solutions at the leaf nodes.
     if (curDepth == bound)
@@ -100,7 +100,7 @@ namespace busybin
         {
           childCloser = true;
           dist = distThroughChild;
-          goal.index(cube, dist);
+          goal.index(dbInd, dist);
           seenDB.setNumMoves(cube, dist); // TODO: If depth is used, this won't be needed.
         }
       }
@@ -122,7 +122,7 @@ namespace busybin
    * @param moveStore A MoveStore instance for retrieving moves.
    */
   void GroupPatternDatabaseIndexer::findGoal(
-    Goal& goal,
+    DatabaseGoal& goal,
     Goal& groupGoal,
     RubiksCubeIndexModel& cube,
     PatternDatabase& seenDB,
