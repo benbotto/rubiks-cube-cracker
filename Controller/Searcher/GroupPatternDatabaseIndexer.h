@@ -23,18 +23,29 @@ namespace busybin
    */
   class GroupPatternDatabaseIndexer
   {
-    struct Node
-    {
-      RubiksCubeIndexModel cube;
-      RubiksCube::MOVE move;
-      uint8_t depth;
-      uint8_t distanceToGroup;
-    };
+    typedef RubiksCube::MOVE MOVE;
+
+    unsigned findGoal(
+      Goal& goal,
+      Goal& groupGoal,
+      RubiksCubeIndexModel& cube,
+      PatternDatabase& seenDB,
+      MoveStore& moveStore,
+      const unsigned bound,
+      unsigned curDepth,
+      const MOVE lastMove,
+      const unsigned parentDist,
+      bool& solved
+    ) const;
 
   public:
-    void findGoal(Goal& goal, Goal& groupGoal,
-      RubiksCubeIndexModel& solvedCube, PatternDatabase& seenDB,
-      MoveStore& moveStore) const;
+    void findGoal(
+      Goal& goal,
+      Goal& groupGoal,
+      RubiksCubeIndexModel& cube,
+      PatternDatabase& seenDB,
+      MoveStore& moveStore
+    ) const;
   };
 }
 
