@@ -9,8 +9,10 @@ namespace busybin
    * positions).
    *
    * There are 8 corners, and the orientations of 7 dictate the orientation of
-   * the 8th (even parity).  Corners have three possible orientations, so there
-   * are 3^7 corner orientation permutations.
+   * the 8th (because the total orientation of the corners is always divisible
+   * by 3, so only 1/3 of the corner orientation permutations are reachable).
+   * Corners have three possible orientations, so there are 3^7 corner
+   * orientation permutations.
    *
    * 12P4 * 3^7 / 1024^2 / 2 = 25981560 / 1024^2 / 2 = ~12.39MB on disk.
    */
