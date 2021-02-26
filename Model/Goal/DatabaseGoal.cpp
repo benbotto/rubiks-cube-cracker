@@ -40,5 +40,23 @@ namespace busybin
   {
     return this->pDatabase->setNumMoves(ind, numMoves);
   }
+
+  /**
+   * Get the number of moves to the cube state.
+   * @param cube
+   */
+  uint8_t DatabaseGoal::getNumMoves(const RubiksCube& cube) const
+  {
+    return this->pDatabase->getNumMoves(cube);
+  }
+
+  /**
+   * Get the number of moves using an index into the database.
+   * @param ind The database index.
+   */
+  uint8_t DatabaseGoal::getNumMoves(const uint32_t ind) const
+  {
+    return this->pDatabase->getNumMoves(ind);
+  }
 }
 

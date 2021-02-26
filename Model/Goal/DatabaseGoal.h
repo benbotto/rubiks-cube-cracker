@@ -16,6 +16,8 @@ namespace busybin
     bool isSatisfied(RubiksCube& cube);
     bool index(const RubiksCube& cube, uint8_t numMoves);
     bool index(const uint32_t ind,  uint8_t numMoves);
+    uint8_t getNumMoves(const RubiksCube& cube) const;
+    uint8_t getNumMoves(const uint32_t ind) const;
   };
 }
 
