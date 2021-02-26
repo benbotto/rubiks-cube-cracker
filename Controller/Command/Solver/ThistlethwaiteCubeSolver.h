@@ -32,12 +32,8 @@ using std::cout;
 using std::endl;
 #include <vector>
 using std::vector;
-#include <memory>
-using std::unique_ptr;
 #include <string>
 using std::string;
-#include <sstream>
-using std::istringstream;
 
 namespace busybin
 {

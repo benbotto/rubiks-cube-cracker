@@ -37,7 +37,10 @@ namespace busybin
    */
   void ThistlethwaiteCubeSolver::indexG1Database()
   {
-    if (!this->g1DB.fromFile("./Data/thistlethwiateEdgeG1.pdb")) {
+    string fileName = "./Data/thistlethwiateG1.pdb";
+
+    if (!this->g1DB.fromFile(fileName))
+    {
       // An index model is used for building pattern databases since it stores
       // the orientations directly.
       RubiksCubeIndexModel iCube;
@@ -67,7 +70,7 @@ namespace busybin
 
       indexer.findGoal(goal, groupGoal, iCube, seenDB, twistStore);
 
-      this->g1DB.toFile("./Data/thistlethwiateEdgeG1.pdb");
+      this->g1DB.toFile(fileName);
 
       this->setSolving(false);
     }
@@ -78,7 +81,10 @@ namespace busybin
    */
   void ThistlethwaiteCubeSolver::indexG2Database()
   {
-    if (!this->g2DB.fromFile("./Data/thistlethwiateEdgeG2.pdb")) {
+    string fileName = "./Data/thistlethwiateG2.pdb";
+
+    if (!this->g2DB.fromFile(fileName))
+    {
       // See indexG1Database for notes.
       RubiksCubeIndexModel        iCube;
       GroupPatternDatabaseIndexer indexer;
@@ -100,7 +106,7 @@ namespace busybin
 
       indexer.findGoal(goal, groupGoal, iCube, seenDB, g1TwistStore);
 
-      this->g2DB.toFile("./Data/thistlethwiateEdgeG2.pdb");
+      this->g2DB.toFile(fileName);
 
       this->setSolving(false);
     }
@@ -132,7 +138,7 @@ namespace busybin
       this->processGoalMoves(orientGoal, stdCube, 1, allMoves, goalMoves);
     }
 
-    // The reamining goals use the index model.  (The cube most be oriented
+    // The remaining goals use the index model.  (The cube must be oriented
     // correctly to be converted to an index model.)
     RubiksCubeIndexModel iCube(stdCube);
 
