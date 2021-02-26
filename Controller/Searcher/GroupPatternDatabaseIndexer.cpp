@@ -42,21 +42,23 @@ namespace busybin
 
     if (!groupSatisfied)
     {
+      unsigned dbDist = goal.getNumMoves(dbInd);
+
       // This state may have been seen before, and the existing distance may
       // be shorter than the distance through the parent.
-      unsigned dbDist = seenDB.getNumMoves(dbInd);
-
       if (dbDist < dist)
         dist = dbDist;
+
+      // If the state has been seen at an earlier depth and the distance
+      // through the parent is longer than the previously seen state, this
+      // state can be pruned.  (It can't be pruned at an equal depth due to
+      // reindexing/backtracking.)
+      if (parentDist + 1 > dbDist && seenDB.getNumMoves(dbInd) < curDepth)
+        return dist;
     }
 
-    // Store the number of moves in the seen database for pruning (again, this
-    // may be updated below).
-    // TODO: Check if prunable.  Maybe?
-    // TODO: This should probably be the depth.  The state can be pruned if the
-    // node has been seen at an earlier depth (but not an equal depth, due to 
-    // re-indexing).
-    seenDB.setNumMoves(dbInd, dist);
+    // Store the depth in the seen database for pruning, and index the state.
+    seenDB.setNumMoves(dbInd, curDepth);
     goal.index(dbInd, dist);
 
     // Check for solutions at the leaf nodes.
@@ -101,7 +103,6 @@ namespace busybin
           childCloser = true;
           dist = distThroughChild;
           goal.index(dbInd, dist);
-          seenDB.setNumMoves(cube, dist); // TODO: If depth is used, this won't be needed.
         }
       }
     }
