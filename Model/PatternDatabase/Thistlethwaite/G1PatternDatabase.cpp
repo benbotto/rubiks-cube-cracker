@@ -4,9 +4,11 @@ namespace busybin
 {
   /**
    * Initialize the database storage.  There are 12 edges, two orientations for
-   * each, and the orientations of 11 dictate the orientation of the 12th (due
-   * to even edge parity).  There are then 2^11 orientations, and the database
-   * needs 2^11 / 1024^2 / 2 = 1KB on disk.
+   * each, and the orientations of 11 dictate the orientation of the 12th
+   * (because every twist either flips 0 or 4 edges, the total edge orientation
+   * is always divisible by 2, so only 1/2 of the edge permutation orientations
+   * are reachable).  There are then 2^11 orientations, and the database needs
+   * 2^11 / 1024^2 / 2 = 1KB on disk.
    */
   G1PatternDatabase::G1PatternDatabase() : PatternDatabase(2048)
   {
