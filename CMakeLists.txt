@@ -42,6 +42,7 @@ set(SRC
   "./Model/PatternDatabase/Korf/KorfPatternDatabase.cpp"
   "./Model/PatternDatabase/Thistlethwaite/G1PatternDatabase.cpp"
   "./Model/PatternDatabase/Thistlethwaite/G2PatternDatabase.cpp"
+  "./Model/PatternDatabase/TestPatternDatabase.cpp"
   "./Model/RubiksCubeWorld.cpp"
   "./Model/RubiksCube.cpp"
   "./Model/RubiksCubeModel.cpp"
