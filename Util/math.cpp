@@ -13,4 +13,12 @@ namespace busybin
   {
     return factorial(n) / factorial(n - k);
   }
+
+  // Calculate nCk: n!/((n-k)!*k!).
+  uint32_t choose(uint32_t n, uint32_t k)
+  {
+    return (n < k)
+      ? 0
+      : factorial(n) / (factorial(n - k) * factorial(k));
+  }
 }
