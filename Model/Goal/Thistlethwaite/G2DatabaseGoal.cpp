@@ -16,7 +16,7 @@ namespace busybin
    */
   string G2DatabaseGoal::getDescription() const
   {
-    return "Create a database with the number of moves to orient all corners and position the M-slice edges.";
+    return "Create a database with the number of moves to orient all corners and position the E-slice edges.";
   }
 }
 
