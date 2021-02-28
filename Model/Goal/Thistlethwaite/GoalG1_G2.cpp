@@ -3,7 +3,11 @@
 namespace busybin
 {
   /**
-   * Orient all corners, and place UF, UB, DF, DB in the correct slice (M).
+   * Orient all corners, and place FR, FL, BL, BR in the correct slice (E).  In
+   * Thistlethwaite's implementation it's the M-slice edges that are positioned,
+   * but in this implementation U and D leave the corner orientations intact,
+   * and F and B flip edges.  (This cube is essentially rotated 90-degrees over
+   * Z.)
    * @param cube The cube.
    */
   bool GoalG1_G2::isSatisfied(RubiksCube& cube)
@@ -23,15 +27,15 @@ namespace busybin
         return false;
     }
 
-    // The 4 edges M-slice edges.
-    array<EDGE, 4> edges = {EDGE::UB, EDGE::UF, EDGE::DF, EDGE::DB};
+    // The 4 edges E-slice edges.
+    const array<EDGE, 4> edges = {EDGE::FR, EDGE::FL, EDGE::BL, EDGE::BR};
 
     for (unsigned i = 0; i < 4; ++i)
     {
       uint8_t edgeInd = iCube.getEdgeIndex(edges[i]);
 
-      // If any edge in the M slice is not an M-slice edge, return false.
-      // (E.g. if the FL edge is in the UF position.)
+      // If any edge in the E slice is not an E-slice edge, return false.
+      // (E.g. if the RW edge is in the FL position.)
       if (
         edgeInd != (uint8_t)edges[0] &&
         edgeInd != (uint8_t)edges[1] &&
@@ -49,7 +53,7 @@ namespace busybin
    */
   string GoalG1_G2::getDescription() const
   {
-    return "Orient all corners, and place FU, FD, BU, BD in the correct slice (M).";
+    return "Orient all corners, and place FR, FL, BL, BR in the correct slice (E).";
   }
 }
 

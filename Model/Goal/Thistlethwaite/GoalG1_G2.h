@@ -11,7 +11,7 @@ using std::array;
 namespace busybin
 {
   /**
-   * Orient all corners, and place FU, FD, BU, BD in the correct slice (M).
+   * Orient all corners, and place FL, FR, BL, BR in the correct slice (E).
    */
   class GoalG1_G2 : public Goal
   {
