@@ -9,9 +9,11 @@ namespace busybin
    * @param solvedCube A solved cube instance.
    * @param seenDB A PatternDatabase instance that's used to keep track of
    * states that have been seen.
+   * @param moveStore A MoveStore instance for retrieving moves.
    */
   void PatternDatabaseIndexer::findGoal(Goal& goal,
-    RubiksCubeIndexModel& solvedCube, PatternDatabase& seenDB)
+    RubiksCubeIndexModel& solvedCube, PatternDatabase& seenDB,
+    MoveStore& moveStore)
   {
     typedef RubiksCube::MOVE MOVE;
 
@@ -21,6 +23,7 @@ namespace busybin
     unsigned    indCount = 0;
     stack<Node> nodeStack;
     Node        curNode;
+    uint8_t     numMoves = moveStore.getNumMoves();
 
     // Index the root node in the database.
     goal.index(solvedCube, 0);
@@ -38,7 +41,7 @@ namespace busybin
         ++curDepth;
 
         // Push on the root node.
-        nodeStack.push({solvedCube, 0xFF, 0});
+        nodeStack.push({solvedCube, (MOVE)0xFF, 0});
 
         // Reset the database of seen cube states.
         seenDB.reset();
@@ -48,14 +51,16 @@ namespace busybin
       curNode = nodeStack.top();
       nodeStack.pop();
 
-      for (uint8_t i = 0; i < 18; ++i)
+      for (uint8_t i = 0; i < numMoves; ++i)
       {
-        if (curNode.depth == 0 || !pruner.prune((MOVE)i, (MOVE)curNode.moveInd))
+        MOVE move = moveStore.getMove(i);
+
+        if (curNode.depth == 0 || !pruner.prune(move, curNode.move))
         {
           RubiksCubeIndexModel cubeCopy(curNode.cube);
           uint8_t              cubeCopyDepth = (uint8_t)(curNode.depth + 1);
 
-          cubeCopy.move((MOVE)i);
+          cubeCopy.move(move);
 
           // This cube state may have been encountered at an earlier depth, at
           // which case it can be skipped.
@@ -72,7 +77,7 @@ namespace busybin
                 ++indCount;
             }
             else
-              nodeStack.push({cubeCopy, i, (uint8_t)(cubeCopyDepth)});
+              nodeStack.push({cubeCopy, move, (uint8_t)cubeCopyDepth});
           }
         }
       }
