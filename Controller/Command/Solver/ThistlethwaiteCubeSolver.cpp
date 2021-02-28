@@ -30,6 +30,7 @@ namespace busybin
     // Index each pattern database.
     this->pThreadPool->addJob(bind(&ThistlethwaiteCubeSolver::indexG1Database, this));
     this->pThreadPool->addJob(bind(&ThistlethwaiteCubeSolver::indexG2Database, this));
+    this->pThreadPool->addJob(bind(&ThistlethwaiteCubeSolver::indexG3Database, this));
   }
 
   /**
@@ -60,13 +61,9 @@ namespace busybin
       TwistStore twistStore(iCube);
 
       this->setSolving(true);
-
       cout << "Goal 1: " << goal.getDescription() << endl;
-
       indexer.findGoal(goal, iCube, seenDB, twistStore);
-
       this->g1DB.toFile(fileName);
-
       this->setSolving(false);
     }
   }
@@ -90,39 +87,32 @@ namespace busybin
       G1TwistStore g1TwistStore(iCube);
 
       this->setSolving(true);
-
       cout << "Goal 2: " << goal.getDescription() << endl;
-
       indexer.findGoal(goal, iCube, seenDB, g1TwistStore);
-
       this->g2DB.toFile(fileName);
-
       this->setSolving(false);
     }
   }
-      // See indexG1Database for notes.
-      RubiksCubeIndexModel        iCube;
-      GroupPatternDatabaseIndexer indexer;
-      G2DatabaseGoal              goal(&this->g2DB);
-      G2PatternDatabase           seenDB;
 
-      // The group goal is G2: all corners oriented, and all M-slice edges in
-      // the M slice (UF, UB, DF, DB).
-      GoalG1_G2 groupGoal;
+  /**
+   * Initialize the pattern database for G2->G3.
+   */
+  void ThistlethwaiteCubeSolver::indexG3Database()
+  {
+    string fileName = "./Data/thistlethwiateG3.pdb";
 
-      // Quarter turns of F and B are excluded (16 moves).
-      G1TwistStore g1TwistStore(iCube);
+    if (!this->g3DB.fromFile(fileName))
+    {
+      RubiksCubeIndexModel   iCube;
+      PatternDatabaseIndexer indexer;
+      TestGoal               goal(&this->g3DB);
+      TestPatternDatabase    seenDB;
+      G2TwistStore           twistStore(iCube);
 
       this->setSolving(true);
-
-      cout << "Goal 2:\n"
-           << "  " << goal.getDescription() << '\n'
-           << "  Group goal: " << groupGoal.getDescription() << endl;
-
-      indexer.findGoal(goal, groupGoal, iCube, seenDB, g1TwistStore);
-
-      this->g2DB.toFile(fileName);
-
+      cout << "Goal 3: " << goal.getDescription() << endl;
+      indexer.findGoal(goal, iCube, seenDB, twistStore);
+      //this->g3DB.toFile(fileName);
       this->setSolving(false);
     }
   }

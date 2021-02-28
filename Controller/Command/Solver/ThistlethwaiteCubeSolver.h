@@ -35,6 +35,10 @@ using std::vector;
 #include <string>
 using std::string;
 
+// TODO: Remove
+#include "../../../Model/PatternDatabase/TestPatternDatabase.h"
+#include "../../../Model/Goal/TestGoal.h"
+
 namespace busybin
 {
   /**
@@ -44,9 +48,11 @@ namespace busybin
   {
     G1PatternDatabase g1DB;
     G2PatternDatabase g2DB;
+    TestPatternDatabase g3DB;
 
     void indexG1Database();
     void indexG2Database();
+    void indexG3Database();
 
   protected:
     void solveCube();
