@@ -88,10 +88,11 @@ namespace busybin
       // Create the first edge database.
       EdgeDatabaseGoal      edgeG1Goal(&this->edgeG1DB);
       EdgeG1PatternDatabase seenDB;
+      TwistStore            twistStore(iCube);
 
       cout << "Goal 2: " << edgeG1Goal.getDescription() << endl;
 
-      indexer.findGoal(edgeG1Goal, iCube, seenDB);
+      indexer.findGoal(edgeG1Goal, iCube, seenDB, twistStore);
       this->edgeG1DB.toFile("./Data/edgeG1.pdb");
     }
 
@@ -114,10 +115,11 @@ namespace busybin
       // Create the second edge database.
       EdgeDatabaseGoal      edgeG2Goal(&this->edgeG2DB);
       EdgeG2PatternDatabase seenDB;
+      TwistStore            twistStore(iCube);
 
       cout << "Goal 3: " << edgeG2Goal.getDescription() << endl;
 
-      indexer.findGoal(edgeG2Goal, iCube, seenDB);
+      indexer.findGoal(edgeG2Goal, iCube, seenDB, twistStore);
       this->edgeG2DB.toFile("./Data/edgeG2.pdb");
     }
 
@@ -140,10 +142,11 @@ namespace busybin
       // Create the edge permutation database.
       EdgePermutationDatabaseGoal    edgePermGoal(&this->edgePermDB);
       EdgePermutationPatternDatabase seenDB;
+      TwistStore                     twistStore(iCube);
 
       cout << "Goal 4: " << edgePermGoal.getDescription() << endl;
 
-      indexer.findGoal(edgePermGoal, iCube, seenDB);
+      indexer.findGoal(edgePermGoal, iCube, seenDB, twistStore);
       this->edgePermDB.toFile("./Data/edge_perm.pdb");
     }
 
