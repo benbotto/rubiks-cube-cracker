@@ -31,9 +31,9 @@ namespace busybin
     const uint8_t numEdges = 12;
     const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);
 
-    // Find the position that each M-slice edge is occupying.  Ex: if the cubie
-    // that's in the UB (0/RY) position when solved is in the FR (4) position,
-    // edgeIndexes[0] == 4.
+    // Find the position that each E-slice edge is occupying.  Ex: if the cubie
+    // that's in the FL (4/WB) position when solved is in the FR (4) position,
+    // edgeIndexes[0] == 4.  edgeCombo is in ascending order.
     array<uint8_t, 4> edgeCombo;
 
     unsigned comboInd = 0;
@@ -42,10 +42,10 @@ namespace busybin
       uint8_t edgeInd = iCube.getEdgeIndex((EDGE)i);
 
       if (
-        edgeInd == (uint8_t)EDGE::UB ||
-        edgeInd == (uint8_t)EDGE::UF ||
-        edgeInd == (uint8_t)EDGE::DF ||
-        edgeInd == (uint8_t)EDGE::DB
+        edgeInd == (uint8_t)EDGE::FR ||
+        edgeInd == (uint8_t)EDGE::FL ||
+        edgeInd == (uint8_t)EDGE::BL ||
+        edgeInd == (uint8_t)EDGE::BR
       )
         edgeCombo[comboInd++] = i;
     }
