@@ -3,9 +3,9 @@
 
 #include "CubeSolver.h"
 #include "../CubeMover.h"
-#include "../../Searcher/GroupPatternDatabaseIndexer.h"
 #include "../../Searcher/IDACubeSearcher.h"
 #include "../../Searcher/BreadthFirstCubeSearcher.h"
+#include "../../Searcher/PatternDatabaseIndexer.h"
 #include "../../../View/RubiksCubeView.h"
 #include "../../../Model/RubiksCubeModel.h"
 #include "../../../Model/MoveStore/TwistStore.h"

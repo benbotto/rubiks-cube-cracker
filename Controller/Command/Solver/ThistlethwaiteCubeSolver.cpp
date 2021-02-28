@@ -46,15 +46,12 @@ namespace busybin
       RubiksCubeIndexModel iCube;
 
       // A specialized IDDFS search is used to index the group databases.
-      GroupPatternDatabaseIndexer indexer;
+      PatternDatabaseIndexer indexer;
 
       // The goal is to index all the G1 database.  It will hold the shortest
       // number of moves from any edge orientation to the nearest G1 state (all
       // edges oriented).
       G1DatabaseGoal goal(&this->g1DB);
-
-      // The group goal is G1: all edges oriented.
-      GoalG0_G1 groupGoal;
 
       // Database for keeping track of "seen" states.
       G1PatternDatabase seenDB;
@@ -64,11 +61,9 @@ namespace busybin
 
       this->setSolving(true);
 
-      cout << "Goal 1:\n"
-           << "  " << goal.getDescription() << '\n'
-           << "  Group goal: " << groupGoal.getDescription() << endl;
+      cout << "Goal 1: " << goal.getDescription() << endl;
 
-      indexer.findGoal(goal, groupGoal, iCube, seenDB, twistStore);
+      indexer.findGoal(goal, iCube, seenDB, twistStore);
 
       this->g1DB.toFile(fileName);
 
@@ -85,6 +80,26 @@ namespace busybin
 
     if (!this->g2DB.fromFile(fileName))
     {
+      // See indexG1Database for notes.
+      RubiksCubeIndexModel        iCube;
+      PatternDatabaseIndexer      indexer;
+      G2DatabaseGoal              goal(&this->g2DB);
+      G2PatternDatabase           seenDB;
+
+      // Quarter turns of F and B are excluded (16 moves).
+      G1TwistStore g1TwistStore(iCube);
+
+      this->setSolving(true);
+
+      cout << "Goal 2: " << goal.getDescription() << endl;
+
+      indexer.findGoal(goal, iCube, seenDB, g1TwistStore);
+
+      this->g2DB.toFile(fileName);
+
+      this->setSolving(false);
+    }
+  }
       // See indexG1Database for notes.
       RubiksCubeIndexModel        iCube;
       GroupPatternDatabaseIndexer indexer;
