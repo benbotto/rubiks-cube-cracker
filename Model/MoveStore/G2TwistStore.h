@@ -8,7 +8,7 @@ namespace busybin
 {
   /**
    * Class for storing the available Rubik's Cube's twists in the G2 group.
-   * <L,R,F2,B2,U2,D2>
+   * <L2,R2,F2,B2,U,UPRIME,U2,D,DPRIME,D2>
    */
   class G2TwistStore : public MoveStore
   {
