@@ -5,8 +5,8 @@ namespace busybin
   /**
    * Initialize the database storage.
    *
-   * For the four edges, there are 12P4 permutations (4 edges and 12
-   * positions).
+   * For the four edges, there are 12C4 combinations: 4 edges and 12
+   * positions, and the order does not matter.
    *
    * There are 8 corners, and the orientations of 7 dictate the orientation of
    * the 8th (because the total orientation of the corners is always divisible
@@ -14,9 +14,9 @@ namespace busybin
    * Corners have three possible orientations, so there are 3^7 corner
    * orientation permutations.
    *
-   * 12P4 * 3^7 / 1024^2 / 2 = 25981560 / 1024^2 / 2 = ~12.39MB on disk.
+   * 12C4 * 3^7 / 1024^2 / 2 = 1082565 / 1024 / 2 = ~528.60 KB on disk.
    */
-  G2PatternDatabase::G2PatternDatabase() : PatternDatabase(25981560)
+  G2PatternDatabase::G2PatternDatabase() : PatternDatabase(1082565)
   {
   }
 
@@ -28,27 +28,29 @@ namespace busybin
     typedef RubiksCubeIndexModel::EDGE   EDGE;
     typedef RubiksCubeIndexModel::CORNER CORNER;
 
+    const uint8_t numEdges = 12;
     const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);
 
-    // Indexes of all edges.  The array indexes are the natural (solved-state) indexes,
-    // so if the cubie that's in the UB (0/RY) position when solved is in the FR (4)
-    // position, edgeIndexes[0] == 4.
-    const uint8_t numEdges = 12;
-    array<uint8_t, numEdges> edgeIndexes;
+    // Find the position that each M-slice edge is occupying.  Ex: if the cubie
+    // that's in the UB (0/RY) position when solved is in the FR (4) position,
+    // edgeIndexes[0] == 4.
+    array<uint8_t, 4> edgeCombo;
 
-    for (uint8_t i = 0; i < numEdges; ++i)
-      edgeIndexes[iCube.getEdgeIndex((EDGE)i)] = i;
-
-    // Permutation of the 4 M-slice edges.
-    array<uint8_t, 4> edgePerm =
+    unsigned comboInd = 0;
+    for (uint8_t i = 0; i < numEdges && comboInd < 4; ++i)
     {
-      edgeIndexes[(unsigned)EDGE::UB],
-      edgeIndexes[(unsigned)EDGE::UF],
-      edgeIndexes[(unsigned)EDGE::DF],
-      edgeIndexes[(unsigned)EDGE::DB]
-    };
+      uint8_t edgeInd = iCube.getEdgeIndex((EDGE)i);
 
-    uint32_t rank = this->permIndexer.rank(edgePerm);
+      if (
+        edgeInd == (uint8_t)EDGE::UB ||
+        edgeInd == (uint8_t)EDGE::UF ||
+        edgeInd == (uint8_t)EDGE::DF ||
+        edgeInd == (uint8_t)EDGE::DB
+      )
+        edgeCombo[comboInd++] = i;
+    }
+
+    uint32_t rank = this->comboIndexer.rank(edgeCombo);
 
     // Now get the orientation of the corners.
     array<uint8_t, 7> cornerOrientations =

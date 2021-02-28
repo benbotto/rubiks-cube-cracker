@@ -5,7 +5,7 @@
 #include "../../RubiksCube.h"
 #include "../../RubiksCubeIndexModel.h"
 #include "../PatternDatabase.h"
-#include "../PermutationIndexer.h"
+#include "../CombinationIndexer.h"
 #include <cstdint>
 #include <array>
 using std::array;
@@ -19,7 +19,7 @@ namespace busybin
    */
   class G2PatternDatabase : public PatternDatabase
   {
-    PermutationIndexer<12, 4> permIndexer;
+    CombinationIndexer<12, 4> comboIndexer;
 
   public:
     G2PatternDatabase();
