@@ -14,7 +14,7 @@ namespace busybin
 {
   /**
    * A pattern database that holds the orientations of the 8 corners, and the
-   * positions of 4 edges in the M slice (FU, FD, BU, BD).  Used for moving
+   * positions of 4 edges in the E slice (FR, FL, BL, BR).  Used for moving
    * from G1->G2 using the Thistlethwaite algorithm.
    */
   class G2PatternDatabase : public PatternDatabase
