@@ -58,5 +58,13 @@ namespace busybin
   {
     return this->pDatabase->getNumMoves(ind);
   }
-}
 
+  /**
+   * Get the index for the cube (proxy to PatternDatabase#getDatabaseIndex).
+   * @param cube
+   */
+  uint32_t DatabaseGoal::getDatabaseIndex(const RubiksCube& cube) const
+  {
+    return this->pDatabase->getDatabaseIndex(cube);
+  }
+}
