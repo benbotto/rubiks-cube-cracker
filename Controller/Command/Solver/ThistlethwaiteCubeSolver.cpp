@@ -78,10 +78,10 @@ namespace busybin
     if (!this->g2DB.fromFile(fileName))
     {
       // See indexG1Database for notes.
-      RubiksCubeIndexModel        iCube;
-      PatternDatabaseIndexer      indexer;
-      G2DatabaseGoal              goal(&this->g2DB);
-      G2PatternDatabase           seenDB;
+      RubiksCubeIndexModel   iCube;
+      PatternDatabaseIndexer indexer;
+      G2DatabaseGoal         goal(&this->g2DB);
+      G2PatternDatabase      seenDB;
 
       // Quarter turns of F and B are excluded (16 moves).
       G1TwistStore g1TwistStore(iCube);
@@ -103,16 +103,19 @@ namespace busybin
 
     if (!this->g3DB.fromFile(fileName))
     {
+      // See indexG1Database for notes.
       RubiksCubeIndexModel   iCube;
       PatternDatabaseIndexer indexer;
-      TestGoal               goal(&this->g3DB);
-      TestPatternDatabase    seenDB;
-      G2TwistStore           twistStore(iCube);
+      G3DatabaseGoal         goal(&this->g3DB);
+      G3PatternDatabase      seenDB;
+
+      // All half twists and quarter turns of U and D (10 moves).
+      G2TwistStore g2TwistStore(iCube);
 
       this->setSolving(true);
       cout << "Goal 3: " << goal.getDescription() << endl;
-      indexer.findGoal(goal, iCube, seenDB, twistStore);
-      //this->g3DB.toFile(fileName);
+      indexer.findGoal(goal, iCube, seenDB, g2TwistStore);
+      this->g3DB.toFile(fileName);
       this->setSolving(false);
     }
   }
@@ -157,7 +160,7 @@ namespace busybin
       this->processGoalMoves(g1Goal, iCube, 2, allMoves, goalMoves);
     }
 
-    // Third goal: Orient all corners and position M slice edges.
+    // Third goal: Orient all corners and position E slice edges.
     // Excludes quarter turns of F and B.
     {
       IDACubeSearcher idaSearcher(&this->g2DB);
@@ -166,6 +169,17 @@ namespace busybin
 
       goalMoves = idaSearcher.findGoal(g2Goal, iCube, g1TwistStore);
       this->processGoalMoves(g2Goal, iCube, 3, allMoves, goalMoves);
+    }
+
+    // Fourth goal: Get all corners into tetrad-pairs, and get all edges in
+    // their slices.
+    {
+      IDACubeSearcher idaSearcher(&this->g3DB);
+      GoalG2_G3       g3Goal;
+      G2TwistStore    g2TwistStore(iCube);
+
+      goalMoves = idaSearcher.findGoal(g3Goal, iCube, g2TwistStore);
+      this->processGoalMoves(g3Goal, iCube, 4, allMoves, goalMoves);
     }
 
     cout << "\n\nSolved the cube in " << allMoves.size() << " moves.\n";
@@ -192,19 +206,8 @@ namespace busybin
     cout << "Resulting cube.\n";
     cubeView.render(iCube);
 
-    cout << "Edge orientations.\n";
-    for (uint8_t i = 0; i < 12; ++i)
-      cout << (unsigned)iCube.getEdgeOrientation((RubiksCubeIndexModel::EDGE)i) << ' ';
-    cout << endl;
-
-    cout << "Corner orientations.\n";
-    for (uint8_t i = 0; i < 8; ++i)
-      cout << (unsigned)iCube.getCornerOrientation((RubiksCubeIndexModel::CORNER)i) << ' ';
-    cout << endl;
-
     // Done solving - re-enable movement.  (Note that solving is set to true in
     // the parent class on keypress.)
     this->setSolving(false);
   }
 }
-

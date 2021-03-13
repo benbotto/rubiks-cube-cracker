@@ -17,10 +17,10 @@
 #include "../../../Model/Goal/OrientGoal.h"
 #include "../../../Model/Goal/Thistlethwaite/G1DatabaseGoal.h"
 #include "../../../Model/Goal/Thistlethwaite/G2DatabaseGoal.h"
+#include "../../../Model/Goal/Thistlethwaite/G3DatabaseGoal.h"
 #include "../../../Model/Goal/Thistlethwaite/GoalG0_G1.h"
 #include "../../../Model/Goal/Thistlethwaite/GoalG1_G2.h"
-#include "../../../Model/Goal/Thistlethwaite/GoalG2_G3_Corners.h"
-#include "../../../Model/Goal/Thistlethwaite/GoalG2_G3_Edges.h"
+#include "../../../Model/Goal/Thistlethwaite/GoalG2_G3.h"
 #include "../../../Model/Goal/SolveGoal.h"
 #include "../../../Model/PatternDatabase/Thistlethwaite/G1PatternDatabase.h"
 #include "../../../Model/PatternDatabase/Thistlethwaite/G2PatternDatabase.h"
@@ -35,10 +35,6 @@ using std::vector;
 #include <string>
 using std::string;
 
-// TODO: Remove
-#include "../../../Model/PatternDatabase/TestPatternDatabase.h"
-#include "../../../Model/Goal/TestGoal.h"
-
 namespace busybin
 {
   /**
@@ -48,7 +44,7 @@ namespace busybin
   {
     G1PatternDatabase g1DB;
     G2PatternDatabase g2DB;
-    TestPatternDatabase g3DB;
+    G3PatternDatabase g3DB;
 
     void indexG1Database();
     void indexG2Database();
@@ -65,4 +61,3 @@ namespace busybin
 }
 
 #endif
-
