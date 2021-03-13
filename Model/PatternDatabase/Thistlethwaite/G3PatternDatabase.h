@@ -34,7 +34,7 @@ namespace busybin
     CombinationIndexer<8, 4> comboIndexer;
     UnorderedPairSetIndexer<8> pairSetIndexer;
 
-    void getTetradPairs(
+    void getTetradPair(
       const RubiksCubeIndexModel& iCube,
       array<uint8_t, 2>& tetradPair,
       RubiksCube::CORNER c1,

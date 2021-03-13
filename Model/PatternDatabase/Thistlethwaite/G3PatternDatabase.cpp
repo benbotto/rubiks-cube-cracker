@@ -29,7 +29,7 @@ namespace busybin
    * Private helper to find the positions of a pair of corners.  The corners'
    * positions are set on the tetradPair argument in ascending order.
    */
-  void G3PatternDatabase::getTetradPairs(
+  void G3PatternDatabase::getTetradPair(
     const RubiksCubeIndexModel& iCube,
     array<uint8_t, 2>& tetradPair,
     RubiksCube::CORNER c1,
@@ -66,10 +66,10 @@ namespace busybin
     // unordered subsets of size 2).
     array<array<uint8_t, 2>, 4> tetradPairs;
 
-    this->getTetradPairs(iCube, tetradPairs[0], CORNER::ULB, CORNER::URF);
-    this->getTetradPairs(iCube, tetradPairs[1], CORNER::DLF, CORNER::DRB);
-    this->getTetradPairs(iCube, tetradPairs[2], CORNER::URB, CORNER::ULF);
-    this->getTetradPairs(iCube, tetradPairs[3], CORNER::DLB, CORNER::DRF);
+    this->getTetradPair(iCube, tetradPairs[0], CORNER::ULB, CORNER::URF);
+    this->getTetradPair(iCube, tetradPairs[1], CORNER::DLF, CORNER::DRB);
+    this->getTetradPair(iCube, tetradPairs[2], CORNER::URB, CORNER::ULF);
+    this->getTetradPair(iCube, tetradPairs[3], CORNER::DLB, CORNER::DRF);
 
     uint32_t cornerRank = this->pairSetIndexer.rank(tetradPairs);
 
