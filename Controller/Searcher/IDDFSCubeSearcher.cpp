@@ -68,7 +68,7 @@ namespace busybin
           moveInds.pop_back();
 
         // Revert the move.
-        moveStore.invert(i); // WTF?  Why doesn't this work?
+        moveStore.invert(i);
       }
     }
 
