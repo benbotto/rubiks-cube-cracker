@@ -42,6 +42,7 @@ set(SRC
   "./Model/PatternDatabase/Korf/KorfPatternDatabase.cpp"
   "./Model/PatternDatabase/Thistlethwaite/G1PatternDatabase.cpp"
   "./Model/PatternDatabase/Thistlethwaite/G2PatternDatabase.cpp"
+  "./Model/PatternDatabase/Thistlethwaite/G3PatternDatabase.cpp"
   "./Model/PatternDatabase/TestPatternDatabase.cpp"
   "./Model/RubiksCubeWorld.cpp"
   "./Model/RubiksCube.cpp"
@@ -54,11 +55,10 @@ set(SRC
   "./Model/Goal/DatabaseGoal.cpp"
   "./Model/Goal/Thistlethwaite/G1DatabaseGoal.cpp"
   "./Model/Goal/Thistlethwaite/G2DatabaseGoal.cpp"
+  "./Model/Goal/Thistlethwaite/G3DatabaseGoal.cpp"
   "./Model/Goal/Thistlethwaite/GoalG0_G1.cpp"
   "./Model/Goal/Thistlethwaite/GoalG1_G2.cpp"
-  "./Model/Goal/Thistlethwaite/GoalG2_G3_Corners.cpp"
-  "./Model/Goal/Thistlethwaite/GoalG2_G3_Edges.cpp"
-  "./Model/Goal/Thistlethwaite/GoalG3_Permute_Corners.cpp"
+  "./Model/Goal/Thistlethwaite/GoalG2_G3.cpp"
   "./Model/Goal/Korf/CornerDatabaseGoal.cpp"
   "./Model/Goal/Korf/EdgeDatabaseGoal.cpp"
   "./Model/Goal/Korf/EdgePermutationDatabaseGoal.cpp"
@@ -74,6 +74,7 @@ IF(NOT CMAKE_BUILD_TYPE )
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
 # Link the OpenGLSeed library.
+set (OpenGL_GL_PREFERENCE "GLVND")
 add_subdirectory(OpenGLSeed)
 target_link_libraries(rubiksCube OpenGLSeed)
 
@@ -102,5 +103,5 @@ target_link_libraries(rubiksCube ${GLFW_LIBRARIES})
 # OpenGL.
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
-target_link_libraries(rubiksCube ${OPENGL_gl_LIBRARY})
+target_link_libraries(rubiksCube ${OPENGL_LIBRARIES})
 
