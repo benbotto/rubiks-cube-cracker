@@ -9,7 +9,7 @@ namespace busybin
    */
   bool GoalG0_G1::isSatisfied(RubiksCube& cube)
   {
-    typedef RubiksCubeIndexModel::EDGE EDGE;
+    typedef RubiksCube::EDGE EDGE;
 
     const uint8_t disoriented = 1;
     const uint8_t numEdges    = 12;

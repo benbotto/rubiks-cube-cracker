@@ -25,8 +25,8 @@ namespace busybin
    */
   uint32_t G2PatternDatabase::getDatabaseIndex(const RubiksCube& cube) const
   {
-    typedef RubiksCubeIndexModel::EDGE   EDGE;
-    typedef RubiksCubeIndexModel::CORNER CORNER;
+    typedef RubiksCube::EDGE   EDGE;
+    typedef RubiksCube::CORNER CORNER;
 
     const uint8_t numEdges = 12;
     const RubiksCubeIndexModel& iCube = static_cast<const RubiksCubeIndexModel&>(cube);

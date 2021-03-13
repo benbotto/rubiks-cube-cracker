@@ -12,8 +12,8 @@ namespace busybin
    */
   bool GoalG1_G2::isSatisfied(RubiksCube& cube)
   {
-    typedef RubiksCubeIndexModel::CORNER CORNER;
-    typedef RubiksCubeIndexModel::EDGE   EDGE;
+    typedef RubiksCube::CORNER CORNER;
+    typedef RubiksCube::EDGE   EDGE;
 
     const uint8_t oriented   = 0;
     const uint8_t numCorners = 8;
