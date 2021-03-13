@@ -4,10 +4,9 @@
 #include "MovePruner.h"
 #include "../../Model/RubiksCube.h"
 #include "../../Model/RubiksCubeIndexModel.h"
-#include "../../Model/Goal/Goal.h"
+#include "../../Model/Goal/DatabaseGoal.h"
 #include "../../Model/MoveStore/MoveStore.h"
 #include "../../Util/AutoTimer.h"
-#include "../../Model/PatternDatabase/PatternDatabase.h"
 #include <stack>
 using std::stack;
 #include <iostream>
@@ -18,7 +17,7 @@ using std::endl;
 namespace busybin
 {
   /**
-   * Used to search the cube and index a pattern database.
+   * Used to search the cube and index a pattern database using a DatabaseGoal.
    */
   class PatternDatabaseIndexer
   {
@@ -30,8 +29,8 @@ namespace busybin
     };
 
   public:
-    void findGoal(Goal& goal, RubiksCubeIndexModel& cube,
-      PatternDatabase& seenDB, MoveStore& moveStore);
+    void findGoal(DatabaseGoal& goal, RubiksCubeIndexModel& cube,
+      MoveStore& moveStore);
   };
 }
 

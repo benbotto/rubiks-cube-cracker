@@ -54,15 +54,12 @@ namespace busybin
       // edges oriented).
       G1DatabaseGoal goal(&this->g1DB);
 
-      // Database for keeping track of "seen" states.
-      G1PatternDatabase seenDB;
-
       // All 18 twists can be used for moving from G0->G1.
       TwistStore twistStore(iCube);
 
       this->setSolving(true);
       cout << "Goal 1: " << goal.getDescription() << endl;
-      indexer.findGoal(goal, iCube, seenDB, twistStore);
+      indexer.findGoal(goal, iCube, twistStore);
       this->g1DB.toFile(fileName);
       this->setSolving(false);
     }
@@ -81,14 +78,13 @@ namespace busybin
       RubiksCubeIndexModel   iCube;
       PatternDatabaseIndexer indexer;
       G2DatabaseGoal         goal(&this->g2DB);
-      G2PatternDatabase      seenDB;
 
       // Quarter turns of F and B are excluded (16 moves).
       G1TwistStore g1TwistStore(iCube);
 
       this->setSolving(true);
       cout << "Goal 2: " << goal.getDescription() << endl;
-      indexer.findGoal(goal, iCube, seenDB, g1TwistStore);
+      indexer.findGoal(goal, iCube, g1TwistStore);
       this->g2DB.toFile(fileName);
       this->setSolving(false);
     }
@@ -107,14 +103,13 @@ namespace busybin
       RubiksCubeIndexModel   iCube;
       PatternDatabaseIndexer indexer;
       G3DatabaseGoal         goal(&this->g3DB);
-      G3PatternDatabase      seenDB;
 
       // All half twists and quarter turns of U and D (10 moves).
       G2TwistStore g2TwistStore(iCube);
 
       this->setSolving(true);
       cout << "Goal 3: " << goal.getDescription() << endl;
-      indexer.findGoal(goal, iCube, seenDB, g2TwistStore);
+      indexer.findGoal(goal, iCube, g2TwistStore);
       this->g3DB.toFile(fileName);
       this->setSolving(false);
     }
