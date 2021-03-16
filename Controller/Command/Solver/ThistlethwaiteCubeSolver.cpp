@@ -13,7 +13,9 @@ namespace busybin
     WorldWindow* pWorldWnd, CubeMover* pMover, ThreadPool* pThreadPool) :
     CubeSolver(pWorld, pWorldWnd, pMover, pThreadPool, GLFW_KEY_F1),
     g1DB(),
-    g2DB()
+    g2DB(),
+    g3DB(),
+    g4DB()
   {
   }
 
@@ -31,6 +33,7 @@ namespace busybin
     this->pThreadPool->addJob(bind(&ThistlethwaiteCubeSolver::indexG1Database, this));
     this->pThreadPool->addJob(bind(&ThistlethwaiteCubeSolver::indexG2Database, this));
     this->pThreadPool->addJob(bind(&ThistlethwaiteCubeSolver::indexG3Database, this));
+    this->pThreadPool->addJob(bind(&ThistlethwaiteCubeSolver::indexG4Database, this));
   }
 
   /**
@@ -116,6 +119,31 @@ namespace busybin
   }
 
   /**
+   * Initialize the pattern database for G3->G4 (solved).
+   */
+  void ThistlethwaiteCubeSolver::indexG4Database()
+  {
+    string fileName = "./Data/thistlethwiateG4.pdb";
+
+    if (!this->g4DB.fromFile(fileName))
+    {
+      // See indexG1Database for notes.
+      RubiksCubeIndexModel   iCube;
+      PatternDatabaseIndexer indexer;
+      G4DatabaseGoal         goal(&this->g4DB);
+
+      // All half twists (6 moves).
+      G3TwistStore g3TwistStore(iCube);
+
+      this->setSolving(true);
+      cout << "Goal 4: " << goal.getDescription() << endl;
+      indexer.findGoal(goal, iCube, g3TwistStore);
+      this->g4DB.toFile(fileName);
+      this->setSolving(false);
+    }
+  }
+
+  /**
    * Solve the cube.  This is run in a separate thread.
    */
   void ThistlethwaiteCubeSolver::solveCube()
@@ -175,6 +203,16 @@ namespace busybin
 
       goalMoves = idaSearcher.findGoal(g3Goal, iCube, g2TwistStore);
       this->processGoalMoves(g3Goal, iCube, 4, allMoves, goalMoves);
+    }
+
+    // Fourth goal: Solve the cube.
+    {
+      IDACubeSearcher idaSearcher(&this->g4DB);
+      GoalG3_G4       g4Goal;
+      G3TwistStore    g3TwistStore(iCube);
+
+      goalMoves = idaSearcher.findGoal(g4Goal, iCube, g3TwistStore);
+      this->processGoalMoves(g4Goal, iCube, 5, allMoves, goalMoves);
     }
 
     cout << "\n\nSolved the cube in " << allMoves.size() << " moves.\n";
