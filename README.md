@@ -44,10 +44,10 @@ for X and Y rotations.  Press `Z` for a Z rotation (hold `SHIFT` for prime).
 
 For slice moves, use `M`, `E`, and `S` for the respective slices.
 
-To solve a scrambled cube optimally using the Korf algorithm, press `F2`.
-
 Rapidly solve a scrambled cube using Thistlethwaite's algorithm by pressing
 `F1`.
+
+To solve a scrambled cube optimally using the Korf algorithm, press `F2`.
 
 Apply a 100-move scramble by pressing `F5`.
 
@@ -158,14 +158,19 @@ codes](https://en.wikipedia.org/wiki/Lehmer_code_)).
 
 The optimal solver can take a long time, especially for scrambles that take 18+
 moves to solve.  As such, this program also includes an implementation of
-Thistlethwaite's algorithm which can solve any scrambed cube quickly in 52 or
-fewer moves.
+Thistlethwaite's algorithm.  The algorithm implemented by this program can
+solve any scrambed cube quickly in at most 46 moves.  Thistlethwaite's
+algorithm orignally had a maximum of 52 moves, but this implementation differs
+slightly (details below).  The maximum number of moves is 46, and solves are
+effectively instantaneous.
 
-Like Korf's, Thistlethwaite's algorithm uses IDDFS, but no heuristic pattern
-databases are used.  (Pattern database _could_ be used to boost performance,
-but this implementation doesn't use them.)  It works by moving the cube from
-one "group" to another, and each successive "group" is computationally easier
-to solve than the last.
+The Thistlethwaite algorithm implementation also uses IDA\* with pattern
+databases as heuristics.  It works by moving the cube from one "group" to
+another, and each successive group is computationally easier to solve than its
+predecessor.  Each transition from one group to the next uses a separate
+pattern database, but unlike the databases used with Korf's algorithm, the
+Thistlethwiate databases give the exact number of moves required to get to the
+next group.
 
 The initial group--group 0--is any scrambled cube.  Above it was mentioned that
 each edge cubie can be in one of two orientations.  Well, it turns out that
@@ -176,23 +181,43 @@ turns of the front or back faces.
 
 Next, the cube is moved to a state such that all corners are correctly
 oriented.  Also, four of the edges are moved to the correct slice: the
-front-up, front-down, back-up, and back-down edges are placed in the M slice.
-This is group 2.  The branching factor is smaller when moving from group 1 to
-group 2 because four of the moves (F, F', B, and B') are excluded.
+front-right, front-left, back-left, and back-right edges are placed in the E
+slice.  This is group 2.  The branching factor is smaller when moving from
+group 1 to group 2 because four of the moves (F, F', B, and B') are excluded.
 
-For group 3, all corners are moved to the correct oribit.  (A corner is in the
-correct orbit if it can be moved to its home position with only 180-degree
-twists.)  Also, each edge is moved to its home slice.  At that point, the cube
-can be solved with only 180-degree twists.
+Group 3 differs a bit from Thistlethwaite's original algorithm, wherein he uses
+a series of preliminary moves to check how corner cubies are positioned within
+their tetrads.  (Corners `{ULB, URF, DLF, DRB}` make up one tetrad, and `{URB,
+ULF, DLB, DRF}` make up the other.)  This implementation employs [Stefan
+Pochmann's
+technique](https://www.stefan-pochmann.info/spocc/other_stuff/tools/solver_thistlethwaite/solver_thistlethwaite.txt)
+and pairs up corners, ensuring that `{ULB, URF}`, `{DLF, DRB}`, `{URB, ULF}`,
+and `{DLB, DRF}` are paired up within their respective tetrads.  At the same
+time it makes the parity of the corners even, meaning that the corners can be
+brought into the solved state with an even number of swaps.  (When corner
+parity is even, edge parity is, too.)  Lastly, moving to group 3 ensures that
+the M- and S-slice edges are positioned within their slices.  In group 2, all
+the corners are oriented correctly, so moving to group 3 can be done without
+quarter turns of L and R (10 permissible moves).
 
-Moving from group 3 to the solved state has a branching factor of only 6,
-comprised of U2, F2, L2, R2, B2, and D2.
+Moving from group 3 to the solved state uses only 6 moves: U2, F2, L2, R2, B2,
+and D2.
+
+| Group | Moves                                             | Database Size                 | Max Twists |
+|:------|:--------------------------------------------------|:------------------------------|:-----------|
+| G0    | <L,L',L2,R,R',R2,U,U',U2,D,D',D2,F,F',F2,B,B',B2> | 2^11=2,048                    | 7          |
+| G1    | <L,L',L2,R,R',R2,U,U',U2,D,D',D2,F2,B2>           | 12C4\*3^7=1,082,565           | 10         |
+| G2    | <L2,R2,U,U',U2,D,D',D2,F2,B2>                     | 8C2\*6C2\*4C2\*8C4\*2=352,800 | 14         |
+| G3    | <L2,R2,U2,D2,F2,B2>                               | 4!\*4!\*4P2\*4!\*4P1=663,552  | 15         |
 
 ### Optimal Solver Stats
 
 Below is a table of 10 100-move scrambles, along with the time and number of
 moves required to solve each.  The scrambles are naive--random moves
 _excluding_ prunable moves (two moves of the same face, etc.).
+
+These numbers were generated on a Core i7 Sandy Bridge circa 2011, using
+version 2.2.0 of the code.  The speed is improved in newer releases.
 
 | Scramble                                                                                                                                                                                                                                                                                                    | Solution                                           | Solution Length (Twists) | Solution Time (Seconds) | Solution Time (Hours) |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|--------------------------|-------------------------|-----------------------|
@@ -239,3 +264,15 @@ Heise, Ryan.  [Rubik's Cube
 Theory](https://www.ryanheise.com/cube/cube_laws.html).  This has some advanced
 discussion about reachable permutations and orienations of the cubies.
 
+Pochmann, Stefan.  [Thistlethwaite 3x3
+solver](https://www.stefan-pochmann.info/spocc/other_stuff/tools/solver_thistlethwaite/solver_thistlethwaite.txt).
+Stefan Pochmann's Group 3 pairing method.
+
+Enright, Brandon.  [What is the meaning of a “tetrad twist” in Thistlethwaite's
+algorithm?](https://puzzling.stackexchange.com/questions/5402/what-is-the-meaning-of-a-tetrad-twist-in-thistlethwaites-algorithm).
+Great visual representation of tetrads, accompanied by an explanation of size
+of the corner coset in Group 3.
+
+Scherphuis, Jaap.  [Way to calculate the total tetrad twist of a rubik's
+cube](https://puzzling.stackexchange.com/questions/101256/way-to-calculate-the-total-tetrad-twist-of-a-rubiks-cube?noredirect=1&lq=1).
+A manual algorithm for determining and encoding a tetrad twist.
