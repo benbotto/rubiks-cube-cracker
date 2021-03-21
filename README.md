@@ -159,10 +159,9 @@ codes](https://en.wikipedia.org/wiki/Lehmer_code_)).
 The optimal solver can take a long time, especially for scrambles that take 18+
 moves to solve.  As such, this program also includes an implementation of
 Thistlethwaite's algorithm.  The algorithm implemented by this program can
-solve any scrambed cube quickly in at most 46 moves.  Thistlethwaite's
+solve any scrambed cube quickly in at most 46 moves, effectively instantaneously.  Thistlethwaite's
 algorithm orignally had a maximum of 52 moves, but this implementation differs
-slightly (details below).  The maximum number of moves is 46, and solves are
-effectively instantaneous.
+slightly (details below).
 
 The Thistlethwaite algorithm implementation also uses IDA\* with pattern
 databases as heuristics.  It works by moving the cube from one "group" to
@@ -172,11 +171,11 @@ pattern database, but unlike the databases used with Korf's algorithm, the
 Thistlethwiate databases give the exact number of moves required to get to the
 next group.
 
-The initial group--group 0--is any scrambled cube.  Above it was mentioned that
+The initial group, group 0, is any scrambled cube.  Above it was mentioned that
 each edge cubie can be in one of two orientations.  Well, it turns out that
 edge pieces cannot be flipped if quarter turns of the front and back faces are
 not used.  So, by moving the cube to a state wherein all 12 edge pieces are
-correctly oriented--group 1--the cube can be solved _without_ using quarter
+correctly oriented, group 1, the cube can be solved _without_ using quarter
 turns of the front or back faces.
 
 Next, the cube is moved to a state such that all corners are correctly
