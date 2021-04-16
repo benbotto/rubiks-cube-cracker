@@ -71,7 +71,9 @@ namespace busybin
     if (glewInit() != GLEW_OK)
       throw GLException("Falied to initialize GLEW.");
 
-    if (glGetError() != GL_INVALID_ENUM)
+    unsigned glError = glGetError();
+
+    if (glError != GL_NO_ERROR && glError != GL_INVALID_ENUM)
       throw GLException("glewInit raised a GL_ERROR.");
 
     // Listen for key events.
