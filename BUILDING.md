@@ -16,8 +16,8 @@ installed, a dev environment can be run by running:
 
 The application code will be mounted under `/var/src/` inside the container.
 
-Docker image can be built using the `Docker/build.sh` script (a version number,
-e.g. 4.0.1, is required as an argument.
+The Docker image can be built using the `Docker/build.sh` script, passing a
+version number, e.g. 4.0.1, as an argument.
 
 ### Without Docker: OpenGL Dependencies
 
